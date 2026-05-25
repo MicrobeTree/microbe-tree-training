@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuesday â Equipment & Knots: The Bowline</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f3ef; color: #1a1a2e; min-height: 100vh; }
+
+  .header { background: #3d2b0e; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  .header-logo { font-size: 22px; }
+  .header-title { font-size: 18px; font-weight: 700; }
+  .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .day-badge { background: #7a5c2e; color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; margin-left: auto; }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 24px 16px; }
+  .page-title { font-size: 24px; font-weight: 800; color: #3d2b0e; margin-bottom: 4px; }
+  .page-sub { font-size: 15px; color: #6b4f2a; margin-bottom: 24px; }
+
+  /* Navigation */
+  .nav-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .nav-tab { background: white; border: 2px solid #c8b89a; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; color: #3d2b0e; font-family: inherit; transition: all 0.15s; }
+  .nav-tab.active, .nav-tab:hover { background: #3d2b0e; color: white; border-color: #3d2b0e; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* Cards */
+  .card { background: white; border-radius: 12px; padding: 24px; border: 1px solid #d9c9b0; margin-bottom: 16px; }
+  .card-title { font-size: 16px; font-weight: 700; color: #3d2b0e; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #f0e8d8; display: flex; align-items: center; gap: 8px; }
+
+  /* SVG diagram */
+  .diagram-wrap { background: #faf8f5; border-radius: 10px; padding: 16px; margin-bottom: 16px; border: 1px solid #e0d0bc; text-align: center; }
+  .diagram-wrap svg { max-width: 100%; }
+  .diagram-caption { font-size: 12px; color: #7a6a5a; margin-top: 8px; font-style: italic; }
+
+  /* Steps */
+  .steps { list-style: none; counter-reset: step-counter; }
+  .steps li { counter-increment: step-counter; display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+  .steps li::before { content: counter(step-counter); background: #3d2b0e; color: white; min-width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+  .step-text { font-size: 14px; line-height: 1.6; color: #2a2a2a; }
+  .step-text strong { color: #3d2b0e; }
+
+  /* Specs table */
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .spec-table th { background: #3d2b0e; color: white; padding: 9px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .spec-table td { padding: 9px 12px; border-bottom: 1px solid #e8ddd0; line-height: 1.5; }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table tr:nth-child(even) td { background: #faf8f5; }
+
+  /* Warning / critical boxes */
+  .warning-box { background: #fff3cd; border-left: 4px solid #f5a623; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-bottom: 14px; }
+  .warning-box .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #b8760a; margin-bottom: 6px; }
+  .warning-box p, .warning-box li { font-size: 13px; color: #4a3a0a; line-height: 1.6; }
+  .warning-box ul { padding-left: 18px; }
+
+  .critical-box { background: #f8d7da; border-left: 4px solid #dc3545; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-bottom: 14px; }
+  .critical-box .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #721c24; margin-bottom: 6px; }
+  .critical-box p, .critical-box li { font-size: 13px; color: #4a1c24; line-height: 1.6; }
+  .critical-box ul { padding-left: 18px; }
+
+  .good-box { background: #d4edda; border-left: 4px solid #28a745; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-bottom: 14px; }
+  .good-box .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #155724; margin-bottom: 6px; }
+  .good-box p, .good-box li { font-size: 13px; color: #1a3a24; line-height: 1.6; }
+  .good-box ul { padding-left: 18px; }
+
+  .field-note { background: #fff8e1; border-left: 4px solid #f5a623; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 16px; }
+  .field-note .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #b8760a; margin-bottom: 6px; }
+  .field-note p { font-size: 13px; color: #4a3a0a; line-height: 1.6; margin: 0; }
+
+  .isa-tag { background: white; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #6b4f2a; border: 1px solid #d9c9b0; margin-top: 16px; line-height: 1.6; }
+  .isa-tag strong { color: #3d2b0e; }
+
+  p { font-size: 14px; line-height: 1.7; color: #2a2a2a; margin-bottom: 12px; }
+  ul { padding-left: 20px; margin-bottom: 12px; }
+  li { font-size: 14px; line-height: 1.7; color: #2a2a2a; margin-bottom: 3px; }
+  strong { color: #1a1a2e; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">ðª</div>
+  <div>
+    <div class="header-title">Microbe Tree Training</div>
+    <div class="header-sub">West Kelowna, BC Â· Okanagan Interior</div>
+  </div>
+  <div class="day-badge">Tuesday Â· Week 1</div>
+</div>
+
+<div class="container">
+  <div class="page-title">Equipment & Knots</div>
+  <div class="page-sub">Week 1 Â· The Bowline â Construction, Load Behaviour, and Arboricultural Applications</div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('tying')">How to Tie It</button>
+    <button class="nav-tab" onclick="showSection('specs')">Load & Specs</button>
+    <button class="nav-tab" onclick="showSection('uses')">When to Use It</button>
+    <button class="nav-tab" onclick="showSection('danger')">When NOT to Use It</button>
+    <button class="nav-tab" onclick="showSection('backup')">Backing It Up</button>
+  </div>
+
+  <!-- SECTION 1: Tying -->
+  <div class="section active" id="section-tying">
+    <div class="card">
+      <div class="card-title">ðª¢ Tying the Bowline</div>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+          <!-- Step 1: Make loop -->
+          <g transform="translate(20,20)">
+            <text x="75" y="16" font-size="13" font-weight="700" fill="#3d2b0e" text-anchor="middle">Step 1</text>
+            <text x="75" y="30" font-size="11" fill="#666" text-anchor="middle">Make a loop</text>
+            <!-- Standing part -->
+            <path d="M 20,80 L 130,80" stroke="#3d2b0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <!-- Loop -->
+            <ellipse cx="75" cy="140" rx="38" ry="30" stroke="#7a5c2e" stroke-width="5" fill="none"/>
+            <!-- Working end coming down from loop -->
+            <path d="M 75,170 L 75,220" stroke="#7a5c2e" stroke-width="5" fill="none" stroke-dasharray="6,4"/>
+            <!-- Crossing point indicator -->
+            <circle cx="75" cy="80" r="5" fill="#f5a623"/>
+            <path d="M 75,80 Q 75,110 75,110" stroke="#7a5c2e" stroke-width="5" fill="none"/>
+            <text x="95" y="120" font-size="11" fill="#f5a623">â crossing point</text>
+          </g>
+
+          <!-- Step 2: Up through hole -->
+          <g transform="translate(190,20)">
+            <text x="75" y="16" font-size="13" font-weight="700" fill="#3d2b0e" text-anchor="middle">Step 2</text>
+            <text x="75" y="30" font-size="11" fill="#666" text-anchor="middle">Up through the loop</text>
+            <path d="M 20,80 L 130,80" stroke="#3d2b0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <ellipse cx="75" cy="140" rx="38" ry="30" stroke="#7a5c2e" stroke-width="5" fill="none"/>
+            <!-- Arrow up through loop -->
+            <path d="M 75,200 L 75,125" stroke="#c0392b" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#c0392b"/>
+              </marker>
+            </defs>
+            <text x="85" y="175" font-size="11" fill="#c0392b">up thru</text>
+          </g>
+
+          <!-- Step 3: Around the standing part -->
+          <g transform="translate(360,20)">
+            <text x="75" y="16" font-size="13" font-weight="700" fill="#3d2b0e" text-anchor="middle">Step 3</text>
+            <text x="75" y="30" font-size="11" fill="#666" text-anchor="middle">Around the standing part</text>
+            <path d="M 20,80 L 130,80" stroke="#3d2b0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <ellipse cx="75" cy="140" rx="38" ry="30" stroke="#7a5c2e" stroke-width="5" fill="none"/>
+            <!-- Working end going around standing part -->
+            <path d="M 75,110 L 75,75 Q 95,65 105,80 Q 95,95 75,95" stroke="#c0392b" stroke-width="4" fill="none"/>
+            <text x="108" y="80" font-size="11" fill="#c0392b">â around</text>
+          </g>
+
+          <!-- Step 4: Back down through loop -->
+          <g transform="translate(530,20)">
+            <text x="75" y="16" font-size="13" font-weight="700" fill="#3d2b0e" text-anchor="middle">Step 4</text>
+            <text x="75" y="30" font-size="11" fill="#666" text-anchor="middle">Back down &amp; dress</text>
+            <path d="M 20,80 L 130,80" stroke="#3d2b0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <ellipse cx="75" cy="140" rx="38" ry="30" stroke="#7a5c2e" stroke-width="5" fill="none"/>
+            <!-- Fixed loop at bottom -->
+            <ellipse cx="75" cy="205" rx="22" ry="16" stroke="#3d2b0e" stroke-width="5" fill="none"/>
+            <text x="75" y="255" font-size="12" font-weight="700" fill="#3d2b0e" text-anchor="middle">Fixed loop â</text>
+            <!-- Arrow down -->
+            <path d="M 75,95 L 75,130" stroke="#c0392b" stroke-width="4" fill="none"/>
+          </g>
+
+          <!-- Labels at bottom -->
+          <text x="340" y="270" font-size="12" fill="#888" text-anchor="middle" font-style="italic">The rabbit comes up through the hole, runs around the tree, and goes back down the hole. Dress and set â pull all strands tight.</text>
+        </svg>
+        <div class="diagram-caption">Bowline tying sequence â four steps to a fixed loop. Always dress and set before loading.</div>
+      </div>
+
+      <ul class="steps">
+        <li><div class="step-text"><strong>Make the loop (the "rabbit hole").</strong> Create a small overhand loop in the standing part of the rope â cross right over left if looking from the end. The crossing point should be about 30cm from where you want your final fixed loop to sit.</div></li>
+        <li><div class="step-text"><strong>Bring the working end up through the loop.</strong> The working end is the "rabbit." Come up through the hole from below â this is the only direction that produces a bowline.</div></li>
+        <li><div class="step-text"><strong>Pass the working end around the standing part.</strong> The rabbit runs around the "tree" (the standing part). Keep the working end on the correct side â this is where most tying errors occur. The end should pass behind the standing part and come back toward the loop.</div></li>
+        <li><div class="step-text"><strong>Feed the working end back down through the loop and dress.</strong> The rabbit goes back down the hole. Pull all four strands in opposite pairs to dress the knot â this is critical. An undressed bowline is dramatically weaker and can invert.</div></li>
+        <li><div class="step-text"><strong>Set with a backup.</strong> Per ANSI Z133, all knots in climbing systems must be secured. Add an overhand or half-hitch backup with the tail â minimum 15cm tail length after the backup knot.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Load & Specs -->
+  <div class="section" id="section-specs">
+    <div class="card">
+      <div class="card-title">âï¸ Load Characteristics</div>
+      <p>The bowline is an <strong>end-of-line knot</strong> that creates a fixed loop. It does not slip â the loop size is set when the knot is dressed and will not change under load. This makes it predictable and useful for anchor applications where a fixed attachment point is needed.</p>
+
+      <table class="spec-table">
+        <tr><th>Property</th><th>Value / Notes</th></tr>
+        <tr><td><strong>Knot efficiency</strong></td><td>~65â75% of rope's tensile strength (knot efficiency varies with rope type and diameter; test data per manufacturer specs)</td></tr>
+        <tr><td><strong>Loop size</strong></td><td>Fixed â does not slip or close under load</td></tr>
+        <tr><td><strong>Unloading</strong></td><td>Generally easy to untie after loading, even after significant load (an advantage over the figure-8 follow-through in some applications)</td></tr>
+        <tr><td><strong>Load direction</strong></td><td>Best loaded along the standing part axis. Performs poorly under cyclic/alternating loads without a backup</td></tr>
+        <tr><td><strong>Cyclic load risk</strong></td><td>â ï¸ The bowline can progressively loosen and invert under oscillating/cyclic loads without a stopper backup</td></tr>
+        <tr><td><strong>Backup required?</strong></td><td>Yes â always. ANSI Z133 Section 5 requires all knots in climbing systems be secured</td></tr>
+        <tr><td><strong>Tail length (after backup)</strong></td><td>Minimum 15cm (6 inches) after the backup hitch</td></tr>
+      </table>
+
+      <div class="warning-box" style="margin-top:16px;">
+        <div class="label">â ï¸ Load Direction Matters</div>
+        <p>The bowline is designed to be loaded along the standing part. Side-loading the loop (loading perpendicular to the standing part) significantly degrades the knot and can cause it to collapse. When rigging, ensure the load is always pulling along the standing part axis.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ð Knot Efficiency vs. Other Common Arborist Knots</div>
+      <table class="spec-table">
+        <tr><th>Knot</th><th>Approx. Efficiency</th><th>Notes</th></tr>
+        <tr><td>Bowline (dressed + backed)</td><td>65â75%</td><td>Fixed loop; easy to untie after loading</td></tr>
+        <tr><td>Figure-8 follow-through</td><td>75â80%</td><td>Higher efficiency; harder to untie after heavy load</td></tr>
+        <tr><td>Alpine butterfly</td><td>70â75%</td><td>Mid-line loop; excellent under multi-directional load</td></tr>
+        <tr><td>Clove hitch</td><td>60â70%</td><td>Adjustable; not for life-load end-line anchor</td></tr>
+        <tr><td>Timber hitch</td><td>65â70%</td><td>Self-locking on logs; not for climbing systems</td></tr>
+      </table>
+      <p style="margin-top:12px; font-size:13px; color:#666;">Note: Knot efficiency figures are approximate and vary with rope material, diameter, and condition. Always refer to manufacturer WLL ratings and ANSI Z133 for work-specific load calculations. Never exceed rope or hardware working load limits.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Uses -->
+  <div class="section" id="section-uses">
+    <div class="card">
+      <div class="card-title">â When to Use the Bowline</div>
+      <p>The bowline is a foundational arborist knot valued for its predictability, ease of release after loading, and wide application range. Proper use means matching the bowline to tasks where its properties align with the load requirements.</p>
+
+      <div class="good-box">
+        <div class="label">â Appropriate Uses</div>
+        <ul>
+          <li><strong>Throwline retrieval loops</strong> â bowline at the end of the throwline for weight attachment</li>
+          <li><strong>Temporary anchor points</strong> â securing a rope to a fixed anchor (rock, trunk, bollard) where a fixed loop is needed</li>
+          <li><strong>Securing loads on the truck</strong> â when a fixed non-slip loop on a rope is needed for lashing</li>
+          <li><strong>Attaching ropes to rigging hardware</strong> â when a carabiner or shackle is not available and a fixed loop connection is needed</li>
+          <li><strong>Rescue lowering systems</strong> â where a fixed loop seat or attachment point is constructed from rope</li>
+          <li><strong>General utility</strong> â anywhere a reliable, non-slip, easily released fixed loop is needed and no dynamic or cyclic load is expected</li>
+        </ul>
+      </div>
+
+      <div class="field-note">
+        <div class="label">ð Field Note â Okanagan Context</div>
+        <p>In Okanagan tree work, the bowline shows up most often in two places: on throwlines (looped around the weight) and as a quick temporary anchor when you're doing a ground-supported rigging setup and need to secure a redirect. It's the first knot a new crew member should be able to tie with eyes closed, in gloves, one-handed â because those are the conditions you'll be in when you need it. Practice the one-handed bowline as a rainy-day tailgate drill.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: When NOT to use -->
+  <div class="section" id="section-danger">
+    <div class="card">
+      <div class="card-title">ð« When NOT to Use the Bowline</div>
+
+      <div class="critical-box">
+        <div class="label">ð« Do Not Use the Bowline For:</div>
+        <ul>
+          <li><strong>Primary climbing system connection (harness tie-in)</strong> â The bowline is not a rated, certified climbing system connection method. Use a figure-8 follow-through or a rated connector per ANSI Z133. The bowline lacks the positive locking of a threaded sleeve carabiner or sewn connection.</li>
+          <li><strong>Any application subject to cyclic or oscillating loads</strong> â The bowline can progressively loosen and invert under repeated load/unload cycles. A backed bowline under steady load is acceptable; a bowline on a rope that is repeatedly jerked or bounced can work loose over time.</li>
+          <li><strong>As a friction hitch</strong> â The bowline does not grip the standing line and will not function as a friction hitch for positioning or descent. Use a Prusik, VT hitch, or Blake's hitch for those applications.</li>
+          <li><strong>In shock-load scenarios without a backup</strong> â An unbacked bowline under sudden shock load can fail or invert. Always back it.</li>
+          <li><strong>When an adjustable loop is needed</strong> â The bowline loop is fixed. Use a truckers hitch or clove hitch where adjustability is required.</li>
+        </ul>
+      </div>
+
+      <p><strong>Per ANSI Z133 Section 5.3:</strong> All knots used in climbing systems must be the correct type for the application and must be secured (backed). The standard does not prohibit specific knots by name but requires that the knot be appropriate for the intended load and application â meaning it is the arborist's responsibility to understand knot limitations and match them to the task.</p>
+
+      <div class="field-note">
+        <div class="label">ð Field Note â The Honest Truth About the Bowline</div>
+        <p>The bowline's reputation is bigger than its rating. It's one of the most recognized knots in the world â which means it gets used in situations it shouldn't be. In arboriculture, the figure-8 follow-through is the go-to for life-safety end-of-line connections because it's harder to tie wrong and easier to visually inspect. The bowline is excellent for what it's excellent for. Know the difference before you're 25 metres up.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Backing It Up -->
+  <div class="section" id="section-backup">
+    <div class="card">
+      <div class="card-title">ð Securing the Bowline â ANSI Z133 Compliance</div>
+      <p>ANSI Z133 (Safe Work Practices for Arborists) requires that <strong>all knots used in climbing systems be secured</strong>. For the bowline, the standard backup is a <strong>half-hitch or overhand knot</strong> tied with the working tail around the loop leg (the leg of the loop parallel to the standing part).</p>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+          <!-- Completed bowline -->
+          <path d="M 40,100 L 200,100" stroke="#3d2b0e" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <ellipse cx="240" cy="100" rx="35" ry="45" stroke="#7a5c2e" stroke-width="6" fill="none"/>
+          <!-- Tail going down -->
+          <path d="M 240,145 Q 260,160 270,155 Q 280,150 285,145 Q 295,135 275,130 Q 260,126 255,135 Q 252,142 260,148" stroke="#c0392b" stroke-width="5" fill="none"/>
+          <path d="M 260,148 L 260,185" stroke="#c0392b" stroke-width="5" fill="none"/>
+          <!-- Labels -->
+          <text x="120" y="92" font-size="13" font-weight="700" fill="#3d2b0e">Standing part</text>
+          <text x="200" y="30" font-size="13" font-weight="700" fill="#7a5c2e">Fixed loop</text>
+          <text x="300" y="150" font-size="13" font-weight="700" fill="#c0392b">Half-hitch backup</text>
+          <text x="300" y="167" font-size="11" fill="#c0392b">â tied with the tail</text>
+          <!-- Arrow -->
+          <line x1="298" y1="147" x2="275" y2="140" stroke="#c0392b" stroke-width="1.5" marker-end="url(#a2)"/>
+          <defs>
+            <marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#c0392b"/>
+            </marker>
+          </defs>
+          <!-- Minimum tail label -->
+          <line x1="265" y1="155" x2="265" y2="185" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="285" y="172" font-size="11" fill="#888">min. 15cm tail</text>
+        </svg>
+        <div class="diagram-caption">The half-hitch backup is tied with the working tail around the loop leg of the bowline. Tail must be at least 15cm after the backup.</div>
+      </div>
+
+      <ul class="steps">
+        <li><div class="step-text"><strong>Tie and dress the bowline.</strong> Fully dress the knot â pull all four strands to seat it properly before adding the backup.</div></li>
+        <li><div class="step-text"><strong>Identify the loop leg parallel to the standing part.</strong> This is the leg the backup goes around â not the working tail itself, and not the standing part.</div></li>
+        <li><div class="step-text"><strong>Tie a half-hitch or overhand with the working tail</strong> around the parallel loop leg. The tail wraps around and through the resulting loop.</div></li>
+        <li><div class="step-text"><strong>Snug the backup tight against the bowline body.</strong> No gap between the backup and the main knot â this is what prevents inversion.</div></li>
+        <li><div class="step-text"><strong>Check tail length â minimum 15cm.</strong> If the tail is shorter, the knot is undersized for the application or was tied with insufficient rope end.</div></li>
+      </ul>
+
+      <div class="good-box">
+        <div class="label">â Visual Inspection Checklist</div>
+        <ul>
+          <li>Knot is fully dressed â no loose strands, no gaps</li>
+          <li>Loop size is as intended and fixed</li>
+          <li>Backup is tied and snugged against the knot body</li>
+          <li>Working tail is minimum 15cm past the backup</li>
+          <li>No rope damage at the knot (cuts, abrasion, heat damage, chemical contact)</li>
+          <li>Load direction is along the standing part axis</li>
+        </ul>
+      </div>
+
+      <div class="field-note">
+        <div class="label">ð Field Note â Okanagan Context</div>
+        <p>At the start of every job, the lead climber's knots get a visual check â not because we don't trust each other, but because fresh eyes catch things. Two-person knot checks are standard professional practice (ISA BMP Rigging). Make it a habit, not an insult. The person checking your knot is doing you a favour, and vice versa. In WorkSafeBC's OHS Regulation Part 26, the requirement for safe work procedures in tree work explicitly includes equipment inspection â a backed, inspected knot is part of that chain.</p>
+      </div>
+    </div>
+
+    <div class="isa-tag">
+      <strong>ð ISA Exam Domain:</strong> Safe Work Practices (28%) Â· <strong>Sources:</strong> ANSI Z133 Safe Work Practices for Arborists (current edition); ISA Best Management Practices: Rigging; BC WorkSafeBC OHS Regulation Part 26
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
