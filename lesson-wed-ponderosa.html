@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wednesday â Tree Profile: Ponderosa Pine</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f0eb; color: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; }
+
+  .header { background: #2c4a1e; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .header-logo { font-size: 22px; }
+  .header-title { font-size: 18px; font-weight: 700; }
+  .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .day-badge { background: #4a7a2e; color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; margin-left: auto; }
+
+  .layout { display: flex; flex: 1; min-height: 0; }
+
+  /* Sidebar */
+  .sidebar { width: 200px; background: #2c4a1e; flex-shrink: 0; padding: 20px 0; }
+  .sidebar-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.45); padding: 0 16px 8px; }
+  .sidebar-item { display: block; width: 100%; background: none; border: none; text-align: left; padding: 10px 16px; font-size: 13px; color: rgba(255,255,255,0.75); cursor: pointer; font-family: inherit; border-left: 3px solid transparent; transition: all 0.15s; }
+  .sidebar-item:hover { color: white; background: rgba(255,255,255,0.08); }
+  .sidebar-item.active { color: white; background: rgba(255,255,255,0.12); border-left-color: #8bc34a; font-weight: 600; }
+  .sidebar-icon { margin-right: 8px; }
+
+  /* Main content */
+  .main { flex: 1; overflow-y: auto; padding: 28px 28px 40px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-title { font-size: 22px; font-weight: 800; color: #2c4a1e; margin-bottom: 4px; }
+  .section-sub { font-size: 14px; color: #5a7a3a; margin-bottom: 24px; font-style: italic; }
+
+  .card { background: white; border-radius: 10px; padding: 20px 22px; border: 1px solid #d8cfc4; margin-bottom: 16px; }
+  .card-title { font-size: 14px; font-weight: 700; color: #2c4a1e; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e8f0e0; }
+
+  .spec-row { display: flex; gap: 0; border-bottom: 1px solid #f0ebe4; padding: 8px 0; align-items: flex-start; }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-label { font-size: 12px; font-weight: 700; color: #5a7a3a; text-transform: uppercase; letter-spacing: 0.5px; width: 140px; flex-shrink: 0; padding-top: 1px; }
+  .spec-value { font-size: 14px; color: #2a2a2a; line-height: 1.5; }
+
+  .tag { display: inline-block; background: #e8f4e0; color: #2c4a1e; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin: 2px; }
+  .tag.red { background: #fde8e8; color: #8b1a1a; }
+  .tag.amber { background: #fef3e0; color: #7a4a0a; }
+  .tag.blue { background: #e0eef8; color: #1a3a6e; }
+
+  p { font-size: 14px; line-height: 1.75; color: #2a2a2a; margin-bottom: 12px; }
+  ul { padding-left: 20px; margin-bottom: 12px; }
+  li { font-size: 14px; line-height: 1.7; color: #2a2a2a; margin-bottom: 4px; }
+  strong { color: #1a1a1a; }
+
+  .pest-item { border-left: 4px solid #dc3545; padding: 12px 14px; background: #fdf4f4; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .pest-item h4 { font-size: 14px; font-weight: 700; color: #8b1a1a; margin-bottom: 4px; }
+  .pest-item p { font-size: 13px; margin: 0; color: #4a2a2a; }
+  .pest-item .severity { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 4px; margin-bottom: 6px; }
+  .severity.high { background: #dc3545; color: white; }
+  .severity.mod { background: #f5a623; color: white; }
+  .severity.low { background: #28a745; color: white; }
+
+  .disease-item { border-left: 4px solid #7a4a0a; padding: 12px 14px; background: #fdf8f0; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .disease-item h4 { font-size: 14px; font-weight: 700; color: #7a4a0a; margin-bottom: 4px; }
+  .disease-item p { font-size: 13px; margin: 0; color: #4a3a1a; }
+
+  .arborist-tip { background: #e8f4e0; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; border-left: 4px solid #2c4a1e; }
+  .arborist-tip .tip-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #2c4a1e; margin-bottom: 6px; }
+  .arborist-tip p { font-size: 13px; color: #1a3a1a; margin: 0; line-height: 1.6; }
+
+  .field-note { background: #fff8e1; border-left: 4px solid #f5a623; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 16px; }
+  .field-note .fn-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #b8760a; margin-bottom: 6px; }
+  .field-note p { font-size: 13px; color: #4a3a0a; margin: 0; line-height: 1.6; }
+
+  .isa-tag { background: white; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #5a7a3a; border: 1px solid #d0e0c0; margin-top: 16px; line-height: 1.6; }
+  .isa-tag strong { color: #2c4a1e; }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 160px; }
+    .main { padding: 20px 16px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">ð³</div>
+  <div>
+    <div class="header-title">Microbe Tree Training</div>
+    <div class="header-sub">West Kelowna, BC Â· Okanagan Interior</div>
+  </div>
+  <div class="day-badge">Wednesday Â· Week 1</div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-label">Tree Profile</div>
+    <button class="sidebar-item active" data-section="identity"><span class="sidebar-icon">ð</span>Identity</button>
+    <button class="sidebar-item" data-section="origin"><span class="sidebar-icon">ð</span>Origin</button>
+    <button class="sidebar-item" data-section="biology"><span class="sidebar-icon">ð§</span>What It Wants</button>
+    <button class="sidebar-item" data-section="pests"><span class="sidebar-icon">ðª²</span>Pest Pressures</button>
+    <button class="sidebar-item" data-section="diseases"><span class="sidebar-icon">ð¦ </span>Disease Pressures</button>
+    <button class="sidebar-item" data-section="arborist"><span class="sidebar-icon">ð§</span>Arborist Notes</button>
+  </div>
+
+  <div class="main">
+
+    <!-- IDENTITY -->
+    <div class="section active" id="section-identity">
+      <div class="section-title">Ponderosa Pine</div>
+      <div class="section-sub">Pinus ponderosa Douglas ex C.Lawson â Interior variety: var. ponderosa</div>
+
+      <div class="card">
+        <div class="card-title">Taxonomy & Classification</div>
+        <div class="spec-row"><div class="spec-label">Family</div><div class="spec-value">Pinaceae</div></div>
+        <div class="spec-row"><div class="spec-label">Genus / Species</div><div class="spec-value"><em>Pinus ponderosa</em> Douglas ex C.Lawson</div></div>
+        <div class="spec-row"><div class="spec-label">BC Variety</div><div class="spec-value"><em>var. ponderosa</em> (Interior) â also called Interior Ponderosa</div></div>
+        <div class="spec-row"><div class="spec-label">Common Names</div><div class="spec-value">Ponderosa Pine, Western Yellow Pine, Bull Pine</div></div>
+        <div class="spec-row"><div class="spec-label">Needles</div><div class="spec-value">In fascicles of <strong>3</strong> (occasionally 2 on same tree); 12â25 cm long; stiff, yellow-green; fascicle sheath persistent</div></div>
+        <div class="spec-row"><div class="spec-label">Cones</div><div class="spec-value">7â15 cm long; egg-shaped; scales armed with sharp, outward-pointing prickle (umbo); shed scales after seed dispersal</div></div>
+        <div class="spec-row"><div class="spec-label">Bark</div><div class="spec-value">Young trees: dark, furrowed, grey-brown. Mature trees: thick, orange-yellow to cinnamon-red, plated in large irregular puzzle-piece scales. Distinctive vanilla/butterscotch scent when warm.</div></div>
+        <div class="spec-row"><div class="spec-label">Height</div><div class="spec-value">Typically 25â40 m in BC; can exceed 50 m on good sites. Straight, columnar form; open crown in older trees.</div></div>
+        <div class="spec-row"><div class="spec-label">Diameter (DBH)</div><div class="spec-value">Commonly 60â100 cm at maturity; old-growth specimens can exceed 150 cm</div></div>
+        <div class="spec-row"><div class="spec-label">Lifespan</div><div class="spec-value">300â500 years; some specimens documented at 600+ years</div></div>
+        <div class="spec-row"><div class="spec-label">Root System</div><div class="spec-value">Deep taproot in youth; lateral roots spread wide in maturity. Roots penetrate fractured bedrock on dry slopes.</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Quick ID in the Field</div>
+        <ul>
+          <li><strong>3 needles per bundle</strong> â definitive for BC's interior ponderosa (lodgepole is 2, western white pine is 5)</li>
+          <li><strong>Orange puzzle-bark</strong> on mature trees â unique and unmistakable</li>
+          <li><strong>Smell the bark</strong> â vanilla/butterscotch scent in warm sun is characteristic</li>
+          <li><strong>Prickly cones</strong> â those umbo prickles will stick your hand</li>
+          <li><strong>Tall, open crown</strong> â self-prunes lower limbs on forest sites; urban trees retain low branches</li>
+          <li><strong>Yellow-green needles</strong> â darker green than lodgepole; yellowish cast distinguishes it</li>
+        </ul>
+        <div class="field-note">
+          <div class="fn-label">ð Field Note</div>
+          <p>The 3-needle vs 2-needle test is your fastest field ID. Grab a bundle at the base â if three needles slide out together in one fascicle, you have ponderosa. In the Okanagan valley from Oliver to Vernon, ponderosa is the dominant pine on dry slopes below 1,200m. Above that, you start seeing lodgepole take over.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section" id="section-origin">
+      <div class="section-title">Origin & Natural Range</div>
+      <div class="section-sub">Native to western North America â dne of the most widely distributed pines on the continent</div>
+
+      <div class="card">
+        <div class="card-title">Native Range</div>
+        <p>Ponderosa pine has the largest range of any pine in North America, extending from southern British Columbia and Alberta south through the Rocky Mountains to northern Mexico, and west through the Coast Ranges of Oregon and California. Four varieties are recognized; <strong><em>var. ponderosa</em></strong> covers the interior BC population.</p>
+        <p>In British Columbia, ponderosa pine is near its northern range limit. It occurs primarily in the <strong>Thompson-Okanagan region</strong> â in the Okanagan, Similkameen, Thompson, and Nicola valleys â where the semi-arid climate, low elevation, and thin soils over bedrock create the dry open woodlands it evolved for. It is BC's largest native pine and one of the defining species of the province's Bunchgrass and Ponderosa Pine biogeoclimatic zones (BEC zones BGxh1 and PPxh1).</p>
+
+        <div class="spec-row"><div class="spec-label">BEC Zone</div><div class="spec-value">Bunchgrass (BGxh), Ponderosa Pine (PPxh), lower Interior Douglas-fir (IDFxh)</div></div>
+        <div class="spec-row"><div class="spec-label">BC Distribution</div><div class="spec-value">South Okanagan, Similkameen, lower Thompson, Nicola, and Arrow Lakes</div></div>
+        <div class="spec-row"><div class="spec-label">Elevation range (BC)</div><div class="spec-value">280â1,050 m; peak occurrence 350â900 m on south-facing slopes</div></div>
+        <div class="spec-row"><div class="spec-label">Associated species</div><div class="spec-value">Antelope-brush (<em>Purshia tridentata</em>), bluebunch wheatgrass (<em>Pseudoroegneria spicata</em>), Douglas-fir (<em>Pseudotsuga menziesii</em>) at upper elevations, big sagebrush, rabbitbrush</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Fire Ecology â A Fire-Adapted Species</div>
+        <p>Ponderosa pine evolved with <strong>frequent, low-intensity surface fire</strong> â naturally ignited by lightning on an average 4â12 year return interval in the Okanagan BEC zones. This fire regime is fundamental to understanding the species:</p>
+        <ul>
+          <li><strong>Thick bark</strong> (up to 8 cm on mature trees) insulates the cambium from surface fire heat â mature trees are effectively fire-resistant</li>
+          <li><strong>Self-pruning lower branches</strong> reduces ladder fuels that would carry fire into the crown</li>
+          <li><strong>Juveniles are fire-sensitive</strong> â young ponderosa (<20 cm DBH) can be killed by even low-intensity fire; the species survives through rapid bark thickening with age</li>
+          <li><strong>Open stand structure</strong> was maintained by fire â today's denser, unburned stands are atypical and increase bark beetle risk</li>
+        </ul>
+        <div class="field-note">
+          <div class="fn-label">ð Field Note â Okanagan Context</div>
+          <p>A century of fire suppression in the Okanagan has produced unnaturally dense ponderosa stands â in many areas, 400â600% of the historical stem density. This overcrowding increases competition for water on already-dry sites, which suppresses resin production (Wall 1 of CODIT), which is exactly what mountain pine beetle exploits. When you're assessing a ponderosa in a dense stand showing beetle pressure, the fire history â or rather, the fire absence â is part of the clinical picture.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section" id="section-biology">
+      <div class="section-title">What It Wants</div>
+      <div class="section-sub">Cultural requirements, site tolerances, and stress thresholds</div>
+
+      <div class="card">
+        <div class="card-title">Climate & Site Preferences</div>
+        <div class="spec-row"><div class="spec-label">Climate</div><div class="spec-value">Semi-arid, continental. Tolerates hot, dry summers and cold winters. Annual precipitation as low as 250â300 mm.</div></div>
+        <div class="spec-row"><div class="spec-label">Drought tolerance</div><div class="spec-value">Very high for an established tree â deep roots, efficient stomatal control, and high xylem tension tolerance. Drought stress still suppresses resin and increases beetle vulnerability.</div></div>
+        <div class="spec-row"><div class="spec-label">Soil</div><div class="spec-value">Adapted to thin, coarse, well-drained soils â sandy loam, gravelly loam, even fractured bedrock. Cannot tolerate waterlogged soils (root rot follows).</div></div>
+        <div class="spec-row"><div class="spec-label">Soil pH</div><div class="spec-value">Moderately tolerant of alkaline soils (pH 6.5â8.0); prefers slightly acidic to neutral. Okanagan soils are often pH 7.5â8.5 â manageable but at the upper tolerance range.</div></div>
+        <div class="spec-row"><div class="spec-label">Light</div><div class="spec-value">Very high light requirement â full sun. Cannot establish or persist under shade. Plant in open exposures.</div></div>
+        <div class="spec-row"><div class="spec-label">Root competition</div><div class="spec-value">Performs poorly under sod competition when young; mulched planting zones significantly improve establishment</div></div>
+        <div class="spec-row"><div class="spec-label">Salt tolerance</div><div class="spec-value">Low-moderate. Road salt and irrigation water mineral accumulation can cause foliage scorch</div></div>
+        <div class="spec-row"><div class="spec-label">Wind</div><div class="spec-value">Generally wind-firm once established due to deep taproot; shallow-rooted boulevard specimens with soil compaction are more susceptible</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">What Stresses Ponderosa Pine</div>
+        <ul>
+          <li><strong>Drought (cumulative):</strong> Multi-year droughts reduce resin production. Drought stress index is the single best predictor of beetle susceptibility.</li>
+          <li><strong>Soil compaction:</strong> Reduces rooting depth and water access. Urban and roadside ponderosa often have severely compacted root zones.</li>
+          <li><strong>Root injury (construction, trenching):</strong> Compromises the vascular system and opens infection courts for Armillaria root disease.</li>
+          <li><strong>Overwatering:</strong> Paradoxically harmful â wet conditions in summer favour Phytophthora and Armillaria. This is an arid-adapted tree.</li>
+          <li><strong>Poor pruning:</strong> Large wounds on ponderosa heal slowly. Flush cuts and excessive crown removal significantly stress the tree.</li>
+          <li><strong>Stand overcrowding:</strong> Competition for water on dry sites creates chronic stress â the beetle outbreak fuel source.</li>
+        </ul>
+        <div class="field-note">
+          <div class="fn-label">ð Field Note â Okanagan Urban Context</div>
+          <p>Ponderosa planted in Okanagan residential landscapes often sit inside irrigated lawns â which is backwards from what they want. Frequent shallow irrigation trains roots upward into the lawn zone instead of deep, and summer-wet soils on an already-alkaline substrate sets up conditions for root disease. The best managed ponderosa in urban settings are usually in xeriscape zones with a wide mulch ring, zero turf, and infrequent deep irrigation or no supplemental water at all. When clients ask why their mature ponderosa looks thin, look at the watering regime first.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section" id="section-pests">
+      <div class="section-title">Pest Pressures</div>
+      <div class="section-sub">Insect pests with confirmed presence in the Okanagan region</div>
+
+      <div class="pest-item">
+        <div class="severity high">HIGH SEVERITY â Lethal</div>
+        <h4>Mountain Pine Beetle (Dendroctonus ponderosae Hopkins)</h4>
+        <p><strong>Signs:</strong> Pitch tubes (white/yellow resin masses) on bark; reddish-brown boring dust in bark crevices; foliage yellowing to red crown the following season; blue-stain fungus in sapwood. <strong>Flight period:</strong> JulyâAugust (Okanagan). <strong>Status in BC Interior:</strong> Endemic in ponderosa; periodic outbreak populations have caused widespread mortality throughout the Thompson-Okanagan. A drought-stressed tree that cannot produce adequate resin is overwhelmingly the most common victim. <em>(See Thursday's lesson for full MPB coverage.)</em></p>
+      </div>
+
+      <div class="pest-item">
+        <div class="severity mod">MODERATE â Weakening</div>
+        <h4>Western Pine Beetle (Dendroctonus brevicomis LeConte)</h4>
+        <p><strong>Signs:</strong> Similar to MPB â pitch tubes, boring dust; attacks in the mid-crown region on large-diameter trees (&gt;35 cm DBH). More common in older, mature ponderosa. Works synergistically with other bark beetles; rarely kills on its own without contributing to cumulative stress.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="severity mod">MODERATE â Weakening</div>
+        <h4>Ips Bark Beetles (Ips spp.)</h4>
+        <p><strong>Signs:</strong> Small, round to elliptical entrance holes; characteristic "Y" or "H"-shaped egg galleries under bark; attack newly felled material, logging debris, and drought-stressed trees. <em>Ips pini</em> and <em>I. latidens</em> are the primary Okanagan species. Opportunists â presence indicates stressed or damaged wood.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="severity low">LOW â Aesthetic / Episodic</div>
+        <h4>Pine Engraver (Ips pini Say)</h4>
+        <p>Primary gallery pattern: Y-shaped with 2â3 arms radiating from central nuptial chamber. Common in slash and storm-damaged material. Can move into stressed standing trees; rarely causes significant mortality in otherwise healthy ponderosa.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="severity low">LOW â Episodic</div>
+        <h4>Pine Needle Scale (Chionaspis pinifoliae Fitch)</h4>
+        <p><strong>Signs:</strong> White, elongated, oyster-shell scales on needles, giving foliage a "whitened" appearance. Heavy infestations cause premature needle drop and aesthetic damage. Populations boom in hot, dry conditions â relevant in Okanagan summers.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">ð Field Note â Identifying Beetle Attack</div>
+        <p>The fastest field check for active bark beetle activity on a ponderosa: look for fresh pitch tubes â the white, crystalline, or amber resin masses pushed out by the tree in response to boring. Fresh tubes are wet and sticky; old tubes are chalky and dry. If you see fresh tubes AND reddish-brown boring dust, the tree is under active attack. If the crown is still green, there may be time for the tree to pitch out the beetles if it's otherwise healthy. If the crown is yellowing, the beetle has won.</p>
+      </div>
+    </div>
+
+    <!-- DISEASES -->
+    <div class="section" id="section-diseases">
+      <div class="section-title">Disease Pressures</div>
+      <div class="section-sub">Fungal, bacterial, and abiotic conditions affecting ponderosa pine in the Okanagan</div>
+
+      <div class="disease-item">
+        <div class="severity high">HIGH SEVERITY</div>
+        <h4>Armillaria Root Disease (Armillaria ostoyae (Romagn.) Herink)</h4>
+        <p><strong>Causal agent:</strong> <em>Armillaria ostoyae</em> â the most virulent Armillaria species in BC's interior forests. <strong>Signs:</strong> Resinosis at root collar, white mycelial fan tissue under bark at root collar, black rhizomorphs ("bootlace fungus") on or near roots, honey-coloured fruiting bodies in autumn, crown decline. <strong>Mode:</strong> Spreads via root-to-root contact and rhizomorphs through soil. Infects through root wounds and natural contacts. <strong>Okanagan relevance:</strong> A.&nbsp;ostoyae is established in Okanagan forest soils â construction disturbance and root injury increase infection risk significantly. Trees under any form of stress (drought, compaction, wounding) are most vulnerable.</p>
+      </div>
+
+      <div class="disease-item">
+        <div class="severity mod">MODERATE</div>
+        <h4>Dothistroma Needle Blight (Dothistroma septosporum)</h4>
+        <p><strong>Signs:</strong> Tan-to-brown bands or spots with yellow halos on needles; premature defoliation of lower and inner crown; reddish-brown resinous lesions on needles. Needles die from the tip back to the tan band, then drop. <strong>Conditions:</strong> Wet spring conditions favour infection (spores released during wet weather in spring and early summer). In the typically dry Okanagan, significant outbreaks are less common than in wetter zones â but irrigated urban trees or trees in moist pockets can develop severe infections.</p>
+      </div>
+
+      <div class="disease-item">
+        <div class="severity mod">MODERATE â Stand Level</div>
+        <h4>Western Gall Rust (Endocronartium harknessii (J.P. Moore) Y. Hirats.)</h4>
+        <p><strong>Signs:</strong> Globose, woody galls on branches and occasionally stems; orange-yellow powdery spore masses on galls in spring. <strong>Mode:</strong> Autoecious (does not require alternate host) â uncommon among rusts. Wind-dispersed basidiospores infect needles, then grow into twigs and stems. <strong>Impact:</strong> Branch dieback, structural weakness at gall sites, occasionally stem girdling in young trees. Common in Okanagan ponderosa â look for round branch galls 5â20 cm diameter when pruning.</p>
+      </div>
+
+      <div class="disease-item">
+        <div class="severity low">LOW â Abiotic</div>
+        <h4>Winter Desiccation / Freezing Injury</h4>
+        <p>Cold, dry Okanagan winters with little snow cover can cause needle desiccation on ponderosa with shallow root zones â most commonly in younger urban plantings. Symptoms: Red-brown needle tips in spring that may recover partially. Distinguish from Dothistroma (which has tan bands mid-needle) by the pattern â desiccation shows browning from the tip only, no discrete band.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">ð Field Note â Root Collar Inspection</div>
+        <p>For any Okanagan ponderosa showing crown decline, the first thing you check is the root collar â scrape away any mulch or soil piled against the base and look for resinosis (weeping pitch at the bark base), darkened or girdled bark, and the characteristic white mycelial fans of Armillaria between bark and wood. This takes two minutes and should be standard on any PHC visit for a declining pine. A tree with Armillaria and bark beetle pressure simultaneously is typically not salvageable â that's a risk assessment conversation, not a treatment plan.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section" id="section-arborist">
+      <div class="section-title">Arborist Notes</div>
+      <div class="section-sub">Pruning, PHC, risk assessment, and client conversation guidance</div>
+
+      <div class="arborist-tip">
+        <div class="tip-label">âï¸ Pruning Timing & Approach</div>
+        <p><strong>Best window: Late fall through early spring (OctoberâMarch)</strong> â when beetle flight is over and resin flow is reduced. Avoid pruning during the JulyâAugust MPB flight window: fresh wounds and resin volatiles attract bark beetles. ANSI A300 Part 1 pruning standards apply; make cuts just outside the branch collar, never flush. Large removal wounds on ponderosa close slowly â minimize unnecessary large cuts.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="tip-label">ð± PHC Approach</div>
+        <p>The single most impactful PHC intervention for Okanagan ponderosa is <strong>soil moisture management</strong>: deep, infrequent irrigation during drought, wide mulch rings (10â15 cm depth, pulled back from the root collar), and elimination of competing turf. Fertilization is rarely the limiting factor â in alkaline Okanagan soils, check micronutrient availability (particularly iron and manganese) before applying nitrogen. Prophylactic insecticide applications (emamectin benzoate injection) for beetle protection are available for high-value trees â most effective when applied before flight season on trees showing early stress signs.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="tip-label">â ï¸ Risk Assessment Notes</div>
+        <p>Ponderosa pine is a <strong>strong compartmentalizer</strong> in healthy condition â moderate-sized pruning wounds can be well-contained. However, large-diameter wounds, flush cuts, and root disturbance combined with drought stress can rapidly progress to structural problems. Key failure points in Okanagan urban ponderosa: included bark at major codominant stems, root plate compromised by grade changes or soil import, and cavity formation at old flush cut sites. Probe suspicious trunk wounds with a mallet â hollow ring deserves further assessment.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="tip-label">ð¡ Strata & Boulevard Suitability</div>
+        <p>Ponderosa pine is <strong>appropriate for large-property residential, acreage, and parkland plantings</strong> with adequate root space and full sun. It is <strong>not appropriate for small urban lots, narrow boulevards, or irrigated lawn settings</strong> â the root space requirements, drought preference, and eventual size (35+ m) make it impractical. As a boulevard tree, root zone conflicts with pavement, utilities, and irrigation create chronic stress that accelerates decline. Existing mature boulevard ponderosa should be monitored and managed, not replaced with same-species plants.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="tip-label">ð¬ Client Conversation Points</div>
+        <ul style="padding-left:16px; margin-top:6px;">
+          <li>The orange bark is not disease â it's a feature. It means the tree is mature and healthy.</li>
+          <li>Those pitch tubes on the bark are the tree defending itself â not necessarily a sign the tree is lost.</li>
+          <li>If the needles have turned red and the crown is going, the beetles have already won â it's a risk assessment conversation now, not a treatment conversation.</li>
+          <li>Ponderosa pine prefers dry â don't let the lawn irrigation system run under the drip line all summer.</li>
+          <li>The vanilla smell from the bark in summer sun is real. Worth telling clients â they're often surprised.</li>
+        </ul>
+      </div>
+
+      <div class="isa-tag">
+        <strong>ð ISA Exam Domain:</strong> Tree Biology (11%), Tree Risk Assessment (11%), Tree Selection & Establishment (7%) Â· <strong>Sources:</strong> BC Ministry of Forests, Lands & Natural Resource Operations pest publications; ISA Certification Study Guide 4th Ed.; Meidinger &amp; Pojar (1991) <em>Ecosystems of BC</em>; ANSI A300 Part 1 Pruning
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+document.querySelectorAll('.sidebar-item').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var sectionId = 'section-' + this.getAttribute('data-section');
+    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.sidebar-item').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById(sectionId).classList.add('active');
+    btn.classList.add('active');
+    document.querySelector('.main').scrollTop = 0;
+  });
+});
+</script>
+
+</body>
+</html>
