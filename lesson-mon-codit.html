@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monday â Tree Biology: CODIT</title>
+<title>Monday — Tree Biology: CODIT</title>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,6 +16,10 @@
   .day-badge { background: #2d7a4a; color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; margin-left: auto; }
 
   .container { max-width: 760px; margin: 0 auto; padding: 24px 16px; }
+
+  /* Home screen */
+  .home-screen { display: block; }
+  .quiz-screen { display: none; }
 
   .week-title { font-size: 24px; font-weight: 800; color: #1e4d2b; margin-bottom: 4px; }
   .week-subtitle { font-size: 15px; color: #4a6e4a; margin-bottom: 24px; }
@@ -36,12 +40,10 @@
   .codit-note { margin-top: 14px; padding: 10px 14px; background: #f0f7f0; border-radius: 6px; font-size: 13px; color: #2d5a2d; line-height: 1.5; }
   .codit-note strong { color: #1e4d2b; }
 
-  .start-btn { display: block; width: 100%; background: #1e4d2b; color: white; border: none; border-radius: 10px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; margin-top: 8px; transition: background 0.2s; font-family: inherit; }
+  .start-btn { display: block; width: 100%; background: #1e4d2b; color: white; border: none; border-radius: 10px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; margin-top: 8px; transition: background 0.2s; }
   .start-btn:hover { background: #2d7a4a; }
 
-  #homeScreen { display: block; }
-  #quizScreen { display: none; }
-
+  /* Quiz */
   .progress-bar { background: #dde8dd; border-radius: 8px; height: 6px; margin-bottom: 24px; overflow: hidden; }
   .progress-fill { background: #1e4d2b; height: 100%; border-radius: 8px; transition: width 0.4s; }
   .q-counter { font-size: 12px; color: #4a6e4a; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -51,9 +53,10 @@
 
   .options { display: flex; flex-direction: column; gap: 10px; }
   .option-btn { background: #f4f7f4; border: 2px solid #c8dbc8; border-radius: 8px; padding: 12px 16px; text-align: left; font-size: 14px; cursor: pointer; color: #1a2e1a; line-height: 1.4; transition: all 0.15s; font-family: inherit; }
-  .option-btn:hover:not([disabled]) { border-color: #1e4d2b; background: #e8f2e8; }
+  .option-btn:hover:not(:disabled) { border-color: #1e4d2b; background: #e8f2e8; }
   .option-btn.correct { border-color: #28a745; background: #d4edda; color: #155724; font-weight: 600; }
   .option-btn.wrong { border-color: #dc3545; background: #f8d7da; color: #721c24; }
+  .option-btn:disabled { cursor: default; }
 
   .lesson-panel { display: none; background: white; border-radius: 12px; border: 2px solid #1e4d2b; overflow: hidden; margin-bottom: 16px; }
   .lesson-panel.visible { display: block; }
@@ -85,23 +88,23 @@
 <body>
 
 <div class="header">
-  <div class="header-logo">ð¿</div>
+  <div class="header-logo">🌿</div>
   <div>
     <div class="header-title">Microbe Tree Training</div>
-    <div class="header-sub">West Kelowna, BC Â· Okanagan Interior</div>
+    <div class="header-sub">West Kelowna, BC · Okanagan Interior</div>
   </div>
-  <div class="day-badge">Monday Â· Week 1</div>
+  <div class="day-badge">Monday · Week 1</div>
 </div>
 
 <div class="container">
 
   <!-- HOME SCREEN -->
-  <div id="homeScreen">
+  <div class="home-screen" id="homeScreen">
     <div class="week-title">Tree Biology</div>
-    <div class="week-subtitle">Week 1 Â· CODIT â Compartmentalization of Decay in Trees</div>
+    <div class="week-subtitle">Week 1 · CODIT — Compartmentalization of Decay in Trees</div>
 
     <div class="ref-card">
-      <h3>ð Quick Reference â Shigo's CODIT Model</h3>
+      <h3>📋 Quick Reference — Shigo's CODIT Model</h3>
       <div class="walls-grid">
         <div class="wall-card w1">
           <div class="wall-label">Wall 1</div>
@@ -120,20 +123,20 @@
         </div>
         <div class="wall-card w4">
           <div class="wall-label">Wall 4</div>
-          <div class="wall-name">Barrier Zone â­</div>
-          <div class="wall-desc">Formed AFTER wounding. Separates old wood from new. Strongest wall â the real defense.</div>
+          <div class="wall-name">Barrier Zone ⭐</div>
+          <div class="wall-desc">Formed AFTER wounding. Separates old wood from new. Strongest wall — the real defense.</div>
         </div>
       </div>
       <div class="codit-note">
-        <strong>Key insight:</strong> Trees don't "heal" wounds â they <em>wall them off</em>. Wall 4 (the barrier zone) is laid down in new wood after the wound occurs. Decay in old wood stays in old wood â if Wall 4 holds. This is why flush cuts are catastrophic: they damage the ridge of cambium where Wall 4 forms, eliminating the tree's primary defense. â <em>Shigo, 1984; ISA Certification Study Guide Ch. 4</em>
+        <strong>Key insight:</strong> Trees don't "heal" wounds — they <em>wall them off</em>. Wall 4 (the barrier zone) is laid down in new wood after the wound occurs. Decay in old wood stays in old wood — if Wall 4 holds. This is why flush cuts are catastrophic: they damage the ridge of cambium where Wall 4 forms, eliminating the tree's primary defense. — <em>Shigo, 1984; ISA Certification Study Guide Ch. 4</em>
       </div>
     </div>
 
-    <button class="start-btn" id="startBtn">Start Lesson â 5 Questions â</button>
+    <button class="start-btn" onclick="startQuiz()">Start Lesson — 5 Questions →</button>
   </div>
 
   <!-- QUIZ SCREEN -->
-  <div id="quizScreen">
+  <div class="quiz-screen" id="quizScreen">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="q-counter" id="qCounter">Question 1 of 5</div>
     <div id="questionArea"></div>
@@ -142,62 +145,104 @@
 </div>
 
 <script>
-var questions = [
+const questions = [
   {
     q: "In Shigo's CODIT model, which wall is called the 'barrier zone,' forms AFTER wounding, and is considered the strongest compartmentalizing boundary?",
     options: [
-      "Wall 1 â vessel plugging (tyloses and gums) that limits vertical spread",
-      "Wall 2 â growth ring boundaries that block inward spread",
-      "Wall 3 â ray tissue that restricts lateral spread of pathogens",
-      "Wall 4 â separates wood present at time of wounding from new wood laid down after"
+      "Wall 1 — vessel plugging (tyloses and gums) that limits vertical spread",
+      "Wall 2 — growth ring boundaries that block inward spread",
+      "Wall 3 — ray tissue that restricts lateral spread of pathogens",
+      "Wall 4 — separates wood present at time of wounding from new wood laid down after"
     ],
     correct: 3,
     title: "The Barrier Zone: Wall 4",
-    lesson: "<h4>Why Wall 4 Is Different â And Why It Matters</h4><p>Walls 1, 2, and 3 are <strong>resistance walls</strong> â they exist in the wood before any wound occurs and slow the spread of decay through existing tissue. Wall 4 is different in every important way: it doesn't exist until the tree responds to wounding. It is <strong>formed in new wood</strong> laid down by the cambium after the injury, creating a physical and chemical barrier that separates the potentially compromised old wood from clean new wood the tree will grow afterward.</p><ul><li><strong>Wall 1:</strong> Weakest â vessel plugging (tyloses in angiosperms, resin in conifers) above and below the wound</li><li><strong>Wall 2:</strong> Growth rings â moderate barrier to inward spread</li><li><strong>Wall 3:</strong> Ray tissue â moderate lateral barrier</li><li><strong>Wall 4:</strong> Strongest â the barrier zone created in new xylem after wounding; this is the tree's decisive response</li></ul><p>A tree with strong compartmentalization ability forms a well-defined, chemically distinct Wall 4 quickly. Oaks, many maples, and healthy conifers tend to be good compartmentalizers. Elms, willows, and stressed trees of any species compartmentalize poorly â decay can breach all four walls.</p>",
-    fieldnote: "In the Okanagan, black cottonwood and trembling aspen are notoriously weak compartmentalizers â wounds that would stay contained in a Douglas-fir can become trunk-spanning columns of decay in aspens within a few growing seasons. When assessing a cottonwood for removal, always probe decay columns vertically: they travel far. For ponderosa pine, resin is Wall 1 â those pitch tubes you see after beetle attack are exactly that mechanism working in real time."
+    lesson: `<h4>Why Wall 4 Is Different — And Why It Matters</h4>
+<p>Walls 1, 2, and 3 are <strong>resistance walls</strong> — they exist in the wood before any wound occurs and slow the spread of decay through existing tissue. Wall 4 is different in every important way: it doesn't exist until the tree responds to wounding. It is <strong>formed in new wood</strong> laid down by the cambium after the injury, creating a physical and chemical barrier that separates the potentially compromised old wood from clean new wood the tree will grow afterward.</p>
+<ul>
+  <li><strong>Wall 1:</strong> Weakest — vessel plugging (tyloses in angiosperms, resin in conifers) above and below the wound</li>
+  <li><strong>Wall 2:</strong> Growth rings — moderate barrier to inward spread</li>
+  <li><strong>Wall 3:</strong> Ray tissue — moderate lateral barrier</li>
+  <li><strong>Wall 4:</strong> Strongest — the barrier zone created in new xylem after wounding; this is the tree's decisive response</li>
+</ul>
+<p>A tree with strong compartmentalization ability (a "good compartmentalizer") forms a well-defined, chemically distinct Wall 4 quickly. Oaks, many maples, and healthy conifers tend to be good compartmentalizers. Elms, willows, and stressed trees of any species compartmentalize poorly — decay can breach all four walls.</p>`,
+    fieldnote: `In the Okanagan, black cottonwood and trembling aspen are notoriously weak compartmentalizers — wounds that would stay contained in a Douglas-fir can become trunk-spanning columns of decay in aspens within a few growing seasons. When assessing a cottonwood for removal, always probe decay columns vertically: they travel far. For ponderosa pine, resin is Wall 1 — those pitch tubes you see after beetle attack are exactly that mechanism working in real time.`
   },
   {
-    q: "A homeowner asks why the 'healed-over' wound on their apple tree is still causing branch dieback. Which CODIT concept best explains this?",
+    q: "A homeowner asks why the "healed-over" wound on their apple tree is still causing branch dieback. Which CODIT concept best explains this?",
     options: [
-      "Woundwood (callus) closure means CODIT succeeded â the dieback must have a separate cause",
+      "Woundwood (callus) closure means CODIT succeeded — the dieback must have a separate cause",
       "Woundwood closure seals the surface but does not reverse decay that formed inside; the health of CODIT walls determines whether the tree is structurally compromised, not whether the wound surface is closed",
       "The apple tree failed to form any woundwood, indicating complete absence of CODIT response",
       "CODIT only applies to conifers; broadleaf fruit trees use a different wound response mechanism"
     ],
     correct: 1,
     title: "Woundwood vs. Compartmentalization",
-    lesson: "<h4>Two Different Processes That People Constantly Confuse</h4><p><strong>Woundwood (callus) formation</strong> is a surface response â cambium at the wound margin proliferates and rolls over the wound face. It is visible and reassuring to homeowners. It is <em>not</em> the same as compartmentalization.</p><p><strong>Compartmentalization</strong> happens inside the tree, in the wood, starting at the moment of wounding. The four CODIT walls either hold or they don't â long before woundwood appears. A tree can close a wound completely with woundwood while still containing a large column of internal decay behind it.</p><ul><li>Woundwood rolls over a wound â takes years for large wounds</li><li>CODIT walls either contained the decay or didn't â decided in the first growing season after wounding</li><li>A 'healed' wound is cosmetically closed â it tells you nothing about the structural condition inside</li><li>Shigo's famous phrase: trees <em>wall off</em>, they do not <em>heal</em></li></ul><p>This distinction is clinically important when doing tree risk assessments. A wound that 'looks healed' may overlie significant decay. Resistance drilling and sonic tomography can reveal what woundwood hides.</p>",
-    fieldnote: "This comes up constantly in client conversations in the Okanagan. Homeowners point to a closed-over pruning wound on their fruit tree and say 'see, it healed up fine' â but there's a hollow forming behind it from a flush cut made 10 years ago. The language matters: say 'the wound closed over' not 'the tree healed it.' That small word choice opens the door to the real conversation about what's happening inside."
+    lesson: `<h4>Two Different Processes That People Constantly Confuse</h4>
+<p><strong>Woundwood (callus) formation</strong> is a surface response — cambium at the wound margin proliferates and rolls over the wound face. It is visible and reassuring to homeowners. It is <em>not</em> the same as compartmentalization.</p>
+<p><strong>Compartmentalization</strong> happens inside the tree, in the wood, starting at the moment of wounding. The four CODIT walls either hold or they don't — long before woundwood appears. A tree can close a wound completely with woundwood while still containing a large column of internal decay behind it, because the decay was already present when woundwood began forming.</p>
+<ul>
+  <li>Woundwood rolls over a wound — takes years for large wounds</li>
+  <li>CODIT walls either contained the decay or didn't — decided in the first growing season after wounding</li>
+  <li>A "healed" wound is cosmetically closed — it tells you nothing about the structural condition inside</li>
+  <li>Shigo's famous phrase: trees <em>wall off</em>, they do not <em>heal</em></li>
+</ul>
+<p>This distinction is clinically important when doing tree risk assessments. A wound that "looks healed" may overlie significant decay. Resistance drilling and sonic tomography can reveal what woundwood hides.</p>`,
+    fieldnote: `This comes up constantly in client conversations in the Okanagan. Homeowners point to a closed-over pruning wound on their fruit tree and say "see, it healed up fine" — but there's a hollow forming behind it from a flush cut made 10 years ago. The language matters: say "the wound closed over" not "the tree healed it." That small word choice opens the door to the real conversation about what's happening inside.`
   },
   {
     q: "Which of the following best describes Wall 1 of the CODIT model and its mechanism in a conifer such as ponderosa pine?",
     options: [
       "The growth ring boundary that blocks inward spread of fungal hyphae",
       "Ray tissue blocking lateral spread, loaded with phenolic compounds",
-      "Vessel occlusion by tyloses and gum deposits limiting vertical decay spread â in conifers, analogous function performed by resin and tracheid plugging",
+      "Vessel occlusion by tyloses and gum deposits limiting vertical decay spread — in conifers, analogous function performed by resin and tracheid plugging",
       "The barrier zone formed in new xylem after wounding, separating old and new wood"
     ],
     correct: 2,
-    title: "Wall 1 â Vertical Containment and Conifers",
-    lesson: "<h4>Wall 1: Slowing the Vertical Column</h4><p>Wall 1 acts above and below the wound site to limit how far decay travels up and down the stem. In <strong>angiosperms (hardwoods)</strong>, the primary mechanism is <em>tyloses</em> â outgrowths of adjacent parenchyma cells that balloon into and physically plug the vessel lumens â combined with gum deposits. In <strong>gymnosperms (conifers)</strong>, there are no vessels â only tracheids â so tyloses don't form. Instead, Wall 1 in conifers is achieved through <strong>resin</strong> and the aspiration and plugging of bordered pits in tracheids.</p><ul><li>Wall 1 is the <strong>weakest</strong> of the four walls</li><li>In hardwoods: tyloses + gums in vessels</li><li>In conifers: resin + tracheid pit aspiration</li><li>Good resin production = stronger Wall 1 in pine species</li><li>Trees under drought stress produce less resin â Wall 1 is compromised before the beetle even arrives</li></ul>",
-    fieldnote: "That blue-gray stain you see in the sapwood of a beetle-killed ponderosa? That's the ophiostomatoid 'blue stain' fungai that mountain pine beetles carry as symbionts â they specifically attack and disrupt the resin duct system, collapsing Wall 1 before the tree can mount a sustained response. A healthy, well-watered ponderosa can pitch-out one or two beetle attacks per season. A drought-stressed tree with low resin pressure cannot. That's the whole story of beetle outbreak dynamics in the Okanagan, told at the cellular level."
+    title: "Wall 1 — Vertical Containment and Conifers",
+    lesson: `<h4>Wall 1: Slowing the Vertical Column</h4>
+<p>Wall 1 acts above and below the wound site to limit how far decay travels up and down the stem. In <strong>angiosperms (hardwoods)</strong>, the primary mechanism is <em>tyloses</em> — outgrowths of adjacent parenchyma cells that balloon into and physically plug the vessel lumens — combined with gum deposits. This is why oak heartwood resists decay so effectively: the tyloses are dense and thick-walled.</p>
+<p>In <strong>gymnosperms (conifers)</strong>, there are no vessels — only tracheids — so tyloses don't form. Instead, Wall 1 in conifers is achieved through <strong>resin</strong> (oleoresins produced by epithelial cells of resin ducts) and the aspiration and plugging of bordered pits in tracheids. Ponderosa pine's famously aggressive resin response to beetle attack is Wall 1 in action: the tree is flooding its tracheids to pitch-seal the invasion corridor.</p>
+<ul>
+  <li>Wall 1 is the <strong>weakest</strong> of the four walls</li>
+  <li>In hardwoods: tyloses + gums in vessels</li>
+  <li>In conifers: resin + tracheid pit aspiration</li>
+  <li>Good resin production = stronger Wall 1 in pine species</li>
+  <li>Trees under drought stress produce less resin — Wall 1 is compromised before the beetle even arrives</li>
+</ul>`,
+    fieldnote: `That blue-gray stain you see in the sapwood of a beetle-killed ponderosa? That's the ophiostomatoid "blue stain" fungi that mountain pine beetles carry as symbionts — they specifically attack and disrupt the resin duct system, collapsing Wall 1 before the tree can mount a sustained response. A healthy, well-watered ponderosa can pitch-out one or two beetle attacks per season. A drought-stressed tree with low resin pressure cannot. That's the whole story of beetle outbreak dynamics in the Okanagan, told at the cellular level.`
   },
   {
     q: "An arborist observes that a large branch removal wound on an elm tree, made 3 years ago, shows a very thin or absent zone of chemically distinct tissue in the new wood. What does this most likely indicate?",
     options: [
-      "The tree is a strong compartmentalizer â thin barrier zones are more efficient",
+      "The tree is a strong compartmentalizer — thin barrier zones are more efficient",
       "The arborist used the correct pruning cut and did not damage the branch collar",
-      "The elm is a weak compartmentalizer â decay may have breached Wall 4 and entered the new wood",
+      "The elm is a weak compartmentalizer — decay may have breached Wall 4 and entered the new wood",
       "The wound was made during dormancy, which inhibits barrier zone formation"
     ],
     correct: 2,
     title: "Compartmentalization Ability Varies by Species",
-    lesson: "<h4>Not All Trees Compartmentalize Equally</h4><p>CODIT is a universal model â all woody plants compartmentalize to some degree. But <strong>compartmentalization ability</strong> varies enormously between species. This variation has direct implications for risk assessment and pruning decisions.</p><p><strong>Strong compartmentalizers;</strong></p><ul><li>Many oaks (<em>Quercus</em> spp.)</li><li>Honey locust, Black locust</li><li>Many conifers under healthy conditions</li></ul><p><strong>Weak compartmentalizers</strong> (Wall 4 thin or chemically indistinct; decay can breach into new wood):</p><ul><li>Elms (<em>Ulmus</em> spp.) â especially Siberian elm common in Okanagan landscapes</li><li>Willows (<em>Salix</em> spp.)</li><li>Black cottonwood and trembling aspen (<em>Populus</em> spp.)</li><li>Silver maple under stress</li></ul><p>A wound that would stay safely contained in a Douglas-fir for decades might result in structural failure within 5â8 years in a large Siberian elm. The ISA Tree Risk Assessment manual emphasizes species compartmentalization capacity as a key factor in failure potential evaluation.</p>",
-    fieldnote: "Siberian elm is everywhere in Okanagan urban landscapes â it was planted aggressively through the 60s and 70s as a fast-growing windbreak and shade tree. Many of these elms are now mature, poorly pruned, with wounds all over them. When you probe an old elm wound and your drill goes straight through to the other side, that's a Wall 4 failure talking. This species more than any other on your boulevard route should trigger extra caution around wound history and internal decay assessment before climbing."
+    lesson: `<h4>Not All Trees Compartmentalize Equally</h4>
+<p>CODIT is a universal model — all woody plants compartmentalize to some degree. But <strong>compartmentalization ability (CODIT-A)</strong> varies enormously between species, and even between individual trees of the same species. This variation has direct implications for risk assessment and pruning decisions.</p>
+<p><strong>Strong compartmentalizers</strong> (form distinct, chemically robust Wall 4 quickly):</p>
+<ul>
+  <li>Many oaks (<em>Quercus</em> spp.)</li>
+  <li>Honey locust</li>
+  <li>Black locust</li>
+  <li>Many conifers under healthy conditions</li>
+</ul>
+<p><strong>Weak compartmentalizers</strong> (Wall 4 thin or chemically indistinct; decay can breach into new wood):</p>
+<ul>
+  <li>Elms (<em>Ulmus</em> spp.) — especially Siberian elm common in Okanagan landscapes</li>
+  <li>Willows (<em>Salix</em> spp.)</li>
+  <li>Black cottonwood and trembling aspen (<em>Populus</em> spp.)</li>
+  <li>Silver maple under stress</li>
+</ul>
+<p>This matters practically: a wound that would stay safely contained in a Douglas-fir for decades might result in structural failure within 5–8 years in a large Siberian elm. The ISA <em>Tree Risk Assessment</em> manual emphasizes species compartmentalization capacity as a key factor in failure potential evaluation.</p>`,
+    fieldnote: `Siberian elm is everywhere in Okanagan urban landscapes — it was planted aggressively through the 60s and 70s as a fast-growing windbreak and shade tree. Many of these elms are now mature, poorly pruned, with wounds all over them. When you probe an old elm wound and your drill goes straight through to the other side, that's a Wall 4 failure talking. This species more than any other on your boulevard route should trigger extra caution around wound history and internal decay assessment before climbing.`
   },
   {
     q: "Per ANSI A300 Part 1, why should pruning cuts be made just outside the branch collar rather than flush with the stem?",
-     options: [
+    options: [
       "Flush cuts leave a larger wound surface that allows faster woundwood formation",
       "The branch collar contains stem tissue with active meristems for Wall 4 formation; removing it eliminates the zone where the strongest CODIT response originates",
       "Flush cuts increase risk of chainsaw kickback and are prohibited under ANSI Z133",
@@ -205,89 +250,104 @@ var questions = [
     ],
     correct: 1,
     title: "Pruning Cuts and CODIT: The Branch Collar",
-    lesson: "<h4>The Branch Collar Is CODIT Hardware</h4><p>The branch collar is not just a cosmetic ridge. It is the anatomical zone where <strong>stem tissue overlaps branch tissue</strong>, forming the mechanical attachment and â critically â the biological response zone where Wall 4 will form after the branch is removed. Per <strong>ANSI A300 Part 1</strong> and the ISA BMP for Pruning, cuts must be made just outside the branch collar, preserving this tissue entirely.</p><p>When a flush cut removes the collar:</p><ul><li>The cambium capable of forming Wall 4 at that location is destroyed</li><li>The wound penetrates into stem wood, bypassing Wall 3 and compromising Wall 2</li><li>Woundwood must now originate from stem cambium far from the wound margin â closure is slower and incomplete</li><li>Internal decay has a direct corridor into the stem without a functional barrier zone blocking it</li></ul><p>Shigo's research made this mechanically explicit: the branch bark ridge and branch collar together define the boundary of the branch protection zone (BPZ) â the chemically fortified tissue that already exists at the branch base and forms the foundation for compartmentalization after removal.</p><p><strong>Stub cuts</strong> are also wrong â they leave dead tissue outside the collar that decays and provides no barrier zone. The goal is precisely outside the collar: no stub, no flush.</p>",
-    fieldnote: "When you're training a new crew member on pruning cuts, have them feel the branch bark ridge first â run their finger along it, feel the wrinkled tissue. That ridge is the visual indicator on the top of the cut. On the bottom, it's the collar swelling. The angle of the cut follows from those two reference points. The ISA Study Guide puts it this way: the cut should bisect the angle between a line parallel to the branch bark ridge and a line perpendicular to the branch. It sounds technical until you've felt it a hundred times â then it's just how you make a cut."
+    lesson: `<h4>The Branch Collar Is CODIT Hardware</h4>
+<p>The branch collar is not just a cosmetic ridge. It is the anatomical zone where <strong>stem tissue overlaps branch tissue</strong>, forming the mechanical attachment and — critically — the biological response zone where Wall 4 will form after the branch is removed. Per <strong>ANSI A300 Part 1</strong> and the ISA Best Management Practices for Pruning, cuts must be made just outside the branch collar, preserving this tissue entirely.</p>
+<p>When a flush cut removes the collar:</p>
+<ul>
+  <li>The cambium capable of forming Wall 4 at that location is destroyed</li>
+  <li>The wound penetrates into stem wood, bypassing Wall 3 and compromising Wall 2</li>
+  <li>Woundwood must now originate from stem cambium far from the wound margin — closure is slower and incomplete</li>
+  <li>Internal decay has a direct corridor into the stem without a functional barrier zone blocking it</li>
+</ul>
+<p>Shigo's research made this mechanically explicit: the branch bark ridge and branch collar together define the boundary of the branch protection zone (BPZ) — the chemically fortified tissue that already exists at the branch base and forms the foundation for compartmentalization after removal.</p>
+<p><strong>Stub cuts</strong> are also wrong — they leave dead tissue outside the collar that decays and provides no barrier zone. The goal is precisely outside the collar: no stub, no flush.</p>`,
+    fieldnote: `When you're training a new crew member on pruning cuts, have them feel the branch bark ridge first — run their finger along it, feel the wrinkled tissue. That ridge is the visual indicator on the top of the cut. On the bottom, it's the collar swelling. The angle of the cut follows from those two reference points. The ISA Study Guide puts it this way: the cut should bisect the angle between a line parallel to the branch bark ridge and a line perpendicular to the branch. It sounds technical until you've felt it a hundred times — then it's just how you make a cut.`
   }
 ];
 
-var current = 0;
-var answered = false;
+let current = 0;
+let answered = false;
+
+function startQuiz() {
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  renderQuestion();
+}
 
 function renderQuestion() {
+  const q = questions[current];
   answered = false;
-  var q = questions[current];
-  var total = questions.length;
-  document.getElementById('qCounter').textContent = 'Question ' + (current + 1) + ' of ' + total;
-  document.getElementById('progressFill').style.width = ((current / total) * 100) + '%';
+  const total = questions.length;
+  document.getElementById('qCounter').textContent = `Question ${current + 1} of ${total}`;
+  document.getElementById('progressFill').style.width = `${(current / total) * 100}%`;
 
-  var optionsHtml = q.options.map(function(o, i) {
-    return '<button class="option-btn" data-idx="' + i + '">' + String.fromCharCode(65 + i) + '. ' + o + '</button>';
-  }).join('');
+  let optionsHtml = q.options.map((o, i) =>
+    `<button class="option-btn" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`
+  ).join('');
 
-  var isLast = current === questions.length - 1;
-  document.getElementById('questionArea').innerHTML =
-    '<div class="question-card"><div class="question-text">' + q.q + '</div>' +
-    '<div class="options" id="options">' + optionsHtml + '</div></div>' +
-    '<div class="lesson-panel" id="lessonPanel">' +
-    '<div class="lesson-header">ð Lesson â ' + q.title + '</div>' +
-    '<div class="lesson-body">' + q.lesson +
-    '<div class="field-note"><div class="field-note-label">ð Field Note â Okanagan Context</div><p>' + q.fieldnote + '</p></div>' +
-    '</div></div>' +
-    '<button class="next-btn" id="nextBtn" style="display:none">' + (isLast ? 'Complete Lesson â' : 'Next Question â') + '</button>' +
-    '<div class="isa-tag"><strong>ð ISA Exam Domain:</strong> Tree Biology (11%) Â· <strong>Sources:</strong> Shigo, A.L. (1984) CODIT; ISA Certification Study Guide, 4th Ed. Ch. 4; ANSI A300 Part 1 Pruning</div>';
-
-  document.getElementById('options').addEventListener('click', function(e) {
-    var btn = e.target.closest('.option-btn');
-    if (!btn || answered) return;
-    answered = true;
-    var chosen = parseInt(btn.getAttribute('data-idx'));
-    document.querySelectorAll('.option-btn').forEach(function(b, idx) {
-      b.setAttribute('disabled', 'true');
-      if (idx === q.correct) b.classList.add('correct');
-      else if (idx === chosen) b.classList.add('wrong');
-    });
-    var panel = document.getElementById('lessonPanel');
-    panel.classList.add('visible');
-    document.getElementById('nextBtn').style.display = 'block';
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-
-  document.getElementById('nextBtn').addEventListener('click', function() {
-    if (current < questions.length - 1) {
-      current++;
-      renderQuestion();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      showComplete();
+  document.getElementById('questionArea').innerHTML = `
+    <div class="question-card">
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="options">${optionsHtml}</div>
+    </div>
+    <div class="lesson-panel" id="lessonPanel">
+      <div class="lesson-header">📖 Lesson — ${q.title}</div>
+      <div class="lesson-body">
+        ${q.lesson}
+        <div class="field-note">
+          <div class="field-note-label">📋 Field Note — Okanagan Context</div>
+          <p>${q.fieldnote}</p>
+        </div>
+      </div>
+    </div>
+    ${current < questions.length - 1
+      ? `<button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>`
+      : `<button class="next-btn" id="nextBtn" onclick="showComplete()" style="display:none">Complete Lesson ✓</button>`
     }
+    <div class="isa-tag"><strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) · <strong>Sources:</strong> Shigo, A.L. (1984) <em>CODIT</em>; ISA Certification Study Guide, 4th Ed. Ch. 4; ANSI A300 Part 1 Pruning</div>
+  `;
+}
+
+function selectAnswer(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.correct) b.classList.add('correct');
+    else if (idx === i && i !== q.correct) b.classList.add('wrong');
   });
+  document.getElementById('lessonPanel').classList.add('visible');
+  document.getElementById('nextBtn').style.display = 'block';
+  document.getElementById('lessonPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function nextQuestion() {
+  current++;
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showComplete() {
   document.getElementById('progressFill').style.width = '100%';
-  document.getElementById('questionArea').innerHTML =
-    '<div class="complete-card">' +
-    '<div class="complete-icon">ð¿</div>' +
-    '<h2>Lesson Complete</h2>' +
-    '<p>You\'ve worked through all five questions on CODIT. The key takeaway: trees don\'t heal â they wall off. Wall 4 is the tree\'s decisive response. Preserving the branch collar on every pruning cut is you protecting Wall 4 before the tree even needs it.</p>' +
-    '<p style="font-size:13px; color:#666; margin-bottom:20px;">Bring one of these concepts to the next tailgate. Which wall fails first in a drought year â and why?</p>' +
-    '<button class="restart-btn" id="restartBtn">â Review from Start</button>' +
-    '</div>' +
-    '<div class="isa-tag"><strong>ð ISA Exam Domain:</strong> Tree Biology (11%) Â· <strong>Sources:</strong> Shigo, A.L. (1984); ISA Certification Study Guide 4th Ed.; ANSI A300 Part 1</div>';
-  document.getElementById('restartBtn').addEventListener('click', function() {
-    current = 0;
-    renderQuestion();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  document.getElementById('questionArea').innerHTML = `
+    <div class="complete-card">
+      <div class="complete-icon">🌿</div>
+      <h2>Lesson Complete</h2>
+      <p>You've worked through all five questions on CODIT. The key takeaway: trees don't heal — they wall off. Wall 4 is the tree's decisive response. Preserving the branch collar on every pruning cut is you protecting Wall 4 before the tree even needs it.</p>
+      <p style="font-size:13px; color:#666; margin-bottom:20px;">Bring one of these concepts to the next tailgate. Which wall fails first in a drought year — and why?</p>
+      <button class="restart-btn" onclick="restartQuiz()">← Review from Start</button>
+    </div>
+    <div class="isa-tag"><strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) · <strong>Sources:</strong> Shigo, A.L. (1984); ISA Certification Study Guide 4th Ed.; ANSI A300 Part 1</div>
+  `;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('startBtn').addEventListener('click', function() {
-    document.getElementById('homeScreen').style.display = 'none';
-    document.getElementById('quizScreen').style.display = 'block';
-    renderQuestion();
-  });
-});
+function restartQuiz() {
+  current = 0;
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 </script>
 </body>
 </html>
