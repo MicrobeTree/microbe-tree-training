@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 22 · Monday · Stomata &amp; Guard Cells — Microbe Tree Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh;line-height:1.6}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 24px;display:flex;align-items:center;gap:14px}
+.header-logo{font-size:22px;font-weight:800;color:#2ea043;letter-spacing:-0.5px}
+.header-sub{font-size:13px;color:#8b949e}
+.week-badge{margin-left:auto;background:#2ea04322;border:1px solid #2ea04355;color:#3fb950;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.container{max-width:820px;margin:0 auto;padding:28px 20px}
+.day-banner{background:linear-gradient(135deg,#1a2f1a,#1f3a1f);border:1px solid #2ea04340;border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.day-label{font-size:13px;font-weight:600;color:#3fb950;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.day-title{font-size:28px;font-weight:800;color:#e6edf3;margin-bottom:6px}
+.day-subtitle{font-size:15px;color:#8b949e}
+/* Quick Reference Card */
+.qref{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:22px;margin-bottom:28px}
+.qref h3{font-size:14px;font-weight:600;color:#3fb950;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.stomata-diagram{background:#0d1117;border-radius:8px;padding:16px;margin-bottom:16px}
+.diagram-svg{width:100%;max-width:560px;display:block;margin:0 auto}
+.qref-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.qref-item{background:#0d1117;border-radius:8px;padding:12px;border-left:3px solid #2ea043}
+.qref-item strong{display:block;font-size:12px;color:#3fb950;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.qref-item span{font-size:13px;color:#c9d1d9}
+/* Quiz */
+.quiz-nav{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.q-dot{width:32px;height:32px;border-radius:50%;border:2px solid #30363d;background:#161b22;color:#8b949e;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.q-dot.active{border-color:#2ea043;color:#3fb950;background:#2ea04320}
+.q-dot.correct{border-color:#238636;background:#238636;color:#fff}
+.q-dot.wrong{border-color:#da3633;background:#da3633;color:#fff}
+.question-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin-bottom:16px}
+.q-number{font-size:12px;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.q-text{font-size:17px;color:#e6edf3;font-weight:600;margin-bottom:20px;line-height:1.5}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#0d1117;border:2px solid #30363d;border-radius:8px;padding:13px 16px;cursor:pointer;font-size:14px;color:#c9d1d9;transition:all .2s;text-align:left;display:flex;align-items:flex-start;gap:10px}
+.option:hover:not([disabled]){border-color:#2ea04360;background:#2ea04310;color:#e6edf3}
+.option .opt-letter{font-weight:700;color:#3fb950;min-width:18px}
+.option.correct{border-color:#238636;background:#23863620;color:#e6edf3}
+.option.wrong{border-color:#da3633;background:#da363320}
+.option.dimmed{opacity:0.4}
+.option[disabled]{cursor:default}
+/* Reveal */
+.reveal{background:#0d2818;border:1px solid #2ea04340;border-radius:10px;padding:20px;margin-top:18px;display:none}
+.reveal.show{display:block}
+.reveal-header{font-size:13px;font-weight:700;color:#3fb950;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.reveal-title{font-size:18px;font-weight:700;color:#e6edf3;margin-bottom:12px}
+.reveal p{font-size:14px;color:#c9d1d9;margin-bottom:12px;line-height:1.7}
+.reveal ul{padding-left:20px;margin-bottom:12px}
+.reveal ul li{font-size:14px;color:#c9d1d9;margin-bottom:6px;line-height:1.6}
+.reveal ul li strong{color:#e6edf3}
+.field-note{background:#0a1f2e;border:1px solid #1f4a7a;border-radius:8px;padding:14px 16px;margin-top:14px}
+.field-note-header{font-size:12px;font-weight:700;color:#58a6ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.field-note p{font-size:13px;color:#a5c8f5;line-height:1.7}
+.next-btn{margin-top:16px;background:#238636;border:none;color:#fff;font-size:14px;font-weight:600;padding:10px 22px;border-radius:8px;cursor:pointer;transition:background .2s}
+.next-btn:hover{background:#2ea043}
+.score-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:32px;text-align:center;display:none}
+.score-card.show{display:block}
+.score-big{font-size:56px;font-weight:800;color:#3fb950;margin-bottom:8px}
+.score-label{font-size:15px;color:#8b949e;margin-bottom:20px}
+.restart-btn{background:#161b22;border:2px solid #2ea043;color:#3fb950;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;cursor:pointer}
+.isa-footer{margin-top:28px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;font-size:12px;color:#8b949e}
+.isa-footer strong{color:#c9d1d9}
+@media(max-width:600px){.qref-grid{grid-template-columns:1fr}.day-title{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">🌲 Microbe Tree</div>
+  <div class="header-sub">Crew Training · Week 22</div>
+  <div class="week-badge">🌿 Tree Biology</div>
+</div>
+<div class="container">
+  <div class="day-banner">
+    <div class="day-label">🌿 Monday · Tree Biology</div>
+    <div class="day-title">Stomata &amp; Guard Cells</div>
+    <div class="day-subtitle">How trees open, close, and negotiate the carbon–water tradeoff</div>
+  </div>
+
+  <!-- Quick Reference Card -->
+  <div class="qref">
+    <h3>📐 Quick Reference — Stomatal Mechanics</h3>
+    <div class="stomata-diagram">
+      <svg class="diagram-svg" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="560" height="200" fill="#0d1117" rx="6"/>
+        <!-- Labels column -->
+        <text x="14" y="38" fill="#8b949e" font-size="11" font-family="sans-serif">OPEN</text>
+        <text x="14" y="160" fill="#8b949e" font-size="11" font-family="sans-serif">CLOSED</text>
+        <!-- Divider -->
+        <line x1="55" y1="10" x2="55" y2="190" stroke="#30363d" stroke-width="1"/>
+
+        <!-- OPEN state — guard cells turgid, bowed out -->
+        <!-- Epidermis background cells -->
+        <rect x="65" y="18" width="80" height="44" rx="4" fill="#1a2f1a" stroke="#2ea04340" stroke-width="1"/>
+        <rect x="165" y="18" width="80" height="44" rx="4" fill="#1a2f1a" stroke="#2ea04340" stroke-width="1"/>
+        <!-- Guard cell pair (open) -->
+        <ellipse cx="145" cy="40" rx="24" ry="14" fill="none" stroke="#2ea043" stroke-width="2"/>
+        <ellipse cx="175" cy="40" rx="24" ry="14" fill="none" stroke="#2ea043" stroke-width="2"/>
+        <!-- Pore -->
+        <ellipse cx="160" cy="40" rx="6" ry="10" fill="#0d3320" stroke="#3fb950" stroke-width="1.5"/>
+        <!-- K+ arrows in -->
+        <text x="108" y="37" fill="#58a6ff" font-size="10" font-family="sans-serif">K⁺ →</text>
+        <text x="185" y="37" fill="#58a6ff" font-size="10" font-family="sans-serif">← K⁺</text>
+        <!-- Label -->
+        <text x="245" y="35" fill="#3fb950" font-size="12" font-family="sans-serif" font-weight="bold">TURGID guard cells</text>
+        <text x="245" y="50" fill="#8b949e" font-size="11" font-family="sans-serif">K⁺ influx → ↑ osmotic potential → water in → pore opens</text>
+
+        <!-- CLOSED state -->
+        <rect x="65" y="130" width="80" height="44" rx="4" fill="#1a1a1a" stroke="#30363d" stroke-width="1"/>
+        <rect x="165" y="130" width="80" height="44" rx="4" fill="#1a1a1a" stroke="#30363d" stroke-width="1"/>
+        <!-- Guard cell pair (closed — more circular) -->
+        <circle cx="145" cy="152" r="13" fill="none" stroke="#8b949e" stroke-width="2"/>
+        <circle cx="175" cy="152" r="13" fill="none" stroke="#8b949e" stroke-width="2"/>
+        <!-- No pore -->
+        <text x="155" y="157" fill="#30363d" font-size="9" font-family="sans-serif">—</text>
+        <!-- K+ arrows out -->
+        <text x="104" y="149" fill="#da3633" font-size="10" font-family="sans-serif">← K⁺</text>
+        <text x="182" y="149" fill="#da3633" font-size="10" font-family="sans-serif">K⁺ →</text>
+        <!-- ABA label -->
+        <text x="245" y="147" fill="#da3633" font-size="12" font-family="sans-serif" font-weight="bold">FLACCID guard cells</text>
+        <text x="245" y="162" fill="#8b949e" font-size="11" font-family="sans-serif">ABA signal → K⁺ efflux → ↓ osmotic potential → water out</text>
+
+        <!-- Triggers -->
+        <text x="65" y="100" fill="#3fb950" font-size="11" font-family="sans-serif">▲ Opens: blue light, low CO₂, adequate water</text>
+        <text x="65" y="115" fill="#da3633" font-size="11" font-family="sans-serif">▼ Closes: ABA (drought), high CO₂, darkness, high VPD</text>
+      </svg>
+    </div>
+    <div class="qref-grid">
+      <div class="qref-item"><strong>Primary opener</strong><span>Blue light → H⁺-ATPase pumps → K⁺ influx</span></div>
+      <div class="qref-item"><strong>Primary closer</strong><span>ABA → SnRK2 kinases → anion + K⁺ efflux</span></div>
+      <div class="qref-item"><strong>VPD effect</strong><span>High VPD (>3 kPa) → partial closure regardless of light</span></div>
+      <div class="qref-item"><strong>Distribution</strong><span>Most broadleaf trees: hypostomatous (lower surface)</span></div>
+      <div class="qref-item"><strong>Conifers</strong><span>Stomatal crypts on needles — reduces boundary layer exchange</span></div>
+      <div class="qref-item"><strong>Carbon tradeoff</strong><span>Every CO₂ in = ~300–500 H₂O out under high VPD</span></div>
+    </div>
+  </div>
+
+  <!-- Quiz navigation -->
+  <div class="quiz-nav" id="quizNav">
+    <div class="q-dot active" onclick="goTo(0)">1</div>
+    <div class="q-dot" onclick="goTo(1)">2</div>
+    <div class="q-dot" onclick="goTo(2)">3</div>
+    <div class="q-dot" onclick="goTo(3)">4</div>
+    <div class="q-dot" onclick="goTo(4)">5</div>
+  </div>
+
+  <!-- Questions -->
+  <div id="questionArea"></div>
+  <div class="score-card" id="scoreCard">
+    <div class="score-big" id="scoreBig"></div>
+    <div class="score-label" id="scoreLabel"></div>
+    <button class="restart-btn" onclick="restart()">Review from Q1</button>
+  </div>
+
+  <div class="isa-footer">
+    <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) &nbsp;·&nbsp;
+    <strong>Sources:</strong> ISA Arborists' Certification Study Guide 4th Ed. · Taiz &amp; Zeiger, Plant Physiology · BC Ministry of Forests drought stress publications
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "What is the primary mechanism that drives stomatal opening in the early morning?",
+    options:[
+      "Increased CO₂ concentration within guard cells lowers pH and activates water channels",
+      "Blue light activates H⁺-ATPase proton pumps in guard cell membranes, driving K⁺ influx and turgor increase",
+      "Water pressure from adjacent mesophyll cells mechanically forces guard cells apart",
+      "Night-time starch-to-sugar conversion in guard cells raises osmotic potential"
+    ],
+    correct:1,
+    title:"How Stomata Open: The H⁺-ATPase Mechanism",
+    lesson:`<p>Stomatal opening is not passive — it requires energy. Here's the sequence:</p>
+<ul>
+<li><strong>Blue light detection:</strong> Phototropin photoreceptors in guard cells detect blue wavelengths at dawn.</li>
+<li><strong>H⁺-ATPase activation:</strong> These receptors activate plasma membrane H⁺-ATPase pumps, which export protons (H⁺) from the guard cell.</li>
+<li><strong>Membrane hyperpolarization:</strong> Proton export makes the inside of the cell more negative — this voltage change activates inward-rectifying K⁺ channels.</li>
+<li><strong>K⁺ influx:</strong> Potassium ions flood into the guard cell (along with anions: malate²⁻ and Cl⁻). This raises osmotic potential dramatically.</li>
+<li><strong>Water follows osmotically:</strong> With higher solute concentration inside, water enters via aquaporins and osmosis. Guard cells swell — turgor rises.</li>
+<li><strong>Kidney-shaped geometry:</strong> Guard cells have thickened inner walls. When turgor increases, they bow outward, pulling the pore open.</li>
+</ul>
+<p>Guard cells are the only epidermal cells with chloroplasts. Their photosynthesis contributes malate production for osmotic adjustment, though it's secondary to the K⁺ mechanism.</p>`,
+    fieldnote:`In the Okanagan, blue light intensity on clear summer mornings is intense by 5:30–6:00 AM. Trees begin opening stomata while VPD is still low — smart timing, because water loss per CO₂ fixed is at its daily minimum. If you're doing foliar applications, early morning targets receptive, open stomata and low evaporation. If you're assessing a tree's water status, the dew-point period just before sunrise is when the tree is most "recovered" from the previous day's stress.`
+  },
+  {
+    text: "Abscisic acid (ABA) is the primary drought signal that closes stomata. Which sequence correctly describes the molecular events after ABA binds to its receptor?",
+    options:[
+      "ABA → guard cell chloroplasts stop photosynthesis → ATP drops → K⁺ channels close passively",
+      "ABA → PYR/PYL receptor complex → PP2C phosphatase inhibition → SnRK2 kinase activation → SLAC1 anion channel opening → K⁺ and anion efflux → turgor loss → closure",
+      "ABA → CO₂ accumulates in guard cells → cytoplasmic pH drop → H⁺-ATPase shuts off → osmolytes leave",
+      "ABA → guards cells convert sugars to starch → osmotic potential drops → water leaves → closure"
+    ],
+    correct:1,
+    title:"The ABA Signal Cascade: Drought Response at the Cellular Level",
+    lesson:`<p>The ABA drought signaling pathway is one of the best-characterized cascades in plant biology — and understanding it tells you why trees respond to water stress as fast as they do.</p>
+<ul>
+<li><strong>Source:</strong> ABA is synthesized in root tips and mesophyll cells under water stress. Root-sourced ABA travels up the xylem to leaves — the tree's whole-body alarm signal.</li>
+<li><strong>Receptor:</strong> PYR/PYL/RCAR proteins are soluble ABA receptors in guard cells.</li>
+<li><strong>Gate release:</strong> In the absence of ABA, PP2C phosphatases keep SnRK2 kinases suppressed. ABA binding to PYR/PYL locks up PP2C, freeing SnRK2.</li>
+<li><strong>Channel activation:</strong> Active SnRK2 kinases phosphorylate SLAC1 (Slow Anion Channel 1) and other efflux channels, opening them.</li>
+<li><strong>Ion exodus:</strong> Malate, Cl⁻, and K⁺ flow out of guard cells. Osmotic potential drops. Water follows. Turgor collapses.</li>
+<li><strong>Timeline:</strong> This entire cascade can produce measurable stomatal closure within 5–15 minutes of ABA exposure.</li>
+</ul>
+<p>ABA also suppresses shoot elongation, promotes root growth, and accelerates leaf senescence — it's the tree's full drought-preparation package, not just a stomatal switch.</p>`,
+    fieldnote:`When you see a cottonwood or aspen with leaves that seem to "flutter wrong" during a heat event — the silvery undersides flashing more than usual — you're watching ABA-driven hydraulic adjustment. The leaves are reorienting to reduce solar interception as stomata close. On a stressed ponderosa, ABA-mediated needle droop in the mid-afternoon canopy is a visible sign the tree has hit its safety threshold. These are not signs of disease. They're signs of a functioning drought response — which is worth communicating to concerned clients.`
+  },
+  {
+    text: "Vapor pressure deficit (VPD) is a key driver of water loss from trees. What does a VPD of 4 kPa represent, and why does it matter for tree water relations?",
+    options:[
+      "The air contains 4 kPa more water vapor than dry air, increasing the atmospheric humidity around leaves",
+      "The difference between water vapor pressure inside the leaf (near saturation) and in the surrounding air is 4 kPa — creating a strong gradient that drives transpiration regardless of stomatal aperture",
+      "The xylem is under -4 kPa tension, which is within the safe operating range for most species",
+      "Leaf temperature exceeds ambient air temperature by 4°C due to reduced transpirational cooling"
+    ],
+    correct:1,
+    title:"Vapor Pressure Deficit: The Invisible Force Behind Transpiration",
+    lesson:`<p>VPD is the difference between the water vapor pressure the air <em>could</em> hold at saturation and what it actually holds. It quantifies how "thirsty" the air is.</p>
+<ul>
+<li><strong>Inside a leaf:</strong> The sub-stomatal cavity is air at roughly 99% relative humidity — essentially saturated. This is the vapor source.</li>
+<li><strong>Outside the leaf:</strong> On a hot, dry Okanagan August afternoon (35°C, 25% RH), VPD ≈ 4-5–5.5 kPa. That gradient drives water out of open stomata extremely fast.</li>
+<li><strong>VPD doubles when:</strong> temperature increases by ~7°C at fixed absolute humidity, OR humidity drops by ~30% at fixed temperature. On Okanagan afternoons, both often happen simultaneously.</li>
+<li><strong>Stomatal response:</strong> Most species begin reducing stomatal conductance at VPD >2.5–3 kPa. At 4+ kPa, many conifers are operating at 30–50% of maximum stomatal aperture.</li>
+<li><strong>Carbon cost:</strong> Under VPD of 4 kPa, a tree loses ~400–600 moles of water per mole of CO₂ fixed. At VPD of 1 kPa (cool, humid morning), that ratio is ~100:1. VPD directly controls the efficiency of photosynthesis.</li>
+<li><strong>Critical implication:</strong> Irrigation delivered at peak VPD is inefficient. The tree cannot use the water: stomata are partially closed, limiting photosynthesis. Morning irrigation is dramatically more effective.</li>
+</ul>`,
+    fieldnote:`The Okanagan routinely hits VPD values of 4–6 kPa between noon and 4 PM in July and August. That's the global range where most tree species hit hydraulic shutdown. This is why a tree can look completely fine Monday morning, show stress symptoms by Wednesday afternoon, and be seriously compromised by Friday — all within a single heat event. If you're doing PHC assessments in summer, note the time of day. Afternoon assessments of stomatal-sensitive indicators (leaf turgor, wilt, needle droop) reflect VPD stress as much as soil water deficit. Same tree, 7 AM vs 3 PM — two different pictures.`
+  },
+  {
+    text: "Most temperate broadleaf trees are described as 'hypostomatous.' What does this mean, and what is its practical significance for arboricultural work?",
+    options:[
+      "Stomata open downward below atmospheric pressure, generating the suction force for transpiration pull",
+      "Stomata are concentrated on the lower (abaxial) leaf surface, which reduces solar-driven evaporative loss and affects the efficacy of foliar treatments",
+      "Stomata are equally distributed on both leaf surfaces (amphistomatous), maximizing gas exchange efficiency",
+      "Stomata are only present in bark tissue (hypo = under bark), where lenticels serve as the primary gas exchange surface"
+    ],
+    correct:1,
+    title:"Stomatal Distribution: Hypostomatous vs. Amphistomatous",
+    lesson:`<p>Where stomata are located on a leaf is not random — it's an evolutionary response to the light and water environment.</p>
+<ul>
+<li><strong>Hypostomatous (most temperate broadleaf trees):</strong> Stomata primarily on the lower (abaxial) surface. Upper surface exposed to direct solar radiation — keeping stomata away reduces solar heating of guard cells and unintended passive water loss.</li>
+<li><strong>Amphistomatous (some species):</strong> Both surfaces. Common in species evolved in high-light, high-CO₂-demand environments. Many grasses, some fast-growing pioneer trees.</li>
+<li><strong>Epistomatous (rare):</strong> Upper surface only. Mostly aquatic or floating-leaf species where the lower surface is submerged.</li>
+<li><strong>Conifers:</strong> A special case — stomata are arranged in sunken rows (stomatal crypts) on needle surfaces. The crypts trap humid air, reducing the vapor gradient across the stomatal pore. Highly adapted for xeric conditions. Interior Douglas-fir and ponderosa pine use this to survive Okanagan summers.</li>
+<li><strong>Within-tree variation:</strong> Sun leaves (upper canopy, full exposure) have higher stomatal density than shade leaves from the same tree. The tree acclimate its leaves to the light environment they develop in.</li>
+<li><strong>Practical significance:</strong> Foliar sprays applied only to the upper leaf surface miss the majority of stomatal openings entirely. Systemic uptake via stomata requires coverage of the leaf underside.</li>
+</ul>`,
+    fieldnote:`This matters every time you apply a foliar treatment — insecticidal soap, copper fungicide, horticultural oil, bifenazate for spider mites. The active ingredient needs to reach where the stomata are: the leaf underside. A backpack sprayer aimed straight down from above deposits product almost exclusively on upper surfaces. Walk around, get the nozzle below the canopy, invert the spray angle, and check coverage on undersides. Spider mites, aphids, and scale crawlers also establish on leaf undersides first — same reason. If you're scouting for pests, flip the leaves.`
+  },
+  {
+    text: "A mature ponderosa pine on a south-facing slope in West Kelowna shows yellowing needles and early needle drop in late July. A xylem water potential measurement reads –2.1 MPa. What is the most likely explanation?",
+    options:[
+      "Water potential near –2.1 MPa indicates a well-hydrated tree; the symptoms are likely caused by a foliar pathogen such as Dothistroma needle blight",
+      "At –2.1 MPa, ponderosa pine has likely closed stomata to prevent further water loss; prolonged stomatal closure reduces carbon fixation, leading to needle carbon starvation and early senescence",
+      "A reading of –2.1 MPa indicates catastrophic xylem cavitation; the tree will not recover and should be scheduled for removal",
+      "Root pressure at –2.1 MPa is forcing water out through leaves; the symptoms represent guttation damage on needle tips"
+    ],
+    correct:1,
+    title:"Ponderosa Pine Hydraulics: Isohydric Strategy and Carbon Starvation",
+    lesson:`<p>Ponderosa pine is classified as an <strong>isohydric</strong> species — it tightly regulates xylem water potential by closing stomata early under drought stress, even at the cost of carbon gain.</p>
+<ul>
+<li><strong>Stomatal closure threshold:</strong> Ponderosa typically begins significant stomatal closure around –1.5 to –2.0 MPa. This is well above the cavitation threshold of –3.5 to –4.0 MPa — the safety margin prevents xylem embolism.</li>
+<li><strong>Contrast with anisohydric species:</strong> Trembling aspen keeps stomata open longer under stress (anisohydric strategy), accepting greater hydraulic risk in exchange for more carbon gain.</li>
+<li><strong>The carbon cost:</strong> With stomata closed, photosynthesis stops. No sugar production. The tree cannot maintain all its tissues. It sheds older needles first — the ones farthest from current-year growth and most expensive to support per unit return.</li>
+<li><strong>This is "slow decline":</strong> The mechanism behind many drought-related tree deaths is not direct desiccation — it's carbon starvation from prolonged stomatal closure. The tree starves slowly over weeks to months.</li>
+<li><strong>Recovery:</strong> If moisture returns, the tree can recover fully from early-stage carbon starvation. Late-stage decline (>50% crown loss, secondary beetle attack) is generally irreversible.</li>
+<li><strong>Cavitation context:</strong> –2.1 MPa is NOT catastrophic for ponderosa. The tree is stressed but within its adaptive range. The symptoms reflect carbon limitation, not hydraulic failure.</li>
+</ul>`,
+    fieldnote:`South-facing slopes above the valley in West Kelowna are among the driest microsites in the region — thin soils, high solar load, low moisture retention. Ponderosa growing there are often hitting –2.0 MPa by mid-July in a dry year. When you get the "my pine looks sick" call in late July, the diagnostic sequence is: (1) Is it a south-facing slope? (2) What's precipitation been like since May? (3) Any irrigation? (4) Any soil compaction or competition from turf? Five times out of ten, you're looking at drought physiology, not disease. The ISA Certification Study Guide explicitly covers isohydric vs. anisohydric strategies under Tree Biology — know this for the exam.`
+  }
+];
+
+let current=0, answers=new Array(5).fill(null), score=0;
+
+function render(){
+  const q=questions[current];
+  const answered=answers[current]!==null;
+  let html=`<div class="question-card">
+    <div class="q-number">Question ${current+1} of 5</div>
+    <div class="q-text">${q.text}</div>
+    <div class="options">`;
+  q.options.forEach((opt,i)=>{
+    let cls='option';
+    let dis='';
+    if(answered){
+      dis='disabled';
+      if(i===q.correct) cls+=' correct';
+      else if(i===answers[current] && i!==q.correct) cls+=' wrong';
+      else cls+=' dimmed';
+    }
+    html+=`<button class="${cls}" ${dis} onclick="answer(${i})"><span class="opt-letter">${['A','B','C','D'][i]}</span><span>${opt}</span></button>`;
+  });
+  html+='</div>';
+  if(answered){
+    const correct=answers[current]===q.correct;
+    html+=`<div class="reveal show">
+      <div class="reveal-header">${correct?'✅ Correct':'❌ Incorrect'} — ${correct?'Well done.':'The answer is '+['A','B','C','D'][q.correct]+'.'}</div>
+      <div class="reveal-title">${q.title}</div>
+      ${q.lesson}
+      <div class="field-note"><div class="field-note-header">📋 Field Note — Okanagan</div><p>${q.fieldnote}</p></div>
+      ${current<4?`<button class="next-btn" onclick="goTo(${current+1})">Next Question →</button>`:'<button class="next-btn" onclick="showScore()">See Results →</button>'}
+    </div>`;
+  }
+  html+='</div>';
+  document.getElementById('questionArea').innerHTML=html;
+  // update dots
+  const dots=document.querySelectorAll('.q-dot');
+  dots.forEach((d,i)=>{
+    d.classList.remove('active','correct','wrong');
+    if(i===current) d.classList.add('active');
+    if(answers[i]!==null){
+      if(answers[i]===questions[i].correct) d.classList.add('correct');
+      else d.classList.add('wrong');
+    }
+  });
+}
+
+function answer(i){
+  if(answers[current]!==null) return;
+  answers[current]=i;
+  if(i===questions[current].correct) score++;
+  render();
+}
+
+function goTo(i){
+  current=i;
+  document.getElementById('scoreCard').classList.remove('show');
+  document.getElementById('questionArea').style.display='';
+  render();
+}
+
+function showScore(){
+  document.getElementById('questionArea').style.display='none';
+  const sc=document.getElementById('scoreCard');
+  sc.classList.add('show');
+  document.getElementById('scoreBig').textContent=score+'/5';
+  const msgs=['Keep at it — re-read the reveals and come back.','Good effort — check the field notes you missed.','Solid. One more pass on the reveals will lock it in.','Strong work. ISA exam material right there.','Perfect — you know your stomata. Teach it at tailgate.'];
+  document.getElementById('scoreLabel').textContent=msgs[score];
+  const dots=document.querySelectorAll('.q-dot');
+  dots.forEach(d=>d.classList.remove('active'));
+}
+
+function restart(){
+  current=0;
+  document.getElementById('scoreCard').classList.remove('show');
+  document.getElementById('questionArea').style.display='';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
