@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 22 · Tuesday · Alpine Butterfly Knot — Microbe Tree Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh;line-height:1.6}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 24px;display:flex;align-items:center;gap:14px}
+.header-logo{font-size:22px;font-weight:800;color:#e3a117;letter-spacing:-0.5px}
+.header-sub{font-size:13px;color:#8b949e}
+.week-badge{margin-left:auto;background:#e3a11722;border:1px solid #e3a11755;color:#f0b429;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.container{max-width:860px;margin:0 auto;padding:28px 20px}
+.day-banner{background:linear-gradient(135deg,#1f1a0d,#2a2010);border:1px solid #e3a11740;border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.day-label{font-size:13px;font-weight:600;color:#f0b429;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.day-title{font-size:28px;font-weight:800;color:#e6edf3;margin-bottom:6px}
+.day-subtitle{font-size:15px;color:#8b949e}
+/* Section nav */
+.section-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.tab{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:#8b949e;cursor:pointer;transition:all .2s}
+.tab:hover{border-color:#e3a11760;color:#f0b429}
+.tab.active{background:#e3a11720;border-color:#e3a117;color:#f0b429}
+.section{display:none}
+.section.active{display:block}
+/* Cards */
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:22px;margin-bottom:18px}
+.card h3{font-size:14px;font-weight:700;color:#f0b429;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.card p{font-size:14px;color:#c9d1d9;margin-bottom:12px;line-height:1.7}
+.card ul{padding-left:20px;margin-bottom:12px}
+.card ul li{font-size:14px;color:#c9d1d9;margin-bottom:7px;line-height:1.6}
+.card ul li strong{color:#e6edf3}
+.warning-box{background:#2a1a0d;border:1px solid #e3611440;border-radius:8px;padding:14px 16px;margin-top:12px}
+.warning-box .warn-head{font-size:12px;font-weight:700;color:#f85149;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.warning-box p{font-size:13px;color:#ffa198;line-height:1.6;margin:0}
+.field-note{background:#0a1f2e;border:1px solid #1f4a7a;border-radius:8px;padding:14px 16px;margin-top:14px}
+.field-note-header{font-size:12px;font-weight:700;color:#58a6ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.field-note p{font-size:13px;color:#a5c8f5;line-height:1.7;margin:0}
+.svg-wrap{background:#0d1117;border-radius:10px;padding:16px;margin:16px 0;overflow-x:auto}
+/* Tying steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:14px}
+.step{background:#0d1117;border-radius:8px;padding:14px;border-top:3px solid #e3a117}
+.step-num{font-size:11px;font-weight:700;color:#f0b429;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.step p{font-size:13px;color:#c9d1d9;line-height:1.5;margin:0}
+/* Use case grid */
+.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.use-item{background:#0d1117;border-radius:8px;padding:13px;border-left:3px solid #e3a117}
+.use-item strong{display:block;font-size:13px;color:#f0b429;margin-bottom:5px}
+.use-item p{font-size:13px;color:#c9d1d9;margin:0}
+/* Checklist */
+.checklist{list-style:none;padding:0;margin:10px 0}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-bottom:1px solid #21262d;font-size:14px;color:#c9d1d9}
+.checklist li:last-child{border-bottom:none}
+.check-icon{color:#2ea043;font-size:14px;min-width:16px}
+.x-icon{color:#da3633;font-size:14px;min-width:16px}
+.isa-footer{margin-top:28px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;font-size:12px;color:#8b949e}
+.isa-footer strong{color:#c9d1d9}
+@media(max-width:600px){.use-grid{grid-template-columns:1fr}.day-title{font-size:22py}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">🌲 Microbe Tree</div>
+  <div class="header-sub">Crew Training · Week 22</div>
+  <div class="week-badge">🪚 Equipment &amp; Knots</div>
+</div>
+<div class="container">
+  <div class="day-banner">
+    <div class="day-label">🪚 Tuesday · Equipment &amp; Knots</div>
+    <div class="day-title">Alpine Butterfly Knot</div>
+    <div class="day-subtitle">The mid-line loop that works in any direction — and why it's in your kit</div>
+  </div>
+
+  <div class="section-tabs">
+    <div class="tab active" onclick="showTab('overview')">Overview</div>
+    <div class="tab" onclick="showTab('tying')">How to Tie It</div>
+    <div class="tab" onclick="showTab('uses')">Arborist Uses</div>
+    <div class="tab" onclick="showTab('load')">Load &amp; Limits</div>
+    <div class="tab" onclick="showTab('inspection')">Pre-Use Check</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section active" id="tab-overview">
+    <div class="card">
+      <h3>What Is the Alpine Butterfly?</h3>
+      <p>The alpine butterfly knot (also called the lineman's loop or butterfly loop) creates a fixed, isolated loop in the middle of a rope without needing access to either end. It's a <strong>mid-line loop knot</strong> — you form it in the standing part of the rope while both ends remain in use.</p>
+      <p>Unlike a figure-8 on a bight (which requires a free end or doubling back), the butterfly is the go-to knot when you need a loop <em>anywhere</em> along a rope that's already anchored at both ends.</p>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 540 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:540px;display:block;margin:0 auto">
+          <rect width="540" height="180" fill="#0d1117" rx="6"/>
+          <!-- Finished knot illustration -->
+          <!-- Left strand -->
+          <path d="M 30 90 C 80 90 100 60 140 60 C 170 60 190 80 200 90 C 210 100 220 130 260 130 C 290 130 310 110 340 90 C 360 78 380 70 400 70 C 430 70 460 90 510 90" fill="none" stroke="#e3a117" stroke-width="4" stroke-linecap="round"/>
+          <!-- Loop -->
+          <path d="M 200 90 C 215 60 235 40 260 40 C 285 40 305 60 320 90" fill="none" stroke="#f0b429" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 200 90 C 215 100 225 120 260 130 C 295 140 305 120 320 90" fill="none" stroke="#e3a117" stroke-width="4" stroke-linecap="round"/>
+          <!-- Loop tip arrow -->
+          <path d="M 252 32 L 260 22 L 268 32" fill="#f0b429"/>
+          <text x="238" y="16" fill="#f0b429" font-size="11" font-family="sans-serif" font-weight="bold">LOOP</text>
+          <!-- Left end label -->
+          <text x="14" y="87" fill="#8b949e" font-size="11" font-family="sans-serif">End 1</text>
+          <!-- Right end label -->
+          <text x="490" y="87" fill="#8b949e" font-size="11" font-family="sans-serif">End 2</text>
+          <!-- Arrow showing load in 3 directions -->
+          <path d="M 260 25 L 260 12" stroke="#f0b429" stroke-width="1.5" marker-end="url(#arr)"/>
+          <!-- Annotations -->
+          <text x="80" y="145" fill="#8b949e" font-size="12" font-family="sans-serif">← Load in either direction along rope, OR from the loop itself</text>
+          <!-- Key property callout -->
+          <rect x="30" y="155" width="480" height="18" rx="4" fill="#e3a11715"/>
+          <text x="40" y="167" fill="#f0b429" font-size="11" font-family="sans-serif" font-weight="bold">KEY PROPERTY:</text>
+          <text x="128" y="167" fill="#c9d1d9" font-size="11" font-family="sans-serif"> Does not slip or bind — loop maintains fixed size under load in any direction</text>
+        </svg>
+      </div>
+      <ul>
+        <li><strong>Classification:</strong> Fixed loop knot; mid-line; symmetrical loading</li>
+        <li><strong>Also known as:</strong> Lineman's loop, butterfly loop, lineman's rider</li>
+        <li><strong>Key property:</strong> The loop remains stable under load from the standing end on either side, or from the loop itself — true tri-directional loading capability</li>
+        <li><strong>Knot efficiency:</strong> Approximately 50–60% of rope break strength (the knot reduces rope strength by creating a stress concentration at the bend)</li>
+        <li><strong>Ease of untying:</strong> Unties cleanly after loading — minimal jamming compared to figure-8 variants</li>
+      </ul>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The alpine butterfly earns its keep on jobs where you're mid-rope and need a clip-in point, a redirect anchor, or you need to isolate a damaged section — all without untying from your anchor. You can't do that with most other loop knots. It's not the most common knot in the kit, but when you need it, nothing else will do.</p></div>
+    </div>
+  </div>
+
+  <!-- TYING -->
+  <div class="section" id="tab-tying">
+    <div class="card">
+      <h3>Method 1 — The Hand-Wrap Method (Fastest in Field)</h3>
+      <p>This is the preferred method for tying a butterfly in an already-rigged system where you can't access the ends. Takes about 15 seconds once you have the motion.</p>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:0 auto">
+          <rect width="560" height="240" fill="#0d1117" rx="6"/>
+          <!-- Step 1 -->
+          <rect x="10" y="10" width="120" height="100" rx="6" fill="#1a1f1a" stroke="#e3a11730"/>
+          <text x="20" y="26" fill="#f0b429" font-size="10" font-family="sans-serif" font-weight="bold">STEP 1</text>
+          <!-- Hand outline simplified -->
+          <rect x="45" y="35" width="55" height="65" rx="8" fill="#2a2010" stroke="#e3a11750"/>
+          <text x="52" y="60" fill="#e3a117" font-size="20" font-family="sans-serif">✋</text>
+          <!-- Rope drape -->
+          <path d="M 20 78 C 50 60 70 60 100 80 C 80 90 50 90 20 78" fill="none" stroke="#f0b429" stroke-width="3"/>
+          <text x="18" y="105" fill="#8b949e" font-size="10" font-family="sans-serif">Drape rope over hand</text>
+
+          <!-- Step 2 -->
+          <rect x="145" y="10" width="120" height="100" rx="6" fill="#1a1f1a" stroke="#e3a11730"/>
+          <text x="155" y="26" fill="#f0b429" font-size="10" font-family="sans-serif" font-weight="bold">STEP 2</text>
+          <text x="163" y="55" fill="#e3a117" font-size="20" font-family="sans-serif">✋</text>
+          <path d="M 155 80 C 185 55 210 65 235 80" fill="none" stroke="#f0b429" stroke-width="3"/>
+          <path d="M 155 80 C 180 90 210 85 235 80" fill="none" stroke="#f0b429" stroke-width="2" stroke-dasharray="4,3"/>
+          <text x="150" y="105" fill="#8b949e" font-size="10" font-family="sans-serif">Wrap rope around twice</text>
+
+          <!-- Step 3 -->
+          <rect x="280" y="10" width="120" height="100" rx="6" fill="#1a1f1a" stroke="#e3a11730"/>
+          <text x="290" y="26" fill="#f0b429" font-size="10" font-family="sans-serif" font-weight="bold">STEP 3</text>
+          <text x="298" y="55" fill="#e3a117" font-size="20" font-family="sans-serif">✋</text>
+          <!-- Arrow showing loop pulled over -->
+          <path d="M 310 70 C 330 50 350 55 370 70" fill="none" stroke="#3fb950" stroke-width="2.5" marker-end="url(#garr)"/>
+          <text x="284" y="105" fill="#8b949e" font-size="10" font-family="sans-serif">Pull near loop over far loop</text>
+
+          <!-- Step 4 -->
+          <rect x="415" y="10" width="120" height="100" rx="6" fill="#1a1f1a" stroke="#e3a11730"/>
+          <text x="425" y="26" fill="#f0b429" font-size="10" font-family="sans-serif" font-weight="bold">STEP 4</text>
+          <!-- Finished loop shape -->
+          <path d="M 425 80 C 455 80 470 60 480 45 C 490 60 500 70 520 80" fill="none" stroke="#e3a117" stroke-width="3"/>
+          <path d="M 425 80 C 455 80 465 95 480 105 C 495 95 510 80 520 80" fill="none" stroke="#e3a117" stroke-width="3"/>
+          <circle cx="480" cy="45" r="12" fill="none" stroke="#f0b429" stroke-width="2.5"/>
+          <text x="428" y="118" fill="#8b949e" font-size="10" font-family="sans-serif">Pass loop through &amp; dress</text>
+
+          <!-- Notes row -->
+          <rect x="10" y="125" width="525" height="105" rx="6" fill="#0d2818" stroke="#2ea04330"/>
+          <text x="20" y="143" fill="#3fb950" font-size="11" font-family="sans-serif" font-weight="bold">CRITICAL DRESSING STEP:</text>
+          <text x="20" y="160" fill="#c9d1d9" font-size="11" font-family="sans-serif">After passing the loop through, pull both standing ends in opposite directions while holding the loop to fully seat the knot.</text>
+          <text x="20" y="180" fill="#c9d1d9" font-size="11" font-family="sans-serif">An undressed butterfly looks similar to a finished one but will slip or capsize under load.</text>
+          <text x="20" y="200" fill="#f0b429" font-size="11" font-family="sans-serif" font-weight="bold">CHECK:</text>
+          <text x="70" y="200" fill="#c9d1d9" font-size="11" font-family="sans-serif"> The loop should be symmetric, the knot barrel should be compact and centered, both strands should exit cleanly.</text>
+          <text x="20" y="220" fill="#8b949e" font-size="10" font-family="sans-serif">Per ANSI Z133: all knots must be inspected for proper form before loading. A knot that "looks right" but is not fully dressed is a loaded failure waiting to happen.</text>
+        </svg>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Method 2 — Overhand Loop Method (Most Reliable for Learning)</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">Step 1</div><p>Form a large loop in the rope at the desired location. Hold the crossing point.</p></div>
+        <div class="step"><div class="step-num">Step 2</div><p>Twist the crossing point twice in the same direction to create two half-hitches stacked on top of each other.</p></div>
+        <div class="step"><div class="step-num">Step 3</div><p>Take the loop that's been formed on one side and bring it up and over the top of both twists.</p></div>
+        <div class="step"><div class="step-num">Step 4</div><p>Push that loop down through the center gap between the two twisted sections. Pull the loop through.</p></div>
+        <div class="step"><div class="step-num">Step 5</div><p>Dress firmly by pulling both standing ends while holding the loop. The knot barrel should seat symmetrically.</p></div>
+        <div class="step"><div class="step-num">Verify</div><p>Pull the loop in three directions — standing-end-1, standing-end-2, and the loop itself. It should not slip or change shape in any direction.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USES -->
+  <div class="section" id="tab-uses">
+    <div class="card">
+      <h3>Arboricultural Applications</h3>
+      <div class="use-grid">
+        <div class="use-item">
+          <strong>Mid-line redirect anchor</strong>
+          <p>Create a fixed loop anywhere along a lowering line to redirect force through a block or redirect pulley — without cutting the rope.</p>
+        </div>
+        <div class="use-item">
+          <strong>Isolating a damaged rope section</strong>
+          <p>If a rope section is abraded, burned, or compromised mid-line, tie a butterfly on each side of the damage and use only the loop — the damaged section bears no load.</p>
+        </div>
+        <div class="use-item">
+          <strong>Three-point load distribution</strong>
+          <p>In guying or multi-anchor rigging setups, a butterfly in the center of a line allows load to be shared across two directions while the loop takes a third attachment.</p>
+        </div>
+        <div class="use-item">
+          <strong>Foot ascender loop</strong>
+          <p>Some climbers tie an alpine butterfly into their footloop line — provides a fixed-size, stable, adjustable-position loop that won't slip under body weight.</p>
+        </div>
+        <div class="use-item">
+          <strong>Haul system tethering</strong>
+          <p>When setting up a z-rig or 3:1 haul, a butterfly provides a fixed attachment point on the haul line that won't migrate under repeated loading/release cycles.</p>
+        </div>
+        <div class="use-item">
+          <strong>Rope-length management</strong>
+          <p>On an overlong rope, tie a butterfly and clip the loop to the anchor — effectively shortening the working rope by a fixed amount without cutting.</p>
+        </div>
+      </div>
+      <div class="warning-box">
+        <div class="warn-head">⚠ When NOT to Use the Alpine Butterfly</div>
+        <p>Not appropriate as a climbing hitch (it doesn't grip a running line). Do not use as a substitute for a prussik or VT hitch in a secondary tending system. Do not use as a terminal attachment — the figure-8 on a bight or bowline is the standard for terminal loops. Per ISA BMP Rigging, always select the knot appropriate to its specific load vector and application — there is no universal knot.</p>
+      </div>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The rope-isolation use case is a job-saver. If you're mid-removal and find a section of your lowering line that's questionable — a heat mark, abrasion from a bark inclusion, bark imprint that went deeper than it looked — you don't have to pull the whole rope and restart. Tie butterflies on either side of the suspect section, clip through the loops with a carabiner instead of using the line directly, and continue. That's a field judgment call that requires knowing the knot cold.</p></div>
+    </div>
+  </div>
+
+  <!-- LOAD -->
+  <div class="section" id="tab-load">
+    <div class="card">
+      <h3>Load Characteristics &amp; Knot Efficiency</h3>
+      <p>Understanding knot efficiency is not academic — it directly determines whether your rigging system is inside or outside WorkSafeBC-mandated safety margins.</p>
+      <ul>
+        <li><strong>Knot efficiency (~50–65%):</strong> A butterfly reduces the break strength of the rope at the knot to approximately 50–65% of the rope's catalog break strength. Example: 13mm arborist climbing rope with 27 kN break strength = ~14–18 kN at the butterfly.</li>
+        <li><strong>Why knots weaken rope:</strong> The bend radius created by the knot induces a stress concentration. As the rope exits the knot body, fibers on the outside of the bend bear more load than fibers on the inside — this uneven loading initiates failure at a lower overall force.</li>
+        <li><strong>Direction symmetry:</strong> The butterfly has nearly equal efficiency regardless of which direction the load comes from (standing-end-1, standing-end-2, or the loop) — this is unique among mid-line loops and is why it's specified for multi-directional applications.</li>
+        <li><strong>Comparative efficiency:</strong> Figure-8 on a bight: ~55–75% · Bowline: ~60–75% · Overhand loop: ~45–55% · Alpine Butterfly: ~50–65%. The butterfly is slightly less efficient than a well-formed figure-8, but significantly more so than an overhand loop.</li>
+        <li><strong>Dynamic vs. static:</strong> Arborist work generates shock loads — a piece dropped and arrested generates forces far exceeding its static weight. ANSI Z133 requires rigging systems rated for the anticipated dynamic forces, not just the piece weight. Factor shock loading into your system design.</li>
+        <li><strong>Minimum WLL protocol:</strong> Per WorkSafeBC OHS Regulation Part 15, rigging components must have a documented working load limit. Use the weakest component in the system — including knot-reduced rope strength — as your system WLL.</li>
+      </ul>
+      <div class="warning-box">
+        <div class="warn-head">⚠ Safety Margin Requirement</div>
+        <p>ANSI Z133 does not specify a single safety factor for all rigging, but WorkSafeBC and industry practice use a minimum 5:1 safety factor (WLL = break strength ÷ 5) for rigging systems with dynamic loading. With a butterfly in a 27 kN rope: effective WLL = ~14 kN ÷ 5 = 2.8 kN (~285 kg). Always know your numbers before you load the system.</p>
+      </div>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The safety factor math is something you should be able to do on a job site with a piece of chalk on the truck door. Rope break strength (from the manufacturer tag, in kN) × knot efficiency (0.55 for a butterfly, conservative) ÷ safety factor (5) = your working load limit for the knotted system. If your piece exceeds that, you need a mechanical advantage system, a larger-diameter rope, or a different attachment method. Do the math before the cut, not after.</p></div>
+    </div>
+  </div>
+
+  <!-- INSPECTION -->
+  <div class="section" id="tab-inspection">
+    <div class="card">
+      <h3>Pre-Use Inspection Checklist</h3>
+      <p>Per ANSI Z133 Section 9 and WorkSafeBC OHS Regulation, all rigging components including knots must be inspected before each use. Here's the butterfly-specific check sequence:</p>
+      <ul class="checklist">
+        <li><span class="check-icon">✓</span><span><strong>Rope condition at knot entry/exit points</strong> — no abrasion, heat marks, chemical exposure, or discoloration. These stress concentration points are where failure initiates.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Knot barrel symmetry</strong> — the butterfly should look the same on both sides. Asymmetry means it wasn't fully dressed or the wrong knot was tied.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Loop geometry</strong> — the loop should be round or oval, not twisted or crossed. A twisted loop alters how the load distributes through the knot body.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Tri-directional pull test</strong> — apply light hand tension from each of the three directions (both standing ends and the loop). No slipping, no shape change.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Correct identification</strong> — confirm this is actually a butterfly and not an accidental overhand loop (the overhand is weaker and does not have tri-directional stability). The butterfly has a specific barrel structure.</span></li>
+        <li><span class="x-icon">✗</span><span><strong>Never use a loaded butterfly without inspection</strong> — once a knot has been loaded, re-inspect before re-loading. Dynamic loading can reveal latent dressing errors invisible before first load.</span></li>
+        <li><span class="x-icon">✗</span><span><strong>Never dress a knot while it is loaded</strong> — the knot must be completely slack before dressing or adjusting. Adjusting a loaded knot can cause catastrophic failure.</span></li>
+        <li><span class="x-icon">✗</span><span><strong>Never use a knot tied in webbing as a rope substitute</strong> — different material, different friction, different failure mode. The butterfly's efficiency ratings apply to round rope only.</span></li>
+      </ul>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The most common butterfly failure mode in arborist applications is not the knot itself — it's tying a different knot and calling it a butterfly. An overhand on a bight looks superficially similar but has significantly lower efficiency and does not have tri-directional load stability. Know what a correctly tied, fully dressed butterfly looks like. Tie it a hundred times until the barrel pattern is automatic recognition. Then you'll catch the wrong knot before it goes into the system.</p></div>
+    </div>
+  </div>
+
+  <div class="isa-footer">
+    <strong>📚 ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;·&nbsp;
+    <strong>Sources:</strong> ANSI Z133 Safe Work Practices for Arborists · ISA BMP Rigging · WorkSafeBC OHS Regulation Part 15
+  </div>
+</div>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
