@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 22 · Wednesday · Green Ash — Microbe Tree Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh;line-height:1.6}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 24px;display:flex;align-items:center;gap:14px}
+.header-logo{font-size:22px;font-weight:800;color:#1f6feb;letter-spacing:-0.5px}
+.header-sub{font-size:13px;color:#8b949e}
+.week-badge{margin-left:auto;background:#1f6feb22;border:1px solid #1f6feb55;color:#58a6ff;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.layout{display:flex;min-height:calc(100vh - 57px)}
+/* Sidebar */
+.sidebar{width:220px;background:#161b22;border-right:1px solid #30363d;padding:20px 0;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 57px);overflow-y:auto}
+.sidebar-species{padding:16px 18px;border-bottom:1px solid #30363d;margin-bottom:10px}
+.species-icon{font-size:32px;margin-bottom:6px}
+.species-name{font-size:15px;font-weight:800;color:#e6edf3;margin-bottom:2px}
+.species-sci{font-size:12px;color:#8b949e;font-style:italic}
+.sidebar-item{display:block;padding:9px 18px;font-size:13px;font-weight:600;color:#8b949e;cursor:pointer;border-left:3px solid transparent;transition:all .15s;text-decoration:none}
+.sidebar-item:hover{color:#58a6ff;background:#1f6feb10;border-left-color:#1f6feb50}
+.sidebar-item.active{color:#58a6ff;background:#1f6feb15;border-left-color:#1f6feb}
+/* Content */
+.content{flex:1;padding:28px 28px;max-width:680px;overflow-y:auto}
+.section{display:none}
+.section.active{display:block}
+.section-title{font-size:24px;font-weight:800;color:#e6edf3;margin-bottom:6px}
+.section-sub{font-size:14px;color:#8b949e;margin-bottom:22px}
+.info-block{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:18px;margin-bottom:16px}
+.info-block h4{font-size:12px;font-weight:700;color:#58a6ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.info-block p{font-size:14px;color:#c9d1d9;line-height:1.7;margin-bottom:10px}
+.info-block p:last-child{margin-bottom:0}
+.info-block ul{padding-left:18px;margin-top:6px}
+.info-block ul li{font-size:14px;color:#c9d1d9;margin-bottom:6px;line-height:1.6}
+.info-block ul li strong{color:#e6edf3}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.spec-item{background:#0d1117;border-radius:7px;padding:10px 12px}
+.spec-label{font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.spec-val{font-size:14px;color:#e6edf3;font-weight:600}
+.alert-box{border-radius:8px;padding:14px 16px;margin-bottom:14px}
+.alert-red{background:#2a1010;border:1px solid #da363340}
+.alert-red .alert-head{font-size:12px;font-weight:700;color:#f85149;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.alert-red p{font-size:13px;color:#ffa198;line-height:1.6;margin:0}
+.alert-amber{background:#2a1f0d;border:1px solid #e3a11740}
+.alert-amber .alert-head{font-size:12px;font-weight:700;color:#f0b429;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.alert-amber p{font-size:13px;color:#f5c842;line-height:1.6;margin:0}
+.field-note{background:#0a1f2e;border:1px solid #1f4a7a;border-radius:8px;padding:14px 16px;margin-top:14px}
+.field-note-header{font-size:12px;font-weight:700;color:#58a6ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.field-note p{font-size:13px;color:#a5c8f5;line-height:1.7;margin:0}
+.pest-item{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.pest-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pest-name{font-size:14px;font-weight:700;color:#e6edf3}
+.sev-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px}
+.sev-critical{background:#da363340;color:#f85149;border:1px solid #da363360}
+.sev-moderate{background:#e3a11730;color:#f0b429;border:1px solid #e3a11760}
+.sev-low{background:#2ea04330;color:#3fb950;border:1px solid #2ea04360}
+.pest-item p{font-size:13px;color:#c9d1d9;line-height:1.6;margin-bottom:6px}
+.pest-item p:last-child{margin-bottom:0}
+.isa-footer{margin-top:28px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;font-size:12px;color:#8b949e}
+.isa-footer strong{color:#c9d1d9}
+/* Mobile */
+.mobile-nav{display:none;flex-wrap:wrap;gap:8px;padding:12px 16px;background:#161b22;border-bottom:1px solid #30363d}
+.mobile-nav .tab{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;color:#8b949e;cursor:pointer}
+.mobile-nav .tab.active{border-color:#1f6feb;color:#58a6ff;background:#1f6feb15}
+@media(max-width:700px){.sidebar{display:none}.mobile-nav{display:flex}.layout{flex-direction:column}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">🌲 Microbe Tree</div>
+  <div class="header-sub">Crew Training · Week 22</div>
+  <div class="week-badge">🌳 Tree Profile</div>
+</div>
+<div class="mobile-nav">
+  <div class="tab active" onclick="showSection('identity',this)">Identity</div>
+  <div class="tab" onclick="showSection('origin',this)">Origin</div>
+  <div class="tab" onclick="showSection('biology',this)">Biology</div>
+  <div class="tab" onclick="showSection('pests',this)">Pests</div>
+  <div class="tab" onclick="showSection('diseases',this)">Diseases</div>
+  <div class="tab" onclick="showSection('arborist',this)">Arborist Notes</div>
+</div>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-species">
+      <div class="species-icon">🌳</div>
+      <div class="species-name">Green Ash</div>
+      <div class="species-sci">Fraxinus pennsylvanica</div>
+    </div>
+    <a class="sidebar-item active" onclick="showSection('identity',this)">🔍 Identity</a>
+    <a class="sidebar-item" onclick="showSection('origin',this)">🗺 Origin</a>
+    <a class="sidebar-item" onclick="showSection('biology',this)">🌱 Biology &amp; What It Wants</a>
+    <a class="sidebar-item" onclick="showSection('pests',this)">🐛 Pest Pressures</a>
+    <a class="sidebar-item" onclick="showSection('diseases',this)">🦠 Disease Pressures</a>
+    <a class="sidebar-item" onclick="showSection('arborist',this)">🪚 Arborist Notes</a>
+  </div>
+  <div class="content">
+
+    <!-- IDENTITY -->
+    <div class="section active" id="sec-identity">
+      <div class="section-title">Identity</div>
+      <div class="section-sub">Taxonomy, key features, and what to look for in the field</div>
+      <div class="info-block">
+        <h4>Taxonomy</h4>
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-label">Family</div><div class="spec-val">Oleaceae (Olive family)</div></div>
+          <div class="spec-item"><div class="spec-label">Genus</div><div class="spec-val">Fraxinus</div></div>
+          <div class="spec-item"><div class="spec-label">Species</div><div class="spec-val">F. pennsylvanica</div></div>
+          <div class="spec-item"><div class="spec-label">Common names</div><div class="spec-val">Green ash, red ash</div></div>
+        </div>
+      </div>
+      <div class="info-block">
+        <h4>Key ID Features</h4>
+        <ul>
+          <li><strong>Compound leaves:</strong> Opposite, pinnately compound, 5–9 leaflets (usually 7), each leaflet 5–15 cm long. Leaflets are lanceolate to elliptic, with slightly serrate margins.</li>
+          <li><strong>Bark:</strong> Young bark is smooth and gray-green. Mature bark develops distinctive interlacing diamond-shaped ridges — a feature shared across the <em>Fraxinus</em> genus and useful for winter ID.</li>
+          <li><strong>Buds:</strong> Opposite arrangement (critical for ID — confirms genus). Terminal bud is larger, rounded; lateral buds pressed against twig. Buds are brown to rust-colored.</li>
+          <li><strong>Samara (fruit):</strong> Single-winged samaras, 3–5 cm long, hanging in clusters. The wing extends to or nearly to the seed body — distinguishes green ash from white ash (F. americana), where the wing extends only partway down.</li>
+          <li><strong>Fall colour:</strong> Yellow to purple-red, variable. One of the better fall-colour ashes in cultivation.</li>
+          <li><strong>Size:</strong> Typically 12–20 m tall in cultivation, occasionally 25 m. Spread 6–15 m. Growth rate 45–60 cm per year when young and well-watered.</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Cultivar Diversity in Okanagan Plantings</h4>
+        <p>Green ash in the Okanagan is rarely the straight species — it's almost always a cultivar. This matters because cultivar characteristics affect everything from crown shape to drought tolerance to pest susceptibility.</p>
+        <ul>
+          <li><strong>'Patmore':</strong> Most common boulevard cultivar in BC Interior. Seedless (male clone), symmetrical oval crown, good cold hardiness. Dominant on Okanagan streetscapes.</li>
+          <li><strong>'Fallgold':</strong> Strong yellow fall colour, upright form, seeds produced (female). Less common as boulevard tree.</li>
+          <li><strong>'Summit':</strong> Upright, narrower form, suitable for confined streetscapes. Moderate drought tolerance.</li>
+          <li><strong>'Urbanite':</strong> Hybrid with blue ash parentage, broader form, some improved drought tolerance claims — though marketed claims exceed observed performance in xeric Okanagan sites.</li>
+        </ul>
+        <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>When you're assessing a boulevard ash in West Kelowna, Kelowna, or Penticton, it's almost certainly a 'Patmore'. The cultivar ID matters because 'Patmore' is a male clone — it produces no samaras, which is why municipalities selected it. If you see a green ash raining seeds, that's either the straight species, a different cultivar, or you've misidentified the genus. Samaras in July = female or straight species. Worth noting on the site report.</p></div>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section" id="sec-origin">
+      <div class="section-title">Origin</div>
+      <div class="section-sub">Native range, ecology of homeland, and introduction history in the Okanagan</div>
+      <div class="info-block">
+        <h4>Native Range</h4>
+        <p>Green ash is the most widely distributed native ash in North America. Its native range stretches from Nova Scotia west to Alberta and Montana, south to northern Florida and Texas. It's native to riparian corridors, floodplain forests, and bottomland hardwood communities throughout eastern and central North America.</p>
+        <p>In its native habitat, green ash is a floodplain opportunist — it establishes on disturbed, moist, nutrient-rich soils along riverbanks and edges of wetlands. It is one of the fastest-colonizing hardwoods after disturbance on fertile lowland sites.</p>
+      </div>
+      <div class="info-block">
+        <h4>Why Green Ash Came to the Okanagan</h4>
+        <p>Green ash is not native to BC, yet it became one of the dominant boulevard trees across the BC Interior. The reasons are straightforward: it was widely available from Canadian prairie nurseries, it showed exceptional cold hardiness (rated to Zone 2), it grew fast enough to provide canopy within 5–10 years of planting, and it tolerated a range of urban soil conditions.</p>
+        <p>It was heavily promoted by municipal foresters throughout the 1970s–1990s as the go-to boulevard tree for Prairie and Interior BC cities. The result: hundreds of thousands of green ash line the streets of Kelowna, Vernon, Penticton, and surrounding communities — representing a massive monoculture risk that is now fully apparent with EAB.</p>
+      </div>
+      <div class="info-block">
+        <h4>The Monoculture Problem</h4>
+        <p>The ISA and urban forestry profession now cite ash monocultures — combined with EAB — as the most significant single event in North American urban forest history. Cities like Chicago, Detroit, and Toronto have already lost tens of millions of ash trees. The pattern is well-documented: 2–4 years from EAB arrival to canopy loss in heavily ash-dominated streetscapes.</p>
+        <p>The BC Interior has a delay advantage — EAB has not yet established in the Okanagan as of 2026 — but its western advance is documented and confirmed in Ontario, Manitoba, and Saskatchewan. Preparation is not premature. It is overdue.</p>
+        <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The urban forestry lesson from eastern Canada is unambiguous: no single species should exceed 10% of urban tree canopy (the 10% rule, aligned with ANSI A300 Part 9 guidance on urban forest composition). Green ash in some Okanagan municipalities exceeds 30–40% of boulevard tree canopy. That's not a biodiversity problem in the abstract — it's a liability and budget crisis waiting for a trigger. EAB is that trigger. Understanding this context changes how you talk to municipal clients about proactive ash management.</p></div>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section" id="sec-biology">
+      <div class="section-title">Biology &amp; What It Wants</div>
+      <div class="section-sub">Cultural requirements, site tolerances, and what makes a green ash succeed or fail</div>
+      <div class="info-block">
+        <h4>Climate &amp; Hardiness</h4>
+        <ul>
+          <li><strong>USDA Hardiness Zone:</strong> 2–9. One of the hardiest large canopy trees available for Interior BC. Survives -40°C without damage.</li>
+          <li><strong>Heat tolerance:</strong> Moderate. Can handle Okanagan summer heat, but significantly more drought-sensitive than native ponderosa or Douglas-fir on the same site.</li>
+          <li><strong>Natural origin mismatch:</strong> Green ash evolved in moist bottomland forests. The Okanagan is semi-arid. There is a fundamental mismatch between site conditions and species origin that must be compensated for by irrigation — especially in the establishment years and on constrained boulevard sites.</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Soil Requirements</h4>
+        <ul>
+          <li><strong>pH tolerance:</strong> 5.5–8.0. Reasonably tolerant of alkaline soils, which gives it a practical advantage on Okanagan caliche and silty soils.</li>
+          <li><strong>Drainage:</strong> In its natural range, green ash tolerates periodic flooding and wet conditions. In urban settings it is often installed in compacted, fast-draining soils — a reversal of its native conditions.</li>
+          <li><strong>Compaction tolerance:</strong> Moderate to low. Roots are relatively shallow and sensitive to compaction. Boulevard installations in curbed concrete strips are particularly stressful — limited soil volume = limited water and nutrient access.</li>
+          <li><strong>Salt tolerance:</strong> Moderate. Tolerates de-icing salt runoff better than many broadleaf species — one reason it persists in road salt environments better than maples.</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Water Requirements</h4>
+        <p>This is the most important cultural requirement for Okanagan green ash. In its native riparian habitat, green ash has access to high water tables and seasonal flooding. On an Okanagan boulevard with a 60 cm × 60 cm planting pit, soil volume is severely limited, water-holding capacity is low, and summer temperatures regularly exceed 35°C.</p>
+        <ul>
+          <li>Established boulevard green ash in Kelowna without supplemental irrigation shows chronic drought stress by mid-July in dry years — leaves scorching at margins, premature senescence, thin canopy.</li>
+          <li>Minimum irrigation recommendation for boulevard ash: 30–50 L per week per cm of trunk diameter during June–August in dry years (OSU Extension guidelines, applicable to Okanagan semi-arid conditions).</li>
+          <li>Trees showing chronic drought stress are significantly more susceptible to pest and disease pressures — including EAB attack when it arrives.</li>
+        </ul>
+        <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>When a client asks why their boulevard ash "looks sick every August," the honest answer is usually: because it's a riparian tree in a desert, in a concrete pit, during a heat dome. The diagnosis leads directly to a PHC recommendation: deep-watering schedule, mulch ring where permitted, soil amendment if the pit can be expanded. This is billable, defensible, and actually helps the tree. Know your PHC recommendations for common boulevard trees — the ISA Certification Study Guide covers this under Tree Selection &amp; Establishment.</p></div>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section" id="sec-pests">
+      <div class="section-title">Pest Pressures</div>
+      <div class="section-sub">What's eating, boring, and feeding on green ash in the Okanagan</div>
+
+      <div class="alert-red">
+        <div class="alert-head">⚠ Priority Alert — Emerald Ash Borer (EAB)</div>
+        <p>EAB (<em>Agrilus planipennis</em>) is not confirmed in the BC Interior as of 2026, but has been confirmed in Saskatchewan and its westward movement is documented. This is not a distant threat. Every arborist working Okanagan ash should understand EAB symptoms, know how to report a suspect find, and be having proactive conversations with municipal clients now.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="pest-head">
+          <div class="pest-name">Emerald Ash Borer (Agrilus planipennis)</div>
+          <div class="sev-badge sev-critical">CRITICAL — Anticipated</div>
+        </div>
+        <p><strong>What it is:</strong> A wood-boring beetle native to Asia; first confirmed in North America in 2002 (Detroit/Windsor). Kills all North American <em>Fraxinus</em> species. No native resistance mechanism exists in North American ash.</p>
+        <p><strong>Symptoms:</strong> D-shaped exit holes (3–4 mm wide) in bark; S-shaped serpentine galleries under bark; crown dieback beginning in upper canopy; epicormic sprouting on trunk (tree's desperation response); vertical bark splits from larval galleries.</p>
+        <p><strong>Biology:</strong> Adults emerge May–July. Females lay eggs in bark crevices. Larvae bore through bark to cambium, feeding in the phloem/cambium interface, girdling the tree in 2–4 years.</p>
+        <p><strong>Reporting:</strong> If you find D-shaped exit holes on ash in BC, report to the BC Ministry of Agriculture and Food invasive species line. This is a legal obligation and a professional responsibility. Do not remove suspect material before reporting — samples are needed for confirmation.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="pest-head">
+          <div class="pest-name">Ash Flower Gall Mite (Eriophyes fraxinivorus)</div>
+          <div class="sev-badge sev-low">LOW — Cosmetic</div>
+        </div>
+        <p><strong>Appearance:</strong> Irregular, cauliflower-like galls on male flower clusters, turning brown and persisting through winter. Common and highly visible on 'Patmore' (male clone).</p>
+        <p><strong>Impact:</strong> Purely cosmetic. Does not affect tree health, structure, or longevity. Client education is the main intervention — explaining that this is a gall mite, not a disease, and that the tree is not "sick."</p>
+        <p><strong>Management:</strong> None necessary. Pesticide treatment is not warranted and not recommended per ISA PHC Best Management Practices — treatment cost exceeds benefit for a cosmetic issue.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="pest-head">
+          <div class="pest-name">Oystershell Scale (Lepidosaphes ulmi)</div>
+          <div class="sev-badge sev-moderate">MODERATE — Watch</div>
+        </div>
+        <p><strong>Appearance:</strong> Small (2–3 mm), oyster-shaped gray-brown scales encrusting branches and twigs. Heavy infestations create a rough, gray crust on twigs.</p>
+        <p><strong>Impact:</strong> Moderate to severe infestations cause twig dieback, reduced vigor, and crown thinning. Already-stressed drought-affected trees are most vulnerable.</p>
+        <p><strong>Management:</strong> Dormant oil application in early spring (before bud break) or summer crawler spray (late June when crawlers emerge). Both approaches have good efficacy. WorkSafeBC PPE requirements apply for pesticide application.</p>
+        <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>Ash in Kelowna and West Kelowna do carry oystershell scale — worth inspecting during any ash assessment. The pest is also present on apple, cotoneaster, and other broadleaf species. Flip some branches on the shaded inner canopy — that's where scale density is highest. If the bark looks gray and rough where it should be smooth, look closer with a hand lens. Scraped live, you'll see yellow-orange tissue — that's active infestation.</p></div>
+      </div>
+    </div>
+
+    <!-- DISEASES -->
+    <div class="section" id="sec-diseases">
+      <div class="section-title">Disease Pressures</div>
+      <div class="section-sub">Fungal, bacterial, and abiotic conditions affecting Okanagan green ash</div>
+
+      <div class="pest-item">
+        <div class="pest-head">
+          <div class="pest-name">Verticillium Wilt (Verticillium dahliae / V. albo-atrum)</div>
+          <div class="sev-badge sev-critical">CRITICAL — Present in Okanagan</div>
+        </div>
+        <p><strong>What it is:</strong> Soil-borne vascular wilt pathogen. Infects roots, colonizes xylem vessels, blocks water transport. Green ash is susceptible. The pathogen is widespread in Okanagan orchard and urban soils — particularly in sites with a history of strawberry, pepper, or tomato production.</p>
+        <p><strong>Symptoms:</strong> Sudden wilting of one or more branches mid-season, often on one side of the tree (flagging). Discolored streaks in xylem wood (olive-green to brown striping visible in cross-section). Leaf scorch with green veins remaining temporarily.</p>
+        <p><strong>Diagnosis:</strong> Xylem discoloration is characteristic but not definitive. Laboratory culture from fresh wood samples confirms. In field assessments, Verticillium wilt should be on the differential whenever you see asymmetric mid-season wilt in ash, maple, or elm.</p>
+        <p><strong>Management:</strong> No fungicide treatment is effective once systemic. Improve overall vigor (irrigation, fertilization, mulch). Prune wilted branches to 15–20 cm beyond visible xylem discoloration. Trees with &gt;30% crown loss from Verticillium have poor prognosis.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="pest-head">
+          <div class="pest-name">Ash Anthracnose (Plagiostoma fraxini)</div>
+          <div class="sev-badge sev-low">LOW — Episodic</div>
+        </div>
+        <p><strong>Symptoms:</strong> Brown spots or blotches on leaves following cool, wet spring weather. Premature defoliation in severe years. Irregular brown leaf margins along veins.</p>
+        <p><strong>Okanagan context:</strong> Wet springs occasionally trigger outbreaks, but the typical dry Okanagan spring limits severity. In most years, anthracnose is mild and self-limiting. Trees reflush and recover.</p>
+        <p><strong>Management:</strong> Generally no treatment warranted. Rake and dispose of infected leaf litter to reduce inoculum. Avoid overhead irrigation. Fungicide treatment rarely justified for a cosmetic issue on an otherwise healthy tree.</p>
+      </div>
+
+      <div class="pest-item">
+        <div class="pest-head">
+          <div class="pest-name">Drought Scorch / Abiotic Leaf Scorch</div>
+          <div class="sev-badge sev-moderate">MODERATE — Common in Okanagan</div>
+        </div>
+        <p><strong>What it looks like:</strong> Brown, papery leaf margins, working inward from the leaf edge. Symptoms appear mid-July through August. Often confused with disease or chemical damage.</p>
+        <p><strong>Cause:</strong> Insufficient water delivery to leaf margins under high VPD conditions. The leaf margin is the furthest point from the xylem supply — it desiccates first.</p>
+        <p><strong>Differential diagnosis:</strong> Scorch from drought is <em>bilateral and non-progressive</em> (same pattern on all leaves in same canopy zone). Disease-caused scorch is often <em>unilateral</em> (affecting one branch or sector) with possible vascular discoloration. Chemical scorch appears as a distinct sharp line at spray coverage limits.</p>
+        <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The most common misdiagnosis on Okanagan boulevard ash: leaf scorch reported as disease. Clients call in August saying the tree is "dying" — it's scorched, not dying. The distinction matters because the intervention is different (irrigation vs. no intervention vs. removal). Always ask: Is the scorch on all leaves in the affected zone equally? Is it bilateral (both sides of the tree)? Does it track by canopy position (worst in interior, worst at margins)? Yes to all three = abiotic drought scorch. No to any = investigate further.</p></div>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section" id="sec-arborist">
+      <div class="section-title">Arborist Notes</div>
+      <div class="section-sub">Pruning, PHC, EAB preparedness, and client conversations</div>
+      <div class="info-block">
+        <h4>Pruning</h4>
+        <ul>
+          <li><strong>Best timing:</strong> Dormant season (November–March in Okanagan) is preferred. Late summer/fall pruning (August–September) is acceptable. Avoid spring pruning coinciding with EAB adult flight (May–July) — open wounds may attract beetles.</li>
+          <li><strong>Structure:</strong> Green ash develops strong central leader when young. Structural pruning in first 5–10 years should establish 3–5 well-spaced scaffold branches with good attachment angles. Watch for included bark in tight co-dominant unions — common in green ash with age.</li>
+          <li><strong>Per ANSI A300 Part 1:</strong> Do not remove more than 25% of the live crown in a single pruning event. For stressed or declining trees, the acceptable removal is less — consult ISA BMP for Pruning for crown reduction protocols on compromised trees.</li>
+          <li><strong>Lion's tailing:</strong> Never. Removing interior foliage concentrates weight at branch ends, increases wind-load leverage, and causes sunscald on previously shaded bark. Common improper practice on ash — flag it when you see it.</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>PHC Approach</h4>
+        <ul>
+          <li><strong>Irrigation:</strong> Priority #1 for boulevard ash. Recommend deep watering every 7–10 days in July–August during dry years. Tree bags (Treegator-style) are effective for individual boulevard trees.</li>
+          <li><strong>Fertilization:</strong> If soil testing indicates nitrogen deficiency (common in compacted boulevard soils with low organic matter), slow-release fertilizer in spring. Per ANSI A300 Part 2, base fertilization on soil/tissue analysis, not calendar scheduling.</li>
+          <li><strong>Mulching:</strong> Where boulevard permits allow, 7–10 cm of organic mulch over the root zone dramatically improves soil moisture retention and temperature moderation. Keep mulch 10 cm clear of trunk flare to prevent collar rot.</li>
+          <li><strong>EAB preventive treatment:</strong> EMAMECTIN BENZOATE trunk injection (Acecap, ArborMectin, or Tree-äge) is the only currently registered preventive treatment in Canada for EAB. Treatment is not currently warranted in the BC Interior (no confirmed EAB), but arborists should know the protocol for when the status changes.</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Client Conversation — EAB</h4>
+        <p>Many Okanagan homeowners with large ash trees are unaware of EAB risk. When the subject comes up, here's the evidence-based conversation:</p>
+        <ul>
+          <li><em>"Green ash is a great tree that's done a lot for our urban canopy. But there is a beetle coming from the east that kills ash trees — it's already in Saskatchewan."</em></li>
+          <li><em>"There's no treatment we need to do today, but we should make sure your tree is as healthy as possible so it's more resilient when the beetle arrives, and so that any future treatment decisions are made on a healthy tree that's worth treating."</em></li>
+          <li><em>"The BC Ministry of Agriculture has a detection program. We're all watching. When EAB is confirmed in BC, the response timeline matters — healthy, well-maintained trees respond better to treatment."</em></li>
+        </ul>
+      </div>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>Large, established green ash trees — 40–60 cm DBH, 15+ m tall, providing significant canopy to a property — are worth defending. The cost-benefit math on preventive EAB treatment (when warranted) versus removal and replacement strongly favors treatment for mature specimens. A tree of that size represents 50+ years of growth and provides quantifiable ecosystem services (Kelowna's urban forest value studies estimate $500–$2,000+ per mature tree in annual ecosystem service value). That's the client conversation: this tree has value, and maintenance is an investment, not a cost.</p></div>
+    </div>
+
+    <div class="isa-footer">
+      <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) · Tree Selection &amp; Establishment (7%) · Tree Risk Assessment (11%) &nbsp;·&nbsp;
+      <strong>Sources:</strong> ISA Arborists' Certification Study Guide 4th Ed. · BC Ministry of Agriculture EAB resources · Natural Resources Canada — EAB distribution mapping
+    </div>
+  </div><!-- end content -->
+</div><!-- end layout -->
+
+<script>
+function showSection(id, el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item,.mobile-nav .tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+}
+</script>
+</body>
+</html>
