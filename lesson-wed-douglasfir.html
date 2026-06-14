@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 2 · Wednesday · Interior Douglas-fir</title>
+<style>
+:root{color-scheme:light;--gd:#14532d;--gm:#166534;--gl:#4ade80;--gp:#dcfce7;--bg:#f3f4f6;--card:#fff;--txt:#111827;--muted:#6b7280;--border:#e5e7eb;--sidebar-w:210px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{background:var(--gd);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-brand{font-size:12px;opacity:.7;letter-spacing:.06em;text-transform:uppercase;}
+.hdr-title{font-size:19px;font-weight:700;margin-top:2px;}
+.hdr-sub{font-size:13px;opacity:.72;margin-top:2px;}
+.badge{background:var(--gl);color:var(--gd);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;}
+.layout{display:flex;min-height:calc(100vh - 60px);}
+.sidebar{width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 60px);overflow-y:auto;}
+.sidebar-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:0 16px 8px;margin-top:4px;}
+.nav-item{display:block;padding:10px 16px;font-size:14px;color:var(--txt);cursor:pointer;border-left:3px solid transparent;transition:all .15s;line-height:1.3;}
+.nav-item:hover{background:var(--gp);color:var(--gm);}
+.nav-item.active{border-left-color:var(--gm);background:var(--gp);color:var(--gm);font-weight:700;}
+.nav-icon{margin-right:6px;}
+.main{flex:1;padding:24px;overflow-y:auto;}
+.section-panel{display:none;}
+.section-panel.active{display:block;}
+.species-header{background:linear-gradient(135deg,#064e3b 0%,var(--gm) 100%);color:#fff;border-radius:12px;padding:24px;margin-bottom:20px;}
+.species-sci{font-size:13px;opacity:.8;font-style:italic;margin-bottom:4px;}
+.species-common{font-size:26px;font-weight:800;margin-bottom:8px;}
+.species-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.stag{background:rgba(255,255,255,.18);font-size:12px;padding:3px 10px;border-radius:20px;}
+.vs-note{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:12px 16px;margin-top:14px;font-size:13px;opacity:.9;line-height:1.55;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+@media(max-width:600px){.info-grid{grid-template-columns:1fr;}}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.ic-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.ic-val{font-size:14px;line-height:1.6;color:var(--txt);}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px;}
+.section-card h2{font-size:18px;font-weight:700;color:var(--gd);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--gp);}
+.section-card h3{font-size:14px;font-weight:700;color:var(--gm);margin-top:16px;margin-bottom:8px;}
+.section-card h3:first-child{margin-top:0;}
+.section-card p{font-size:14px;line-height:1.65;color:#374151;margin-bottom:12px;}
+.section-card p:last-child{margin-bottom:0;}
+.section-card ul{margin:6px 0 12px 18px;font-size:14px;line-height:1.65;color:#374151;}
+.section-card li{margin-bottom:5px;}
+.pest-card{background:#fafafa;border:1px solid var(--border);border-left:4px solid #f87171;border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:12px;}
+.pest-card.disease{border-left-color:#f59e0b;}
+.pest-card.parasite{border-left-color:#a78bfa;}
+.pc-title{font-size:14px;font-weight:700;color:#991b1b;margin-bottom:4px;}
+.pest-card.disease .pc-title{color:#92400e;}
+.pest-card.parasite .pc-title{color:#6d28d9;}
+.pc-sci{font-size:12px;font-style:italic;color:var(--muted);margin-bottom:6px;}
+.pc-p{font-size:13px;line-height:1.55;color:#374151;margin:0;}
+.sev{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:8px;}
+.sh{background:#fee2e2;color:#991b1b;}
+.sm{background:#fef3c7;color:#92400e;}
+.sl{background:var(--gp);color:var(--gm);}
+.fn{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px 16px;margin-top:14px;}
+.fn-lbl{font-size:11px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.fn p{font-size:13.5px;color:#78350f;line-height:1.6;margin:0;}
+.arb-callout{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 16px;margin-bottom:12px;}
+.ac-title{font-size:13px;font-weight:700;color:#1e40af;margin-bottom:6px;}
+.arb-callout p{font-size:13px;color:#1e3a8a;line-height:1.55;margin:0;}
+.exam-note{background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:12px 16px;margin-bottom:12px;}
+.exam-note .et{font-size:12px;font-weight:700;color:#713f12;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;}
+.exam-note p{font-size:13px;color:#713f12;margin:0;line-height:1.5;}
+.isa{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 18px;margin-top:20px;font-size:13px;color:#0369a1;line-height:1.65;}
+.isa strong{color:#0c4a6e;}
+@media(max-width:640px){.layout{flex-direction:column;}.sidebar{width:100%;height:auto;position:relative;display:flex;flex-wrap:wrap;padding:8px;border-right:none;border-bottom:1px solid var(--border);}.nav-item{border-left:none;border-bottom:2px solid transparent;padding:8px 10px;font-size:13px;}.nav-item.active{border-bottom-color:var(--gm);border-left:none;}.sidebar-label{display:none;}.main{padding:16px;}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">Microbe Tree Inc. · West Kelowna, BC</div>
+    <div class="hdr-title">🌳 Tree Profile</div>
+    <div class="hdr-sub">Week 2 · Wednesday</div>
+  </div>
+  <div class="badge">Field Guide</div>
+</div>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-label">Sections</div>
+    <div class="nav-item active" onclick="show('identity',this)"><span class="nav-icon">🔍</span>Identity</div>
+    <div class="nav-item" onclick="show('origin',this)"><span class="nav-icon">🗺️</span>Origin &amp; Range</div>
+    <div class="nav-item" onclick="show('biology',this)"><span class="nav-icon">🌱</span>Biology &amp; Site</div>
+    <div class="nav-item" onclick="show('pests',this)"><span class="nav-icon">🐛</span>Pest Pressures</div>
+    <div class="nav-item" onclick="show('diseases',this)"><span class="nav-icon">🍂</span>Disease Pressures</div>
+    <div class="nav-item" onclick="show('arborist',this)"><span class="nav-icon">🪚</span>Arborist Notes</div>
+  </div>
+  <div class="main">
+
+    <!-- IDENTITY -->
+    <div class="section-panel active" id="panel-identity">
+      <div class="species-header">
+        <div class="species-sci">Pseudotsuga menziesii var. glauca — Family Pinaceae</div>
+        <div class="species-common">Interior Douglas-fir</div>
+        <div class="species-tags">
+          <span class="stag">🌲 Native conifer</span>
+          <span class="stag">🏔️ Mid-elevation Okanagan</span>
+          <span class="stag">❄️ Cold-hardy form</span>
+          <span class="stag">🔥 Fire-adapted</span>
+        </div>
+        <div class="vs-note">⚠️ This is <em>var. glauca</em> — the Interior form. The coastal form (<em>var. menziesii</em>) is larger, faster-growing, and less cold-hardy. In the Okanagan, all Douglas-fir is interior form. They are different enough ecologically that habitat requirements, pest pressures, and management differ significantly from coastal DF.</div>
+      </div>
+      <div class="info-grid">
+        <div class="info-card"><div class="ic-label">Mature Height</div><div class="ic-val">15–40 m in BC Interior; slower-growing than coastal form; open-grown trees often shorter and more spreading than closed-canopy forest trees</div></div>
+        <div class="info-card"><div class="ic-label">DBH (mature)</div><div class="ic-val">40–100 cm typical; old-growth to 150+ cm in protected valley-bottom sites</div></div>
+        <div class="info-card"><div class="ic-label">Needles</div><div class="ic-val">Flat, soft, blunt-tipped (not prickly); 2–3 cm long; blue-green above, two whitish stomatal bands below; arranged radially around the twig (appear "all around" not flat like true firs)</div></div>
+        <div class="info-card"><div class="ic-label">THE diagnostic: Cones</div><div class="ic-val">Pendant cones 5–8 cm (interior form smaller than coastal); distinctive <strong>3-pronged bracts</strong> protruding between scales — the "mouse tails" or "Neptune's trident." No other BC conifer has this feature.</div></div>
+        <div class="info-card"><div class="ic-label">Bark</div><div class="ic-val">Young: smooth grey-brown with resin blisters (superficially similar to true firs — check the buds). Mature: thick, deeply furrowed, grayish-brown (not orange like ponderosa). Old-growth bark can be 20+ cm thick.</div></div>
+        <div class="info-card"><div class="ic-label">Buds</div><div class="ic-val">Terminal bud is sharp-pointed, reddish-brown, not resinous — distinctive. True firs have blunt, resinous buds. This plus the 3-pronged bracts makes Douglas-fir unmistakeable.</div></div>
+      </div>
+      <div class="section-card">
+        <h2>Field Identification — The Key Moves</h2>
+        <h3>Step 1: The Bract Test</h3>
+        <p>Find a cone on the ground under the tree (they're abundant in fall). Squeeze one of the protruding 3-pronged bracts between your fingers. The prongs are papery and flexible — this is unlike any other BC conifer cone. Douglas-fir is the <em>only</em> BC conifer with this feature. Once you've seen it, you'll identify cones instantly for the rest of your career.</p>
+        <h3>Step 2: The Needle Check</h3>
+        <p>Douglas-fir needles are soft and blunt — not prickly (unlike spruce). They attach to the twig on short petiole-like stalks and appear to radiate all around the twig (unlike true firs, where needles have a suction-cup attachment and leave a round flat scar when pulled off). The blue-green color of the interior form (var. <em>glauca</em>) is distinctive.</p>
+        <h3>Step 3: The Elevation Context</h3>
+        <p>In the Okanagan, interior Douglas-fir occupies a different elevation band than ponderosa pine. Ponderosa dominates the valley floor and lower slopes (roughly below 700–800 m); Douglas-fir takes over on the middle slopes (700–1,200 m); subalpine fir and Engelmann spruce dominate above that. If you're on a steep mid-slope in Kelowna, Peachland, or Summerland and the big conifer isn't ponderosa, it's almost certainly interior Douglas-fir.</p>
+        <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Clients frequently confuse interior Douglas-fir with ponderosa pine on mid-slope Okanagan properties. The smell test works for ponderosa (vanilla bark) but not Douglas-fir. The needle difference is reliable: ponderosa needles are long (15–25 cm) and in bundles of three; Douglas-fir needles are short (2–3 cm), single, and soft to the touch. If you're not sure and there are cones on the ground, the bracts settle it immediately.</p></div>
+        <div class="exam-note"><div class="et">📚 ISA Exam Tip</div><p>The 3-pronged bract of Douglas-fir cones is a classic exam question. Pseudotsuga is not a true fir (Abies), not a spruce (Picea), not a pine (Pinus) — it's in its own genus. "Douglas-fir" is correctly written with a hyphen to indicate it's not a true fir.</p></div>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section-panel" id="panel-origin">
+      <div class="section-card">
+        <h2>🗺️ Origin &amp; Native Range</h2>
+        <h3>Range — Interior vs. Coastal</h3>
+        <p>Douglas-fir has a split distribution in BC. The coastal form (<em>var. menziesii</em>) dominates the wet coast from sea level to mid-elevation — the massive trees of old-growth coastal forests. The interior form (<em>var. glauca</em>) occupies the drier, colder interior of BC, extending south through the Rocky Mountains into Mexico. The two varieties are separated by the Coast Mountains and are ecologically and genetically distinct.</p>
+        <p>In the Okanagan and Thompson Interior, interior Douglas-fir is one of the dominant tree species above the ponderosa pine zone. It's common throughout the IDFdk (Dry Cool Interior Douglas-fir) and IDFmw (Moist Warm Interior Douglas-fir) BEC zones that cover the middle slopes of the Okanagan valley.</p>
+        <h3>Historical Fire Context</h3>
+        <p>Like ponderosa pine, interior Douglas-fir evolved with frequent low-intensity fire in the Okanagan. Mature trees develop thick, deeply furrowed bark that insulates the cambium from ground fire. Fire suppression over the past century has created dense DF stands where open-canopy parkland existed previously — increasing competition, drought stress, and susceptibility to insects and disease.</p>
+        <p>The interaction between budworm cycles and fire suppression is particularly significant: dense, stressed Douglas-fir stands are far more vulnerable to western spruce budworm defoliation than the open-canopy stands that fire historically maintained.</p>
+        <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>On a mid-slope residential property in Peachland or West Kelowna, the big Douglas-firs that predate the subdivision were growing in an open, fire-maintained parkland a century ago. They now compete with dozens of ingrown trees, on soils that haven't been nutrient-cycled by fire in 80 years, in a climate that's getting progressively drier. When a client asks why their "healthy" DF looks thin in the crown, fire suppression is part of the honest answer.</p></div>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section-panel" id="panel-biology">
+      <div class="section-card">
+        <h2>🌱 Biology &amp; Site Requirements</h2>
+        <h3>Drought &amp; Cold Tolerance</h3>
+        <p>Interior Douglas-fir is more cold-hardy than its coastal counterpart but somewhat less drought-tolerant than ponderosa pine. It occupies the mid-slope niche between ponderosa's dry valley floor and the subalpine species above. It can tolerate moderate summer drought but struggles on hot, south-facing slopes below 600 m elevation where ponderosa outcompetes it.</p>
+        <p>Hardiness: USDA Zone 4–6 (hardier than coastal DF). Can tolerate −30°C winter temperatures in the interior. Late spring frosts can damage new growth, especially at higher elevations.</p>
+        <h3>Rooting</h3>
+        <p>Interior Douglas-fir develops a strong taproot in youth, transitioning to a broad lateral root system at maturity. Root depth is moderate — not as deep as ponderosa pine, but deeper than spruce. The lateral roots extend 1.5–2× the crown radius; soil grade changes and compaction within the dripline cause measurable decline over time.</p>
+        <h3>Soil Requirements</h3>
+        <ul>
+          <li><strong>Texture:</strong> Well-drained loams to rocky soils. Does not tolerate prolonged waterlogging.</li>
+          <li><strong>pH:</strong> Prefers slightly acidic to neutral (5.5–7.0). More pH-sensitive than ponderosa on highly alkaline Okanagan soils.</li>
+          <li><strong>Mycorrhizae:</strong> Strongly dependent on ectomycorrhizal associations — particularly with Rhizopogon, Pisolithus, and Suillus spp. in interior soils. Soil disturbance that disrupts mycorrhizal networks impairs establishment.</li>
+        </ul>
+        <h3>Shade Tolerance</h3>
+        <p>Interior Douglas-fir is moderately shade-tolerant as a seedling and sapling, which allows it to establish under an open pine canopy. At maturity it becomes increasingly shade-intolerant. This shade tolerance advantage over ponderosa pine in the absence of fire is why Douglas-fir has been expanding downslope into ponderosa zones in fire-suppressed stands.</p>
+        <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>On residential properties at mid-slope elevations (700–1,000 m), interior Douglas-fir is often a mixed-stand companion to ponderosa pine. When assessing a declining mid-slope conifer, elevation and aspect help with the ID: south-facing mid-slope = more likely ponderosa; north-facing mid-slope = more likely Douglas-fir. Management implications differ: the pests, pruning timing, and PHC strategies overlap significantly but the species-specific vulnerabilities differ.</p></div>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section-panel" id="panel-pests">
+      <div class="section-card">
+        <h2>🐛 Pest Pressures</h2>
+        <div class="pest-card">
+          <div class="pc-title">Western Spruce Budworm <span class="sev sh">HIGH — Episodic Defoliator</span></div>
+          <div class="pc-sci">Choristoneura freemani (interior form)</div>
+          <p class="pc-p">The single most damaging forest insect in BC Interior coniferous forests. Larvae feed on expanding new needles in spring, consuming current-year foliage. Outbreak cycles recur every 20–40 years; during outbreak years, entire hillsides of Douglas-fir turn reddish-brown from defoliation. One defoliation rarely kills established trees; 3–5 consecutive years of heavy defoliation can kill even large trees, especially those already stressed by drought. The BC Ministry of Forests monitors budworm populations annually — check current outbreak maps for the Okanagan before diagnosing spring defoliation.</p>
+        </div>
+        <div class="pest-card">
+          <div class="pc-title">Douglas-fir Beetle <span class="sev sm">MEDIUM — Stress-Related</span></div>
+          <div class="pc-sci">Dendroctonus pseudotsugae</div>
+          <p class="pc-p">A bark beetle specific to Douglas-fir; similar biology to mountain pine beetle but typically a secondary pest, attacking stressed or recently killed trees. Signs: pitch tubes at beetle entry points, reddish boring dust in bark furrows, blue-stain fungal streaking in sapwood. Flight period June–August (similar to MPB). Avoid wounding during this period for the same reasons as ponderosa pine management.</p>
+        </div>
+        <div class="pest-card">
+          <div class="pc-title">Douglas-fir Tussock Moth <span class="sev sm">MEDIUM — Episodic</span></div>
+          <div class="pc-sci">Orgyia pseudotsugata</div>
+          <p class="pc-p">A periodic defoliator with outbreak cycles approximately every 7–10 years in BC Interior. Distinctive hairy caterpillars (tufts of red, black, and cream hair). Defoliation begins in the upper crown and moves down. A single year of defoliation rarely kills trees; repeated years cause significant mortality, especially in combination with drought stress. Populations typically collapse after 2–3 outbreak years due to natural predators and a nuclear polyhedrosis virus.</p>
+        </div>
+        <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Western spruce budworm defoliation and mountain pine beetle are the two insects that most visibly transform Okanagan hillsides. When a client calls about a reddish-brown Douglas-fir in late spring, the first question is: is this isolated (one tree) or a pattern across the slope? Isolated = likely beetle or other cause. Pattern across multiple trees on a slope = possibly budworm. Timing also matters: budworm damage shows in spring when new needles are consumed; beetle damage shows as a whole-crown fade months after the initial attack.</p></div>
+      </div>
+    </div>
+
+    <!-- DISEASES -->
+    <div class="section-panel" id="panel-diseases">
+      <div class="section-card">
+        <h2>🍂 Disease &amp; Other Pressures</h2>
+        <div class="pest-card disease">
+          <div class="pc-title">Rhabdocline Needle Cast <span class="sev sm">MEDIUM — Wet Years</span></div>
+          <div class="pc-sci">Rhabdocline pseudotsugae</div>
+          <p class="pc-p">Fungal needle disease causing orange-brown discoloration of current-year needles in spring, followed by needle cast (dropping) in early summer. Yellow spotting appears in fall/winter; orange-brown lesions develop as spores mature in spring. Heavy infection over multiple years thins the crown significantly. Copper fungicide sprays are registered in Canada; timing to needle emergence in spring is critical. More common in wetter Okanagan years and on more northerly aspects where moisture persists.</p>
+        </div>
+        <div class="pest-card disease">
+          <div class="pc-title">Armillaria Root Rot <span class="sev sm">MEDIUM</span></div>
+          <div class="pc-sci">Armillaria ostoyae</div>
+          <p class="pc-p">Same root rot pathogen that affects ponderosa pine. In Douglas-fir, Armillaria spreads through root contact and rhizomorphs and can cause significant mortality in dense, stressed stands. White mycelial fans under bark at root collar, black shoestring rhizomorphs, crown decline and mortality. Management: improve site drainage and reduce competition; remove heavily infected trees to reduce spread to neighbors.</p>
+        </div>
+        <div class="pest-card parasite">
+          <div class="pc-title">Douglas-fir Dwarf Mistletoe <span class="sev sh">HIGH — Long-Term</span></div>
+          <div class="pc-sci">Arceuthobium douglasii</div>
+          <p class="pc-p">A parasitic flowering plant specific to Douglas-fir. More significant in interior stands than coastal. Creates characteristic witch's brooms — dense, abnormal broom-like clusters of branches at the infection site — and progressively weakens the tree over decades. Spreads by explosive seed dispersal (seeds shot up to 15 m). Infected branches should be pruned out, cutting well below the visible broom; systemic infections in the main stem cannot be fully pruned out. No chemical control is registered or effective. The only management for heavily infected trees is removal.</p>
+        </div>
+        <div class="pest-card disease">
+          <div class="pc-title">Phellinus (Inonotus) Root &amp; Butt Rot <span class="sev sm">MEDIUM</span></div>
+          <div class="pc-sci">Heterobasidion irregulare / Phellinus weirii</div>
+          <p class="pc-p">Root and butt rots causing structural compromise in older Douglas-fir. Signs: conks (shelf-like fungal fruiting bodies) at the base, hollow sound on tapping, root collar decay. Significant structural risk assessment implication — trees with advanced butt rot may have acceptable crown appearance while their structural foundation is compromised. Resistance drilling and sounding are important diagnostic tools.</p>
+        </div>
+        <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Douglas-fir dwarf mistletoe is genuinely common on mid-slope Okanagan sites and is frequently misidentified by homeowners as "dead branches" or "bird nests." The witch's broom shape is distinctive once you know what you're looking for: a dense cluster of upswept branches at a node, often denser and more twiggy than normal branching. When you find it, check the whole tree — if it's in the main stem, the management conversation changes significantly from "prune out the branch" to "this tree is long-term declining."</p></div>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section-panel" id="panel-arborist">
+      <div class="section-card">
+        <h2>🪚 Arborist Notes</h2>
+        <div class="arb-callout">
+          <div class="ac-title">⚠️ Pruning Window — Same Logic as Ponderosa</div>
+          <p><strong>Avoid pruning Douglas-fir from June through August</strong> — Douglas-fir beetle flight season mirrors MPB. Fresh wounds attract beetles via volatile terpene cues. Best window: <strong>September through May</strong>. Emergency work during beetle season: complete quickly, minimize wounding, remove fresh slash from site immediately.</p>
+        </div>
+        <h3>Dwarf Mistletoe — Pruning Protocol</h3>
+        <p>When pruning out dwarf mistletoe (<em>Arceuthobium douglasii</em>):</p>
+        <ul>
+          <li>Cut <strong>at least 30–50 cm below the visible broom</strong> — the parasite establishes a systemic connection through the branch that extends well below the broom</li>
+          <li>Sterilize tools between cuts — mistletoe seeds are viable and sticky</li>
+          <li>Inspect the main stem carefully: if brooms are on the main leader or major scaffold branches, full pruning removal is not possible and the prognosis for long-term vigor is poor</li>
+          <li>Inform clients: pruning removes visible brooms but does not eliminate the infection from the tree — it buys time but does not cure</li>
+        </ul>
+        <h3>Structural Assessment</h3>
+        <ul>
+          <li><strong>Butt rot</strong> is significant in older Okanagan Douglas-fir. The thick, furrowed bark masks decay at the base. Any large DF with a target below it should be sounded and, if hollow sounds are present, probed or drilled to assess decay column extent.</li>
+          <li><strong>Dead trees</strong> begin structural decline similarly to beetle-killed ponderosa — checking, woodpecker damage, and moisture-driven wood degradation. Douglas-fir dead trees on steep slopes are particularly hazardous in the wind-prone Okanagan valley.</li>
+          <li><strong>Crown dieback patterns:</strong> Top-down dieback in summer/fall = usually drought stress or bark beetle. Spring dieback of new growth = suspect budworm. Localized broom clusters with stem dieback = mistletoe.</li>
+        </ul>
+        <h3>Urban &amp; Residential Suitability</h3>
+        <p>Interior Douglas-fir is a good urban tree on appropriate sites — mid-elevation properties with adequate soil, reasonable moisture, and space. Better suited to larger residential properties than small urban lots. The main management concerns are mistletoe (common on any tree with infected neighbors), potential budworm years, and maintaining soil health. On highly alkaline valley-floor soils it will struggle more than ponderosa pine.</p>
+        <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>The mistletoe conversation with a client: "We can prune out the visible brooms today, and the tree will look better for it — but the parasite is systemic in the branch tissue and will produce new brooms within 3–5 years. On a tree with brooms only in the outer branches, that's a manageable situation with periodic pruning. On a tree with brooms on the main stem, we're talking about a tree that is progressively declining and will need removal in the medium term. Let me show you where the brooms are so you understand what we're managing."</p></div>
+      </div>
+      <div class="isa">
+        <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) · Tree Risk Assessment (11%) · Tree Selection &amp; Establishment (7%)<br>
+        <strong>Sources:</strong> BC Ministry of Forests — Interior Douglas-fir BEC zone guides; BC MoF Forest Health publications on WSB and DF beetle; Klinka, K. et al. <em>Indicator Plants of Coastal BC</em>; ISA Arborists' Certification Study Guide (4th Ed.); Parish, R. et al. <em>Tree Book: Learning to Recognize Trees of BC</em>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+function show(id,el){
+  document.querySelectorAll('.section-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
