@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 2 · Monday · Xylem &amp; Water Transport</title>
+<style>
+:root{color-scheme:light;--gd:#14532d;--gm:#166534;--gl:#4ade80;--gp:#dcfce7;--bg:#f9fafb;--card:#fff;--txt:#111827;--muted:#6b7280;--border:#e5e7eb;--cor:#16a34a;--wrg:#dc2626;--cor-bg:#f0fdf4;--wrg-bg:#fef2f2;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{background:var(--gd);color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-brand{font-size:12px;opacity:.7;letter-spacing:.06em;text-transform:uppercase;}
+.hdr-title{font-size:20px;font-weight:700;margin-top:2px;}
+.hdr-sub{font-size:13px;opacity:.75;margin-top:2px;}
+.badge{background:var(--gl);color:var(--gd);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;}
+.wrap{max-width:800px;margin:0 auto;padding:24px 16px;}
+.week-lbl{font-size:12px;font-weight:700;color:var(--gm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.intro-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.intro-card h1{font-size:22px;font-weight:700;margin-bottom:8px;}
+.intro-card p{color:var(--muted);line-height:1.65;font-size:15px;}
+.ref-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.ref-card h3{font-size:15px;font-weight:700;color:var(--gd);margin-bottom:14px;}
+.ref-card p{font-size:14px;line-height:1.65;color:#374151;margin-bottom:10px;}
+.flow-diagram{display:flex;flex-direction:column;gap:0;align-items:center;margin:12px 0;}
+.flow-box{background:var(--gp);border:2px solid var(--gm);border-radius:8px;padding:12px 20px;font-size:13px;font-weight:600;color:var(--gd);text-align:center;min-width:260px;}
+.flow-arrow{font-size:20px;color:var(--gm);line-height:1;}
+.flow-note{font-size:11px;font-weight:400;color:var(--gm);display:block;margin-top:2px;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--gp);color:var(--gd);padding:10px 12px;text-align:left;font-weight:700;font-size:13px;}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+tr:last-child td{border-bottom:none;}
+.prog-lbl{font-size:13px;color:var(--muted);margin-bottom:6px;}
+.prog-outer{background:var(--border);border-radius:8px;height:8px;margin-bottom:24px;overflow:hidden;}
+.prog-inner{background:var(--gm);height:100%;border-radius:8px;transition:width .4s;}
+.btn{display:block;width:100%;padding:14px;background:var(--gm);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:background .2s;}
+.btn:hover{background:var(--gd);}
+.qscreen{display:none;}
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+.qnum{font-size:12px;font-weight:700;color:var(--gm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.qtxt{font-size:17px;font-weight:600;line-height:1.5;margin-bottom:20px;}
+.opts{display:flex;flex-direction:column;gap:10px;}
+.opt{padding:14px 16px;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;font-size:15px;line-height:1.4;background:var(--card);text-align:left;width:100%;}
+.opt:hover:not([disabled]){border-color:var(--gl);background:var(--gp);}
+.opt.correct{border-color:var(--cor);background:var(--cor-bg);color:var(--cor);font-weight:600;}
+.opt.wrong{border-color:var(--wrg);background:var(--wrg-bg);color:var(--wrg);}
+.reveal{display:none;background:var(--gp);border:1px solid #86efac;border-radius:12px;padding:20px 24px;margin-top:16px;}
+.reveal.show{display:block;}
+.reveal h4{font-size:13px;font-weight:700;color:var(--gd);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.reveal p{font-size:14px;line-height:1.65;color:#1f2937;margin-bottom:10px;}
+.reveal p:last-child{margin-bottom:0;}
+.reveal ul{margin:8px 0 10px 18px;font-size:14px;line-height:1.65;color:#1f2937;}
+.reveal li{margin-bottom:4px;}
+.fn{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px 16px;margin-top:14px;}
+.fn-lbl{font-size:11px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.fn p{font-size:13.5px;color:#78350f;line-height:1.6;margin:0;}
+.rb{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:12px;}
+.rb.c{background:var(--cor-bg);color:var(--cor);border:1px solid #86efac;}
+.rb.w{background:var(--wrg-bg);color:var(--wrg);border:1px solid #fca5a5;}
+.btn-next{display:none;width:100%;padding:13px;background:var(--gm);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:12px;transition:background .2s;}
+.btn-next:hover{background:var(--gd);}
+.cscreen{display:none;text-align:center;}
+.cscore{font-size:48px;font-weight:800;color:var(--gd);margin-top:16px;}
+.clbl{font-size:15px;color:var(--muted);margin-top:4px;margin-bottom:20px;}
+.isa{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 18px;margin-top:24px;font-size:13px;color:#0369a1;line-height:1.65;}
+.isa strong{color:#0c4a6e;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">Microbe Tree Inc. · West Kelowna, BC</div>
+    <div class="hdr-title">🌿 Tree Biology</div>
+    <div class="hdr-sub">Week 2 · Monday</div>
+  </div>
+  <div class="badge">Quiz · 5 Q</div>
+</div>
+<div class="wrap">
+  <div id="home">
+    <div class="week-lbl">Week 2 · Tree Biology</div>
+    <div class="intro-card">
+      <h1>Xylem &amp; the Cohesion-Tension Mechanism</h1>
+      <p>Water moves from roots to the tops of 40-metre trees without a pump. Understanding <em>how</em> is not just academic — it's the mechanistic foundation fos understanding drought stress, cavitation, soil compaction effects, root damage, and why some pruning timing matters more than you might think. This lesson covers the physics of water movement in trees and what it means when that system fails under Okanagan summer conditions.</p>
+    </div>
+    <div class="ref-card">
+      <h3>📋 Quick Reference — The Water Transport Pathway</h3>
+      <div class="flow-diagram">
+        <div class="flow-box">Soil water → Root hairs &amp; mycorrhizae<span class="flow-note">Osmotic uptake; water moves from high to low water potential</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box">Root cortex → Endodermis (Casparian strip)<span class="flow-note">Casparian strip forces water through living cells — selective filter</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box">Xylem vessels / tracheids<span class="flow-note">Water column under tension — cohesion holds molecules together</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box">Leaves → Stomata → Atmosphere<span class="flow-note">Transpiration pulls the column upward — the engine of the whole system</span></div>
+      </div>
+      <table style="margin-top:14px;">
+        <thead><tr><th>Concept</th><th>Plain Language</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cohesion-tension</strong></td><td>Water molecules stick to each other (cohesion). Evaporation at leaves creates negative pressure (tension) that pulls the whole column up from below.</td></tr>
+          <tr><td><strong>Water potential (Ψ)</strong></td><td>A measure of water's energy — water always moves from higher Ψ (less negative) to lower Ψ (more negative). Soil to leaf is a gradient of decreasing Ψ.</td></tr>
+          <tr><td><strong>Cavitation / embolism</strong></td><td>The water column snaps under excessive tension — an air bubble enters the conduit and breaks the continuous column, blocking flow in that vessel or tracheid.</td></tr>
+          <tr><td><strong>Tracheids vs vessels</strong></td><td>Tracheids (conifers) are individual cells connected through bordered pits — slower but safer under tension. Vessel elements (hardwoods) have open end walls — faster flow, more cavitation risk.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn" onclick="startQuiz()">Start Quiz — 5 Questions →</button>
+  </div>
+
+  <div class="qscreen" id="qscreen">
+    <div class="prog-lbl" id="plbl">Question 1 of 5</div>
+    <div class="prog-outer"><div class="prog-inner" id="pbar" style="width:0%"></div></div>
+    <div class="qcard" id="qcard"></div>
+    <button class="btn-next" id="bnxt" onclick="nextQ()">Next →</button>
+  </div>
+
+  <div class="cscreen" id="cscreen">
+    <div class="intro-card">
+      <div style="font-size:48px">🌿</div>
+      <div class="cscore" id="fscore">—</div>
+      <div class="clbl">Lesson complete</div>
+      <p style="color:var(--muted);font-size:15px;line-height:1.65;">Water transport is the hydraulic system of the tree. Every time you see a wilting crown, yellowing needles in August, or a dying branch after root damage — this mechanism is what failed. Review the quick-reference until the pathway is automatic.</p>
+      <button class="btn" style="margin-top:20px" onclick="reset()">← Back to Reference</button>
+    </div>
+    <div class="isa">
+      <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) — Water Relations &amp; Xylem Physiology<br>
+      <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.), Ch. 1–2; Taiz, L. &amp; Zeiger, E. <em>Plant Physiology</em> (5th Ed.); Dixon, H.H. &amp; Joly, J. (1895) <em>On the ascent of sap</em> — the original cohesion-tension paper
+    </div>
+  </div>
+</div>
+
+<script>
+const Qs=[
+  {
+    t:"What is the primary mechanism that drives water movement from roots to the leaves of a tall tree — against gravity, without a mechanical pump?",
+    opts:["Root pressure: active pumping from root cells forces water upward through the xylem","Capillary action: surface tension in the narrow xylem tubes pulls water upward","Cohesion-tension: evaporation at leaves creates continuous tension (negative pressure) transmitted down through a cohesive water column","Osmotic pressure: solute concentration gradients across phloem drive bulk water movement toward leaves"],
+    cor:2,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Cohesion-Tension — The Engine of Water Transport</h4>
+<p>The cohesion-tension mechanism (Dixon-Joly, 1895) explains how trees move water vertically without a pump. The system works in three steps:</p>
+<ul>
+<li><strong>Transpiration pull:</strong> Water evaporates from leaf mesophyll cells through stomata. This creates a water deficit — low water potential — at the leaf surface.</li>
+<li><strong>Tension transmitted down the column:</strong> Because water molecules cohere strongly (hydrogen bonds), the deficit at the top pulls on the continuous water column in the xylem, placing the entire column under <em>negative pressure</em> (tension). The column is literally being stretched.</li>
+<li><strong>Uptake from soil:</strong> The tension pulls water in from the soil, where water potential is higher (less negative) than in the xylem.</li>
+</ul>
+<p>Root pressure (option A) is real but minor — it operates mainly at night when transpiration stops, and can only push water a metre or two. It cannot explain water reaching a 35-metre ponderosa pine top. Capillary action (option B) can only raise water about 1 metre in xylem-diameter tubes.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>On a 35°C July afternoon in West Kelowna, a large ponderosa pine may transpire 300–400 litres of water. Every litre had to travel from roots to needles via cohesion-tension. The xylem water column is under enormous tension — negative pressures of −1.5 MPa or more are common in Okanagan conifers in mid-summer. This is why compacted soil, root damage, or any restriction on water uptake shows up in the crown first: the tension system fails from the top down.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Cohesion-Tension — The Correct Mechanism</h4>
+<p>The primary mechanism driving water to the tops of tall trees is <strong>cohesion-tension</strong>: evaporation at the leaves creates negative pressure (tension) that is transmitted through a continuous cohesive water column in the xylem, pulling water upward from the roots.</p>
+<ul>
+<li><strong>Root pressure</strong> — real but minor; only pushes water ~1–2 m, operates mainly at night</li>
+<li><strong>Capillary action</strong> — real but limited; can only raise water ~1 m in xylem-diameter tubes</li>
+<li><strong>Cohesion-tension</strong> — the main driver; can raise water 100+ m via transpiration-generated tension ← correct answer</li>
+<li><strong>Phloem osmotic pressure</strong> — drives phloem flow (sugars, not water); separate system</li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>When you see a large ponderosa with a dead or wilting top — while the lower crown looks fine — that's often the cohesion-tension column failing from the top down: the uppermost leaves can't maintain the tension needed to pull water against both gravity and low soil moisture. The crown dies top-down because those are the conduits under the greatest negative pressure.</p></div>`
+  },
+  {
+    t:"Conifers like ponderosa pine conduct water through _____, while broad-leaved angiosperms like trembling aspen also produce _____ — cells with partially or fully dissolved end walls that allow faster flow.",
+    opts:["Tracheids only / vessel elements","Vessel elements only / tracheids","Sieve tube elements / companion cells","Ray parenchyma / axial parenchyma"],
+    cor:0,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Tracheids vs. Vessel Elements — Two Different Hydraulic Solutions</h4>
+<p>The distinction between conifer (gymnosperm) and hardwood (angiosperm) xylem anatomy has direct implications for drought tolerance, cavitation risk, and compartmentalization (as you saw in the CODIT lesson).</p>
+<p><strong>Tracheids (conifers):</strong></p>
+<ul>
+<li>Long, tapered cells with thick walls and <strong>bordered pits</strong> connecting adjacent cells</li>
+<li>Water passes through the pit membranes — they're still intact (just perforated)</li>
+<li>Flow is slower, but the pit membranes can partially block cavitation from spreading — when one tracheid embolizes, the pit membrane often prevents the air bubble from jumping to the next conduit</li>
+<li>This makes conifer xylem <strong>more cavitation-resistant</strong>, which is one reason ponderosa pine tolerates extreme drought</li>
+</ul>
+<p><strong>Vessel elements (angiosperms):</strong></p>
+<ul>
+<li>Shorter cells stacked end-to-end; end walls are partially or fully dissolved at maturity, creating open <strong>perforation plates</strong> or completely open ends</li>
+<li>Much faster water flow (lower resistance)</li>
+<li>But air bubbles can spread rapidly between vessels — embolism propagates more easily</li>
+<li>Ring-porous hardwoods (oak, elm, ash) have very large vessels = fast flow but higher cavitation risk; diffuse-porous (aspen, maple) have smaller uniform vessels = intermediate</li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>This anatomy difference explains part of why ponderosa pine survives Okanagan summers that would kill green ash or cottonwood growing in the same soil: pine tracheids resist cavitation spread. A green ash with root damage on a hot July day can embolize rapidly and die before the season ends; a ponderosa in the same condition may limp through on partial function. Species anatomy is one of the first things to think about when assessing drought-stressed trees.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Tracheids vs. Vessel Elements</h4>
+<p>Conifers like ponderosa pine conduct water through <strong>tracheids only</strong> — single cells connected through bordered pits. Angiosperms (aspen, maple, oak) additionally produce <strong>vessel elements</strong> — cells with partially or fully dissolved end walls stacked end-to-end, allowing much faster water flow.</p>
+<ul>
+<li>Tracheids → safer under tension, slower flow, cavitation doesn't spread as easily</li>
+<li>Vessel elements → faster flow, but embolism can propagate more readily between connected cells</li>
+</ul>
+<p>Sieve tubes and companion cells are <em>phloem</em> components — they move sugars (not water) downward. Ray and axial parenchyma are living storage and defense cells, not primary conductors.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Ring-porous hardwoods (oak, ash, elm) in the Okanagan have the largest vessel elements — widest lumen, fastest flow, but highest embolism risk under drought. Those are also the species that die fastest after root damage during a dry summer. The anatomy explains the vulnerability.</p></div>`
+  },
+  {
+    t:"When drought-induced cavitation occurs in a xylem conduit, the immediate functional consequence is:",
+    opts:["Increased transpiration as stomata open wider to reduce internal water potential","An air embolus forming in the conduit — the water column breaks and that conduit ceases to conduct","Increased root pressure compensating for the reduced tension in the xylem column","Collapse of adjacent phloem sieve tubes as turgor pressure equalizes"],
+    cor:1,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Cavitation — When the Column Snaps</h4>
+<p>The cohesion-tension column is under negative pressure (tension). When that tension exceeds the tensile strength of the water column — at a pit membrane defect, a dissolved gas, or a wound site — the column snaps. Water vapor (or dissolved gas) fills the gap: an <strong>embolus</strong>. That conduit is now air-blocked and non-functional.</p>
+<p>The immediate consequences:</p>
+<ul>
+<li>The embolized conduit stops conducting water — it's effectively dead hydraulically</li>
+<li>Water is rerouted through adjacent, non-embolized conduits (the tree bypasses the blocked vessels)</li>
+<li>If embolism is extensive, the effective conducting area shrinks and the tree cannot move enough water — crown wilting and dieback follow</li>
+</ul>
+<p><strong>Refilling:</strong> Some trees can reverse embolism under certain conditions (positive root pressure at night, metabolic repair mechanisms). Research is ongoing. Conifers are generally considered poor at refilling embolized tracheids.</p>
+<p><strong>Drought stress diagnostic:</strong> Afternoon wilting that recovers overnight = stomata responding normally, tree managing tension. Wilting that does NOT recover overnight = significant embolism has occurred — hydraulic failure is underway.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>In a prolonged Okanagan drought year — two or three consecutive dry summers — conifer crowns thin progressively as embolism accumulates in older xylem. The needles that drop aren't just from stress: the tree is autonomously reducing its transpiring surface because its hydraulic capacity has dropped. A ponderosa that was full-crowned in 2020 and shows 30% crown reduction by 2024 isn't just "looking stressed" — it has lost a significant fraction of its functional xylem. That changes your risk assessment.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Cavitation — When the Column Snaps</h4>
+<p>Drought-induced cavitation causes <strong>an air embolus to form in the conduit</strong>, breaking the continuous water column and blocking flow in that conduit. The other options are incorrect:</p>
+<ul>
+<li>Stomata actually <em>close</em> (not open wider) when the tree detects low water potential — reducing transpiration to reduce tension</li>
+<li>Root pressure is too weak to compensate for cavitation in tall trees under drought</li>
+<li>Phloem collapse is not a direct consequence of xylem cavitation</li>
+</ul>
+<p>The clinical tell: afternoon wilt that recovers overnight = normal stomatal management. Wilt that doesn't recover overnight = significant embolism, hydraulic failure in progress.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Progressive crown thinning in Okanagan conifers over multi-year drought is partly the visible signature of accumulated xylem embolism — the tree is reducing its transpiring surface to match its reduced hydraulic capacity. That's not just cosmetic stress; it's structural change in the water-conduction system.</p></div>`
+  },
+  {
+    t:"Water potential (Ψ) in plant tissue is primarily the sum of which two components?",
+    opts:["Temperature potential (Ψt) and gravitational potential (Ψg)","Osmotic potential (Ψs) — from solute concentration — and pressure potential (Ψp) — from turgor or tension","Matric potential (Ψm) and kinetic potential (Ψk)","Adhesive potential (Ψa) from cell wall binding and cohesive potential (Ψc) from water–water bonding"],
+    cor:1,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Water Potential Components</h4>
+<p><strong>Ψ = Ψs + Ψp</strong> (with Ψg and Ψm as additional minor terms in some contexts)</p>
+<p><strong>Osmotic potential (Ψs) — also called solute potential:</strong></p>
+<ul>
+<li>Always zero or negative. The presence of dissolved solutes reduces water potential relative to pure water.</li>
+<li>Cells with high sugar/salt concentration have very negative Ψs → they pull water in by osmosis</li>
+<li>Relevant for root uptake: roots with high solute concentration pull water from soil</li>
+</ul>
+<p><strong>Pressure potential (Ψp):</strong></p>
+<ul>
+<li>Can be positive (turgor pressure, as in living leaf cells — water pressing outward) or <em>negative</em> (tension, as in xylem under drought)</li>
+<li>The negative Ψp in xylem under tension is the "pull" in cohesion-tension</li>
+<li>When you see −1.5 MPa cited as a tree's midday water potential, that's dominated by a very negative Ψp in the xylem</li>
+</ul>
+<p>Water always moves from higher Ψ to lower Ψ — from soil (Ψ close to 0) to roots (Ψ slightly negative) to xylem (Ψ more negative) to leaves (Ψ most negative) to atmosphere (Ψ very negative).</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Soil water potential measurement (using tensiometers or psychrometers) is the foundation of precision irrigation for fruit crops in the Okanagan. The same concept applies to urban tree PHC: if soil Ψ drops below the permanent wilting point (typically −1.5 MPa), the tree cannot generate enough osmotic potential to pull water in from that soil — roots in dry soil are not functional roots regardless of their presence. Mulching and deep watering are about maintaining a Ψ gradient that keeps the water flowing.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Water Potential Components</h4>
+<p>Water potential (Ψ) is primarily: <strong>Ψ = Ψs (osmotic/solute potential) + Ψp (pressure potential)</strong></p>
+<ul>
+<li><strong>Ψs (osmotic potential)</strong> — always zero or negative; solutes reduce the free energy of water; drives osmotic uptake into cells with high solute concentration</li>
+<li><strong>Ψp (pressure potential)</strong> — positive in turgid living cells (turgor); <em>negative</em> in xylem under tension (the pull of cohesion-tension)</li>
+</ul>
+<p>Water moves from higher Ψ to lower Ψ — from soil → root → xylem → leaf → atmosphere. The gradient is maintained by transpiration creating ever-more-negative Ψp in the xylem.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>When soil dries and Ψs of the soil solution becomes very negative, the tree's roots can no longer maintain a favorable gradient for uptake — the tree is competing against the soil matrix for water. Deep mulching improves this by slowing soil drying, maintaining a higher (less negative) soil Ψ in the root zone longer into the dry season.</p></div>`
+  },
+  {
+    t:"During the Okanagan's hot, dry mid-summer conditions, a healthy tree's primary mechanism for reducing water loss is:",
+    opts:["Shedding mature leaves to reduce total transpiring surface area immediately","Converting xylem vessels to tyloses to reduce the internal conductive area","Closing stomata via guard cell response to low leaf water potential, reducing gas exchange","Switching entirely to root pressure-driven upward flow, eliminating transpiration demand"],
+    cor:2,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Stomatal Regulation — The First Line of Defence</h4>
+<p>Stomata are the primary short-term valve. Guard cells respond to:</p>
+<ul>
+<li><strong>Water potential signals:</strong> When leaf water potential drops (drought stress), guard cells lose turgor and stomata close — directly reducing the transpirational pull on the xylem</li>
+<li><strong>ABA (abscisic acid):</strong> Stressed roots produce ABA that travels to leaves and triggers stomatal closure even before the leaf itself is stressed — a chemical early-warning system</li>
+<li><strong>CO₂ concentration:</strong> High CO₂ in the leaf triggers closure; low CO₂ (during active photosynthesis) promotes opening</li>
+<li><strong>Light and temperature:</strong> Strong light normally opens stomata; extreme heat can trigger midday closure even in well-watered trees</li>
+</ul>
+<p>Leaf shedding (option A) is a longer-term stress response (drought deciduousness) — it happens after stomatal regulation fails to maintain water balance, not as the first response. Tylosis formation (option B) is a wound/decay response, not a drought regulation mechanism. Root pressure (option D) actually opposes the transpiration pull — the two don't operate simultaneously at meaningful scale.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>On a hot West Kelowna afternoon in July, look at a silver maple on a boulevard at 2 PM: the leaves may have a slight droop even if the tree was irrigated that morning. That's partial stomatal closure — the tree is modulating the cohesion-tension pull to prevent cavitation. If the tree doesn't recover overnight, it's a management problem. If it recovers and the droop happens again tomorrow, it's a normal physiological response to Okanagan summers. Understanding the difference is the difference between a PHC intervention and leaving the tree alone.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Stomatal Regulation — The First Line of Defence</h4>
+<p>The primary mechanism for reducing water loss under drought is <strong>stomatal closure</strong> — guard cells respond to low water potential (and ABA signals from stressed roots) by closing the stomatal aperture, reducing transpiration rate and therefore the tension driving the cohesion-tension column.</p>
+<ul>
+<li>Leaf shedding → a longer-term response when stomatal regulation can no longer maintain balance; not the first mechanism</li>
+<li>Tylosis formation → a CODIT wound response, not a drought response</li>
+<li>Root pressure-only flow → root pressure is far too weak to support full-canopy water demand; the two systems don't switch over</li>
+<li><strong>Stomatal closure via guard cells → correct — first and primary drought response</strong></li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Midday wilt in Okanagan boulevard trees during heat events is usually stomata doing their job — the tree reducing tension to avoid cavitation. The PHC question is whether the soil moisture can refill the system overnight. If not, increase watering depth (not frequency) to maintain root-zone moisture through the season.</p></div>`
+  }
+];
+
+let cq=0,score=0,ans=false;
+function startQuiz(){document.getElementById('home').style.display='none';document.getElementById('qscreen').style.display='block';renderQ();}
+function renderQ(){
+  ans=false;const q=Qs[cq];const bn=document.getElementById('bnxt');
+  bn.style.display='none';bn.textContent=cq<Qs.length-1?'Next Question →':'See Results →';
+  document.getElementById('plbl').textContent=`Question ${cq+1} of ${Qs.length}`;
+  document.getElementById('pbar').style.width=`${(cq/Qs.length)*100}%`;
+  const opts=q.opts.map((o,i)=>`<button class="opt" onclick="pick(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('');
+  document.getElementById('qcard').innerHTML=`<div class="qnum">Question ${cq+1} of ${Qs.length}</div><div class="qtxt">${q.t}</div><div class="opts">${opts}</div><div class="reveal" id="rv"></div>`;
+}
+function pick(i){
+  if(ans)return;ans=true;const q=Qs[cq];
+  document.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const rv=document.getElementById('rv');
+  if(i===q.cor){document.querySelectorAll('.opt')[i].classList.add('correct');score++;rv.innerHTML=q.expl;}
+  else{document.querySelectorAll('.opt')[i].classList.add('wrong');document.querySelectorAll('.opt')[q.cor].classList.add('correct');rv.innerHTML=q.wxpl||q.expl;}
+  rv.classList.add('show');document.getElementById('bnxt').style.display='block';
+}
+function nextQ(){cq++;if(cq>=Qs.length)finish();else renderQ();}
+function finish(){document.getElementById('qscreen').style.display='none';document.getElementById('pbar').style.width='100%';document.getElementById('cscreen').style.display='block';document.getElementById('fscore').textContent=`${score} / ${Qs.length}`;}
+function reset(){cq=0;score=0;ans=false;document.getElementById('cscreen').style.display='none';document.getElementById('qscreen').style.display='none';document.getElementById('pbar').style.width='0%';document.getElementById('home').style.display='block';}
+</script>
+</body>
+</html>
