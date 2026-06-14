@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 2 · Tuesday · Clove Hitch</title>
+<style>
+:root{color-scheme:light;--am:#b45309;--am-light:#fef3c7;--am-mid:#d97706;--am-dark:#78350f;--bg:#f9fafb;--card:#fff;--txt:#111827;--muted:#6b7280;--border:#e5e7eb;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{background:#1c1917;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-brand{font-size:12px;opacity:.65;letter-spacing:.06em;text-transform:uppercase;}
+.hdr-title{font-size:20px;font-weight:700;margin-top:2px;}
+.hdr-sub{font-size:13px;opacity:.7;margin-top:2px;}
+.badge{background:#fcd34d;color:#1c1917;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px;}
+.week-lbl{font-size:12px;font-weight:700;color:var(--am);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.intro-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.intro-card h1{font-size:22px;font-weight:700;margin-bottom:8px;}
+.intro-card p{color:var(--muted);line-height:1.65;font-size:15px;}
+.section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.section h2{font-size:16px;font-weight:700;color:#1c1917;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--am-light);}
+.section p{font-size:14px;line-height:1.65;color:#374151;margin-bottom:12px;}
+.section p:last-child{margin-bottom:0;}
+.section ul{margin:8px 0 12px 18px;font-size:14px;line-height:1.65;color:#374151;}
+.section li{margin-bottom:5px;}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px;}
+@media(max-width:580px){.method-grid{grid-template-columns:1fr;}}
+.method-card{background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:16px;}
+.method-title{font-size:14px;font-weight:700;color:#1c1917;margin-bottom:6px;}
+.method-sub{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5;}
+.steps-list{list-style:none;margin:0;padding:0;}
+.steps-list li{font-size:13px;color:#374151;padding:6px 0;border-bottom:1px solid var(--border);line-height:1.5;}
+.steps-list li:last-child{border-bottom:none;}
+.step-n{display:inline-block;background:var(--am-mid);color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;text-align:center;line-height:18px;margin-right:8px;flex-shrink:0;}
+.props-table{width:100%;border-collapse:collapse;font-size:14px;margin-top:4px;}
+.props-table th{background:var(--am-light);color:var(--am-dark);padding:10px 12px;text-align:left;font-weight:700;font-size:13px;}
+.props-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.props-table tr:last-child td{border-bottom:none;}
+.tag-y{display:inline-block;background:#dcfce7;color:#15803d;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.tag-n{display:inline-block;background:#fee2e2;color:#991b1b;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.tag-c{display:inline-block;background:var(--am-light);color:var(--am-dark);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+@media(max-width:540px){.apps-grid{grid-template-columns:1fr;}}
+.app-card{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;}
+.app-card .ai{font-size:20px;margin-bottom:6px;}
+.app-card .at{font-size:13px;font-weight:700;color:#1c1917;margin-bottom:4px;}
+.app-card .ad{font-size:12px;color:var(--muted);line-height:1.5;}
+.no-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+@media(max-width:540px){.no-grid{grid-template-columns:1fr;}}
+.no-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:14px;}
+.no-card .nt{font-size:13px;font-weight:700;color:#991b1b;margin-bottom:4px;}
+.no-card .nd{font-size:12px;color:#7f1d1d;line-height:1.5;}
+.fn{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px 16px;margin-top:16px;}
+.fn-lbl{font-size:11px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.fn p{font-size:13.5px;color:#78350f;line-height:1.6;margin;0;}
+.callout{background:var(--am-light);border:1px solid #fcd34d;border-left:4px solid var(--am-mid);border-radius:0 8px 8px 0;padding:14px 16px;margin:12px 0;}
+.callout .ct{font-size:13px;font-weight:700;color:var(--am-dark);margin-bottom:5px;}
+.callout p{font-size:13px;color:var(--am-dark);line-height:1.55;margin:0;}
+.isa{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 18px;margin-top:24px;font-size:13px;color:#0369a1;line-height:1.65;}
+.isa strong{color:#0c4a6e;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">Microbe Tree Inc. · West Kelowna, BC</div>
+    <div class="hdr-title">🪚 Equipment, Tools &amp; Knots</div>
+    <div class="hdr-sub">Week 2 · Tuesday</div>
+  </div>
+  <div class="badge">Reference Card</div>
+</div>
+<div class="wrap">
+  <div class="week-lbl">Week 2 · Equipment &amp; Knots</div>
+  <div class="intro-card">
+    <h1>The Clove Hitch — Quick, Adjustable, Situational</h1>
+    <p>The clove hitch is one of the fastest knots to tie in arboricultural work and one of the most abused. It's a positioning tool — not a primary life safety anchor. Learning to tie it correctly in both configurations, understanding what it does well and where it rolls under load, and knowing the exact situations where something else is the better choice: that's what this lesson covers.</p>
+  </div>
+
+  <!-- TYING THE KNOT -->
+  <div class="section">
+    <h2>🪢 Two Methods — Over an Object vs. In the Bight</h2>
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="method-title">Method 1: Over an Object (End)</div>
+        <div class="method-sub">Used when you can access the end of the rope and pass it over or around the object (spar, branch, anchor). The most common method in tree climbing.</div>
+        <svg viewBox="0 0 200 200" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+          <!-- Spar/branch as vertical post -->
+          <rect x="88" y="10" width="24" height="180" rx="4" fill="#d4a76a" stroke="#92400e" stroke-width="2"/>
+          <!-- First loop: working end over from left, under right, emerging right side going up-right -->
+          <path d="M20,80 Q55,80 80,90 Q100,95 112,90 Q135,80 160,75" fill="none" stroke="#8B5E3C" stroke-width="8" stroke-linecap="round"/>
+          <!-- Second loop: comes from right, crosses over first loop, under spar, out left going down -->
+          <path d="M160,115 Q135,120 112,118 Q100,117 88,120 Q65,125 40,130" fill="none" stroke="#4A7C59" stroke-width="8" stroke-linecap="round"/>
+          <!-- Cross-over visual cue -->
+          <circle cx="100" cy="105" r="5" fill="#fbbf24" stroke="#d97706" stroke-width="2"/>
+          <!-- Labels -->
+          <text x="22" y="70" font-size="11" fill="#8B5E3C" font-weight="700">1st</text>
+          <text x="22" y="81" font-size="11" fill="#8B5E3C">wrap</text>
+          <text x="22" y="140" font-size="11" fill="#4A7C59" font-weight="700">2nd</text>
+          <text x="22" y="151" font-size="11" fill="#4A7C59">wrap</text>
+          <text x="93" y="99" font-size="9" fill="#92400e">X</text>
+          <text x="142" y="74" font-size="10" fill="#6b7280">Standing</text>
+          <text x="142" y="128" font-size="10" fill="#6b7280">Tail end</text>
+        </svg>
+        <ul class="steps-list">
+          <li><span class="step-n">1</span>Pass the working end over and around the object — forming a simple turn</li>
+          <li><span class="step-n">2</span>Pass the working end over and around again, this time crossing <em>over</em> the first wrap</li>
+          <li><span class="step-n">3</span>Tuck the working end under the second wrap (the X) before it exits</li>
+          <li><span class="step-n">4</span>Dress by pulling both ends firmly; the cross sits tight on the object</li>
+        </ul>
+      </div>
+      <div class="method-card">
+        <div class="method-title">Method 2: In the Bight (Middle of Rope)</div>
+        <div class="method-sub">Tied without using the rope end — formed in the middle of a rope and dropped over an object. Faster in some rigging setups; requires access to the top of the anchor.</div>
+        <svg viewBox="0 0 200 200" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+          <!-- Two loops formed side by side, facing opposite directions -->
+          <!-- Left loop (first bight loop) -->
+          <ellipse cx="72" cy="90" rx="35" ry="28" fill="none" stroke="#8B5E3C" stroke-width="7"/>
+          <!-- Right loop (second bight loop, rotated) -->
+          <ellipse cx="128" cy="90" rx="35" ry="28" fill="none" stroke="#4A7C59" stroke-width="7"/>
+          <!-- Arrow showing they're pushed together downward -->
+          <text x="96" y="85" font-size="18" fill="#d97706">+</text>
+          <path d="M100,110 L100,145" stroke="#374151" stroke-width="2" stroke-dasharray="4 3"/>
+          <polygon points="100,152 95,142 105,142" fill="#374151"/>
+          <text x="75" y="170" font-size="11" fill="#374151" font-weight="600">Drop over object</text>
+          <!-- Labels -->
+          <text x="42" y="55" font-size="11" fill="#8B5E3C">Loop 1</text>
+          <text x="105" y="55" font-size="11" fill="#4A7C59">Loop 2</text>
+          <text x="38" y="130" font-size="10" fill="#6b7280">Overlap &amp;</text>
+          <text x="38" y="141" font-size="10" fill="#6b7280">nest together</text>
+        </svg>
+        <ul class="steps-list">
+          <li><span class="step-n">1</span>Form two identical overhand loops in the rope — same size, same orientation</li>
+          <li><span class="step-n">2</span>Rotate the right loop toward you so it faces the opposite direction from the left</li>
+          <li><span class="step-n">3</span>Nest the two loops together — the overhand cross of each loop becomes the clove hitch cross</li>
+          <li><span class="step-n">4</span>Drop the combined loops over the object and dress by pulling both ends</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fn"><div class="fn-lbl">📋 Tie It One-Handed</div><p>The clove hitch over an object can be tied with one hand — a critical skill for positioning a lanyard while aloft. Practice: hold the object with your non-dominant hand, pass the rope with your dominant hand only. Both wraps, the tuck, the dress — one hand. That's the standard. If you can't do it in gloves, you're not done practicing.</p></div>
+  </div>
+
+  <!-- PROPERTIES -->
+  <div class="section">
+    <h2>⚖️ Properties &amp; Load Characteristics</h2>
+    <table class="props-table">
+      <thead><tr><th>Property</th><th>Rating</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Speed to tie</strong></td><td><span class="tag-y">FAST</span></td><td>One of the fastest hitches to tie, especially in-the-bight. This is the primary reason it's used for positioning in trees.</td></tr>
+        <tr><td><strong>Adjustable under light load</strong></td><td><span class="tag-y">YES</span></td><td>Can slide along a rope or spar before locking under load — useful for positioning lanyards and redirects.</td></tr>
+        <tr><td><strong>Holds under steady unidirectional load</strong></td><td><span class="tag-y">GOOD</span></td><td>When load is applied in one direction and held steady, the hitch grips effectively and does not slip.</td></tr>
+        <tr><td><strong>Rolls under bi-directional / alternating load</strong></td><td><span class="tag-n">RISK</span></td><td>If load alternates direction (e.g., rope pulled from both sides, piece swinging), the hitch can roll along the object and work loose. Add two half-hitches or a stopper knot for security.</td></tr>
+        <tr><td><strong>Primary life safety anchor</strong></td><td><span class="tag-n">NOT APPROPRIATE</span></td><td>Do not use as a sole anchor for a climbing system per ANSI Z133. A positioning tool, not a primary fall arrest anchor.</td></tr>
+        <tr><td><strong>Knot efficiency</strong></td><td><span class="tag-c">~60–70%</span></td><td>Approximate MBS retention. Always work from rope WLL, not MBS.</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <div class="ct">📌 Securing a Clove Hitch Against Rollout</div>
+      <p>Any time a clove hitch is used where the load direction may alternate — including most rigging applications — add <strong>two half-hitches</strong> around the standing part after the hitch, or use a stopper knot. The half-hitches convert the clove hitch into a <em>clove hitch + half hitches</em> (sometimes called a "cleat hitch" configuration) that resists rollout without adding meaningful bulk.</p>
+    </div>
+  </div>
+
+  <!-- APPLICATIONS -->
+  <div class="section">
+    <h2>✅ Arborist Applications</h2>
+    <div class="apps-grid">
+      <div class="app-card"><div class="ai">🌳</div><div class="at">Positioning lanyard anchor</div><div class="ad">Clipping or tying a positioning lanyard to a stem or branch union to hold a work position. Fast, adjustable. Add backup if the position will be weighted for extended periods.</div></div>
+      <div class="app-card"><div class="ai">🔀</div><div class="at">Friction saver / redirect</div><div class="ad">Attaching a redirect rope to a branch or stem to change rope direction. Load is typically unidirectional; well-suited to clove hitch.</div></div>
+      <div class="app-card"><div class="ai">🔧</div><div class="at">Tool and equipment attachment</div><div class="ad">Tying tools to a work line for haul-up. Fast to apply and release; load is usually unidirectional (tool weight only).</div></div>
+      <div class="app-card"><div class="ai">🪵</div><div class="at">Temporary spar tie-off</div><div class="ad">Securing a rope to a spar or stem for temporary load. Useful during rigging operations for position holds. Add half-hitches if load will cycle.</div></div>
+    </div>
+  </div>
+
+  <!-- WHEN NOT TO USE -->
+  <div class="section">
+    <h2>🚫 When NOT to Use the Clove Hitch</h2>
+    <div class="no-grid">
+      <div class="no-card"><div class="nt">Primary life safety anchor</div><div class="nd">ANSI Z133 requires life safety anchors to be rated hardware or knots appropriate for dynamic and static loading. The clove hitch's potential to roll under alternating load makes it unsuitable as a sole life safety tie-in. Use hardware, a bowline with backup, or a secure hitch with backup for primary anchors.</div></div>
+      <div class="no-card"><div class="nt">Bi-directional or alternating load</div><div class="nd">Any rigging scenario where the load will pull in more than one direction — swinging piece, rope under variable tension from both ends — risks rolling the clove hitch off the anchor. Add half-hitches or switch to a more stable hitch (timber hitch, round turn + 2 half-hitches).</div></div>
+      <div class="no-card"><div class="nt">On smooth or tapered objects</div><div class="nd">The clove hitch grips by friction on the object surface. On very smooth metal pipe, slick synthetic spars, or tapered objects, the hitch can roll or slip under load more easily than on rough bark or textured rope. Use a round turn before the hitch to increase friction area.</div></div>
+      <div class="no-card"><div class="nt">As a friction hitch</div><div class="nd">The clove hitch is a <em>binding hitch</em> — it grips an object. It is not a friction hitch (Prusik, VT, Blake's) and does not self-arrest on a rope under load. Do not use it where you need a self-locking, adjustable grip on a running line.</div></div>
+    </div>
+    <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>The most common misuse of the clove hitch in residential arborist work is using it as the only attachment for a climbing line anchor while doing a rigging operation on a dead ponderosa. Live-load rigging with a swinging piece creates exactly the bi-directional loading that can cause a bare clove hitch to roll. If you're rigging heavy sections on a dead Okanagan conifer with unpredictable wood failure, your anchor system needs more than a clove hitch — round turn plus two half-hitches, or hardware with a rated WLL, plus a redundant backup anchor. Per <strong>ANSI Z133 Section 9</strong>, rigging systems must be capable of handling expected loads&�ith appropriate safety factor; a rolling clove hitch does not qualify.</p></div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="section">
+    <h2>📊 Clove Hitch vs. Adjacent Knots</h2>
+    <table class="props-table">
+      <thead><tr><th>Knot</th><th>Best For</th><th>Key Limitation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Clove Hitch</strong></td><td>Fast positioning, redirect, tool attachment</td><td>Can roll under bi-directional load; not a primary anchor</td></tr>
+        <tr><td><strong>Round Turn + 2 Half-Hitches</strong></td><td>Secure anchor to a spar/branch; handles cyclic load better</td><td>Slower to tie; less adjustable</td></tr>
+        <tr><td><strong>Timber Hitch</strong></td><td>Dragging/pulling a log along its grain; improves with load</td><td>Not for transverse loads; unties with no load</td></tr>
+        <tr><td><strong>Bowline + backup</strong></td><td>Fixed loop anchor, life safety capable when backed up</td><td>Slower to tie; requires a working end to be free</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="isa">
+    <strong>📚 ISA Exam Domain:</strong> Safe Work Practices (28%) — Knots, Hitches &amp; Rigging<br>
+    <strong>Sources:</strong> ANSI Z133 (2017) Safe Work Practices for Arborists, Section 9; ISA Best Management Practices: Rigging; Blair, D.F. <em>Arborist Equipment</em> (ISA Press); Lilly, S.J. <em>Arborists' Certification Study Guide</em> (4th Ed.), Ch. 10
+  </div>
+</div>
+</body>
+</html>
