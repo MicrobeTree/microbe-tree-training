@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timber Hitch — Microbe Tree Training</title>
+<style>
+:root{--bg:#0f1017;--surface:#1a1b25;--card:#21222e;--border:#2c2e40;--accent:#b87333;--accent-light:#d4944a;--text:#e8eaf0;--text-dim:#8b8fa0;--fn-bg:#201a10;--fn-border:#b87333;--warn-bg:#201818;--warn-border:#8b3a3a;--warn-text:#d47f7f}
+#{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;padding-bottom:32px}
+.header{background:linear-gradient(135deg,#1f1508,#0f0d05);border-bottom:2px solid var(--accent);padding:18px 20px;display:flex;align-items:center;gap:12px}
+.header-icon{font-size:26px}
+.header h1{font-size:1.1rem;font-weight:700;color:var(--accent-light);line-height:1.3}
+.header .sub{font-size:0.8rem;color:var(--text-dim);margin-top:3px}
+.badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap}
+nav{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
+.tab{padding:11px 16px;font-size:0.82rem;font-weight:500;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color 0.15s,border-color 0.15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent-light);border-bottom-color:var(--accent-light)}
+.pane{display:none;padding:18px 16px}
+.pane.show{display:block}
+h2{font-size:0.85rem;font-weight:700;color:var(--accent-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px}
+h3{font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:8px}
+p{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:9px}
+ul{padding-left:17px;margin-bottom:9px}
+li{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:3px}
+strong{color:var(--accent-light)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.field-note{background:var(--fn-bg);border:1px solid var(--fn-border);border-left:3px solid var(--fn-border);border-radius:6px;padding:11px 13px;margin-top:12px}
+.fn-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:5px}
+.field-note p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:6px;padding:11px 13px;margin-bottom:10px}
+.warn-box .wlabel{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--warn-text);margin-bottom:5px}
+.warn-box p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
+table{width:100%;border-collapse:collapse;font-size:0.82rem;margin-bottom:10px}
+th{background:var(--surface);color:var(--accent-light);text-align:left;padding:8px 10px;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--border)}
+td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);line-height:1.4}
+tr:last-child td{border-bottom:none}
+.step-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.step-num{background:var(--accent);color:#fff;font-size:0.8rem;font-weight:700;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-text{font-size:0.87rem;line-height:1.55;color:var(--text)}
+.isa-tag{margin:8px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:0.78rem;color:var(--text-dim);text-align:center;line-height:1.5}
+.isa-tag span{color:var(--accent-light);font-weight:600}
+svg text{font-family:system-ui,-apple-system,sans-serif}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-icon">🪚</div>
+  <div>
+    <h1>The Timber Hitch</h1>
+    <div class="sub">Week 3 · Tuesday · Equipment &amp; Knots</div>
+  </div>
+  <div class="badge">ISA CA Prep</div>
+</div>
+<nav id="nav">
+  <div class="tab active" onclick="show(0)">The Knot</div>
+  <div class="tab" onclick="show(1)">How to Tie</div>
+  <div class="tab" onclick="show(2)">Properties</div>
+  <div class="tab" onclick="show(3)">Applications</div>
+  <div class="tab" onclick="show(4)">Limitations</div>
+</nav>
+
+<!-- Pane 0: The Knot -->
+<div class="pane show" id="p0">
+  <h2>The Timber Hitch</h2>
+  <div class="card">
+    <p>The timber hitch is a <strong>friction-based attachment</strong> that cinches tighter as load is applied. It wraps around a log or spar, passes under its own standing part, then spirals the working end back around itself. The self-tightening property makes it ideal for dragging, lowering, or controlling logs under tension — and it releases instantly when load is removed.</p>
+  </div>
+
+  <!-- SVG Diagram -->
+  <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;display:block;margin:0 auto 14px">
+    <!-- Log cylinder -->
+    <ellipse cx="170" cy="90" rx="140" ry="28" fill="#3a2a18" stroke="#6b4f2a" stroke-width="1.5"/>
+    <rect x="30" y="90" width="280" height="56" fill="#3a2a18"/>
+    <ellipse cx="170" cy="146" rx="140" ry="28" fill="#2a1e10" stroke="#6b4f2a" stroke-width="1.5"/>
+    <!-- Log grain lines -->
+    <line x1="30" y1="106" x2="310" y2="106" stroke="#4a3820" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <line x1="30" y1="122" x2="310" y2="122" stroke="#4a3820" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <line x1="30" y1="138" x2="310" y2="138" stroke="#4a3820" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <!-- LOG label -->
+    <text x="170" y="120" text-anchor="middle" fill="#9a7a50" font-size="11" font-weight="600" letter-spacing="2">LOG / SPAR</text>
+    <!-- Standing part (coming from left) -->
+    <path d="M 5,60 C 30,60 40,80 55,80 C 65,80 70,88 75,88" fill="none" stroke="#d4944a" stroke-width="5" stroke-linecap="round"/>
+    <!-- Wrap around log - visible part going under -->
+    <path d="M 75,88 C 85,88 95,90 100,90 C 115,90 120,85 130,80 C 140,75 150,73 165,73 C 180,73 195,78 205,83 C 215,88 225,90 240,90 C 255,90 265,87 275,84" fill="none" stroke="#d4944a" stroke-width="5" stroke-linecap="round"/>
+    <!-- Under the log and back - the cinch -->
+    <path d="M 275,84 C 285,82 295,82 305,84 C 315,86 320,90 318,96 C 316,102 308,108 295,112 C 280,116 260,118 245,118 C 230,118 215,116 205,118" fill="none" stroke="#d4944a" stroke-width="5" stroke-linecap="round"/>
+    <!-- Twisted working end (back around itself, 3 wraps shown) -->
+    <path d="M 205,118 C 195,120 185,122 180,118 C 175,114 178,108 185,105" fill="none" stroke="#d4944a" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M 185,105 C 192,101 200,100 207,103 C 214,106 216,112 210,116" fill="none" stroke="#d4944a" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M 210,116 C 204,120 197,122 190,120 C 183,118 179,113 182,108" fill="none" stroke="#d4944a" stroke-width="4.5" stroke-linecap="round"/>
+    <!-- Working end tail -->
+    <path d="M 182,108 C 178,103 176,98 178,92 C 180,87 185,86 190,88" fill="none" stroke="#d4944a" stroke-width="4" stroke-linecap="round" stroke-dasharray="4,3"/>
+    <!-- Arrow showing direction of load -->
+    <line x1="5" y1="60" x2="30" y2="60" stroke="#52a85e" stroke-width="2"/>
+    <polygon points="5,60 14,55 14,65" fill="#52a85e"/>
+    <text x="8" y="50" fill="#52a85e" font-size="9" font-weight="600">LOAD</text>
+    <!-- Twist indicator -->
+    <text x="168" y="190" text-anchor="middle" fill="#d4944a" font-size="10" font-weight="600">Working end twists around itself</text>
+    <text x="168" y="203" text-anchor="middle" fill="#8b8fa0" font-size="9">3–5 wraps minimum</text>
+    <!-- Standing part label -->
+    <text x="15" y="74" fill="#8b8fa0" font-size="9">Standing</text>
+    <text x="15" y="84" fill="#8b8fa0" font-size="9">part</text>
+  </svg>
+
+  <div class="card">
+    <h3>At a Glance</h3>
+    <table>
+      <tr><th>Property</th><th>Detail</th></tr>
+      <tr><td>Knot type</td><td>Friction hitch / binding hitch</td></tr>
+      <tr><td>Primary use</td><td>Attaching rope to logs, spars, poles for dragging or lowering</td></tr>
+      <tr><td>Under load</td><td>Self-tightening — cinches as load increases</td></tr>
+      <tr><td>Release</td><td>Instant when load removed; does not jam</td></tr>
+      <tr><td>Working end wraps</td><td>3 minimum; 5 for large-diameter or rough logs</td></tr>
+      <tr><td>Knot efficiency</td><td>Approx. 60–65% of rope MBS</td></tr>
+      <tr><td>Life-safety use?</td><td><strong>No</strong> — not approved as primary life-safety attachment per ANSI Z133</td></tr>
+    </table>
+  </div>
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note — Okanagan Context</div>
+    <p>Most Okanagan removals involve steep, rocky terrain where ground dragging isn't an option — pieces need to be rigged down or speedlined. The timber hitch shines here as a quick, reliable log attachment for pieces being lowered, and comes off the piece instantly once it's on the ground. You don't need a knife to free it. On flat DZ setups — boulevard birch removal in West Kelowna, for example — the timber hitch + half-hitch combination is the standard for controlling a long log section dragged to the chipper.</p>
+  </div>
+</div>
+
+<!-- Pane 1: How to Tie -->
+<div class="pane" id="p1">
+  <h2>Tying the Timber Hitch</h2>
+  <div class="card">
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-text">Pass the working end <strong>around the object</strong> (log or spar) and then pass it <strong>under the standing part</strong> of the rope on the far side.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-text">Bring the working end back toward the object and <strong>pass it through the loop</strong> you've just created between the standing part and the object.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Twist the working end around itself</strong> in the direction of the lay of the rope — minimum 3 full wraps, preferably 5. Each wrap should lie flat against the previous wrap.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+    2 <div class="step-text"><strong>Apply tension on the standing part</strong> — the hitch cinches tight against the object automatically. Check that wraps are secure and haven't crossed.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div class="step-text">To dress: ensure all wraps lie flat and the hitch is centred on the load point. For long logs, add <strong>a half-hitch 1–1.5 m from the timber hitch</strong> to prevent the log from rotating (see Applications tab).</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Common Tying Errors</h3>
+    <ul>
+      <li><strong>Twisting against the rope lay:</strong> wraps loosen under load instead of tightening. Always twist in the direction of the rope's natural twist</li>
+      <li><strong>Too few wraps:</strong> 2 or fewer wraps can slip on smooth or wet timber. Minimum 3; use 5 on hardwoods with smooth bark</li>
+      <li><strong>Hitch too close to log end:</strong> places stress concentration at end grain; position hitch in the middle third of the log section</li>
+      <li><strong>Not dressing the hitch:</strong> crossed wraps reduce the self-tightening action and can fail unexpectedly under shock load</li>
+    </ul>
+  </div>
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note</div>
+    <p>Practice tying the timber hitch with gloves on, one-handed, on a cold morning. That's the real test. On a winter removal, with a fresh-cut pine log slippery with pitch, the difference between a hitch tied correctly and one that slips under the first load cycle becomes very obvious very fast. Get the muscle memory now, before you're at the end of a 14-hour day.</p>
+  </div>
+</div>
+
+<!-- Pane 2: Properties -->
+<div class="pane" id="p2">
+  <h2>Load Properties &amp; Mechanics</h2>
+  <div class="card">
+    <h3>Self-Tightening Under Load</h3>
+    <p>As tension is applied to the standing part, the wraps of the working end are drawn tighter around the rope segment, increasing friction against the object. This is the timber hitch's defining characteristic — it becomes more secure as load increases. It is not a fixed loop knot and does not maintain its geometry when unloaded.</p>
+  </div>
+  <div class="card">
+    <h3>Knot Efficiency</h3>
+    <p>Approximately <strong>60–65%</strong> of the rope's minimum breaking strength (MBS) is retained through the timber hitch. This is lower than some fixed loops (bowline: 65–75%) and reflects the tight-radius bending around the standing part. Always work within the rope's WLL with the appropriate safety factor applied, not MBS.</p>
+  </div>
+  <div class="card">
+    <h3>Shock Load Sensitivity</h3>
+    <p>Like all hitches, the timber hitch is sensitive to shock loading. A log swinging or falling unexpectedly can generate forces 3–5× the static weight. <strong>Per ANSI Z133, rigging components and attachments must be selected to handle both static and dynamic loads.</strong> Always estimate piece weight before rigging — a green 30 cm diameter × 2 m Douglas-fir section weighs roughly 90–120 kg. Factor in swing angle.</p>
+  </div>
+  <div class="card">
+    <h3>Release Characteristics</h3>
+    <p>The timber hitch releases <strong>immediately and easily</strong> when load is removed — no jamming, no knife required. This makes it far superior to a round-turn-and-two-half-hitches for log attachment in high-cycle rigging situations where pieces need to be detached quickly on the ground.</p>
+  </div>
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note</div>
+    <p>On a typical residential removal with a 3-person crew, the ground person is detaching and redirecting pieces as fast as the climber is cutting. The timber hitch's clean release — versus a knot that needs to be worked loose — can make the difference between an efficient 4-hour job and a 6-hour one. Time saved on ground is time saved everywhere.</p>
+  </div>
+</div>
+
+<!-- Pane 3: Applications -->
+<div class="pane" id="p3">
+  <h2>Arborist Applications</h2>
+  <div class="card">
+    <h3>Log Dragging and Positioning</h3>
+    <p>The primary traditional use. The timber hitch cinches on the end of a log, a line is run to a capstan or pulled by hand, and the piece is dragged to the chipper or staging area. The hitch releases cleanly when slack is given. In tight residential yards — a common Okanagan scenario — the ability to quickly redirect a line without re-rigging is valuable.</p>
+  </div>
+  <div class="card">
+    <h3>Timber Hitch + Half-Hitch Combination (Log Control)</h3>
+    <p>For controlling a long log during lowering or dragging, use the timber hitch as the primary attachment and add <strong>one or two half-hitches 1–1.5 m toward the far end of the log</strong>. The half-hitches prevent the log from rotating on its axis and keep the nose (cut end) from digging in during a drag.</p>
+    <ul>
+      <li>Timber hitch at the butt end — takes the primary load</li>
+      <li>First half-hitch 1 m forward — provides directional control</li>
+      <li>Second half-hitch 1 m further (optional, for long sections) — added stability</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Temporary Spar Attachment</h3>
+    <p>A timber hitch can secure a lowering line around a spar tree trunk as a temporary redirect point. It grips without damaging the bark as severely as a clove hitch under load because the self-tightening wraps distribute force over a larger surface area. Not a substitute for a proper rigging block with anchor strap.</p>
+  </div>
+  <div class="card">
+    <h3>Rigging Piece Attachment</h3>
+    <p>When a block isn't available and a piece needs to be tied off and lowered with a single rope, a timber hitch applied to the piece and the rope run over a crotch can serve as a field expedient. This is lower-tech and higher-friction than block-and-sling rigging — use it when you have to, not when you have alternatives.</p>
+  </div>
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note — Okanagan Context</div>
+    <p>On interior BC work sites, particularly on acreage properties south of Kelowna, you'll often be dragging pieces across rough terrain to a staging area or burning pile. The timber hitch + half-hitch setup with a hand line or quad bike pull is standard. Know it cold. Also know the weight limits of your rope system before you start — a fresh-cut cottonwood round can be 200 kg before you've even looked at a calculator.</p>
+  </div>
+</div>
+
+<!-- Pane 4: Limitations -->
+<div class="pane" id="p4">
+  <h2>When NOT to Use the Timber Hitch</h2>
+  <div class="warn-box">
+    <div class="wlabel">⚠ Not a Life-Safety Attachment</div>
+    <p>The timber hitch is <strong>not approved as a primary life-safety attachment</strong> under ANSI Z133. It should never be used as an anchor for a climbing line, life-line, or any attachment point in the aerial work zone where a climber's life depends on the connection. The self-tightening mechanism, while reliable for rigging objects, has not been validated for life-safety applications.</p>
+  </div>
+  <div class="warn-box">
+    <div class="wlabel">⚠ Not Appropriate on Round Stock Under Vibration</div>
+    <p>On very smooth round stock (steel pipe, PVC, polished pole) under vibration or cyclic loading, the timber hitch can slowly walk along the material. Prefer a clove hitch with half-hitch backup in these scenarios.</p>
+  </div>
+  <div class="card">
+    <h3>Comparison: When to Use Which Knot</h3>
+    <table>
+      <tr><th>Scenario</th><th>Better Choice</th></tr>
+      <tr><td>Fixed loop at end of rope</td><td>Bowline (or figure-8 loop)</td></tr>
+      <tr><td>Quick attachment to a pole / bar</td><td>Clove hitch + half-hitches</td></tr>
+      <tr><td>Log dragging / lowering</td><td><strong>Timber hitch (+ half-hitch for long logs)</strong></td></tr>
+      <tr><td>Life-safety rope-to-anchor</td><td>Approved mechanical connector or bowline with backup</td></tr>
+      <tr><td>Mid-rope loop for redirect</td><td>Alpine butterfly</td></tr>
+      <tr><td>Adjustable friction for descent</td><td>Blake's hitch, VT hitch (on appropriate rope)</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>ANSI Z133 Reference</h3>
+    <p>ANSI Z133 (Safe Work Practices for Arboriculture) requires that all rigging hardware and attachments be <strong>rated for the anticipated loads including dynamic forces</strong>, and that equipment be inspected before each use. While ANSI Z133 does not prohibit the timber hitch for rigging objects, it requires that the rope WLL not be exceeded and that no life-safety function be performed with an unrated, uninspected, or inappropriate attachment.</p>
+    <p>Per <strong>ANSI Z133 Section 9.1</strong>: rigging equipment shall be selected, used, and maintained in accordance with manufacturer's specifications and recognised safe arboricultural practices. The timber hitch qualifies under recognised practice for log rigging — not for climber safety systems.</p>
+  </div>
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note</div>
+    <p>The confusion around the timber hitch usually comes from newer crew using it in positions where a fixed-loop or rated hardware connection is required. The test is simple: if your weight or a co-worker's weight ever passes through this connection, it needs to be a rated, inspected, approved attachment. The timber hitch is a rigging tool. Know which category every connection you make falls into before you load it.</p>
+  </div>
+</div>
+
+<div class="isa-tag">📚 <span>ISA Exam Domain: Safe Work Practices (28%)</span> · Sources: ANSI Z133 (2017) Sections 9.1–9.4 · ISA BMP Rigging · Blair, Arborist Equipment (1st Ed.)</div>
+
+<script>
+function show(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.pane').forEach((p,j)=>p.classList.toggle('show',i===j));
+}
+</script>
+</body>
+</html>
