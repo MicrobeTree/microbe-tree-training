@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verticillium Wilt — Microbe Tree Training</title>
+<style>
+:root{--bg:#0f0f0a;--surface:#181812;--card:#201f15;--border:#2e2d1f;--accent:#8a7a20;--accent-light:#c8b040;--text:#eeead8;--text-dim:#8a8670;--correct-bg:#122010;--correct-border:#3a7040;--correct-text:#7acf8a;--wrong-bg:#200f0f;--wrong-border:#7a3030;--wrong-text:#d4807a;--reveal-bg:#181810;--fn-bg:#161510;--fn-border:#8a7a20}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;padding-bottom:32px}
+.header{background:linear-gradient(135deg,#1a1a08,#0d0d04);border-bottom:2px solid var(--accent);padding:18px 20px;display:flex;align-items:center;gap:12px}
+.header-icon{font-size:26px}
+.header h1{font-size:1.1rem;font-weight:700;color:var(--accent-light);line-height:1.3}
+.header .sub{font-size:0.8rem;color:var(--text-dim);margin-top:3px}
+.badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap}
+.quick-ref{margin:18px 16px 8px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:14px 16px}
+.quick-ref h3{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:10px}
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ref-item{background:var(--surface);border-radius:6px;padding:9px 11px}
+.ref-item .lbl{font-size:0.66rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px}
+.ref-item .val{font-size:0.85rem;color:var(--text);line-height:1.4}
+.questions{padding:8px 16px 0}
+.q-block{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.q-head{padding:14px 16px 10px;border-bottom:1px solid var(--border)}
+.q-num{font-size:0.68rem;color:var(--accent-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px}
+.q-text{font-size:0.95rem;line-height:1.55;color:var(--text)}
+.options{padding:10px 16px;display:flex;flex-direction:column;gap:7px}
+.option{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:9px 13px;cursor:pointer;font-size:0.88rem;line-height:1.4;transition:background 0.15s,border-color 0.15s;display:flex;align-items:flex-start;gap:9px;user-select:none}
+.option:hover:not([data-locked]){background:#252512;border-color:var(--accent)}
+.opt-letter{font-weight:700;color:var(--text-dim);min-width:16px;flex-shrink:0}
+.option.correct{background:var(--correct-bg);border-color:var(--correct-border)}
+.option.correct .opt-letter{color:var(--correct-text)}
+.option.wrong{background:var(--wrong-bg);border-color:var(--wrong-border)}
+.option.wrong .opt-letter{color:var(--wrong-text)}
+.reveal{display:none;background:var(--reveal-bg);border-top:1px solid var(--border);padding:16px}
+.reveal.show{display:block}
+.reveal h4{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:9px}
+.reveal p{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:9px}
+.reveal ul{padding-left:17px;margin-bottom:9px}
+.reveal li{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:3px}
+.reveal strong{color:var(--accent-light)}
+.field-note{background:var(--fn-bg);border:1px solid var(--fn-border);border-left:3px solid var(--fn-border);border-radius:6px;padding:11px 13px;margin-top:10px}
+.fn-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:5px}
+.field-note p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
+.host-list{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.host-chip{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:0.78rem;color:var(--text)}
+.host-chip.suscept{border-color:#7a3030;color:#d4807a}
+.host-chip.resist{border-color:#3a7040;color:#7acf8a}
+.score-banner{display:none;margin:4px 16px 12px;background:var(--card);border:1px solid var(--accent);border-radius:8px;padding:12px 16px;text-align:center;font-size:0.95rem;font-weight:600;color:var(--accent-light)}
+.score-banner.show{display:block}
+.isa-tag{margin:12px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:0.78rem;color:var(--text-dim);text-align:center;line-height:1.5}
+.isa-tag span{color:var(--accent-light);font-weight:600}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-icon">🦠</div>
+  <div>
+    <h1>Verticillium Wilt</h1>
+    <div class="sub">Week 3 · Thursday · Pests &amp; Diseases</div>
+  </div>
+  <div class="badge">ISA CA Prep</div>
+</div>
+
+<div class="quick-ref">
+  <h3>🧾 Quick Reference — Verticillium Wilt</h3>
+  <div class="ref-grid">
+    <div class="ref-item"><div class="lbl">Pathogen</div><div class="val"><em>Verticillium dahliae</em> (primary); <em>V. albo-atrum</em> (less common in trees)</div></div>
+    <div class="ref-item"><div class="lbl">Type</div><div class="val">Soil-borne ascomycete fungus; systemic xylem pathogen</div></div>
+    <div class="ref-item"><div class="lbl">Survival structure</div><div class="val">Microsclerotia — persist in soil 10–15+ years without host</div></div>
+    <div class="ref-item"><div class="lbl">Infection route</div><div class="val">Roots (wounds, natural openings) → colonises xylem vessels</div></div>
+    <div class="ref-item"><div class="lbl"=Key symptom</div><div class="val">One-sided flagging; olive/brown vascular discoloration in cross-section</div></div>
+    <div class="ref-item"><div class="lbl">Susceptible genera</div><div class="val">Acer, Ulmus, Fraxinus, Robinia, Cotinus, Prunus, Catalpa, many others</div></div>
+  </div>
+</div>
+
+<div class="questions" id="questions"></div>
+<div class="score-banner" id="scoreBanner"></div>
+<div class="isa-tag">📚 <span>ISA Exam Domains: Tree Biology (11%) · Soil Management (11%)</span> · Sources: ISA BMP Plant Health Care · ISA Certification Study Guide 4th Ed. · BC Ministry of Forests Forest Health · Horst, Westcott's Plant Disease Handbook</div>
+
+<script>
+const Qs=[
+  {
+    q: "Verticillium wilt is caused by a specific type of soil-dwelling pathogen. Which of the following accurately describes Verticillium dahliae?",
+    opts:[
+      "An obligate oomycete (water mold) that infects fine roots during wet soil conditions and spreads via zoospores",
+      "A soil-borne ascomycete fungus that colonises xylem vessels of susceptible hosts after root infection, blocking water transport",
+      "A gram-negative bacterium transmitted from tree to tree by bark beetles during feeding and oviposition",
+      "A viral pathogen transmitted primarily through infected pruning tools that disrupts phloem loading in susceptible hosts"
+    ],
+    correct:1,
+    title:"The Pathogen — Verticillium dahliae",
+    paras:[
+      "<em>Verticillium dahliae</em> is a <strong>soil-borne ascomycete fungus</strong> — not a water mold (oomycete), not a bacterium, not a virus. This distinction matters because it shapes your entire management approach: ascomycetes respond differently to environmental conditions and treatment options than oomycetes do.",
+      "The infection pathway: fungal hyphae in the soil penetrate fine roots through natural openings or wounds. From there, the pathogen colonises the <strong>xylem vessels</strong> — the water-conducting system of the tree. Inside the vessels, Verticillium produces both hyphae and spore-like conidia that are transported upward in the transpiration stream, spreading the infection progressively through the vascular system.",
+      "As the pathogen grows in xylem vessels, it produces <strong>cell-wall-degrading enzymes, toxins, and tyloses</strong>. The tree's own wound response (tylosis formation) contributes to vessel blockage. The result: water transport is progressively restricted in colonised vessels, and the crown above shows wilt symptoms as tissue desiccates."
+    ],
+    bullets:[
+      "V. dahliae affects hundreds of plant species — including many common vegetables (potato, tomato, strawberry) and woody ornamentals",
+      "V. albo-atrum also causes Verticillium wilt but is more associated with herbaceous hosts; V. dahliae is the primary concern in woody plants",
+      "The pathogen does not produce above-ground structures — there are no fruiting bodies or spore masses visible on the tree",
+      "Diagnosis relies on symptom pattern + vascular discoloration + lab culture — field diagnosis alone is not definitive"
+    ],
+    note:"Every Okanagan street with maple or elm plantings has Verticillium in the soil — this pathogen is almost universally present in disturbed urban soils. The question isn't whether it's there; it's whether the tree is stressed enough to be susceptible. A vigorous, well-rooted silver maple growing in amended soil with adequate irrigation can co-exist with V. dahliae for decades without showing symptoms. The same tree, compacted in a 1.5m boulevard strip with no irrigation, can develop wilt symptoms in year 3."
+  },
+  {
+    q: "You're inspecting a mature Japanese maple in Kelowna that shows sudden wilt and yellowing of leaves on one side of the crown — the other half looks normal. When you cut a declining branch at 15 cm from the base, you find olive-green to brown streaking in the wood just under the bark. What is the most likely diagnosis?",
+    opts:[
+      "Bronze birch borer — larvae tunnelling in the cambium have disrupted vascular function on the affected side",
+      "Stem girdling root pressing on one side of the root flare, restricting water movement on that side only",
+      "Verticillium wilt — xylem colonisation causing one-sided water transport failure, with vascular discoloration confirming xylem involvement",
+      "Cytospora canker girdling a main scaffold branch, causing dieback of the crown sector above the canker"
+    ],
+    correct:2,
+    title:"Diagnosis — Flagging and Vascular Discoloration",
+    paras:[
+      "The two key diagnostic features you've just described are the classic Verticillium presentation: <strong>one-sided or asymmetric crown wilt (flagging)</strong> and <strong>olive-green to brown vascular discoloration in sapwood</strong>. These two findings together are the most reliable field indicators of Verticillium wilt in susceptible hosts.",
+      "The one-sided pattern is explained by the infection pathway. The pathogen enters through roots on one side of the tree and colonises the vascular tissue ascending from those roots. Because xylem conductivity follows specific radial sectors in many tree species, infection often remains asymmetric in early stages — one scaffold or one side of the crown wilts while the other remains green.",
+      "The vascular discoloration (olive-green, brown, or tan streaks in the sapwood) reflects tissue death and oxidative responses in xylem vessels colonised by the fungus. This staining can be found in the main trunk, scaffold branches, and even into small branch wood. <strong>This discoloration is distinct from the reddish heartwood of normal wood decay</strong> — it's in the sapwood (active xylem), not the heartwood, and follows a streaky rather than a ring or wedge pattern."
+    ],
+    bullets:[
+      "Aspen/birch borer damage would show oval holes and frass at bark, not sapwood streaking",
+      "Stem girdling roots cause similar one-sided wilt but without internal vascular discoloration; examine the root flare",
+      "Cytospora canker would show external cankered bark with pycnidia; internal damage is more localised to the canker zone",
+      "Confirm diagnosis via laboratory culture: take sapwood samples from the boundary between discoloured and healthy wood, submit to BC Ministry of Agriculture plant diagnostic lab"
+    ],
+    note:"In the field, bring a hand lens and a sharp knife. Make a clean cut through an affected branch, start 30 cm from the union, and look at the cross-section — olive-green or brown radial streaks in the sapwood on affected tissue vs. clean cream-coloured sapwood on healthy tissue. If you see the streaking, Verticillium is high on your list. Don't tell the client it's confirmed until you have lab results, but structure your management conversation around that probability. A confirmed diagnosis changes the planting recommendation for replacements."
+  },
+  {
+    q: "Verticillium dahliae survives between hosts as microsclerotia in the soil. What is the most significant management implication of this survival mechanism?",
+    opts:[
+      "Fungicide soil drenches are highly effective because microsclerotia are metabolically active and absorb systemic products readily",
+      "A 2-year fallow period between susceptible hosts reliably eliminates Verticillium from infected soil",
+      "Microsclerotia can persist in soil for 10–15+ years without a host, making site history and species selection critical management tools",
+      "Microsclerotia are only viable in acidic soils below pH 6.0 and are naturally suppressed in the Okanagan's alkaline substrates"
+    ],
+    correct:2,
+    title:"Microsclerotia — Why Verticillium Is a Site Problem, Not Just a Tree Problem",
+    paras:[
+      "Microsclerotia are dense, melanin-rich fungal resting structures — essentially hardened clumps of mycelium packed with nutrient reserves. They are highly resistant to desiccation, heat, cold, and biological degradation. In field conditions, <strong>V. dahliae microsclerotia remain viable in soil for 10–15 years or more without a living host.</strong>",
+      "The management implication is fundamental: once a site has Verticillium-infected soil, it is effectively permanently infected. You cannot remove it with a fungicide drench (the microsclerotia are protected by their dense structure and are not actively metabolising in the absence of a host signal). You cannot fallow it away in a reasonable timeframe.",
+      "This reframes diagnosis completely. When you confirm Verticillium wilt on a tree, the question isn't just 'how do I treat this tree?' — it's 'what is this site's future?' If the tree is declining past the point of reasonable recovery, the replacement species selection is now a <strong>soil management decision</strong>: choose a resistant or non-susceptible species, or you will likely see wilt symptoms on the replacement within the same timeframe."
+    ],
+    bullets:[
+      "Microsclerotia germinate in response to root exudates from susceptible hosts — host proximity triggers activation",
+      "Soil solarisation (clear plastic mulch in hot dry summer) can reduce microsclerotia density in the top 15–20 cm — somewhat effective in Okanagan summers but requires 6–8 weeks and is rarely practical in urban settings",
+      "pH does not reliably suppress V. dahliae — it grows across a wide pH range including the alkaline Okanagan range",
+      "Short fallow periods (2 years) do not eliminate the pathogen — this is a common misconception; 10+ year persistence is well-documented"
+    ],
+    note:"When you're doing a boulevard replanting assessment after losing a Norway maple to Verticillium, the soil isn't clean. Recommend a Verticillium-resistant or non-susceptible species for the replacement. In the Okanagan context, bur oak, ginkgo, conifers (pines, firs), most birches, and hawthorns are viable resistant alternatives. Planting another maple or an ash or an elm in the same hole and expecting a different outcome is not good arboricultural advice."
+  },
+  {
+    q: "A boulevard Norway maple in Kelowna has been confirmed with Verticillium wilt — lab results positive. About 40% of the crown is dead. The homeowner asks if a fungicide trunk injection will save the tree. What is the most accurate and defensible response?",
+    opts:[
+      "Yes — phosphonate injections translocate into the xylem and directly suppress Verticillium in infected vessels, and are most effective when applied before 80% crown loss",
+      "No effective systemic fungicide is registered or proven effective for established Verticillium wilt in woody plants; management focuses on supporting host vigour, not eliminating the pathogen",
+      "Yes — propiconazole trunk injection is registered in BC and has proven efficacy for Verticillium control when applied before crown loss exceeds 50%",
+      "No, but foliar copper sulfate applications every 14 days during the growing season can slow disease progression by suppressing surface sporulation"
+  2 ],
+    correct:1,
+    title:"Treatment Reality — No Cure, Only Support",
+    paras:[
+      "This is one of the most important things to get right in a client conversation. <strong>There is no registered, proven-effective systemic fungicide treatment for established Verticillium wilt in trees.</strong> This is not a knowledge gap or a supply issue — it reflects the biology of the disease.",
+      "The pathogen is inside the xylem, which is a high-volume, high-velocity water transport system. Getting fungicidal concentrations to all colonised vessels throughout a mature tree — and keeping them there long enough to suppress the pathogen — is not achievable with current injection technology. Phosphonates work against oomycetes (Phytophthora), not ascomycetes. Propiconazole has some in-vitro activity against Verticillium but is not registered for this use in trees in Canada and has not demonstrated consistent efficacy in field trials.",
+      "The ISA BMP for Plant Health Care is explicit: management for Verticillium wilt focuses on <strong>host vigour support</strong> — optimising irrigation, nutrition, root zone conditions, and reducing other stressors — to extend the tree's productive life for as long as is practical, not to cure the infection. In some cases, an otherwise vigorous tree can carry a Verticillium infection for years without significant decline if stressors are well-managed."
+    ],
+    bullets:[
+      "Phosphonate fungicides target oomycetes (Phytophthora, downy mildew) — not ascomycetes like Verticillium",
+      "Propiconazole is registered for some foliage/stem fungal issues but NOT for systemic Verticillium control in trees in BC",
+      "Foliar copper has no systemic activity — Verticillium is in the xylem, not on the leaf surface",
+      "Telling a client a treatment exists when it doesn't is a professional integrity issue — and an ISA Code of Ethics issue"
+    ],
+    note:"The honest client conversation: 'There's no injection or spray that cures Verticillium — if someone tells you differently, get a second opinion. What we can do is reduce the stress load on this tree so its immune responses are as strong as possible. That means deep irrigation through dry periods, a good root zone mulch, no unnecessary wounding, and monitoring the crown each year. A healthy tree with Verticillium can persist for 10–20 more years. A stressed tree with Verticillium often declines quickly.' That's accurate, it's defensible, and it doesn't sell something that won't work."
+  },
+  {
+    q: "A Norway maple confirmed with Verticillium wilt needs to be removed. The homeowner wants a replacement that's durable, shade-providing, and unlikely to develop wilt in the same location. Given the known host range of Verticillium dahliae, which of the following is the BEST replacement recommendation for a West Kelowna boulevard?",
+    opts:[
+      "Silver maple (Acer saccharinum) — a different maple species, so it is unlikely to be colonised by the same Verticillium strain that infected the Norway maple",
+      "Japanese maple (Acer palmatum) — smaller-growing, so its root system will have less contact with microsclerotia in the soil",
+      "Bur oak (Quercus macrocarpa) — oaks are among the most resistant genera to Verticillium and are well-suited to Okanagan conditions",
+      "Siberian elm (Ulmus pumila) — fast-growing and will outgrow Verticillium pressure before it becomes a structural concern"
+    ],
+    correct:2,
+    title:"Species Selection After Verticillium — Resistance Matters More Than Speed",
+    paras:[
+      "All maples — regardless of species — are <strong>susceptible to Verticillium dahliae</strong>. Recommending a silver maple or Japanese maple as a replacement for a Norway maple lost to Verticillium is replacing a susceptible tree with an equally susceptible tree in confirmed infected soil. The new tree may take 10–20 years to show symptoms, but you've set up the same outcome.",
+      "Ulmus species, including Siberian elm, are also susceptible — in fact, Dutch elm disease aside, Verticillium is a significant secondary decline pathway for stressed elms. Siberian elm's fast growth provides no protection against a xylem-colonising pathogen.",
+      "<strong>Bur oak (<em>Quercus macrocarpa</em>) is among the most Verticillium-resistant deciduous trees</strong>, confirmed across multiple studies. Oaks as a genus show high resistance. Bur oak is also an excellent performer in Okanagan conditions: tolerates drought once established, alkaline soils, cold winters, and can achieve significant size and longevity in boulevard settings. It's slower to establish than a maple but the right answer for the site."
+    ],
+    bullets:[
+      "Highly susceptible genera: Acer, Ulmus, Fraxinus (ash), Robinia (locust), Catalpa, Cotinus, Prunus (ornamental cherry/plum)",
+      "Low susceptibility / resistant genera: Quercus (oak), Betula (birch), Ginkgo, most conifers (pines, firs, spruce), Tilia (linden — moderate resistance)",
+      "Resistance is not immunity — even resistant species can occasionally show symptoms in heavily infected soils under severe stress",
+      "The ISA BMP Plant Health Care recommends resistant species selection as the primary management response to confirmed Verticillium site history"
+    ],
+    note:"In the Okanagan, bur oak is underused and underappreciated as a boulevard tree. It's drought-tolerant once established (which takes 3–5 years and requires consistent irrigation support), handles alkaline soils, and can reach 15–20 m with a broad spreading crown that silver maple would have achieved — but with 200+ years of lifespan instead of 50. The conversation about bur oak is a conversation about thinking in decades rather than years, which is exactly the kind of arboricultural perspective that builds long-term client trust."
+  }
+];
+
+let answered=new Array(Qs.length).fill(false);
+let score=0;
+
+function buildQuiz(){
+  const c=document.getElementById('questions');
+  Qs.forEach((q,qi)=>{
+    const b=document.createElement('div');
+    b.className='q-block';
+    b.id='q'+qi;
+    const opts=q.opts.map((o,oi)=>{
+      const L=['A','B','C','D'][oi];
+      return `<div class="option" id="opt-${qi}-${oi}" onclick="pick(${qi},${oi})"><span class="opt-letter">${L}</span><span>${o}</span></div>`;
+    }).join('');
+    const bullets=q.bullets.map(b=>`<li>${b}</li>`).join('');
+    b.innerHTML=`<div class="q-head"><div class="q-num">Question ${qi+1} of ${Qs.length}</div><div class="q-text">${q.q}</div></div>
+    <div class="options">${opts}</div>
+    <div class="reveal" id="rev-${qi}">
+      <h4>📖 ${q.title}</h4>
+      ${q.paras.map(p=>`<p>${p}</p>`).join('')}
+      <ul>${bullets}</ul>
+      <div class="field-note"><div class="fn-label">📋 Field Note — Okanagan Context</div><p>${q.note}</p></div>
+    </div>`;
+    c.appendChild(b);
+  });
+}
+
+function pick(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;
+  const q=Qs[qi];
+  document.querySelectorAll(`#q${qi} .option`).forEach((el,i)=>{
+    el.setAttribute('data-locked','1');
+    el.style.cursor='default';
+    if(i===q.correct)el.classList.add('correct');
+    if(i===oi&&oi!==q.correct)el.classList.add('wrong');
+  });
+  document.getElementById('rev-'+qi).classList.add('show');
+  if(oi===q.correct)score++;
+  if(answered.every(a=>a)){
+    const pct=Math.round(score/Qs.length*100);
+    const msg=pct>=80?'Strong. These diagnosis and treatment questions appear directly on the ISA exam.':'Review the reveals — Verticillium management is a common exam topic and an even more common client conversation.';
+    const b=document.getElementById('scoreBanner');
+    b.textContent=`Score: ${score}/${Qs.length} (${pct}%) — ${msg}`;
+    b.classList.add('show');
+  }
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
