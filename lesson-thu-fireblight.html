@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 1 · Thursday · Fire Blight</title>
+<style>
+:root{color-scheme:light;--rd:#991b1b;--rd-m:#dc2626;--rd-l:#fef2f2;--rd-p:#fee2e2;--bg:#f9fafb;--card:#fff;--txt:#111827;--muted:#6b7280;--border:#e5e7eb;--cor:#16a34a;--wrg:#dc2626;--cor-bg:#f0fdf4;--wrg-bg:#fef2f2;--gm:#166534;--gp:#dcfce7;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{background:#450a0a;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-brand{font-size:12px;opacity:.65;letter-spacing:.06em;text-transform:uppercase;}
+.hdr-title{font-size:20px;font-weight:700;margin-top:2px;}
+.hdr-sub{font-size:13px;opacity:.7;margin-top:2px;}
+.badge{background:#fca5a5;color:#450a0a;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;}
+.wrap{max-width:800px;margin:0 auto;padding:24px 16px;}
+.week-lbl{font-size:12px;font-weight:700;color:var(--rd);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.intro-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.intro-card h1{font-size:22px;font-weight:700;margin-bottom:8px;}
+.intro-card p{color:var(--muted);line-height:1.65;font-size:15px;}
+.ref-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.ref-card h3{font-size:15px;font-weight:700;color:#450a0a;margin-bottom:14px;}
+.ref-card p{font-size:14px;line-height:1.65;color:#374151;margin-bottom:12px;}
+.ref-card ul{margin:6px 0 12px 18px;font-size:14px;line-height:1.65;color:#374151;}
+.ref-card li{margin-bottom:5px;}
+.symptom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+@media(max-width:540px){.symptom-grid{grid-template-columns:1fr;}}
+.sym-card{background:#fafafa;border:1px solid var(--border);border-radius:8px;padding:14px;}
+.sym-card .st{font-size:13px;font-weight:700;color:#450a0a;margin-bottom:4px;}
+.sym-card p{font-size:12px;color:var(--muted);line-height:1.5;margin:0;}
+.host-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.ht{background:var(--rd-p);color:var(--rd);font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;}
+.prog-lbl{font-size:13px;color:var(--muted);margin-bottom:6px;}
+.prog-outer{background:var(--border);border-radius:8px;height:8px;margin-bottom:24px;overflow:hidden;}
+.prog-inner{background:var(--rd-m);height:100%;border-radius:8px;transition:width .4s;}
+.btn{display:block;width:100%;padding:14px;background:var(--rd-m);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:background .2s;}
+.btn:hover{background:var(--rd);}
+.qscreen{display:none;}
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+.qnum{font-size:12px;font-weight:700;color:var(--rd-m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.qtxt{font-size:17px;font-weight:600;line-height:1.5;margin-bottom:20px;}
+.opts{display:flex;flex-direction:column;gap:10px;}
+.opt{padding:14px 16px;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;font-size:15px;line-height:1.4;background:var(--card);text-align:left;width:100%;}
+.opt:hover:not([disabled]){border-color:#fca5a5;background:var(--rd-l);}
+.opt.correct{border-color:var(--cor);background:var(--cor-bg);color:var(--cor);font-weight:600;}
+.opt.wrong{border-color:var(--wrg);background:var(--wrg-bg);color:var(--wrg);}
+.reveal{display:none;background:#fdf6f6;border:1px solid #fca5a5;border-radius:12px;padding:20px 24px;margin-top:16px;}
+.reveal.show{display:block;}
+.reveal h4{font-size:13px;font-weight:700;color:#450a0a;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.reveal p{font-size:14px;line-height:1.65;color:#1f2937;margin-bottom:10px;}
+.reveal p:last-child{margin-bottom:0;}
+.reveal ul{margin:8px 0 10px 18px;font-size:14px;line-height:1.65;color:#1f2937;}
+.reveal li{margin-bottom:4px;}
+.fn{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px 16px;margin-top:14px;}
+.fn-lbl{font-size:11px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.fn p{font-size:13.5px;color:#78350f;line-height:1.6;margin:0;}
+.rb{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:12px;}
+.rb.c{background:var(--cor-bg);color:var(--cor);border:1px solid #86efac;}
+.rb.w{background:var(--wrg-bg);color:var(--wrg);border:1px solid #fca5a5;}
+.btn-next{display:none;width:100%;padding:13px;background:var(--rd-m);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:12px;transition:background .2s;}
+.btn-next:hover{background:var(--rd);}
+.cscreen{display:none;text-align:center;}
+.cscore{font-size:48px;font-weight:800;color:#450a0a;margin-top:16px;}
+.clbl{font-size:15px;color:var(--muted);margin-top:4px;margin-bottom:20px;}
+.isa{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 18px;margin-top:24px;font-size:13px;color:#0369a1;line-height:1.65;}
+.isa strong{color:#0c4a6e;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">Microbe Tree Inc. · West Kelowna, BC</div>
+    <div class="hdr-title">🦠 Pests &amp; Diseases</div>
+    <div class="hdr-sub">Week 1 · Thursday</div>
+  </div>
+  <div class="badge">Quiz · 5 Q</div>
+</div>
+
+<div class="wrap">
+  <div id="home">
+    <div class="week-lbl">Week 1 · Pests &amp; Diseases</div>
+    <div class="intro-card">
+      <h1>Fire Blight — <em>Erwinia amylovora</em></h1>
+      <p>Fire blight is the most damaging bacterial disease of ornamental and fruit trees in the Rosaceae family — and the Okanagan, with its crabapples, hawthorns, mountain ash, and thousands of backyard apple trees, has plenty of hosts. Learn to recognize it in the field, understand what drives outbreaks, and know the pruning protocol cold. You will see this every spring.</p>
+    </div>
+    <div class="ref-card">
+      <h3>📋 Quick Reference — Fire Blight</h3>
+      <p><strong>Pathogen:</strong> <em>Erwinia amylovora</em> — Gram-negative bacterium. Family Erwiniaceae.</p>
+      <p><strong>Host range:</strong> Rosaceae family only. Common Okanagan hosts:</p>
+      <div class="host-tags">
+        <span class="ht">Apple (Malus)</span><span class="ht">Pear (Pyrus)</span><span class="ht">Crabapple (Malus)</span><span class="ht">Hawthorn (Crataegus)</span><span class="ht">Mountain ash (Sorbus)</span><span class="ht">Saskatoon (Amelanchier)</span><span class="ht">Cotoneaster</span><span class="ht">Firethorne (Pyracantha)</span>
+      </div>
+      <h3 style="margin-top:16px;font-size:14px;font-weight:700;color:#450a0a;margin-bottom:10px;">Key Symptoms</h3>
+      <div class="symptom-grid">
+        <div class="sym-card"><div class="st">🦯 Shepherd's Crook</div><p>The pathognomonic sign: shoot tips wilt and bend into a hook shape. New growth wilts from the tip back while still attached. First and most obvious symptom.</p></div>
+        <div class="sym-card"><div class="st">💧 Bacterial Exudate</div><p>Amber, water-soaked ooze (bacterial ooze) on infected tissue in humid conditions — especially visible on cankers in cool, moist weather. Highly infectious.</p></div>
+        <div class="sym-card"><div class="st">🍂 Watersoaking &amp; Blight</div><p>Infected blossoms and young fruit turn brown/tan and look water-soaked before drying. "Fire blight" — looks like the shoot was scorched.</p></div>
+        <div class="sym-card"><div class="st">⬇️ Canker Advance</div><p>Bacteria move from shoot tips down into larger branches. Canker margin shows discolored streaking in the cambium — reddish-brown streaks when you cut into the bark at the advancing margin.</p></div>
+      </div>
+    </div>
+    <button class="btn" onclick="startQuiz()">Start Quiz — 5 Questions →</button>
+  </div>
+
+  <div class="qscreen" id="qscreen">
+    <div class="prog-lbl" id="plbl">Question 1 of 5</div>
+    <div class="prog-outer"><div class="prog-inner" id="pbar" style="width:0%"></div></div>
+    <div class="qcard" id="qcard"></div>
+    <button class="btn-next" id="bnxt" onclick="nextQ()">Next →</button>
+  </div>
+
+  <div class="cscreen" id="cscreen">
+    <div class="intro-card">
+      <div style="font-size:48px">🦠</div>
+      <div class="cscore" id="fscore">—</div>
+      <div class="clbl">Lesson complete</div>
+      <p style="color:var(--muted);font-size:15px;line-height:1.65;">Fire blight is one of the more consequential diagnoses you'll make in the Okanagan — get it wrong and you either spread the disease with your tools, or your client loses a mature crabapple they've had for 30 years. The shepherd's crook, the ooze, the cut depth — lock those in.</p>
+      <button class="btn" style="margin-top:20px" onclick="reset()">← Back to Reference</button>
+    </div>
+    <div class="isa">
+      <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) — Plant Pathology &amp; Disease Diagnosis<br>
+      <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.), Ch. 7; ISA BMP: Plant Health Care; BC Ministry of Agriculture — Fire Blight Management; Johnson, W.T. &amp; Lyon, H.H. <em>Insects that Feed on Trees and Shrubs</em>
+    </div>
+  </div>
+</div>
+<script>
+const Qs=[
+  {
+    t:"Fire blight is caused by which of the following pathogens?",
+    opts:["Phytophthora ramorum — an oomycete (water mold)","Erwinia amylovora — a bacterium","Gymnosporangium juniperi-virginianae — a rust fungus","Neonectria ditissima — a canker fungus"],
+    cor:1,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Erwinia amylovora — Bacterial Pathogen</h4>
+<p><em>Erwinia amylovora</em> is a Gram-negative bacterium — which matters clinically because it means antifungal treatments are completely ineffective against it. This is one of the most economically significant plant-pathogenic bacteria in the world, and it's why the Okanagan tree fruit and ornamental industry takes it seriously.</p>
+<p>Being a bacterium (not a fungus) changes the treatment toolbox:</p>
+<ul>
+<li>No fungicides are effective. Copper bactericides (copper octanoate, copper hydroxide) are registered in Canada for preventive suppression during bloom.</li>
+<li>Streptomycin was historically used but faced resistance issues and has had variable registration status in Canada — check current PMRA registration before recommending it.</li>
+<li><strong>The most effective management is physical: removal of infected tissue with proper cut protocols.</strong></li>
+<li>Biological controls (e.g., <em>Bacillus subtilis</em>-based products) show some efficacy as complements to copper programs.</li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>The Okanagan apple and pear industry spends significant resources on fire blight suppression annually. As an arborist working ornamental crabapples and hawthorns in residential areas, your tool-sterilization protocol is literally the difference between leaving a tree with blight and spreading it to the next three trees you prune. Treat every cut tool between trees in a fire blight outbreak. Isopropyl alcohol (70%+) or 10% bleach solution — bleach works faster but corrodes tools over time.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Erwinia amylovora — Bacterial Pathogen</h4>
+<p>Fire blight is caused by <strong><em>Erwinia amylovora</em></strong> — a bacterium, not a fungus, oomycete, or rust. This distinction is critical for treatment:</p>
+<ul>
+<li><em>Phytophthora ramorum</em> — oomycete (Sudden Oak Death pathogen, different disease entirely)</li>
+<li><em>Gymnosporangium juniperi-virginianae</em> — cedar-apple rust fungus</li>
+<li><em>Neonectria ditissima</em> — European canker fungus on apple/pear (different canker disease)</li>
+<li><strong><em>Erwinia amylovora</em></strong> — the fire blight bacterium ← correct answer</li>
+</ul>
+<p>Because it's a bacterium, antifungal products have zero effect. Management relies on copper bactericides (preventive), physical removal of infected tissue, and strict tool sterilization between cuts.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Misidentifying fire blight as a fungal canker disease and applying a fungicide won't just fail — the delay in correct management allows the bacteria to advance further into the branch or trunk. On a mature crabapple, that extra week of advance can mean the difference between pruning out a branch and losing the whole tree canopy.</p></div>`
+  },
+  {
+    t:"Which symptom is MOST diagnostic for fire blight in the field during a spring inspection?",
+    opts:["White mycelial mats visible on the surface of infected bark","Shepherd's crook wilting of shoot tips, sometimes with amber bacterial ooze","Yellow stippling of leaves visible from above, indicating feeding injury","Sunken oval cankers with clearly defined orange-brown margins"],
+    cor:1,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Shepherd's Crook — The Field Signature</h4>
+<p>The shepherd's crook is the most recognizable and diagnostic sign of fire blight in the field. New shoot growth wilts rapidly from the tip, bending into a tight hook or crook, while the rest of the shoot remains attached and turns brown-tan ("blighted"). It's distinctively different from other causes of shoot dieback because:</p>
+<ul>
+<li>The wilt happens fast — a shoot that was healthy 48–72 hours ago can be crook-wilted during a warm, moist period.</li>
+<li>The affected shoot doesn't fall off — it hangs there, bent, brown, attached. The "fire scorched" appearance gives the disease its name.</li>
+<li>The crook is caused by differential wilting — the shaded (inner) side of the shoot loses turgor faster than the sun-exposed side, creating the bend.</li>
+</ul>
+<p>The <strong>bacterial ooze</strong> (amber, sticky, water-soaked drops on infected tissue in humid conditions) is pathognomonic when present — but it's not always visible. The crook symptom is more consistently observable.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Early May in the Okanagan after a warm wet bloom period — walk any block with hawthorn street trees or crabapple ornamentals and you'll often find crooks. They're easy to spot from the ground: the bent shoot tips look distinctly wrong against the healthy growth. Once you've seen it in person you won't confuse it with anything else. The first season you see it, mark the date and weather conditions — the pattern between warm humid bloom conditions and the appearance of symptoms 3–7 days later will click into place fast.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Shepherd's Crook — The Field Signature</h4>
+<p>The most diagnostic field symptom of fire blight is the <strong>shepherd's crook</strong> — new shoot growth wilting rapidly from the tip and bending into a hook shape, turning brown-tan and remaining attached (blighted). The other options describe different conditions:</p>
+<ul>
+<li>White mycelial mats on bark → powdery mildew, or other fungal surface infection — not fire blight</li>
+<li>Yellow leaf stippling → mite or leafhopper feeding damage</li>
+<li>Sunken oval cankers with defined margins → European canker (<em>Neonectria ditissima</em>) or other fungal cankers — not fire blight (which produces water-soaked, spreading cankers without clean margins)</li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Fire blight crooks are visible from a significant distance. If you're walking past a hawthorn street tree in Kelowna in May and see several bent shoot tips with a brownish cast, get closer for a look — that's your diagnosis cue. The ooze and cambial streaking confirm it on closer inspection.</p></div>`
+  },
+  {
+    t:"When removing fire blight infections by pruning, the ISA Best Management Practices and plant pathology guidance specifies cutting at least:",
+    opts:["At the visible margin of discolored tissue to minimize the wound","5 cm (2 inches) below the visible margin of infection","20–30 cm (8–12 inches) below the visible margin of infection in the host tissue","At a branch collar just above the infected wood, using normal pruning technique"],
+    cor:2,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Cut Depth for Fire Blight Removal</h4>
+<p><strong>20–30 cm (8–12 inches) below the visible margin of infection.</strong> This is not conservative overkill — it reflects the biology of how fire blight moves through host tissue. <em>Erwinia amylovora</em> advances systemically through the xylem and phloem ahead of visible symptoms. The boundary you can see (the brown-tan discoloration, the watersoaking) is consistently behind where the bacteria actually are.</p>
+<p>Cutting at or just below the visible margin almost guarantees cutting through live bacteria — meaning you expose your pruning tools to infectious exudate and cut ends to re-infection. The 20–30 cm margin accounts for this invisible advance.</p>
+<ul>
+<li><strong>Always sterilize cutting tools between each cut</strong> — 70%+ isopropyl alcohol or 10% bleach. Do not proceed from one cut to the next without sterilizing. The bacteria on your blade will spread the infection to the next wound.</li>
+<li>Remove cuttings from site. Do not leave infected tissue on the ground near the host or other Rosaceae.</li>
+<li>If any doubt remains about whether you got ahead of the infection, cut deeper or remove the entire branch.</li>
+<li>This protocol is referenced in <strong>ISA BMP: Plant Health Care</strong> and BC Ministry of Agriculture fire blight management guidance.</li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>The most common mistake on fire blight removal in the field is cutting too close to the visible margin — the brown looks like it stops cleanly, so the cut goes right there. Then the same tree shows re-infection from that same cut site within 2 weeks because bacteria were already in the tissue. Cut deep, sterilize between every cut, dispose of cuttings. It adds time but it's the only protocol that actually works.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Cut Depth for Fire Blight Removal</h4>
+<p>The correct cut depth is <strong>20–30 cm (8–12 inches) below the visible margin of infection</strong>. <em>Erwinia amylovora</em> advances systemically through xylem and phloem ahead of the visible discoloration you can see. Cutting at the visible margin (or just below it) almost always puts the cut through actively infected tissue, contaminating your tools and the cut surface.</p>
+<p>The 20–30 cm margin is standard per <strong>ISA BMP: Plant Health Care</strong> and BC Ministry of Agriculture fire blight guidance. In practice:</p>
+<ul>
+<li>Sterilize cutting tools between every cut (70%+ isopropyl or 10% bleach)</li>
+<li>Remove cuttings from site immediately</li>
+<li>When uncertain, cut deeper — the tree can recover from losing more wood; it cannot recover if you leave active infection</li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Cutting at the visible margin and then watching re-infection appear from the same wound 2 weeks later is one of the more frustrating field experiences. The bacteria were already past where you cut. The 20–30 cm rule exists precisely to avoid that outcome.</p></div>`
+  },
+  {
+    t:"Which of these trees commonly found in Okanagan residential landscapes is NOT within the host range of fire blight (<em>Erwinia amylovora</em>)?",
+    opts:["Hawthorn (Crataegus monogyna)","Mountain ash (Sorbus aucuparia)","Flowering crabapple (Malus × floribunda)","European beech (Fagus sylvatica)"],
+    cor:3,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Host Range — Rosaceae Only</h4>
+<p><em>Erwinia amylovora</em> infects only members of the <strong>Rosaceae family</strong> (rose family) — specifically those in the subfamilies Maloideae and Spiraeoideae. European beech (<em>Fagus sylvatica</em>) is in the family Fagaceae — entirely unrelated — and is therefore immune to fire blight.</p>
+<p>All three of the other options are Rosaceae:</p>
+<ul>
+<li><em>Crataegus monogyna</em> (hawthorn) — subfamily Maloideae; highly susceptible; common fire blight host in Okanagan boulevard and ornamental plantings</li>
+<li><em>Sorbus aucuparia</em> (European mountain ash) — subfamily Maloideae; susceptible; pome fruit (the red berries are technically pomes)</li>
+<li><em>Malus × floribunda</em> (flowering crabapple) — subfamily Maloideae; variable susceptibility by cultivar; some are notably fire blight resistant (e.g., 'Donald Wyman', 'Lancelot')</li>
+</ul>
+<p>Knowing the host range by family helps you triage during a site inspection. Any Rosaceae with pome fruit (apple-type) or in the Maloideae group should trigger fire blight awareness in spring.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Okanagan residential landscapes often have a mix: hawthorn boulevard trees, crabapple ornamentals, saskatoon serviceberry, cotoneaster hedges — all Rosaceae, all susceptible. A client who says "something is wrong with my mountain ash" in May, showing you shepherd's crooks, needs to hear: is there a crabapple within 50 metres? Because pollinators and rain splash move fire blight between hosts in close proximity, especially during bloom. The landscape-level picture matters.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Host Range — Rosaceae Only</h4>
+<p>Fire blight (<em>Erwinia amylovora</em>) infects only <strong>Rosaceae</strong> family members. <strong>European beech (<em>Fagus sylvatica</em>)</strong> is in family Fagaceae — completely unrelated, completely immune.</p>
+<p>The three Rosaceae hosts in this list:</p>
+<ul>
+<li><strong>Hawthorn (<em>Crataegus</em>)</strong> — highly susceptible Rosaceae; one of the most common fire blight hosts in ornamental plantings</li>
+<li><strong>Mountain ash (<em>Sorbus</em>)</strong> — susceptible Rosaceae; pome fruits; common Okanagan ornamental</li>
+<li><strong>Crabapple (<em>Malus</em>)</strong> — susceptible Rosaceae; susceptibility varies by cultivar</li>
+<li><strong>European beech (<em>Fagus</em>)</strong> — Fagaceae; NOT susceptible ← correct answer</li>
+</ul>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>Knowing family affiliation saves time during a site sweep. Walking a property: look for pome fruit, rose family structure (5-petaled flowers, alternate leaves with stipules). If the tree has those characteristics in spring, fire blight is on your differential. Beech, maple, oak, elm — not on the list.</p></div>`
+  },
+  {
+    t:"Fire blight outbreaks are most strongly correlated with which environmental conditions?",
+    opts:["Hot dry conditions above 35°C combined with drought-stressed host plants","Warm temperatures (18–30°C) with high humidity, rain, or dew during the host's bloom period","Cold frosty nights followed by warm sunny days causing bark cracking and bacterial entry","Conditions of prolonged drought stress that suppress the host's defensive responses"],
+    cor:1,
+    expl:`<div class="rb c">✓ Correct</div>
+<h4>Bloom Conditions — The Critical Window</h4>
+<p>Fire blight is a bloom-period disease. The infection cycle depends on:</p>
+<ul>
+<li><strong>Open blossoms</strong> — the stigma and nectaries of open flowers are the primary infection court. Bacteria enter through these moist, sugar-rich surfaces.</li>
+<li><strong>Warm temperatures (18–30°C)</strong> — bacterial multiplication rate is dramatically higher in this range. The "Maryblyt" fire blight forecasting model uses 18°C as the infection threshold.</li>
+<li><strong>Moisture (rain, dew, high humidity)</strong> — required for bacterial spread via water splash and for maintaining the wet film on flower surfaces that the bacteria need to colonize.</li>
+<li><strong>Pollinators</strong> — bees and other pollinators carry the bacteria between flowers within and between trees. Infection can spread through an entire block during a single warm, humid bloom day.</li>
+</ul>
+<p>The peak risk window is typically: warm day (18–30°C) + rain or heavy dew overnight + active bloom. In the Okanagan, this combination occurs during apple/pear bloom in late April to mid-May in most years — the critical window for preventive copper applications.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>The Okanagan fire blight forecast model is available through the BC Ministry of Agriculture — it uses temperature and moisture data to predict infection risk windows at regional weather stations. When the model flags high-risk conditions during ornamental bloom in your work area, that's your signal to expect fire blight calls in the coming 1–2 weeks. Clients who call in May saying "my tree looks burned" almost always had a high-risk weather window 5–10 days earlier. Understanding the infection timeline makes you a better diagnostician.</p></div>`,
+    wxpl:`<div class="rb w">✗ Not quite</div>
+<h4>Bloom Conditions — The Critical Window</h4>
+<p>Fire blight outbreaks are most strongly associated with <strong>warm temperatures (18–30°C) combined with high humidity, rain, or dew during the host's bloom period</strong>. This is when open blossoms are available as infection courts, bacteria multiply rapidly, and moisture facilitates spread via water splash and pollinators.</p>
+<ul>
+<li>Hot dry conditions actually inhibit fire blight — moisture is required for bacterial spread and colonization of flower surfaces.</li>
+<li>Frost cracking can create infection courts for some bark pathogens, but fire blight primarily enters through blossoms and fresh wounds — not frost cracks.</li>
+<li>Drought stress does increase susceptibility generally but is not the primary driver of outbreak conditions.</li>
+</ul>
+<p>The key model: <strong>warm bloom day + moisture (rain/dew) = high fire blight risk</strong>. The "Maryblyt" forecasting model uses 18°C as the threshold for infection risk during bloom.</p>
+<div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>BC Ministry of Agriculture runs fire blight infection period forecasts for the Okanagan based on local weather stations during bloom. When you see a high-risk period flagged, start expecting client calls about "burned" branches on hawthorns and crabapples within 1–2 weeks. Understanding the epidemiology lets you get ahead of the diagnosis.</p></div>`
+  }
+];
+
+let cq=0,score=0,ans=false;
+function startQuiz(){document.getElementById('home').style.display='none';document.getElementById('qscreen').style.display='block';renderQ();}
+function renderQ(){
+  ans=false;
+  const q=Qs[cq];
+  const bn=document.getElementById('bnxt');
+  bn.style.display='none';
+  bn.textContent=cq<Qs.length-1?'Next Question →':'See Results →';
+  document.getElementById('plbl').textContent=`Question ${cq+1} of ${Qs.length}`;
+  document.getElementById('pbar').style.width=`${(cq/Qs.length)*100}%`;
+  const opts=q.opts.map((o,i)=>`<button class="opt" onclick="pick(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('');
+  document.getElementById('qcard').innerHTML<`<div class="qnum">Question ${cq+1} of ${Qs.length}</div><div class="qtxt">${q.t}</div><div class="opts" id="oc">${opts}</div><div class="reveal" id="rv"></div>`;
+}
+function pick(i){
+  if(ans)return;ans=true;
+  const q=Qs[cq];
+  document.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+  const rv=document.getElementById('rv');
+  if(i===q.cor){document.querySelectorAll('.opt')[i].classList.add('correct');score++;rv.innerHTML=q.expl;}
+  else{document.querySelectorAll('.opt')[i].classList.add('wrong');document.querySelectorAll('.opt')[q.cor].classList.add('correct');rv.innerHTML=q.wxpl||q.expl;}
+  rv.classList.add('show');
+  document.getElementById('bnxt').style.display='block';
+}
+function nextQ(){cq++;if(cq>=Qs.length)finish();else renderQ();}
+function finish(){
+  document.getElementById('qscreen').style.display='none';
+  document.getElementById('pbar').style.width='100%';
+  document.getElementById('cscreen').style.display='block';
+  document.getElementById('fscore').textContent=`${score} / ${Qs.length}`;
+}
+function reset(){cq=0;score=0;ans=false;document.getElementById('cscreen').style.display='none';document.getElementById('qscreen').style.display='none';document.getElementById('pbar').style.width='0%';document.getElementById('home').style.display='block';}
+</script>
+</body>
+</html>
