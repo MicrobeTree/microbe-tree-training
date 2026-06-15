@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 1 · Friday · Notch Geometry</title>
+<style>
+:root{color-scheme:light;--bl:#1d4ed8;--bl-m:#2563eb;--bl-l:#dbeafe;--bl-d:#1e3a8a;--bg:#f9fafb;--card:#fff;--txt:#111827;--muted:#6b7280;--border:#e5e7eb;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{background:#0f172a;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-brand{font-size:12px;opacity:.65;letter-spacing:.06em;text-transform:uppercase;}
+.hdr-title{font-size:20px;font-weight:700;margin-top:2px;}
+.hdr-sub{font-size:13px;opacity:.7;margin-top:2px;}
+.badge{background:#93c5fd;color:#0f172a;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;}
+.wrap{max-width:900px;margin:0 auto;padding:24px 16px;}
+.week-lbl{font-size:12px;font-weight:700;color:var(--bl);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.intro-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.intro-card h1{font-size:22px;font-weight:700;margin-bottom:8px;}
+.intro-card p{color:var(--muted);line-height:1.65;font-size:15px;}
+.section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.section h2{font-size:17px;font-weight:700;color:#0f172a;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--bl-l);}
+.section h3{font-size:14px;font-weight:700;color:var(--bl);margin-top:18px;margin-bottom:8px;}
+.section h3:first-child{margin-top:0;}
+.section p{font-size:14px;line-height:1.65;color:#374151;margin-bottom:12px;}
+.section p:last-child{margin-bottom:0;}
+.section ul{margin:6px 0 12px 18px;font-size:14px;line-height:1.65;color:#374151;}
+.section li{margin-bottom:5px;}
+/* Notch diagram grid */
+.notch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0;}
+@media(max-width:640px){.notch-grid{grid-template-columns:1fr;}}
+.notch-card{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+.notch-title{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:4px;}
+.notch-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:10px;}
+.nt-standard{background:#dbeafe;color:#1e3a8a;}
+.nt-advanced{background:#dcfce7;color:#14532d;}
+.nt-logging{background:#fef3c7;color:#78350f;}
+.notch-notes{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px;text-align:left;}
+/* Hinge diagram */
+.hinge-diagram{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:16px;display:flex;justify-content:center;}
+/* Escape route diagram */
+.escape-diagram{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:16px;display:flex;justify-content:center;}
+/* Data table */
+.data-table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px;}
+.data-table th{background:var(--bl-l);color:var(--bl-d);padding:10px 12px;text-align:left;font-weight:700;font-size:13px;}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.data-table tr:last-child td{border-bottom:none;}
+/* Callout boxes */
+.callout-danger{background:#fef2f2;border:1px solid #fca5a5;border-left:4px solid #dc2626;border-radius:0 8px 8px 0;padding:14px 16px;margin:12px 0;}
+.callout-danger .ct{font-size:13px;font-weight:700;color:#991b1b;margin-bottom:5px;}
+.callout-danger p{font-size:13px;color:#7f1d1d;line-height:1.55;margin:0;}
+.callout-note{background:var(--bl-l);border:1px solid #bfdbfe;border-left:4px solid var(--bl-m);border-radius:0 8px 8px 0;padding:14px 16px;margin:12px 0;}
+.callout-note .ct{font-size:13px;font-weight:700;color:var(--bl-d);margin-bottom:5px;}
+.callout-note p{font-size:13px;color:#1e3a8a;line-height:1.55;margin:0;}
+.fn{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px 16px;margin-top:14px;}
+.fn-lbl{font-size:11px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.fn p{font-size:13.5px;color:#78350f;line-height:1.6;margin:0;}
+.isa{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 18px;margin-top:24px;font-size:13px;color:#0369a1;line-height:1.65;}
+.isa strong{color:#0c4a6e;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">Microbe Tree Inc. · West Kelowna, BC</div>
+    <div class="hdr-title">🧗 Worksite Techniques</div>
+    <div class="hdr-sub">Week 1 · Friday</div>
+  </div>
+  <div class="badge">Reference Card</div>
+</div>
+
+<div class="wrap">
+  <div class="week-lbl">Week 1 · Worksite Techniques</div>
+  <div class="intro-card">
+    <h1>Felling Notch Geometry &amp; Hinge Wood</h1>
+    <p>The notch controls the fall. Understanding the geometry of the three notch types — conventional, open face, and Humboldt — and the hinge wood requirements behind them is foundational to controlled directional felling under ANSI Z133. Get the notch wrong and the hinge breaks early; get it right and the tree goes where you planned it to go.</p>
+  </div>
+
+  <!-- THREE NOTCH TYPES -->
+  <div class="section">
+    <h2>📐 The Three Notch Types</h2>
+    <div class="notch-grid">
+      <!-- Conventional Notch -->
+      <div class="notch-card">
+        <div class="notch-title">Conventional Notch</div>
+        <div class="notch-tag nt-standard">Standard</div>
+        <svg viewBox="0 0 180 200" width="160" height="178" xmlns="http://www.w3.org/2000/svg">
+          <!-- Tree trunk silhouette -->
+          <rect x="30" y="10" width="120" height="180" rx="4" fill="#d4a76a" stroke="#92400e" stroke-width="1.5"/>
+          <!-- Bark texture lines -->
+          <line x1="30" y1="40" x2="150" y2="40" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="70" x2="150" y2="70" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="100" x2="150" y2="100" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="130" x2="150" y2="130" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="160" x2="150" y2="160" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <!-- Notch cut (left side, conventional: top cut horizontal, bottom 45°) -->
+          <!-- Top cut: horizontal from left face inward ~40% -->
+          <line x1="30" y1="80" x2="90" y2="80" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Bottom cut: 45° from left face up to meet top cut at apex -->
+          <line x1="30" y1="115" x2="90" y2="80" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Notch void fill -->
+          <polygon points="30,80 90,80 30,115" fill="white" opacity="0.7"/>
+          <polygon points="30,80 90,80 30,115" fill="#1e3a8a" opacity="0.08"/>
+          <!-- Back cut: from right side, level, slightly above notch apex -->
+          <line x1="150" y1="83" x2="105" y2="83" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3"/>
+          <!-- Hinge wood label area -->
+          <rect x="90" y="78" width="15" height="8" fill="#fbbf24" opacity="0.7" rx="1"/>
+          <!-- Angle arc -->
+          <path d="M42,115 A20,20 0 0,1 42,80" fill="none" stroke="#64748b" stroke-width="1.5"/>
+          <!-- Angle label -->
+          <text x="52" y="100" font-size="11" fill="#475569" font-weight="600">45°</text>
+          <!-- Labels -->
+          <text x="2" y="78" font-size="9" fill="#1e3a8a" font-weight="700">Top</text>
+          <text x="2" y="87" font-size="9" fill="#1e3a8a">cut</text>
+          <text x="2" y="110" font-size="9" fill="#1e3a8a" font-weight="700">Bot</text>
+          <text x="2" y="119" font-size="9" fill="#1e3a8a">cut</text>
+          <text x="96" y="75" font-size="9" fill="#92400e" font-weight="700">H</text>
+          <text x="108" y="88" font-size="9" fill="#dc2626">BC</text>
+          <!-- Fall direction arrow -->
+          <polygon points="15,97 5,91 5,103" fill="#1e3a8a"/>
+          <line x1="14" y1="97" x2="2" y2="97" stroke="#1e3a8a" stroke-width="2"/>
+        </svg>
+        <div class="notch-notes"><strong>Face opening: 45°</strong><br>Top cut: horizontal<br>Bottom cut: 45° up to apex<br>Depth: 1/4–1/3 of trunk diameter<br>Back cut: level, 25–50 mm above notch base<br><br>Most common teaching notch. Adequate for routine felling. The hinge disengages earlier in the fall compared to open face.</div>
+      </div>
+      <!-- Open Face Notch -->
+      <div class="notch-card">
+        <div class="notch-title">Open Face Notch</div>
+        <div class="notch-tag nt-advanced">Preferred for Control</div>
+        <svg viewBox="0 0 180 200" width="160" height="178" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="10" width="120" height="180" rx="4" fill="#d4a76a" stroke="#92400e" stroke-width="1.5"/>
+          <line x1="30" y1="40" x2="150" y2="40" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="70" x2="150" y2="70" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="100" x2="150" y2="100" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="130" x2="150" y2="130" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="160" x2="150" y2="160" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <!-- Open face: top cut angles DOWN, bottom cut angles UP, larger opening ~70-90° -->
+          <!-- Top cut: angles downWard ~10° from face to apex -->
+          <line x1="30" y1="72" x2="90" y2="88" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Bottom cut: angles upward steeply from face to apex, ~70° total opening -->
+          <line x1="30" y1="120" x2="90" y2="88" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Notch void -->
+          <polygon points="30,72 90,88 30,120" fill="white" opacity="0.7"/>
+          <polygon points="30,72 90,88 30,120" fill="#1e3a8a" opacity="0.08"/>
+          <!-- Back cut: level, ~at apex height or just above bottom of apex -->
+          <line x1="150" y1="91" x2="105" y2="91" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3"/>
+          <!-- Hinge wood -->
+          <rect x="90" y="86" width="15" height="7" fill="#fbbf24" opacity="0.7" rx="1"/>
+          <!-- Angle arc -->
+          <path d="M44,120 A34,34 0 0,1 44,72" fill="none" stroke="#64748b" stroke-width="1.5"/>
+          <text x="54" y="96" font-size="11" fill="#475569" font-weight="600">70–90°</text>
+          <!-- Labels -->
+          <text x="2" y="70" font-size="9" fill="#1e3a8a" font-weight="700">Top</text>
+          <text x="2" y="79" font-size="9" fill="#1e3a8a">cut</text>
+          <text x="2" y="115" font-size="9" fill="#1e3a8a" font-weight="700">Bot</text>
+          <text x="2" y="124" font-size="9" fill="#1e3a8a">cut</text>
+          <text x="96" y="84" font-size="9" fill="#92400e" font-weight="700">H</text>
+          <text x="108" y="96" font-size="9" fill="#dc2626">BC</text>
+          <polygon points="15,96 5,90 5,102" fill="#1e3a8a"/>
+          <line x1="14" y1="96" x2="2" y2="96" stroke="#1e3a8a" stroke-width="2"/>
+        </svg>
+        <div class="notch-notes"><strong>Face opening: 70–90°</strong><br>Top cut: angles slightly downward<br>Bottom cut: angles steeply upward<br>Depth: 1/4–1/3 of trunk diameter<br>Back cut: level at apex height<br><br>The hinge stays engaged longer during fall — the tree pivots on the hinge rather than sliding off it. Gives significantly more directional control. <strong>Preferred by TCIA and ISA for precision felling.</strong></div>
+      </div>
+      <!-- Humboldt Notch -->
+      <div class="notch-card">
+        <div class="notch-title">Humboldt Notch</div>
+        <div class="notch-tag nt-logging">Timber / Production</div>
+        <svg viewBox="0 0 180 200" width="160" height="178" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="10" width="120" height="180" rx="4" fill="#d4a76a" stroke="#92400e" stroke-width="1.5"/>
+          <line x1="30" y1="40" x2="150" y2="40" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="70" x2="150" y2="70" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="100" x2="150" y2="100" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="130" x2="150" y2="130" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <line x1="30" y1="160" x2="150" y2="160" stroke="#b87333" stroke-width="0.5" opacity="0.4"/>
+          <!-- Humboldt: top cut is horizontal, bottom cut angles DOWNWARD (inverted) -->
+          <!-- Top cut: horizontal at top of notch -->
+          <line x1="30" y1="80" x2="90" y2="80" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Bottom cut: angles downward from face back to apex -->
+          <line x1="30" y1="110" x2="90" y2="80" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Void fill -->
+          <polygon points="30,80 90,80 30,110" fill="white" opacity="0.7"/>
+          <polygon points="30,80 90,80 30,110" fill="#1e3a8a" opacity="0.08"/>
+          <!-- Back cut -->
+          <line x1="150" y1="83" x2="105" y2="83" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3"/>
+          <!-- Hinge -->
+          <rect x="90" y="78" width="15" height="7" fill="#fbbf24" opacity="0.7" rx="1"/>
+          <!-- "Less waste" bracket -->
+          <line x1="30" y1="115" x2="30" y2="190" stroke="#16a34a" stroke-width="2"/>
+          <line x1="30" y1="190" x2="150" y2="190" stroke="#16a34a" stroke-width="2"/>
+          <line x1="150" y1="190" x2="150" y2="10" stroke="#16a34a" stroke-width="2"/>
+          <text x="55" y="155" font-size="10" fill="#15803d" font-weight="700">Saved</text>
+          <text x="55" y="167" font-size="10" fill="#15803d">timber</text>
+          <text x="2" y="78" font-size="9" fill="#1e3a8a" font-weight="700">Top</text>
+          <text x="2" y="87" font-size="9" fill="#1e3a8a">cut</text>
+          <text x="2" y="107" font-size="9" fill="#1e3a8a" font-weight="700">Bot</text>
+          <text x="2" y="116" font-size="9" fill="#1e3a8a">cut</text>
+          <text x="96" y="76" font-size="9" fill="#92400e" font-weight="700">H</text>
+          <polygon points="15,95 5,89 5,101" fill="#1e3a8a"/>
+          <line x1="14" y1="95" x2="2" y2="95" stroke="#1e3a8a" stroke-width="2"/>
+        </svg>
+        <div class="notch-notes"><strong>Face opening: 45° (inverted)</strong><br>Top cut: horizontal<br>Bottom cut: angled upward to apex (inverted)<br>Purpose: minimizes butt wood waste — the notch piece falls away below, preserving the bottom of the trunk<br><br>Used in production logging to recover maximum timber volume. <strong>Not recommended for most arborist felling</strong> — harder to execute correctly, provides less directional control than open face.</div>
+      </div>
+    </div>
+
+    <div class="callout-note">
+      <div class="ct">📌 Which Notch to Use in Arborist Work</div>
+      <p>For the vast majority of tree removals — residential, ornamental, hazard trees — use the <strong>open face notch(070–90°)</strong>. It keeps the hinge engaged longer, gives you more time to react during the fall, and provides better directional control. The conventional notch is adequate for straightforward felling but is being phased out of best practice in favor of open face. The Humboldt notch is a timber harvesting tool; leave it there.</p>
+    </div>
+  </div>
+
+  <!-- HINGE WOOD -->
+  <div class="section">
+    <h2>📏 Hinge Wood — Dimensions &amp; Requirements</h2>
+    <p>The hinge is the uncut wood between the notch apex and the back cut. It is the control mechanism: it guides the fall, keeps the tree on its intended path, and prevents the butt from kicking back. Getting hinge dimensions right is not optional — too thin and the hinge breaks before you can steer; too thick and the back cut doesn't leave enough room.</p>
+
+    <div class="hinge-diagram">
+      <svg viewBox="0 0 500 180" width="460" height="165" xmlns="http://www.w3.org/2000/svg">
+        <!-- Trunk cross-section top view -->
+        <ellipse cx="250" cy="90" rx="200" ry="75" fill="#d4a76a" stroke="#92400e" stroke-width="2"/>
+        <circle cx="250" cy="90" r="8" fill="#b87333"/>
+        <polygon points="50,90 130,65 130,115" fill="white" stroke="#1e3a8a" stroke-width="2"/>
+        <polygon points="50,90 130,65 130,115" fill="#e0e7ff" opacity="0.8"/>
+        <line x1="450" y1="90" x2="165" y2="90" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 4"/>
+        <rect x="130" y="65" width="35" height="50" fill="#fbbf24" opacity="0.85" rx="2"/>
+        <rect x="130" y="65" width="35" height="50" fill="none" stroke="#d97706" stroke-width="2" rx="2"/>
+        <text x="135" y="86" font-size="11" fill="#78350f" font-weight="700">H</text>
+        <text x="132" y="97" font-size="11" fill="#78350f" font-weight="700">I</text>
+        <text x="132" y="108" font-size="11" fill="#78350f" font-weight="700">N</text>
+        <text x="132" y="118" font-size="10" fill="#78350f" font-weight="700">G</text>
+        <line x1="50" y1="150" x2="450" y2="150" stroke="#374151" stroke-width="1.5" marker-start="url(#arr)" marker-end="url(#arr2)"/>
+        <text x="220" y="167" font-size="12" fill="#374151" font-weight="700">Trunk Diameter (DBH)</text>
+        <line x1="130" y1="140" x2="165" y2="140" stroke="#d97706" stroke-width="2"/>
+        <line x1="130" y1="136" x2="130" y2="144" stroke="#d97706" stroke-width="2"/>
+        <line x1="165" y1="136" x2="165" y2="144" stroke="#d97706" stroke-width="2"/>
+        <text x="133" y="133" font-size="10" fill="#92400e">~10% DBH</text>
+        <text x="330" y="85" font-size="11" fill="#dc2626" font-weight="700">Back cut</text>
+        <text x="55" y="82" font-size="11" fill="#1e3a8a" font-weight="700">Notch</text>
+        <text x="55" y="93" font-size="11" fill="#1e3a8a">face</text>
+        <text x="390" y="80" font-size="10" fill="#374151">Holding</text>
+        <text x="390" y="91" font-size="10" fill="#374151">wood</text>
+        <defs>
+          <marker id="arr" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="10,0 0,3.5 10,7" fill="#374151"/></marker>
+          <marker id="arr2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0,0 10,3.5 0,10" fill="#374151"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <table class="data-table" style="margin-top:16px;">
+      <thead><tr><th>Element</th><th>Dimension / Requirement</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Hinge width (each side)</strong></td><td>Approximately <strong>10% of the trunk diameter</strong>. A 40 cm DBH tree = ~4 cm hinge per side.</td><td>ANSI Z133; TCIA</td></tr>
+        <tr><td><strong>Hinge thickness (notch depth)</strong></td><td>Notch depth: <strong>1/4 to 1/3 of trunk diameter</strong>. This positions the hinge wood in the structurally strongest zone.</td><td>ANSI Z133</td></tr>
+        <tr><td><strong>Back cut height (conventional notch)</strong></td><td>Back cut at least <strong>25–50 mm (1–2 inches) above the base of the notch</strong> — creates the step that prevents the butt from kicking back.</td><td>ANSI Z133 Section 8.3</td></tr>
+        <tr><td><strong>Back cut height (open face notch)</strong></td><td>Back cut made <strong>at or slightly above the notch apex height</strong> — the geometry of the large face opening provides the kick-back prevention.</td><td>TCIA / ISA open face felling standards</td></tr>
+        <tr><td><strong>Holding wood (remaining uncut)</strong></td><td>A small amount of wood on each side must remain uncut until the tree falls — the hinge wood is not all the wood between notch and back cut; a small holding wood margin should remain at the outside edge of the back cut.</td><td>ANSI Z133; TCIA</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout-danger">
+      <div class="ct">⛔ Never Saw Through the Hinge</div>
+      <p>Cutting through the hinge — "barber chairing" — occurs when you over-run the back cut into the hinge wood. Once the hinge is severed, you lose all directional control. The tree can fall in any direction, and the butt can kick violently. Stop your back cut before the hinge. Use wedges to control lean if needed, not saw depth.</p>
+    </div>
+
+    <div class="fn"><div class="fn-lbl">📋 Field Note — Okanagan Context</div><p>On steep-slope removal in the Okanagan — which describes a large percentage of residential felling above Kelowna, West Kelowna, Summerland, or Penticton — the hinge is doing extra work because the tree's center of gravity is often uphill. An undersized hinge on a back-leaning tree on a 30% slope is a high-consequence failure point. When in doubt on back-leaning trees, use a bore cut (plunge cut) technique: cut the back strap last, maintain full control of the remaining wood, and use wedges or a pull line to ensure controlled fall direction. Don't try to muscle it with [�[�\��^�Y[��K����]����]����KKHT��TH��UT�KO��]��\��H��X�[ۈ�����'���\��\H��]\�8�%S��H�L���\]Z\�[Y[�������]�\�H�[[���\�][ۈ�\]Z\�\����Y]\�Z[�Y\��\H��]\�\�X�\�Y�Y�ܙHH�\���]\�XYK�\�\�H�ۋ[�Y��XX�HS��H�L���\]Z\�[Y[�8�%��H�Y��\�[ۋ�����]��\��H�\��\KYXYܘ[H���ݙ��Y]Л�H�
+���YH�͌�ZY�H��L��[��H������˝�˛ܙ�̌�ݙȏ���\��H�H����OH�M��H���[H��
+M͘H�����OH��L�H�����K]�YH���ς��\��H�H����OH�M��H�L��[H�؎
+���ȋς��Y�ۈ�[��H��M�NL
+��L
+���[H��̍����ς�[�HOH���LOH�NH��H���L�H�������OH��̍��������K]�YH�ȋς�^H��L�OH����۝\�^�OH�L���[H��̍�����۝]�ZY�H�����[\�X�[ۏ�^��[�HOH�M̈�LOH�M���H�LL�L�H��������OH��M�L�H�����K]�YH�ȋς��Y�ۈ�[��H�LL��L��MHLN�N��[H��M�L�H�ς�^H�
+H�OH����۝\�^�OH�L���[H��M��L���۝]�ZY�H����\��\HO�^��^H���OH�����۝\�^�OH�LH��[H��M��L����
+p���X��[Y��^��[�HOH����LOH�M���H��L�L�H��������OH��M�L�H�����K]�YH�ȋς��Y�ۈ�[��H��L����K�N�L�MH��[H��M�L�H�ς�^H����OH����۝\�^�OH�L���[H��M��L���۝]�ZY�H����\��\H��^��^H�����OH�����۝\�^�OH�LH��[H��M��L����
+p���X��\�Y��^��]H�LMLLLMMN��[H��ۙH�����OH��ML؎�����K]�YH�H�����KY\�\��^OH�ȋς�]H�L��LL�M��N��[H��ۙH�����OH��ML؎�����K]�YH�H�����KY\�\��^OH�ȋς�^H�MMH�OH�LMH��۝\�^�OH�L��[H�͍
+����
+p���^��^H����OH�LMH��۝\�^�OH�L��[H�͍
+����
+p���^��]H�LM�KL
+HL����KL
+H��[H�ٙY������X�]OH��������OH�٘�MXMH�����K]�YH�H�����KY\�\��^OH�ȋς�^H�N�OH���۝\�^�OH�L��[H��NLX�X���^�\��^��^H�N��OH�NH��۝\�^�OH�L��[H��NLX�X����ۙO�^���ݙς��]����X�H�\��H�]K]X�H��[OH�X\��[�]��L�ȏ��XY�����\]Z\�[Y[�����X�Y�X�][ۏ�����\��O������XY����O�������ۙϓ�[X�\�و\��\H��]\����ۙϏ���Z[�[][H��ۙϝ�����ۙψ��]\�\�X�\�Y�Y�ܙH�[[���Y�[�����S��H�L���X�[ۈ�O�����������ۙϑ\�X�[ۏ���ۙϏ���\��[X][H��ۙύ
+p��H�X\����ۙψوH[�[�Y�[\�X�[ۈ8�%XX��YK���\�X�H�Z[�H�YH
+H�]�[��]�[�X\��\�
+K����S��H�L����PO�����������ۙϐ�X\�وX��\����ۙϏ���\��\H��]\�]\��H��ۙϘ�X\�Yو�\[��^�\���\�[�؜�X�\����ۙψ�Y�ܙH[�H�][���Y�[�ˈH��]H[�H�[��X�X[H�[�\���[�\��\H��]K����S��H�L���X�[ۈ�N��ܚ��Y�P�����Yˈ\��������������ۙϕ\�HH��]\����ۙϏ���ۘ�HH�X���]\���\]H[�H�YH�Y�[����[��ۙϛ[ݙH[[YYX][O���ۙψ�ۈH\��\H��]H8�%Z[�[][H
+�HH
+MH�
+H���HH�[\[��]وH]��Y\^Y\�ۈH�[[���YH\�[�H[ݙK����S��H�L����PO���������O���X�O���]��\��H��[�]Y[��\����]��\��H������^�\�[ۈ�ۙH8�%S��H�L���\]Z\�[Y[��]����\���ۙϐS��H�L���X�[ۈ�O���ۙϋHZ[�[][H^�\�[ۈ�ۙHو��ۙό���H�YHZY����ۙψ]\��HXZ[�Z[�Y\��[�[�H�YH�Z[���[Y����\�ܙ]�Y[X�\��X^H�H�][�\��ۙH�[H�[[���\�][ۜ�\�H[���ܙ\�ˈ�ۙ�\�HH�ۙH\��X\��Y�ܙHXZ�[��H����]���]�[X�\�H��[�H�YH�Y�[����[8�%[�YX[�]�YH[��Y��܈[�[ۙH[�H\�XH�X\������]����]��\��H�����]��\��H���[���'����Y[��H8�%��[�Y�[��۝^�]���ۈ[����[�Y�[��\�Y[�X[�[[ݘ[�H^�\�[ۈ�ۙHX]\�H�۝�\��][ۋ\��\��Y�[�IܙH�[[ݚ[��H�Hۙ\���H[�H��\�H\�MHH�YKH
+H^�\�[ۈ�ۙH\�\�X�[H[\���X�K�]	��H�[�[][ۈ]��[�H�Y��\�[��[�\�ܘ[�H�[܈[�\��X�[ۘ[�[X�[���[[ݘ[[�8�%���Z[����[H\��H�YH[�HY�\��[�]�[[�[�\��X�H�]H]�\ۉ�]�HH�X�H�܈]�H^�\�[ۈ�ۙH�\]Z\�[Y[�\ۉ��\�X]XܘX�N�]	��HZ[�[][H�Y�H�[�Y]�H�܈�][���]وH�^HوH�[[��L]ۛ�H�YK����]����]����]��\��H�\�H�����ۙϼ'��T�H^[H�XZ[�����ۙψ�Y�H�ܚ��X�X�\�
+�	JH8�%�YH�[[��X��\]Y\���[�[��
+MIJH8�%�]\\�[�^X�][ۏ������ۙϔ��\��\Ώ���ۙψS��H�L��
+�M�H�X�[ۜ��x�$��H8����[[���\�][ۜ���PH[O��YH�\�H[�\��O�[O��[[���[�\����ܚ��Y�P�����Y�[][ۈ\�����Y�\�H	��[X[\�[O�H\��ܚ\�	����\]H�ZYH��YH�\�H�X�X�\��[O���]����]���؛�O���[�
