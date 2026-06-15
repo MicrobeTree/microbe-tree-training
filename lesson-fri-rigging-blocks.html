@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rigging Blocks, Slings &amp; Speed Lines — Microbe Tree Training</title>
+<style>
+:root{--bg:#080f18;--surface:#0f1820;--card:#141f2a;--border:#1e2e3c;--accent:#2a6a9a;--accent-light:#4a9fd4;--text:#d8eaf8;--text-dim:#6a8a9a;--fn-bg:#081018;--fn-border:#2a6a9a;--warn-bg:#1a100a;--warn-border:#9a6020;--warn-text:#d4a050;--ok-bg:#081810;--ok-border:#207840;--ok-text:#50b870}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh}
+.header{background:linear-gradient(135deg,#060e1a,#030910);border-bottom:2px solid var(--accent);padding:18px 20px;display:flex;align-items:center;gap:12px}
+.header-icon{font-size:26px}
+.header h1{font-size:1.1rem;font-weight:700;color:var(--accent-light);line-height:1.3}
+.header .sub{font-size:0.8rem;color:var(--text-dim);margin-top:3px}
+.badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap}
+nav{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto}
+.tab{padding:11px 14px;font-size:0.8rem;font-weight:500;color:var(--text-dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color 0.15s,border-color 0.15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent-light);border-bottom-color:var(--accent-light)}
+.pane{display:none;padding:18px 16px}
+.pane.show{display:block}
+h2{font-size:0.83rem;font-weight:700;color:var(--accent-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px}
+h3{font-size:0.9rem;font-weight:700;color:var(--text);margin:14px 0 7px}
+h3:first-of-type{margin-top:0}
+p{font-size:0.88rem;line-height:1.65;color:var(--text);margin-bottom:9px}
+ul{padding-left:17px;margin-bottom:9px}
+li{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:4px}
+strong{color:var(--accent-light)}
+em{color:var(--text-dim)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px 15px;margin-bottom:11px}
+.field-note{background:var(--fn-bg);border:1px solid var(--fn-border);border-left:3px solid var(--fn-border);border-radius:6px;padding:11px 13px;margin-top:12px}
+.fn-label{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:5px}
+.field-note p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:6px;padding:11px 13px;margin-bottom:10px}
+.warn-box .wlbl{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warn-text);margin-bottom:5px}
+.warn-box p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
+.ok-box{background:var(--ok-bg);border:1px solid var(--ok-border);border-radius:6px;padding:11px 13px;margin-bottom:10px}
+.ok-box .oklbl{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ok-text);margin-bottom:5px}
+.ok-box p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
+table{width:100%;border-collapse:collapse;font-size:0.82rem;margin-bottom:11px}
+th{background:var(--surface);color:var(--accent-light);text-align:left;padding:8px 10px;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid var(--border)}
+td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);line-height:1.4;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.formula-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin:10px 0;text-align:center}
+.formula{font-size:1.05rem;color:var(--accent-light);font-weight:700;letter-spacing:0.05em;margin-bottom:6px}
+.formula-note{font-size:0.8rem;color:var(--text-dim)}
+.density-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.d-item{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 11px}
+.d-item .sp{font-size:0.8rem;font-weight:600;color:var(--text);margin-bottom:2px}
+.d-item .kg{font-size:0.88rem;color:var(--accent-light)}
+.check-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.check-row:last-child{border-bottom:none}
+.check-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.check-text{font-size:0.86rem;line-height:1.5;color:var(--text)}
+.isa-tag{background:var(--surface);border-top:1px solid var(--border);padding:12px 18px;font-size:0.78rem;color:var(--text-dim);text-align:center;line-height:1.5}
+.isa-tag span{color:var(--accent-light);font-weight:600}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-icon">🧗</div>
+  <div>
+    <h1>Rigging Blocks, Slings &amp; Speed Lines</h1>
+    <div class="sub">Week 3 · Friday · Worksite Techniques</div>
+  </div>
+  <div class="badge">Safe Work</div>
+</div>
+<nav id="nav">
+  <div class="tab active" onclick="show(0)">Rigging Blocks</div>
+  <div class="tab" onclick="show(1)">Slings</div>
+  <div class="tab" onclick="show(2)">Speed Lines</div>
+  <div class="tab" onclick="show(3)">Load Math</div>
+  <div class="tab" onclick="show(4)">ANSI Z133</div>
+</nav>
+
+<!-- Pane 0: Rigging Blocks -->
+<div class="pane show" id="p0">
+  <h2>Rigging Blocks</h2>
+  <p>A rigging block is a <strong>pulley assembly</strong> used to redirect a rigging line, reduce friction, create mechanical advantage, or control piece descent. Choosing the right block — and knowing its rated capacity — is fundamental to controlled piece removal.</p>
+
+  <div class="card">
+    <h3>Block Types</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Primary Use</th></tr>
+      <tr>
+        <td><strong>Snatch block</strong></td>
+        <td>Side plate opens to accept rope mid-line without threading. Most versatile option.</td>
+        <td>Redirect, mid-rigging setup; quick deploy when line is already in place</td>
+      </tr>
+      <tr>
+        <td><strong>Closed (fixed) block</strong></td>
+        <td>Rope must be threaded through sheave. Sheave fully enclosed — higher structural integrity.</td>
+        <td>Pre-rigged setups; higher-load applications; when line is set before climbing</td>
+      </tr>
+      <tr>
+        <td><strong>Redirect block</strong></td>
+        <td>Small, lightweight, low-capacity block for redirecting climbing lines or lightweight loads.</td>
+        <td>SRT/SRS climbing redirects; light piece control; not for heavy rigging loads</td>
+      </tr>
+      <tr>
+        <td><strong>Port-A-Wrap / friction device</strong></td>
+        <td>Not a true block — a friction plate used to brake and control descent speed of rigging lines. Essential lowering device.</td>
+        <td>Ground anchor friction management; controls descent speed of loaded pieces</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Working Load Limits (WLL) — Key Concepts</h3>
+    <p>Every rigging block carries a manufacturer-specified <strong>Working Load Limit (WLL)</strong>. This is the maximum load the block is designed to handle under normal working conditions — it already incorporates a design safety factor (typically 4:1 to 5:1 over minimum breaking strength).</p>
+    <ul>
+      <li>Common arborist rigging blocks: WLL ranges from 8 kN to 30+ kN depending on design and size</li>
+      <li><strong>Never exceed WLL under any circumstances</strong> — including dynamic/shock loads from piece swings or uncontrolled drops</li>
+      <li>The WLL applies to the block itself; the attachment sling and anchor system must also be rated to handle the same load</li>
+      <li>Shock loading (dynamic loading from a swing or drop) can exceed the WLL by 3–5× the static piece weight — account for this in load estimation</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Block Anchor Load — The Direction-Change Effect</h3>
+    <p>When a block redirects a rigging line, the anchor point holding the block experiences <strong>approximately twice the tension in the rigging line</strong> (in a 180° redirect). This is a critical concept that is commonly misunderstood.</p>
+    <div class="formula-box">
+      <div class="formula">F<sub>anchor</sub> ≈ 2 × T<sub>line</sub> (at 180° change of direction)</div>
+      <div class="formula-note">At 90° change: F<sub>anchor</sub> ≈ 1.41 × T<sub>line</sub> · At 60° change: F<sub>anchor</sub> ≈ T<sub>line</sub></div>
+    </div>
+    <p>If your rigging line tension is 5 kN (from a 500 kg piece), the block anchor is experiencing close to 10 kN. Your anchor sling and attachment point must be rated for this. This is why the anchor (crotch, sling, trunk tie) is always the first thing to assess before rigging heavy pieces.</p>
+  </div>
+
+  <div class="card">
+    <h3>Pre-Use Inspection Checklist</h3>
+    <div class="check-row"><div class="check-icon">✓</div><div class="check-text"><strong>Sheave rotation:</strong> spins freely without grinding or binding. Rough rotation indicates worn bearings or debris — do not use.</div></div>
+    <div class="check-row"><div class="check-icon">✓</div><div class="check-text"><strong>Side plates:</strong> check for cracks, bends, deformation, or evidence of shock loading (bent or bowed plates). Condemned if deformed.</div></div>
+    <div class="check-row"><div class="check-icon">✓</div><div class="check-text"><strong>Sheave groove:</strong> inspect for wear, sharp edges, or notching that could cut rope sheath. Sheave diameter must be appropriate for rope diameter (minimum sheave:rope ratio ≥ 4:1 per ISA BMP Rigging).</div></div>
+    <div class="check-row"><div class="check-icon">✓</div><div class="check-text"><strong>Swivel / attachment point:</strong> no elongation, cracking, or evidence of corrosion that could reduce rated strength.</div></div>
+    <div class="check-row"><div class="check-icon">✓</div><div class="check-text"><strong>Opening mechanism (snatch block):</strong> locking pin seats fully and engages securely. Do not use a snatch block with a compromised latch — rope can escape under load.</div></div>
+    <div class="check-row"><div class="check-icon">✓</div><div class="check-text"><strong>WLL marking:</strong> verify rating is visible and legible. If WLL marking cannot be confirmed, remove from service.</div></div>
+  </div>
+
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note — Okanagan Context</div>
+    <p>On steep, rocky sites south of Kelowna — properties below KLO Road, hillside acreages in Kaleden, Naramata — the difference between a well-rigged block setup and a direct rope-over-crotch friction setup is the difference between controlled and uncontrolled piece descent. On a 35° slope, an uncontrolled piece can travel 30 m before anyone reacts. Know your block WLLs, know your piece weights, and know your anchor strength before the saw starts.</p>
+  </div>
+</div>
+
+<!-- Pane 1: Slings -->
+<div class="pane" id="p1">
+  <h2>Slings — Types, Ratings &amp; Inspection</h2>
+  <p>A sling connects a rigging block or friction device to an anchor point (tree branch, trunk, stub, or ground anchor). The sling is the connection between the block system and the tree — it must be rated for the full anchor load, not just the line tension.</p>
+
+  <div class="card">
+    <h3>Sling Types</h3>
+    <table>
+      <tr><th>Type</th><th>Material</th><th>Characteristics</th><th>Best Use</th></tr>
+      <tr>
+        <td><strong>Eye-and-eye</strong></td>
+        <td>Polyester, nylon, or UHMWPE (Dyneema)</td>
+        <td>Fixed-length; soft; low bark damage; eyes at both ends for attachment</td>
+        <td>Standard block attachment; eye loops over branch union</td>
+      </tr>
+      <tr>
+        <td><strong>Whoopie sling</strong></td>
+        <td>UHMWPE (Dyneema) core</td>
+        <td>Adjustable length via buried-bury splice; very high strength (11 mm: 22+ kN WLL); lightweight</td>
+        <td>Adjusting to different branch diameters; SRS anchor; rigging on variable-size stubs</td>
+      </tr>
+      <tr>
+        <td><strong>Wire rope sling</strong></td>
+        <td>Galvanised or stainless steel</td>
+        <td>High WLL; abrasion-resistant; less flexible; can damage bark</td>
+        <td>High-load applications; ground anchors; where bark damage is not a concern</td>
+      </tr>
+      <tr>
+        <td><strong>Web sling (round or flat)</strong></td>
+        <td>Polyester webbing</td>
+        <td>Distributes load over wide area; gentle on bark; lower WLL than Dyneema</td>
+        <td>Bark-sensitive species; wide attachment points; securing pieces for transport</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Sling Configuration &amp; Load Effects</h3>
+    <p>WLL ratings are typically given for a straight pull (0° basket angle). When a sling is used in a <strong>basket configuration</strong> (doubled around an object, both eyes to a hook), the WLL effectively doubles — but this also doubles the compression on the attachment point, which matters for bark-sensitive sling anchors.</p>
+    <p>Choker configuration (sling forms a loop around the object and is choked through one eye) <strong>reduces WLL to approximately 75%</strong> of rated straight-pull capacity due to the tight bend radius at the choke point.</p>
+    <table>
+      <tr><th>Configuration</th><th>WLL Factor</th></tr>
+      <tr><td>Straight pull (single leg)</td><td>1.0× rated WLL</td></tr>
+      <tr><td>Basket (doubled, 0° angle)</td><td>2.0× rated WLL</td></tr>
+      <tr><td>Basket at 60° included angle</td><td>1.0× rated WLL</td></tr>
+      <tr><td>Basket at 90° included angle</td><td>0.7× rated WLL</td></tr>
+      <tr><td>Choker</td><td>~0.75× rated WLL</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Sling Inspection — Remove from Service If:</h3>
+    <div class="check-row"><div class="check-icon">⛔</div><div class="check-text">Cuts, abrasion, or broken fibres through sheath or core (synthetic slings)</div></div>
+    <div class="check-row"><div class="check-icon">⛔</div><div class="check-text">Heat damage: glazed, stiff, or discoloured sheath (indicates friction-generated heat that degrades fibres)</div></div>
+    <div class="check-row"><div class="check-icon">⛔</div><div class="check-text">UV degradation: chalky, faded, brittle exterior (polyester is UV-stable; nylon and UHMWPE are more sensitive — store out of UV when not in use)</div></div>
+    <div class="check-row"><div class="check-icon">⛔</div><div class="check-text">Chemical contamination: solvents, acids, bleach, or fuels can degrade polymer fibres without visible external damage</div></div>
+    <div class="check-row"><div class="check-icon">⛔</div><div class="check-text">Core damage in Dyneema/UHMWPE slings: separate sheath from core at a midpoint and inspect — core should be white and uniform, not grey, compressed, or broken</div></div>
+    <div class="check-row"><div class="check-icon">⛔</div><div class="check-text">WLL marking absent or illegible — remove from service immediately</div></div>
+  </div>
+
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note</div>
+    <p>Sling inspection takes 60 seconds per sling at the start of the job. Run the sling through your hands, feel for lumps (hidden core damage), look for sheath cuts, check the eyes. A sling that was fine last Tuesday might have a cut from last Friday's job that nobody noticed. The sling is the last thing between the block and the tree — treat it like it is.</p>
+  </div>
+</div>
+
+<!-- Pane 2: Speed Lines -->
+<div class="pane" id="p2">
+  <h2>Speed Lines — Setup &amp; Safe Operation</h2>
+  <p>A speed line is a <strong>fixed tensioned line rigged between an upper anchor (in the work tree or a nearby spar) and a lower ground anchor or anchor tree</strong>, allowing cut pieces to ride the line rapidly to a drop zone. Essential on steep terrain where ground dragging isn't feasible and crane access is unavailable.</p>
+
+  <div class="card">
+    <h3>Speed Line Components</h3>
+    <table>
+      <tr><th>Component</th><th>Purpose</th><th>Typical Spec</th></tr>
+      <tr>
+        <td><strong>Top anchor</strong></td>
+        <td>Upper attachment in tree; must withstand piece weight + dynamic load</td>
+        <td>Rated sling + appropriately rated rigging hardware; anchor point assessed for strength</td>
+      </tr>
+      <tr>
+        <td><strong>Speed line itself</strong></td>
+        <td>Low-stretch line on which the piece travels</td>
+        <td>Typically 11–13 mm low-stretch UHMWPE (Dyneema) or polyester braid; pre-tensioned to working angle</td>
+      </tr>
+      <tr>
+        <td><strong>Pulley / carabiner on piece</strong></td>
+        <td>Allows the rigged piece to ride the line</td>
+        <td>Rated rigging block or large-radius carabiner; WLL exceeds anticipated piece load</td>
+      </tr>
+      <tr>
+        <td><strong>Tag line</strong></td>
+        <td>Ground control of piece orientation and braking</td>
+        <td>Nylon or polyester tag line; ground crew controls piece swing and landing orientation</td>
+      </tr>
+      <tr>
+        <td><strong>Bottom anchor</strong></td>
+        <td>Lower attachment to keep line tensioned and controlled</td>
+        <td>Tree, ground stake array, or vehicle anchor; must be rated for full line tension</td>
+      </tr>
+      <tr>
+        <td><strong>End stop / buffer</strong></td>
+        <td>Prevents piece from running off the end of the line</td>
+        <td>Knot, mechanical stop, or physical end anchor — MANDATORY; never rig a speed line without one</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Speed Line Angle and Piece Travel</h3>
+    <p>The angle of the speed line controls travel speed. <strong>Steeper angle = faster piece travel</strong>. This must be managed based on DZ conditions and ground crew readiness7</p>
+    <ul>
+      <li>Typical working angle: 15–35° from horizontal provides controlled but efficient travel on most Okanagan terrain</li>
+      <li>Too flat (&lt;10°): piece may stall mid-line, particularly for small pieces with high aerodynamic drag</li>
+      <li>Too steep (&gt;45°): piece arrives at the bottom anchor at high velocity — requires energy absorption at the lower end and presents significant impact risk</li>
+      <li>Ground crew controls final approach velocity by managing tag line tension — slack tag line = fast; taut tag line = braked</li>
+    </ul>
+  </div>
+
+  <div class="warn-box">
+    <div class="wlbl">⚠ Exclusion Zone</div>
+    <p>No personnel in the path of a piece on a speed line. A runaway piece — particularly if the lower attachment fails or the tag line goes slack — can travel at significant velocity. The exclusion zone extends the full width of the piece's potential swing arc plus a safe margin on each side. Per <strong>ANSI Z133 Section 4</strong>, all non-essential personnel must be clear of all rigging operations. On speed line ops, this includes the entire lower runout zone.</p>
+  </div>
+
+  <div class="warn-box">
+    <div class="wlbl">⚠ Communication is a Safety System</div>
+    <p>Speed line operations require clear, confirmed signals between climber and ground crew before every piece release. <strong>Per ANSI Z133 Section 4.2</strong>, a designated signal system must be established before work begins. "Are you ready?" / "Ready!" is not a system — it's noise. Use distinct, pre-established signals (radio, visual, or verbal) and verify confirmation before any piece is released.</p>
+  </div>
+
+  <div class="ok-box">
+    <div class="oklbl">✓ Pre-Rig Speed Line Checklist</div>
+    <p>Top anchor assessed and rated · Line WLL appropriate for anticipated loads · Bottom anchor rated and secured · End stop in place at bottom anchor · Tag line attached to piece BEFORE release · Ground crew clear and confirmed ready · Exclusion zone marked and enforced · All hardware inspected this morning</p>
+  </div>
+
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note — Okanagan Context</div>
+    <p>Speed lines are standard on hillside residential properties throughout the South Okanagan — Penticton benches, Summerland slopes, Naramata Road. On a property where the house sits below and the work tree is 15 m upslope, a well-rigged speed line delivers pieces to the chipper crew in 5 seconds each. Without it, you're hand-carrying pieces down rocky terrain all day. Set it up right once in the morning and it pays for itself before noon. Cut corners on the end stop and you're watching a 100 kg log hit a car.</p>
+  </div>
+</div>
+
+<!-- Pane 3: Load Math -->
+<div class="pane" id="p3">
+  <h2>Load Estimation &amp; Mechanical Advantage</h2>
+  <p>Know what you're lifting before you lift it. Guessing piece weight is how rigging failures happen. These calculations take 2 minutes and tell you whether your gear is appropriate for the load.</p>
+
+  <div class="card">
+    <h3>Estimating Piece Weight</h3>
+    <p>Model a cylindrical log section: Volume = π × r² × L (all in metres). Multiply by green wood density.</p>
+    <div class="density-grid">
+      <div class="d-item"><div class="sp">Ponderosa pine</div><div class="kg">~550 kg/m³ (green)</div></div>
+      <div class="d-item"><div class="sp">Interior Douglas-fir</div><div class="kg">~700 kg/m³ (green)</div></div>
+      <div class="d-item"><div class="sp">Trembling aspen</div><div class="kg">~400 kg/m³ (green)</div></div>
+      <div class="d-item"><div class="sp">Black cottonwood</div><div class="kg">~450 kg/m³ (green)</div></div>
+      <div class="d-item"><div class="sp">Norway / silver maple</div><div class="kg">~780–820 kg/m³ (green)</div></div>
+      <div class="d-item"><div class="sp">Green ash</div><div class="kg">~680 kg/m³ (green)</div></div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula">Weight (kg) = π × r² × L × density</div>
+      <div class="formula-note">r = radius in metres · L = length in metres · density from table above</div>
+    </div>
+
+    <p><strong>Worked example:</strong> Douglas-fir round, 40 cm diameter, 1.5 m long:<br>
+    r = 0.20 m · Volume = 3.14 × 0.04 × 1.5 = <strong>0.188 m³</strong> · Weight = 0.188 × 700 = <strong>~132 kg</strong></p>
+  2 <p>Add 20–30% for branch attachment points, included bark, and any embedded material (fence wire, bolts, nails on urban trees). In this example, rigging this piece should assume a working load of <strong>~165–175 kg</strong>.</p>
+  </div>
+
+  <div class="card">
+    <h3>Mechanical Advantage — What a Block Buys You</h3>
+    <p>A single rigging block redirects the rope — it does not multiply mechanical advantage unless rigged as a compound system. A <strong>single block redirect</strong> changes direction but does not reduce the force needed to hold the load. The haul side and load side experience equal tension.</p>
+    <p>A <strong>2:1 mechanical advantage</strong> system (one moveable block, one fixed point) halves the force required at the haul line — but the fixed anchor block sees approximately twice the line tension. The load moves at half the speed of the haul line (this is the price of the mechanical advantage).</p>
+
+    <table>
+      <tr><th>System</th><th>Haul Force</th><th>Block Anchor Load (approx.)</th><th>Use In Arboriculture</th></tr>
+      <tr><td>Single redirect</td><td>= load weight</td><td>≈ 2× line tension at 180°</td><td>Direction change, lower piece</td></tr>
+      <tr><td>2:1 MA</td><td>½ load weight</td><td>≈ load weight (fixed block)</td><td>Assisting lift of heavy pieces</td></tr>
+      <tr><td>3:1 MA (Z-rig)</td><td>⅓ load weight</td><td>Higher on anchors</td><td>Emergency load hauling, vehicle recovery</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Safety Factor Requirement</h3>
+    <p>Per the <strong>ISA BMP for Rigging</strong> and consistent with ANSI Z133: all rigging components should be selected with a minimum <strong>5:1 safety factor</strong> over minimum breaking strength for the anticipated load, accounting for dynamic loading. For a 200 kg piece with 30% dynamic factor (260 kg working load), each component in the system should have an MBS of at least 1,300 kg (12.75 kN) — before considering knot efficiency reductions.</p>
+    <p>Knot efficiency: a timber hitch or clove hitch on the rigging rope reduces effective line strength by 35–40%. A bowline: 25–35%. Account for this when assessing whether your rope capacity is adequate for the system.</p>
+  </div>
+
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note</div>
+    <p>The calculation takes 90 seconds with a phone calculator. Diameter (measured with a diameter tape or estimated from DBH tools), length (eyeball with a measuring tape reference — your arm span is approximately your height; your height is a reference for section length), density from memory. You don't need a spreadsheet. You need to have done the calculation before something is in the air, not while you're looking up at a hung piece wondering if the sling is going to hold. Do the math before the climb. It's one of the things that separates professional rigging from guesswork.</p>
+  </div>
+</div>
+
+<!-- Pane 4: ANSI Z133 -->
+<div class="pane" id="p4">
+  <h2>ANSI Z133 — Rigging Safety Requirements</h2>
+  <p>ANSI Z133 (Safe Work Practices for Arboriculture) is the primary US/international standard governing arborist safety. BC WorkSafeBC OHS Regulation Part 26 (Forestry Operations) and Part 4 (General Hazard Requirements) apply in BC — most are consistent with Z133 with some provincial additions.</p>
+
+  <div class="card">
+    <h3>Key ANSI Z133 Rigging Requirements</h3>
+    <table>
+      <tr><th>Section</th><th>Requirement</th></tr>
+      <tr><td><strong>Z133 §4.1</strong></td><td>A qualified arborist or trained climber shall plan the work before it begins, including rigging plan and load estimation for all major pieces</td></tr>
+      <tr><td><strong>Z133 §4.2</strong></td><td>A designated signal system shall be established and communicated to all crew members before work begins; all personnel must acknowledge understanding</td></tr>
+      <tr><td><strong>Z133 §9.1</strong></td><td>Rigging equipment shall be selected, used, and maintained in accordance with manufacturer specifications and recognised safe arboricultural practices</td></tr>
+      <tr><td><strong>Z133 §9.2</strong></td><td>All rigging equipment shall be inspected before each use; equipment showing damage, deformation, or evidence of overloading shall be removed from service immediately</td></tr>
+      <tr><td><strong>Z133 §9.3</strong></td><td>Loads shall not exceed the Working Load Limit of any component in the rigging system, including blocks, slings, carabiners, and attachment points</td></tr>
+      <tr><td><strong>Z133 §9.4</strong></td><td>Snap hooks shall be self-closing AND self-locking (not just self-closing) when used in rigging operations</td></tr>
+      <tr><td><strong>Z133 §9.5</strong></td><td>Rigging lines shall be inspected for cuts, abrasion, heat damage, and kink damage before use; retire rope at any sign of core damage</td></tr>
+      <tr><td><strong>Z133 §4.6</strong></td><td>No personnel shall position themselves under a suspended load</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>WorkSafeBC Additions — BC-Specific</h3>
+    <ul>
+      <li><strong>OHS Regulation §26.2:</strong> All rigging used in tree felling and bucking operations must be rated for the anticipated loads; employer must ensure workers are trained in rigging selection and use</li>
+      <li><strong>OHS Regulation §4.3:</strong> All equipment must be maintained in safe working condition; defective equipment must be tagged out and removed from service</li>
+      <li><strong>OHS Regulation §4.21:</strong> No employee shall be required to work in a manner that could endanger their safety or the safety of others</li>
+      <li>WorkSafeBC does not require written rigging plans for routine tree work, but does require that appropriate hazard identification and controls be in place — a tailgate safety briefing covering the rigging plan satisfies this requirement for most residential work</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>The Self-Locking Carabiner Requirement</h3>
+    <p>Z133 §9.4 is frequently misunderstood. <strong>Self-closing</strong> means the gate spring returns the gate to the closed position automatically. <strong>Self-locking</strong> means the gate cannot open unless a deliberate additional action is taken (twist, push, then pull — or equivalent). A gate that closes by spring pressure alone but opens with simple lateral pressure is self-closing but NOT self-locking.</p>
+    <p>Triaction (3-way locking) carabiners require three distinct movements to open. These are required for life-safety applications per Z133. For rigging non-life-safety applications (piece attachment), a standard locking carabiner (screw gate) satisfies the requirement — but the lock must be verified closed before loading.</p>
+  </div>
+
+  <div class="warn-box">
+    <div class="wlbl">⚠ Common Compliance Failures</div>
+    <p>1. Using a non-locking carabiner (or open gate) in a rigging application — gate opens under load. 2. Exceeding block WLL on heavy pieces because weight wasn't estimated. 3. No confirmed signal system before work begins — "ready up there?" shouted into wind is not a signal system. 4. Inspecting rigging at end of day instead of at start — damaged gear gets loaded again before being caught. 5. Speed line end stop missing — piece goes off the end of the line at full speed.</p>
+  </div>
+
+  <div class="field-note">
+    <div class="fn-label">📋 Field Note — ISA Exam Context</div>
+    <p>Safe Work Practices is 28% of the ISA Certified Arborist exam — the single largest domain. ANSI Z133 is the source. You don't need to memorise every section number, but you need to know the concepts: signal systems before work begins, inspect before use, WLL governs every component, no personnel under suspended loads, self-locking gates for life-safety. These concepts appear in multiple question forms across the exam. If you know why each requirement exists — not just what it says — you'll answer the question correctly regardless of how it's worded.</p>
+  </div>
+</div>
+
+<div class="isa-tag">📚 <span>ISA Exam Domains: Safe Work Practices (28%) · Pruning (15%)</span><br>Sources: ANSI Z133 (2017) Sections 4 &amp; 9 · ISA BMP Rigging (2nd Ed.) · Donzelli &amp; Lilly, Working with Rigging · WorkSafeBC OHS Regulation Parts 4 &amp; 26</div>
+
+<script>
+function show(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.pane').forEach((p,j)=>p.classList.toggle('show',i===j));
+}
+</script>
+</body>
+</html>
