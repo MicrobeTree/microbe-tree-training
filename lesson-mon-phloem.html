@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phloem & the Pressure-Flow Hypothesis — Microbe Tree Training</title>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--card:#22253a;--border:#2d3148;--accent:#3a7d44;--accent-light:#52a85e;--text:#e8eaf0;--text-dim:#8b909f;--correct-bg:#1a2d1a;--correct-border:#3a7d44;--correct-text:#7fd87f;--wrong-bg:#2d1a1a;--wrong-border:#7d3a3a;--wrong-text:#d87f7f;--reveal-bg:#1e2535;--fn-bg:#192119;--fn-border:#3a7d44}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;padding-bottom:32px}
+.header{background:linear-gradient(135deg,#1a2d1a,#0f1a0f);border-bottom:2px solid var(--accent);padding:18px 20px;display:flex;align-items:center;gap:12px}
+.header-icon{font-size:26px}
+.header h1{font-size:1.1rem;font-weight:700;color:var(--accent-light);line-height:1.3}
+.header .sub{font-size:0.8rem;color:var(--text-dim);margin-top:3px}
+.badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap}
+.quick-ref{margin:18px 16px 8px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:14px 16px}
+.quick-ref h3{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:10px}
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ref-item{background:var(--surface);border-radius:6px;padding:9px 11px}
+.ref-item .lbl{font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px}
+.ref-item .val{font-size:0.85rem;color:var(--text);line-height:1.4}
+.questions{padding:8px 16px 0}
+.q-block{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.q-head{padding:14px 16px 10px;border-bottom:1px solid var(--border)}
+.q-num{font-size:0.68rem;color:var(--accent-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px}
+.q-text{font-size:0.95rem;line-height:1.55;color:var(--text)}
+.options{padding:10px 16px;display:flex;flex-direction:column;gap:7px}
+.option{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:9px 13px;cursor:pointer;font-size:0.88rem;line-height:1.4;transition:background 0.15s,border-color 0.15s;display:flex;align-items:flex-start;gap:9px;user-select:none}
+.option:hover:not([data-locked]){background:#232640;border-color:var(--accent)}
+.opt-letter{font-weight:700;color:var(--text-dim);min-width:16px;flex-shrink:0}
+.option.correct{background:var(--correct-bg);border-color:var(--correct-border)}
+.option.correct .opt-letter{color:var(--correct-text)}
+.option.wrong{background:var(--wrong-bg);border-color:var(--wrong-border)}
+.option.wrong .opt-letter{color:var(--wrong-text)}
+.reveal{display:none;background:var(--reveal-bg);border-top:1px solid var(--border);padding:16px}
+.reveal.show{display:block}
+.reveal h4{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:9px}
+.reveal p{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:9px}
+.reveal ul{padding-left:17px;margin-bottom:9px}
+.reveal li{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:3px}
+.reveal strong{color:var(--accent-light)}
+.field-note{background:var(--fn-bg);border:1px solid var(--fn-border);border-radius:6px;padding:11px 13px;margin-top:10px}
+.fn-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:5px}
+.field-note p{font-size:0.85rem;line-height:1.6;color:var(--text)}
+.score-banner{display:none;margin:4px 16px 12px;background:var(--card);border:1px solid var(--accent);border-radius:8px;padding:12px 16px;text-align:center;font-size:0.95rem;font-weight:600;color:var(--accent-light)}
+.score-banner.show{display:block}
+.isa-tag{margin:12px 16px 0;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:0.78rem;color:var(--text-dim);text-align:center;line-height:1.5}
+.isa-tag span{color:var(--accent-light);font-weight:600}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-icon">🌿</div>
+  <div>
+    <h1>Phloem &amp; the Pressure-Flow Hypothesis</h1>
+    <div class="sub">Week 3 · Monday · Tree Biology</div>
+  </div>
+  <div class="badge">ISA CA Prep</div>
+</div>
+
+<div class="quick-ref">
+  <h3>📊 Quick Reference — Phloem at a Glance</h3>
+  <div class="ref-grid">
+    <div class="ref-item"><div class="lbl">Transports</div><div class="val">Sucrose, amino acids, hormones, signaling molecules</div></div>
+    <div class="ref-item"><div class="lbl">Direction</div><div class="val">Source → Sink (any direction — up, down, lateral)</div></div>
+    <div class="ref-item"><div class="lbl">Driving force</div><div class="val">Osmotic pressure gradient (high at source, low at sink)</div></div>
+    <div class="ref-item"><div class="lbl">Key cells</div><div class="val">Sieve tube elements (no nucleus) + companion cells</div></div>
+    <div class="ref-item"><div class="lbl">Source tissues</div><div class="val">Photosynthesizing leaves; starch-releasing bark in spring</div></div>
+    <div class="ref-item"><div class="lbl">Sink tissues</div><div class="val">Roots, buds, fruit, cambium — anything consuming sugar</div></div>
+  </div>
+</div>
+
+<div class="questions" id="questions"></div>
+<div class="score-banner" id="scoreBanner"></div>
+<div class="isa-tag">📚 <span>ISA Exam Domain: Tree Biology (11%)</span> · Sources: ISA Certification Study Guide 4th Ed. · Taiz &amp; Zeiger, Plant Physiology 6th Ed. · ISA BMP Plant Health Care</div>
+
+<script>
+const Qs = [
+  {
+    q: "According to the pressure-flow hypothesis, what is the primary mechanism driving phloem transport from leaves to roots?",
+    opts: [
+      "An osmotic pressure differential — high turgor at source tissues and low turgor at sink tissues creates bulk flow",
+      "Root pressure generated by ion accumulation in the root cortex pushes phloem sap downward",
+      "Transpiration pull from stomata draws phloem sap upward alongside the xylem water column",
+      "Companion cells actively pump sucrose through sieve plates using ATP-driven molecular motors"
+    ],
+    correct: 0,
+    title: "The Pressure-Flow Hypothesis",
+    paras: [
+      "Ernst Münch proposed the pressure-flow hypothesis in 1930, and it remains the accepted model. At <strong>source tissues</strong> (leaves actively photosynthesising), sucrose is loaded into sieve tube elements. This increases solute concentration, drawing water in by osmosis and creating high <strong>turgor pressure</strong> in the phloem.",
+      "At <strong>sink tissues</strong> (roots, buds, fruit, cambium), sucrose is unloaded and consumed. Solute concentration drops, water follows by osmosis, and turgor falls. The result: a pressure gradient from source (high) to sink (low) that drives bulk flow of phloem sap toward the sink.",
+      "The critical distinction from xylem: phloem transport is driven by <strong>osmotic pressure differentials</strong>, not transpiration pull. It moves in any direction — downward to roots in summer, upward to buds in spring, laterally to fruit. Direction follows the sink, not gravity."
+    ],
+    bullets: [
+      "Transport velocity: 0.3–1.5 m/hour in phloem vs. up to 15 m/hour in xylem",
+      "Phloem sap concentration: 10–30% sucrose by weight, plus amino acids, hormones, and signaling molecules",
+      "Direction is plastic: same tree, different seasons — roots are the sink in summer, buds are the sink in spring",
+      "Companion cells run the metabolic machinery that powers loading — sieve tube elements are just the pipe"
+    ],
+    note: "In early spring, before bud break, starch stored in bark and wood is converted to sucrose and loaded into phloem — flow can reverse, with storage tissue acting as source and expanding buds as sink. This is why dormant-season pruning affects carbohydrate economy: you're cutting at the exact moment the tree is mobilising everything it stored last summer. Heavy late-winter removal on a stressed tree removes sugar reserves at the worst possible time."
+  },
+  {
+    q: "Mature sieve tube elements — the main transport cells of the phloem — are alive at functional maturity but are missing a key cellular structure. Which structure is absent?",
+    opts: [
+      "Cell wall",
+      "Plasma membrane",
+      "Nucleus",
+      "Mitochondria"
+    ],
+    correct: 2,
+    title: "Sieve Tube Elements — Unusual Living Cells",
+    paras: [
+      "Mature sieve tube elements lack a <strong>nucleus</strong> — yet they are alive and metabolically active. The nucleus, tonoplast, and most ribosomes are degraded during cell maturation. This is one of the most unusual features in plant biology: a living cell that voluntarily dismantles its own command centre.",
+      "The support system is the <strong>companion cell</strong>. Each sieve tube element is intimately connected to one or more companion cells via specialised plasmodesmata. The companion cell retains its nucleus and ribosomes and essentially runs metabolic operations for the adjacent sieve tube element.",
+      "Sieve tube elements connect end-to-end through <strong>sieve plates</strong> — perforated cell walls that allow bulk flow with minimal resistance. Remove the nucleus, clear the organelles, open the end walls: you get a low-resistance pipe optimised for bulk sugar transport."
+    ],
+    bullets: [
+      "Present in mature sieve tube elements: plasma membrane, modified plastids, some mitochondria",
+      "Absent: nucleus, large central vacuole, most ribosomes, tonoplast",
+      "P-protein (phloem protein) plugs sieve pores rapidly when tissue is cut — a wound-sealing mechanism that operates in seconds",
+      "Companion cells: fully nucleate, control loading/unloading, provide metabolic support to adjacent sieve tube elements"
+    ],
+    note: "P-protein wound sealing is why phloem 'bleeds' differently than xylem. Nick the phloem on an active birch or maple in summer: you'll see a brief rush of sap, then it slows as P-protein plugs the sieve pores. The same sealing mechanism makes timing critical for chip budding and T-budding: you need vascular continuity before sealing occurs. Once P-protein has plugged the sieve plates at the bud union, that window closes."
+  },
+  {
+    q: "A wire was wrapped tightly around a birch stem for three years. The tree died — crown dieback progressing downward over two seasons, with the upper crown appearing healthy well into season one. What is the PRIMARY mechanism of death?",
+    opts: [
+      "The wire blocked xylem water transport to the crown, causing desiccation and crown dieback from the top down",
+      "The wire prevented CO₂ exchange through stem lenticels, reducing overall photosynthetic capacity",
+      "The wire girdles the phloem, blocking sugar transport to the roots; roots starve and die, collapsing water and nutrient uptake",
+      "The wire introduced bark necrosis that spread systemically via vascular pathogens into the sapwood"
+    ],
+    correct: 2,
+    title: "Girdling — Why Phloem Continuity is Absolute",
+    paras: [
+      "Wire girdling is a classic demonstration of phloem physiology. When phloem is severed circumferentially, sugars can no longer move from the photosynthesising crown to the roots. The sequence: <strong>phloem blocked → roots starve → fine root death → mycorrhizal network collapse → water and mineral uptake fails → crown declines.</strong>",
+      "This takes months to years because roots draw on stored starch before truly failing. The crown can look healthy well into season one — xylem (located deeper in wood) is not compromised by surface girdling, so water still moves up. By the time crown dieback is obvious, root reserves are already exhausted.",
+      "Partial girdling (incomplete circumference) slows but doesn't stop phloem transport — some phloem bridges can sustain a tree. Full circumference girdling is usually fatal unless callus bridges form quickly enough, which requires cambial activity and small girdle width."
+    ],
+    bullets: [
+      "Stem girdling roots (SGRs) work by the same mechanism — progressive constriction over 10–15+ years, not immediate failure",
+      "Callus tissue (wound wood) can bridge a narrow girdle if cambium is active — basis of bridge grafting as a rescue technique",
+      "The cambium is also killed at the girdle site — regenerative capacity in that zone is permanently lost",
+      "Root starvation can be confirmed by examining fine root density and mycorrhizal health around the dripline"
+    ],
+    note: "In the Okanagan, the most common girdling scenarios aren't wires — they're stem girdling roots from deep planting or B&B nursery stock, and trunk ties left on boulevard lindens and maples for 5–10 years. Both produce the same slow phloem strangulation. Root collar excavation revealing a root crossing the flare is almost always contributing to decline. The intervention is mechanical: excavate, assess, cut the offending root where structurally feasible. There is no chemical treatment for a root that's strangling the phloem."
+  },
+  {
+    q: "In the apoplastic phloem loading pathway, sucrose is exported from mesophyll cells into the cell wall space (apoplast) and then actively transported into companion cells against a concentration gradient. What protein type drives this active uptake?",
+    opts: [
+      "Aquaporins — which facilitate both water and sucrose diffusion across membranes",
+      "Sucrose/H⁺ symporters (SUT proteins) — which use the proton eectrochemical gradient to cotransport sucrose into the symplast",
+      "Plasmodesmata — which expand during active transport to allow apoplastic sucrose re-entry",
+      "P-proteins — which actively pump sucrose in proportion to phloem turgor pressure"
+    ],
+    correct: 1,
+    title: "Phloem Loading: Symplastic vs. Apoplastic Pathways",
+    paras: [
+      "Moving sucrose from where it's made (mesophyll) into the phloem sieve tube elements is called <strong>phloem loading</strong>, and it happens via two pathways depending on species.",
+      "The <strong>symplastic pathway</strong> moves sucrose through plasmodesmata (cytoplasmic bridges) from mesophyll to companion cells to sieve tube elements without leaving the living symplast. Works in species with abundant plasmodesmata at the phloem interface.",
+      "The <strong>apoplastic pathway</strong> (common in many temperate trees) first exports sucrose into the cell wall space via efflux carriers. Then <strong>sucrose/H⁺ symporters (SUT proteins)</strong> on companion cell membranes haul it back into the symplast — uphill, against a concentration gradient. Energy comes from the proton gradient maintained by H⁺-ATPase pumps. This is active transport: it costs ATP and is therefore sensitive to oxygen deprivation and root flooding."
+    ],
+    bullets: [
+      "SUT proteins (Sucrose Transporter family) are the active loaders in the apoplastic pathway",
+      "H⁺-ATPase pumps on companion cell membranes establish the proton gradient that powers SUT activity",
+      "Once loaded, phloem sucrose concentration can reach 10–30% — far above mesophyll cell concentrations",
+      "Aquaporins are water channel proteins; they facilitate osmosis, not sucrose transport"
+    ],
+    note: "This matters for trunk injection. �\�[ZX��[ZX�[��[����]Y�XH�[H
+��ۘ]H�[��X�Y\�[ZYX���Y�܈PP��\�Z[�ZXܛ۝]�Y[��H]\��][��H�[H�Y[����X[K��[ZX�[�]\�HۛH[[K[[ؚ[H[ݙH\[�H�[��\�][ۈ��X[H�]�ۉ��Y\��X�]H�����܈�\��[��ˈ�[�]�[X][��[��X�[ۈ��X��	��[K[[ؚ[I��ˈ	�[[K[[ؚ[I�]\�Z[�\��]\��وH�YH\�HX�X[H�XX�Y�H��X�]	��ۛH[[K[[ؚ[H�ۉ���X�H����\�[K���K�N��]H�[K�\��[�ۘK�HX]\�Hۙ\���H[�HۈH��]Y�X�[����H\��Y[���Y�\��\��Y�[��HX^K�[\\�]\�\�]�H]�\�Y�Y�0���܈�YH�YZ��[����[�\�\�\���Y�\�HYH���X][���\�K��]\�H[��\�X��ۜ�\]Y[��H�܈�[H�[��ܝȋ��Έ��[H�[��ܝ���[�\�[H\�H�YH[�\���[[Y\�ܛX[��H[��Y\�X���\��\��\��XZ[�Z[�[��[[H�[��[ۈ�����\��K\�[���\��\�HY��\�[�X[�XܙX\�H\�\���Xܛ��H\���X�Y�YX�[��H��[�X�ܘYY[�[����[���[������Y��]H�YH����[H�\�\����]H[�ܙX\�\�[���ܝ[ۈ�Z\�[\\�]\�KYX�[�X�[H����[�������Y��Y]�H]\ȋ������\��\�H[�ܙX\�\�\���[�X�Y�\�Y[�[�����[�\�X[H��\[��]\��܈�YX�Y�Y�\��\H���HHܛ�ۈ��K��ܜ�X��K�]N����Y���\��[��[H�]�ۈ��\�\Έ�H�\��\�KY���[�[XZ�\���Y�[\X�ۈ�[H�YX�X�K�Y����[�\�\����\���Xܛ��H\���X�Y�\���Xܛ��H�Y[��YX[����\���]H�ۘ�[��][ۈ[���\��H�[K�\����]HYX[��\���]\��]ۈ[��H��[��\ˈ\���]\�YX[����\�\��܈]H��\��K���ۙϓ��\���\��H\��܈H�XZ�\��\��\�HܘYY[�H���\��[���ˏ���ۙψ���\�\�H��K��[�ٙ���]��[�\�[�\�]H��Y��[H���ˈ[�\��]�\�H��\���]�X\�X��\]H��X][���\�K�[H�[�\��X�H�X\�[�H�YH[�\��H�]H�\�HHܛ�ۈ��X�\�Z[�[X[�Y�\�[��[��Z[�[X[�\�\��\�����ˈ���H�����\�ۙ���ۙϙ�[�H���ܛ�����^X�ܜ�^�[X�]�]HX�[�\��ܙY����\��\�[ؚ[\�Y\�[Y\��[��H�\�\��K����ۙψY�H��Y�\���ۙ�Y[��\�\��\��[��]���X]�Y�[��8�%ٝ[�\��]�\��X�H]�[�Y�\��Z[��[�]\��ˈH�YH�[�\X\�[]�HX�ݙHܛ�[��܈H�[�X\�ۈY�\�����\�\��\�\�H^]\�Y���K��[]Έ���X][���\�H�YX�\�������^][ۈ[��Y�\���X�[ۈ8�%�[H��\��H��[�����[�\�X���ܝ[ۈ����[���[ܚ]Y\��Y�[�\���Y���\��]�[�[���
+�����[X�][JH\�HXZ[�Z[�Yۙ�\�[�ܛ���[���
+�]�������Z]
+H����\��ۈ�\��][ۈ
+�\�Z[�Y�[H�]�ۈ[�\���Y�
+H\�����X��ۚ\�Y\�H�[X\�HYX�[�\�H[���Y�Z[�X�Y�YH[ܝ[]H[ۙ��YHY�][X��Z[\�H���H�YH]	ܙX�ݙ\�Y	��]�\[X�\��Z[���]����ܛ�ۈYX�X��H����[����[��ٝ[�\����[XY�H]�\�[��\�X�H8�%�[H�\��][ۈ^YY�]�[��ܘYH��K���N��\�\�HYX�[�\�H�Z[�[^YY[ܝ[]Hۈ��Y�\��\��Y��[�Y�[��Y\ΈH[�H���Y��\��Y[�]Y�\�	ܙX�ݙ\�Y	��]�\[X�\��Z[��[��\���\][HXY�HX^K��]\[�Y��]�\�H]Y�\���Y��]�ۈ�[H�[��ܝ����[ؚ[\�Y�ܙY�\����Y��[�\�[��H��[��\�H�\���[��Y��H�\[X�\��Z[���Y�[YH[[H8�%Hܛ�ۈܙY[�Y��YY�H8�%�]H����\�[H��[���\�Z[�ܛ��[��H����[���X\�ۋ��[�\��\��[��H	�^\�\�HX�[�I�ۙ\���H܈�Y�\�Y�\�\��X��]H\����[[Y\�����\�H\����YZ�ˈ��B�N�][���\�YH�]�\��^J\˛[��
+K��[
+�[�JN]��ܙHH��[��[ۈ�Z[]Z^�
+^�ۜ��Y��[Y[���][[Y[��RY
+	�]Y\�[ۜ��N\˙�ܑXX�
+
+KZJOO��ۜ��Y��[Y[��ܙX]Q[[Y[�
+	�]��N���\�Ә[YOI�KX�������YI�I��ZN�ۜ���\K��˛X\
+
+��JOO��ۜ�V��I�	Љ�	���	�	�V��WN�]\��]��\��H��[ۈ�YH��I�Z_KI��_H�ۘ�X��H�X��	�Z_K	��_JH���[��\��H��[]\����O��[���[����O��[���]��JK���[�	��N�ۜ��[]�\K��[]˛X\
+�O�O�؟O�O�
+K���[�	��N��[��\�SX]��\��H�KZXY��]��\��H�K[�[H��]Y\�[ۈ	�ZJ�_Hو	�\˛[��O�]��]��\��H�K]^���K�_O�]���]���]��\��H��[ۜȏ����O�]���]��\��H��]�X[�YH��]�I�Z_H���
+�'��	�K�]_O�
+��	�K�\�\˛X\
+O���O��
+K���[�	��_B�[�؝[]�O�[��]��\��H��Y[[��H��]��\��H���[X�[��'����Y[��H8�%��[�Y�[��۝^�]����K���_O���]����]��˘\[��[
+�NJNB���[��[ۈX��ZK�J^Y�[���\�Y�ZWJ\�]\��[���\�Y�ZWO]�YN�ۜ�OT\��ZWN��[Y[��]Y\�T�[X�ܐ[
+�I�Z_H��[ۘ
+K��ܑXX�
+
+[JOO�[��]]�X�]J	�]K[���Y	�	�I�N[��[K��\��܏I�Y�][	�Y�OOO\K��ܜ�X�
+Y[��\��\��Y
+	��ܜ�X�	�NY�OOO[�I���HOO\K��ܜ�X�
+Y[��\��\��Y
+	�ܛۙ��NJN��[Y[���][[Y[��RY
+	ܙ]�I��ZJK��\��\��Y
+	�����NY��OOO\K��ܜ�X�
+\��ܙJ��Y�[���\�Y�]�\�JOO�JJ^�ۜ��SX]���[�
+��ܙK�\˛[��
+�L
+N�ۜ�\��\��N����ۙˈ�YHH�Y[��\�[�[�W	��ۈ\��XZ[��Ήԙ]�Y]�H�]�X[�8�%\�H�ۘ�\����\Xܛ���][\H^[H�XZ[�ˉ��ۜ��Y��[Y[���][[Y[��RY
+	���ܙP�[��\��N��^�۝[�X��ܙN�	���ܙ_K��\˛[��H
+	��IJH8�%	�\��X���\��\��Y
+	�����NB�B���Z[]Z^�
+N��ܚ\��؛�O���[�
