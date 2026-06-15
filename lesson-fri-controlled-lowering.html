@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 22 · Friday · Controlled Lowering — Microbe Tree Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh;line-height:1.6}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 24px;display:flex;align-items:center;gap:14px}
+.header-logo{font-size:22px;font-weight:800;color:#f78166;letter-spacing:-0.5px}
+.header-sub{font-size:13px;color:#8b949e}
+.week-badge{margin-left:auto;background:#f7816622;border:1px solid #f7816655;color:#ff9580;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.container{max-width:880px;margin:0 auto;padding:28px 20px}
+.day-banner{background:linear-gradient(135deg,#2a0d0d,#331510);border:1px solid #f7816640;border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.day-label{font-size:13px;font-weight:600;color:#ff9580;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.day-title{font-size:28px;font-weight:800;color:#e6edf3;margin-bottom:6px}
+.day-subtitle{font-size:15px;color:#8b949e}
+/* Tabs */
+.section-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.tab{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:#8b949e;cursor:pointer;transition:all .2s}
+.tab:hover{border-color:#f7816660;color:#ff9580}
+.tab.active{background:#f7816620;border-color:#f78166;color:#ff9580}
+.section{display:none}
+.section.active{display:block}
+/* Cards */
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:22px;margin-bottom:18px}
+.card h3{font-size:14px;font-weight:700;color:#ff9580;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.card p{font-size:14px;color:#c9d1d9;margin-bottom:12px;line-height:1.7}
+.card ul{padding-left:20px;margin-bottom:12px}
+.card ul li{font-size:14px;color:#c9d1d9;margin-bottom:7px;line-height:1.6}
+.card ul li strong{color:#e6edf3}
+/* Device grid */
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:14px}
+.device-card{background:#0d1117;border-radius:10px;padding:16px;border-top:3px solid #f78166}
+.device-name{font-size:15px;font-weight:700;color:#e6edf3;margin-bottom:4px}
+.device-type{font-size:11px;color:#ff9580;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.device-card p{font-size:13px;color:#c9d1d9;margin-bottom:8px;line-height:1.6}
+.device-card ul{padding-left:16px}
+.device-card ul li{font-size:12px;color:#c9d1d9;margin-bottom:4px}
+/* Force calc table */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+th{background:#0d1117;color:#8b949e;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;padding:9px 12px;text-align:left;border-bottom:2px solid #30363d}
+td{padding:9px 12px;border-bottom:1px solid #21262d;color:#c9d1d9}
+tr:last-child td{border-bottom:none}
+td strong{color:#e6edf3}
+.force-high{color:#f85149;font-weight:700}
+.force-med{color:#f0b429;font-weight:700}
+.force-low{color:#3fb950;font-weight:700}
+/* Rigging diagrams */
+.rig-diagram{background:#0d1117;border-radius:10px;padding:14px;margin:14px 0;overflow-x:auto}
+/* Communication protocol */
+.comm-table{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:10px;background:#30363d;border-radius:8px;overflow:hidden}
+.comm-row{display:contents}
+.comm-cell{background:#0d1117;padding:10px 14px;font-size:13px;color:#c9d1d9}
+.comm-header{background:#161b22;padding:9px 14px;font-size:11px;font-weight:700;color:#ff9580;text-transform:uppercase;letter-spacing:0.5px}
+/* Warning / alert */
+.warning-box{background:#2a1010;border:1px solid #da363340;border-radius:8px;padding:14px 16px;margin-top:12px}
+.warning-box .warn-head{font-size:12px;font-weight:700;color:#f85149;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.warning-box p{font-size:13px;color:#ffa198;line-height:1.6;margin:0}
+.field-note{background:#0a1f2e;border:1px solid #1f4a7a;border-radius:8px;padding:14px 16px;margin-top:14px}
+.field-note-header{font-size:12px;font-weight:700;color:#58a6ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.field-note p{font-size:13px;color:#a5c8f5;line-height:1.7;margin:0}
+/* Checklist */
+.checklist{list-style:none;padding:0;margin:10px 0}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-bottom:1px solid #21262d;font-size:13px;color:#c9d1d9}
+.checklist li:last-child{border-bottom:none}
+.check-icon{color:#2ea043;font-size:14px;min-width:16px}
+.warn-icon{color:#f0b429;font-size:14px;min-width:16px}
+.x-icon{color:#da3633;font-size:14px;min-width:16px}
+.isa-footer{margin-top:28px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;font-size:12px;color:#8b949e}
+.isa-footer strong{color:#c9d1d9}
+@media(max-width:600px){.comm-table{grid-template-columns:1fr}.device-grid{grid-template-columns:1fr}.day-title{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">🌲 Microbe Tree</div>
+  <div class="header-sub">Crew Training · Week 22</div>
+  <div class="week-badge">🧗 Worksite Techniques</div>
+</div>
+<div class="container">
+  <div class="day-banner">
+    <div class="day-label">🧗 Friday · Worksite Techniques</div>
+    <div class="day-title">Controlled Lowering</div>
+    <div class="day-subtitle">Friction devices, redirects, load math, and ground crew communication — building a safe lowering system from scratch</div>
+  </div>
+
+  <div class="section-tabs">
+    <div class="tab active" onclick="showTab('overview')">Overview</div>
+    <div class="tab" onclick="showTab('devices')">Friction Devices</div>
+    <div class="tab" onclick="showTab('rigging')">Rigging Configurations</div>
+    <div class="tab" onclick="showTab('forces')">Forces &amp; Load Math</div>
+    <div class="tab" onclick="showTab('comms')">Ground Crew Protocol</div>
+    <div class="tab" onclick="showTab('checklist')">Pre-Task Checklist</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section active" id="tab-overview">
+    <div class="card">
+      <h3>What Is Controlled Lowering?</h3>
+      <p>Controlled lowering is a rigging technique in which cut wood (branches, stem sections) is lowered to the ground using a combination of a <strong>rigging line</strong>, a <strong>rigging point</strong> (spar, crotch, or hardware), and a <strong>friction-generating device</strong> on the ground. The friction device allows the ground worker to control descent speed and stop the load if needed.</p>
+      <p>The alternative to controlled lowering is <em>dropping</em> — letting cut pieces fall free. Dropping is appropriate only in open-zone situations confirmed by the crew leader, with all personnel and property at a safe distance. Per <strong>ANSI Z133 Section 8</strong>, the climber and ground crew must establish drop zones and clear zones before any cutting begins, and pieces must not be dropped where they pose risk to people, property, or the rope system.</p>
+    </div>
+    <div class="card">
+      <h3>The Three Components of Every Lowering System</h3>
+      <div class="rig-diagram">
+        <svg viewBox="0 0 580 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;display:block;margin:0 auto">
+          <rect width="580" height="240" fill="#0d1117" rx="6"/>
+          <!-- Tree trunk -->
+          <rect x="240" y="10" width="60" height="230" rx="6" fill="#2a1f0d" stroke="#e3a11730" stroke-width="1"/>
+          <!-- Branch to cut -->
+          <path d="M 300 80 L 420 60" stroke="#3a2a10" stroke-width="20" stroke-linecap="round"/>
+          <!-- Rigging point in spar -->
+          <circle cx="295" cy="75" r="10" fill="#0d1117" stroke="#ff9580" stroke-width="2"/>
+          <text x="260" y="55" fill="#ff9580" font-size="11" font-family="sans-serif" font-weight="bold">① RIGGING POINT</text>
+          <text x="260" y="67" fill="#8b949e" font-size="10" font-family="sans-serif">(crotch, block, or port-a-wrap</text>
+          <text x="260" y="78" fill="#8b949e" font-size="10" font-family="sans-serif">mounted at spar)</text>
+          <!-- Rigging line -->
+          <path d="M 295 85 L 380 78 L 400 90" stroke="#f0b429" stroke-width="2.5" stroke-dasharray="5,3" fill="none"/>
+          <path d="M 295 85 L 270 140 L 250 200" stroke="#f0b429" stroke-width="2.5" fill="none"/>
+          <!-- Line label -->
+          <text x="330" y="115" fill="#f0b429" font-size="11" font-family="sans-serif" font-weight="bold">② RIGGING LINE</text>
+          <text x="330" y="127" fill="#8b949e" font-size="10" font-family="sans-serif">(connects piece to</text>
+          <text x="330" y="138" fill="#8b949e" font-size="10" font-family="sans-serif">friction device)</text>
+          <!-- Friction device at base -->
+          <rect x="215" y="190" width="50" height="36" rx="6" fill="#2a1010" stroke="#f78166" stroke-width="2"/>
+          <text x="222" y="206" fill="#ff9580" font-size="10" font-family="sans-serif" font-weight="bold">PORT-A-</text>
+          <text x="226" y="218" fill="#ff9580" font-size="10" font-family="sans-serif" font-weight="bold">WRAP</text>
+          <!-- Ground worker line out -->
+          <path d="M 215 208 L 130 208" stroke="#e3a117" stroke-width="2" fill="none"/>
+          <text x="80" y="204" fill="#e3a117" font-size="10" font-family="sans-serif">← Tail</text>
+          <!-- Labels -->
+          <text x="30" y="230" fill="#ff9580" font-size="11" font-family="sans-serif" font-weight="bold">③ FRICTION DEVICE</text>
+          <text x="30" y="242" fill="#8b949e" font-size="10" font-family="sans-serif">(port-a-wrap, figure-8, or mechanical lowering device)</text>
+          <!-- Cut location -->
+          <circle cx="303" cy="80" r="6" fill="#f85149"/>
+          <text x="395" y="87" fill="#f85149" font-size="10" font-family="sans-serif">← CUT LOCATION</text>
+          <!-- Arrow showing load direction -->
+          <path d="M 390 100 L 400 130" stroke="#c9d1d9" stroke-width="1.5" marker-end="url(#darr)"/>
+        </svg>
+      </div>
+      <ul>
+        <li><strong>① Rigging point:</strong> The elevated anchor — a natural spar crotch, a redirect block secured to the trunk, or a port-a-wrap installed on the spar. The rigging point redirects the load from horizontal (as it swings free) to vertical (to be lowered). Must be rated for the expected load including dynamic loading.</li>
+        <li><strong>② Rigging line:</strong> The rope connecting the piece to the friction device. Must be of appropriate diameter and break strength for the anticipated piece weight. Per ISA BMP Rigging, the working load limit of the entire system (line, hardware, knot efficiency) must be documented and not exceeded.</li>
+        <li><strong>③ Friction device:</strong> On the ground, at the base of the tree or at a redirect point. Provides the mechanical control. The ground worker feeds rope through the device, uses friction to control descent speed, and can lock the load to a stop if needed.</li>
+      </ul>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The most common improvised lowering system on small jobs — a single wrap around the trunk — is not a controlled lowering system. It is uncontrolled friction with no ability to arrest the load, no documented WLL, and no mechanical advantage if things go wrong. WorkSafeBC OHS Regulation Part 26.2 requires that all rigging systems be of adequate strength for the intended load and operated by a competent worker. A wrap around a trunk fails both criteria on most jobs. Use proper friction devices.</p></div>
+    </div>
+  </div>
+
+  <!-- DEVICES -->
+  <div class="section" id="tab-devices">
+    <div class="card">
+      <h3>Friction Devices — Comparison</h3>
+      <div class="device-grid">
+        <div class="device-card">
+          <div class="device-name">Port-A-Wrap III</div>
+          <div class="device-type">Spar-Mounted Friction Device</div>
+          <p>The industry standard friction device for controlled lowering. Mounts on the spar via strap or rope wrap. Rope passes through in a figure-8 configuration, with friction generated by bends in the rope path.</p>
+          <ul>
+            <li>WLL: 1,360 kg (3,000 lb) per Buckingham manufacturing specs</li>
+            <li>Compatible rope diameter: 12–16 mm</li>
+            <li>Installed at or near the tree base for ground worker access</li>
+            <li>Can be "locked off" by wrapping tail around the standing part</li>
+            <li>Friction adjustable by adding or removing wraps</li>
+          </ul>
+        </div>
+        <div class="device-card">
+          <div class="device-name">Hobbs Lowering Device</div>
+          <div class="device-type">Ground-Level Friction Plate</div>
+          <p>A ground-anchor friction plate system. The lowering line passes over a friction bar at a fixed or portable anchor point separate from the tree. Allows greater standoff distance from the tree for the ground worker.</p>
+          <ul>
+            <li>WLL varies by model (manufacturer documentation required)</li>
+            <li>Advantage: ground worker not positioned directly under the piece</li>
+            <li>Disadvantage: requires anchor stake or Vehicle anchor — site prep required</li>
+            <li>Preferred on open sites with long lowering runs</li>
+          </ul>
+        </div>
+        <div class="device-card">
+          <div class="device-name">Rope Wrench / Zigzag</div>
+          <div class="device-type">Climbing Device (Friction Hitch)</div>
+          <p>Not a primary lowering device — designed for climber descent, not material lowering. Included here to clarify what NOT to repurpose for rigging use.</p>
+          <ul>
+            <li>Not rated or designed for piece lowering loads</li>
+            <li>Do not use as a substitute for a dedicated friction lowering device</li>
+            <li>Per ANSI Z133: equipment must be used as intended and within manufacturer specifications</li>
+          </ul>
+        </div>
+        <div class="device-card">
+          <div class="device-name">Figure-8 Descender</div>
+          <div class="device-type">Field-Expedient Friction Device</div>
+          <p>A climbing figure-8 can function as a friction device for light lowering on small-diameter pieces when a dedicated friction device is not available. Use with awareness of its limitations.</p>
+          <ul>
+            <li>WLL depends on individual device — check manufacturer specs</li>
+            <li>Generates less friction than a port-a-wrap on the same rope diameter</li>
+            <li>Appropriate for light branches only (confirmed piece weight below device WLL)</li>
+            <li>Consult manufacturer before use in rigging applications</li>
+          </ul>
+        </div>
+      </div>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The port-a-wrap is the tool you want for the majority of rigging jobs. Know how to install it on a spar (strap goes around the trunk, device hangs on the downhill side, your rope feeds through the figure-8 path with a tail running to your braking hand). If the job is a small branch that clearly weighs under 50 kg and you're pulling it from a first-story window — use your judgment on device selection. If there's any doubt about piece weight or if the piece is over a structure: port-a-wrap, proper rigging point, and document the system before the cut.</p></div>
+    </div>
+  </div>
+
+  <!-- RIGGING CONFIGURATIONS -->
+  <div class="section" id="tab-rigging">
+    <div class="card">
+      <h3>Common Rigging Configurations</h3>
+      <div class="rig-diagram">
+        <svg viewBox="0 0 580 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;display:block;margin:0 auto">
+          <rect width="580" height="340" fill="#0d1117" rx="6"/>
+
+          <!-- Config 1: Simple lowering (left) -->
+          <text x="15" y="22" fill="#ff9580" font-size="12" font-family="sans-serif" font-weight="bold">① SIMPLE LOWERING</text>
+          <text x="15" y="35" fill="#8b949e" font-size="10" font-family="sans-serif">(natural crotch rigging point)</text>
+          <!-- Trunk -->
+          <rect x="100" y="40" width="30" height="180" rx="4" fill="#2a1f0d"/>
+          <!-- Crotch -->
+          <path d="M 100 90 L 60 70" stroke="#3a2a10" stroke-width="12" stroke-linecap="round"/>
+          <!-- Rope through crotch -->
+          <path d="M 85 78 L 62 74 L 72 108" stroke="#f0b429" stroke-width="2" fill="none"/>
+          <!-- Piece hanging -->
+          <rect x="60" y="108" width="28" height="20" rx="4" fill="#2a1f0d" stroke="#e3a11750"/>
+          <!-- Line to port-a-wrap -->
+          <path d="M 115 80 L 115 210" stroke="#f0b429" stroke-width="2" fill="none"/>
+          <!-- Port-a-wrap box -->
+          <rect x="100" y="210" width="30" height="20" rx="4" fill="#2a1010" stroke="#f78166" stroke-width="1.5"/>
+          <!-- Tail to ground worker -->
+          <path d="M 100 220 L 30 220" stroke="#e3a117" stroke-width="2" fill="none"/>
+          <text x="14" y="218" fill="#e3a117" font-size="9" font-family="sans-serif">tail</text>
+          <!-- Labels -->
+          <text x="15" y="82" fill="#8b949e" font-size="9" font-family="sans-serif">crotch</text>
+          <text x="15" y="92" fill="#8b949e" font-size="9" font-family="sans-serif">redirects</text>
+          <text x="15" y="102" fill="#8b949e" font-size="9" font-family="sans-serif">load</text>
+          <text x="138" y="222" fill="#8b949e" font-size="9" font-family="sans-serif">PAW</text>
+          <text x="18" y="256" fill="#3fb950" font-size="10" font-family="sans-serif">✓ Simple, fast setup</text>
+          <text x="18" y="268" fill="#f0b429" font-size="10" font-family="sans-serif">! Crotch wear — inspect for</text>
+          <text x="18" y="280" fill="#f0b429" font-size="10" font-family="sans-serif">  heat damage after heavy jobs</text>
+          <text x="18" y="292" fill="#f0b429" font-size="10" font-family="sans-serif">! Load swings directly under cut</text>
+
+          <!-- Divider -->
+          <line x1="190" y1="15" x2="190" y2="325" stroke="#30363d" stroke-width="1"/>
+
+          <!-- Config 2: Block redirect (center) -->
+          <text x="200" y="22" fill="#ff9580" font-size="12" font-family="sans-serif" font-weight="bold">② BLOCK REDIRECT</text>
+          <text x="200" y="35" fill="#8b949e" font-size="10" font-family="sans-serif">(hardware rigging point)</text>
+          <!-- Trunk -->
+          <rect x="285" y="40" width="30" height="180" rx="4" fill="#2a1f0d"/>
+          <!-- Block on trunk -->
+          <rect x="278" y="70" width="16" height="14" rx="3" fill="#0d1117" stroke="#ff9580" stroke-width="1.5"/>
+          <!-- Branch -->
+          <path d="M 315 80 L 360 65" stroke="#3a2a10" stroke-width="12" stroke-linecap="round"/>
+          <!-- Rope from piece through block, down -->
+          <path d="M 352 68 L 350 80 L 285 80" stroke="#f0b429" stroke-width="2" fill="none"/>
+          <path d="M 278 77 L 260 77" stroke="#f0b429" stroke-width="2" fill="none"/>
+          <path d="M 260 77 L 260 220" stroke="#f0b429" stroke-width="2" fill="none"/>
+          <!-- Piece -->
+          <rect x="340" y="80" width="22" height="16" rx="3" fill="#2a1f0d" stroke="#e3a11750"/>
+          <!-- PAW at redirect -->
+          <rect x="248" y="210" width="28" height="20" rx="4" fill="#2a1010" stroke="#f78166" stroke-width="1.5"/>
+          <path d="M 248 220 L 200" stroke="#e3a117" stroke-width="2" fill="none"/>
+          <text x="200" y="256" fill="#3fb950" font-size="10" font-family="sans-serif">✓ Controls swing arc of piece</text>
+          <text x="200" y="268" fill="#3fb950" font-size="10" font-family="sans-serif">✓ Ground worker not under piece</text>
+          <text x="200" y="280" fill="#f0b429" font-size="10" font-family="sans-serif">! Block must be rated for load</text>
+          <text x="200" y="292" fill="#f0b429" font-size="10" font-family="sans-serif">! Force at block = ~2× piece weight</text>
+
+          <!-- Divider -->
+          <line x1="390" y1="15" x2="390" y2="325" stroke="#30363d" stroke-width="1"/>
+
+          <!-- Config 3: Speedline / horizontal move -->
+          <text x="400" y="22" fill="#ff9580" font-size="12" font-family="sans-serif" font-weight="bold">③ SPEEDLINE</text>
+          <text x="400" y="35" fill="#8b949e" font-size="10" font-family="sans-serif">(horizontal movement)</text>
+          <!-- Two trees -->
+          <rect x="420" y="60" width="18" height="160" rx="3" fill="#2a1f0d"/>
+          <rect x="540" y="100" width="18" height="120" rx="3" fill="#2a1f0d"/>
+          <!-- Tensioned line between -->
+          <path d="M 438 80 C 480 82 520 84 540 100" stroke="#58a6ff" stroke-width="2.5" fill="none"/>
+          <!-- Piece on trolley -->
+          <rect x="476" y="78" width="22" height="14" rx="3" fill="#2a1f0d" stroke="#e3a11750"/>
+          <circle cx="487" cy="78" r="4" fill="none" stroke="#f0b429" stroke-width="1.5"/>
+          <!-- Drop line -->
+          <path d="M 487 92 L 487 220" stroke="#f0b429" stroke-width="2" stroke-dasharray="4,3" fill="none"/>
+          <text x="400" y="256" fill="#3fb950" font-size="10" font-family="sans-serif">✓ Moves pieces away from structure</text>
+          <text x="400" y="268" fill="#3fb950" font-size="10" font-family="sans-serif">✓ Reduces impact on roots below</text>
+          <text x="400" y="280" fill="#f0b429" font-size="10" font-family="sans-serif">! High tension in mainline</text>
+          <text x="400" y="292" fill="#f0b429" font-size="10" font-family="sans-serif">! Requires careful system design</text>
+        </svg>
+      </div>
+      <div class="card" style="background:#0d1117;border:none;padding:0;margin-top:0">
+        <p style="font-size:13px;color:#8b949e;margin-top:8px"><strong style="color:#c9d1d9">Configuration selection guide:</strong> Use simple natural crotch lowering for branches in open areas with clear drop zones. Add a block redirect when you need to move the load away from a structure, control the swing arc, or position the ground worker away from the piece's path. Use a speedline when pieces need horizontal movement to clear a structure, fence, or tight landing zone. Each configuration requires documenting rigging point WLL, line WLL (with knot efficiency), and confirming system WLL exceeds anticipated load with appropriate safety factor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORCES -->
+  <div class="section" id="tab-forces">
+    <div class="card">
+      <h3>Forces &amp; Load Math — What the Numbers Mean</h3>
+      <p>Understanding the forces in a rigging system lets you make system design decisions before the piece is cut, not after something fails. The ISA BMP for Rigging covers this in detail — here's the practical version for field use.</p>
+
+      <h3 style="margin-top:18px">Dynamic vs. Static Load</h3>
+      <p>A piece that hangs stationary generates a <strong>static load</strong> equal to its weight. A piece that is cut and swings or falls before the rope arrests it generates a <strong>dynamic load</strong> — which can be 2–5 times its static weight depending on fall distance and deceleration speed.</p>
+      <table>
+        <tr><th>Scenario</th><th>Load multiplier</th><th>Example: 150 kg piece</th></tr>
+        <tr><td>Piece cut with slack = 0 (no fall)</td><td class="force-low">~1.5–2×</td><td>225–300 kg</td></tr>
+        <tr><td>15 cm of slack in rigging line</td><td class="force-med">~2–3×</td><td>300–450 kg</td></tr>
+        <tr><td>30 cm of slack in rigging line</td><td class="force-high">~3–5×</td><td>450–750 kg</td></tr>
+        <tr><td>Piece swings full arc (poorly tied)</td><td class="force-high">Up to 8×</td><td>Up to 1,200 kg</td></tr>
+      </table>
+      <p style="font-size:12px;color:#8b949e">Source: ISA BMP Rigging · Dynamic load values are approximations; actual forces depend on rope elasticity, deceleration distance, and system compliance.</p>
+
+      <h3 style="margin-top:18px">Block Mechanics — Why Force Doubles</h3>
+      <p>When a load passes through a redirect block (a pulley), the block must resist the sum of the tension on both sides of the rope. If a 500 kg piece is hanging on a rope through a block, the tension on the descent side is 500 kg, and the tension on the friction device side is also ~500 kg (assuming no mechanical advantage). The block sees ~1,000 kg — approximately twice the load.</p>
+      <p>This is why rigging blocks, slings, and attachment hardware must be rated significantly above the anticipated piece weight. Per WorkSafeBC OHS Regulation and ISA BMP Rigging, use a minimum <strong>5:1 safety factor</strong> on dynamic rigging systems.</p>
+
+      <h3 style="margin-top:18px">Working Load Limit Calculation — Field Version</h3>
+      <table>
+        <tr><th>Step</th><th>What to check</th><th>Where to find it</th></tr>
+        <tr><td>1. Estimate piece weight</td><td>Wood density × volume estimate</td><td>Green wood: ~800–1,000 kg/m³</td></tr>
+        <tr><td>2. Rope break strength</td><td>Manufacturer tag on rope</td><td>In kN — convert: 1 kN ≈ 102 kg</td></tr>
+        <tr><td>3. Knot efficiency</td><td>Multiply by 0.55–0.70</td><td>Figure-8: ~0.65 · Bowline: ~0.70 · Timber hitch: ~0.65</td></tr>
+        <tr><td>4. Apply safety factor</td><td>Divide by 5</td><td>Dynamic rigging minimum per industry standard</td></tr>
+        <tr><td>5. Compare to estimated piece weight + dynamic load</td><td>System WLL must exceed 3–5× piece weight</td><td>Your field estimate</td></tr>
+      </table>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The math takes 60 seconds with a phone calculator. For a 100 kg limb: you need your rigging system to handle at least 300–500 kg dynamically. If your rope is 13 mm climbing line with 27 kN (≈2,754 kg) break strength, knot efficiency 0.65 = 1,790 kg effective break, ÷ 5 = 358 kg WLL. That covers a 100 kg piece with 3× dynamic factor. But if the limb is 300 kg and you're using the same rope, your WLL of 358 kg only gives you 1.2× — you are operating outside safe margins. Know your numbers before you make the cut.</p></div>
+    </div>
+  </div>
+
+  <!-- COMMS -->
+  <div class="section" id="tab-comms">
+    <div class="card">
+      <h3>Ground Crew Communication Protocol</h3>
+      <p>Per <strong>ANSI Z133 Section 8.1</strong>: "All crew members shall be alert to the work being performed and shall be in visual and/or audible contact with the climber at all times." Communication breakdowns on rigging jobs are a leading factor in arborist incidents. Standardize your signals — every crew, every job.</p>
+
+      <div class="comm-table">
+        <div class="comm-header">Climber Call</div>
+        <div class="comm-header">Ground Response / Action</div>
+
+        <div class="comm-cell"><strong>"LINE IN"</strong> or <strong>"ROPE"</strong></div>
+        <div class="comm-cell">Acknowledge ("READY"), then place rope through friction device and take tension. Wait for "CUT" call.</div>
+
+        <div class="comm-cell"><strong>"CUT" or "CUTTING"</strong></div>
+        <div class="comm-cell">Hold friction device ready. All ground crew to clear positions. Call <strong>"CLEAR"</strong> when all personnel and equipment clear of drop zone. Climber waits for CLEAR before making cut.</div>
+
+        <div class="comm-cell"><strong>"WATCH" / "HEADS"</strong></div>
+        <div class="comm-cell">Immediate drop everything, clear area, look up. This is the emergency call — dropping debris, unexpected swing.</div>
+
+        <div class="comm-cell"><strong>"DOWN SLOW"</strong></div>
+        <div class="comm-cell">Lower piece at controlled, slow rate. Confirm with <strong>"GOING DOWN"</strong> before releasing friction.</div>
+
+        <div class="comm-cell"><strong>"HOLD"</strong></div>
+        <div class="comm-cell">Stop immediately. Lock friction device. Do not move the load until climber gives next call.</div>
+
+        <div class="comm-cell"><strong>"DOWN"</strong> (piece on ground)</div>
+        <div class="comm-cell">Confirm <strong>"DOWN"</strong> (echo) and remove rigging from piece. Signal clear with <strong>"CLEAR"</strong> when rig is off and you are clear of the landing zone.</div>
+      </div>
+
+      <div class="warning-box" style="margin-top:16px">
+        <div class="warn-head">⚠ Dead Man Rule</div>
+        <p>The ground worker operating the friction device must never leave the friction device unattended while a load is on the line. If you must step away — call "HOLD" to the climber, lock the device, and confirm the climber hears and acknowledges before releasing the device. One unattended port-a-wrap with a 200 kg piece on the line is a fatality-level hazard. Per WorkSafeBC OHS Regulation, control of the load must be maintained at all times during rigging operations.</p>
+      </div>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The CLEAR call is the one that gets skipped most often on small crews under time pressure. "The climber can see if anyone's there." Maybe. But the climber is also positioning for a cut, managing their rope, assessing the piece — they are not fully focused on ground crew positions. The CLEAR call exists because it forces ground crew to actively confirm their position, not passively hope the climber noticed them. On chainsaws going, chippers running jobs — CLEAR must be a visible hand signal or a radio call, not a shouted word that gets swallowed by equipment noise.</p></div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="section" id="tab-checklist">
+    <div class="card">
+      <h3>Pre-Task Lowering System Checklist</h3>
+      <p>Per ANSI Z133 Section 8 and WorkSafeBC OHS Regulation Part 26, a pre-task risk assessment and equipment check is required before commencing rigging operations. This checklist is a minimum standard — site-specific hazards may require additional steps.</p>
+      <ul class="checklist">
+        <li><span class="check-icon">✓</span><span><strong>Piece weight estimated</strong> — crew leader has estimated weight of each piece to be lowered and confirmed system WLL exceeds estimate × 5 (safety factor).</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Rigging point identified and rated</strong> — natural crotch, sling, or block/sling combination has known or estimated WLL above 2× piece weight (accounting for block force doubling).</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Rigging line inspected</strong> — rope inspected for cuts, abrasions, heat damage, chemical exposure, excessive core deformation. Retired per manufacturer's or company inspection criteria if any defect found.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Friction device inspected and secured</strong> — port-a-wrap or other device confirmed undamaged, properly attached to spar with rated sling or strap. Strap WLL ≥ device WLL.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Drop zone established and marked</strong> — minimum exclusion zone for all non-crew personnel established and communicated. Clients, bystanders, vehicles, and property verified outside the zone.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Landing zone cleared</strong> — no personnel, equipment, or property in the zone where the piece will land. Piece landing zone accounts for pendulum swing of suspended load.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>Ground crew communication established</strong> — crew call-and-response protocol reviewed. All crew members know their role. CLEAR protocol confirmed.</span></li>
+        <li><span class="check-icon">✓</span><span><strong>PPE confirmed</strong> — climber: helmet, eye protection, hearing protection, cut-resistant chainsaw chaps, fall protection. Ground crew: helmet, eye protection, hearing protection, high-vis vest.</span></li>
+        <li><span class="warn-icon">!</span><span><strong>Overhead utilities:</strong> Minimum clearance from energized electrical lines per WorkSafeBC OHS Regulation 19.21 — 3 m for up to 750V, 4.5 m for 750V–75kV. Verify before rigging point is selected above or near utilities.</span></li>
+        <li><span class="x-icon">✗</span><span><strong>Never improvise rigging hardware</strong> — a sling knotted from climbing rope, a threaded bolt substituting for a rated shackle, a bungee cord as a shock absorber — these are not components. Use rated, labeled hardware only.</span></li>
+        <li><span class="x-icon">✗</span><span><strong>Never exceed 25% crown removal in one visit</strong> — per ANSI A300 Part 1. Rigging operations that require taking the whole crown at once should trigger a review of whether phased work is more appropriate.</span></li>
+      </ul>
+      <div class="field-note"><div class="field-note-header">📋 Field Note</div><p>The pre-task check takes 5 minutes. Incident investigations almost always reveal that at least one of these items was skipped — usually because the job "looked simple" or the crew was behind schedule. Simple jobs kill people. The job looks simple until the piece doesn't go where you planned, the rope has a defect that loaded past its capacity, or
+the client walks into the drop zone during the cut. Five minutes at the start of the job is not extra time — it's protection against the 60 minutes of incident management, paperwork, and WorkSafeBC investigation that follows a miss.</p></div>
+    </div>
+  </div>
+
+  <div class="isa-footer">
+    <strong>📚 ISA Exam Domain:</strong> Safe Work Practices (28%) · Pruning (15%) &nbsp;·&nbsp;
+    <strong>Sources:</strong> ANSI Z133 Safe Work Practices for Arborists · ISA BMP Rigging · WorkSafeBC OHS Regulation Parts 19, 26
+  </div>
+</div>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
