@@ -3,338 +3,328 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thursday — Pests & Diseases: Cytospora Canker</title>
+<title>Week 22 · Thursday · Cytospora Canker — Microbe Tree Training</title>
 <style>
-  :root { color-scheme: light; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f0f5; color: #1a1a1a; min-height: 100vh; }
-
-  .header { background: #3a0a3a; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
-  .header-logo { font-size: 22px; }
-  .header-title { font-size: 18px; font-weight: 700; }
-  .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
-  .day-badge { background: #6a2a6a; color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; margin-left: auto; }
-
-  .container { max-width: 760px; margin: 0 auto; padding: 24px 16px; }
-  .page-title { font-size: 24px; font-weight: 800; color: #3a0a3a; margin-bottom: 4px; }
-  .page-sub { font-size: 15px; color: #6a4a6a; margin-bottom: 24px; }
-
-  .ref-card { background: white; border-radius: 12px; border: 2px solid #3a0a3a; padding: 20px 24px; margin-bottom: 20px; }
-  .ref-card h3 { font-size: 13px; font-weight: 700; color: #3a0a3a; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
-  .disease-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .overview-item { background: #f5f0f5; border-radius: 8px; padding: 12px; }
-  .overview-item .oi-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #6a2a6a; margin-bottom: 4px; }
-  .overview-item .oi-value { font-size: 13px; color: #2a1a2a; line-height: 1.4; }
-
-  .start-btn { display: block; width: 100%; background: #3a0a3a; color: white; border: none; border-radius: 10px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; transition: background 0.2s; font-family: inherit; }
-  .start-btn:hover { background: #6a2a6a; }
-
-  .home-screen { display: block; }
-  .quiz-screen { display: none; }
-
-  .progress-bar { background: #e8d8e8; border-radius: 8px; height: 6px; margin-bottom: 24px; overflow: hidden; }
-  .progress-fill { background: #3a0a3a; height: 100%; border-radius: 8px; transition: width 0.4s; }
-  .q-counter { font-size: 12px; color: #6a4a6a; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-  .question-card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #d8c8d8; }
-  .question-text { font-size: 17px; font-weight: 600; line-height: 1.5; color: #1a1a1a; margin-bottom: 20px; }
-
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option-btn { background: #f5f0f5; border: 2px solid #d8c8d8; border-radius: 8px; padding: 12px 16px; text-align: left; font-size: 14px; cursor: pointer; color: #1a1a1a; line-height: 1.4; transition: all 0.15s; font-family: inherit; }
-  .option-btn:hover:not(:disabled) { border-color: #3a0a3a; background: #ede0ed; }
-  .option-btn.correct { border-color: #28a745; background: #d4edda; color: #155724; font-weight: 600; }
-  .option-btn.wrong { border-color: #dc3545; background: #f8d7da; color: #721c24; }
-  .option-btn:disabled { cursor: default; }
-
-  .lesson-panel { display: none; background: white; border-radius: 12px; border: 2px solid #3a0a3a; overflow: hidden; margin-bottom: 16px; }
-  .lesson-panel.visible { display: block; }
-  .lesson-header { background: #3a0a3a; color: white; padding: 12px 20px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
-  .lesson-body { padding: 20px 24px; }
-  .lesson-body h4 { font-size: 16px; font-weight: 700; color: #3a0a3a; margin-bottom: 10px; }
-  .lesson-body p { font-size: 14px; line-height: 1.7; color: #2a2a2a; margin-bottom: 12px; }
-  .lesson-body ul { padding-left: 20px; margin-bottom: 12px; }
-  .lesson-body li { font-size: 14px; line-height: 1.7; color: #2a2a2a; margin-bottom: 4px; }
-  .lesson-body strong { color: #1a1a1a; }
-
-  .field-note { background: #fff8e1; border-left: 4px solid #f5a623; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 16px; }
-  .field-note .fn-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #b8760a; margin-bottom: 6px; }
-  .field-note p { font-size: 13px; color: #4a3a0a; margin: 0; line-height: 1.6; }
-
-  .next-btn { background: #3a0a3a; color: white; border: none; border-radius: 8px; padding: 12px 28px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; font-family: inherit; }
-  .next-btn:hover { background: #6a2a6a; }
-
-  .complete-card { background: white; border-radius: 12px; padding: 32px; text-align: center; border: 2px solid #3a0a3a; }
-  .complete-icon { font-size: 48px; margin-bottom: 12px; }
-  .complete-card h2 { font-size: 22px; font-weight: 800; color: #3a0a3a; margin-bottom: 8px; }
-  .complete-card p { font-size: 15px; color: #6a4a6a; line-height: 1.6; margin-bottom: 20px; }
-  .restart-btn { background: #f5f0f5; color: #3a0a3a; border: 2px solid #3a0a3a; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
-
-  .isa-tag { background: white; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #6a4a6a; border: 1px solid #d8c8d8; margin-top: 16px; line-height: 1.6; }
-  .isa-tag strong { color: #3a0a3a; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh;line-height:1.6}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 24px;display:flex;align-items:center;gap:14px}
+.header-logo{font-size:22px;font-weight:800;color:#8957e5;letter-spacing:-0.5px}
+.header-sub{font-size:13px;color:#8b949e}
+.week-badge{margin-left:auto;background:#8957e522;border:1px solid #8957e555;color:#a371f7;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.container{max-width:820px;margin:0 auto;padding:28px 20px}
+.day-banner{background:linear-gradient(135deg,#1a0d2e,#1f1035);border:1px solid #8957e540;border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.day-label{font-size:13px;font-weight:600;color:#a371f7;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.day-title{font-size:28px;font-weight:800;color:#e6edf3;margin-bottom:6px}
+.day-subtitle{font-size:15px;color:#8b949e}
+/* Reference card */
+.qref{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:22px;margin-bottom:28px}
+.qref h3{font-size:14px;font-weight:600;color:#a371f7;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.host-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:14px}
+.host-item{background:#0d1117;border-radius:8px;padding:10px 12px;border-left:3px solid #8957e5}
+.host-item strong{display:block;font-size:12px;color:#a371f7;margin-bottom:3px}
+.host-item span{font-size:12px;color:#c9d1d9}
+.symptom-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sym-box{background:#0d1117;border-radius:8px;padding:12px}
+.sym-box h5{font-size:11px;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px}
+.sym-box ul{padding-left:16px}
+.sym-box ul li{font-size:12px;color:#c9d1d9;margin-bottom:4px}
+/* Quiz */
+.quiz-nav{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.q-dot{width:32px;height:32px;border-radius:50%;border:2px solid #30363d;background:#161b22;color:#8b949e;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.q-dot.active{border-color:#8957e5;color:#a371f7;background:#8957e520}
+.q-dot.correct{border-color:#238636;background:#238636;color:#fff}
+.q-dot.wrong{border-color:#da3633;background:#da3633;color:#fff}
+.question-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin-bottom:16px}
+.q-number{font-size:12px;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.q-text{font-size:17px;color:#e6edf3;font-weight:600;margin-bottom:20px;line-height:1.5}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#0d1117;border:2px solid #30363d;border-radius:8px;padding:13px 16px;cursor:pointer;font-size:14px;color:#c9d1d9;transition:all .2s;text-align:left;display:flex;align-items:flex-start;gap:10px}
+.option:hover:not([disabled]){border-color:#8957e560;background:#8957e510;color:#e6edf3}
+.option .opt-letter{font-weight:700;color:#a371f7;min-width:18px}
+.option.correct{border-color:#238636;background:#23863620;color:#e6edf3}
+.option.wrong{border-color:#da3633;background:#da363320}
+.option.dimmed{opacity:0.4}
+.option[disabled]{cursor:default}
+.reveal{background:#160d2a;border:1px solid #8957e540;border-radius:10px;padding:20px;margin-top:18px;display:none}
+.reveal.show{display:block}
+.reveal-header{font-size:13px;font-weight:700;color:#a371f7;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.reveal-title{font-size:18px;font-weight:700;color:#e6edf3;margin-bottom:12px}
+.reveal p{font-size:14px;color:#c9d1d9;margin-bottom:12px;line-height:1.7}
+.reveal ul{padding-left:20px;margin-bottom:12px}
+.reveal ul li{font-size:14px;color:#c9d1d9;margin-bottom:6px;line-height:1.6}
+.reveal ul li strong{color:#e6edf3}
+.field-note{background:#0a1f2e;border:1px solid #1f4a7a;border-radius:8px;padding:14px 16px;margin-top:14px}
+.field-note-header{font-size:12px;font-weight:700;color:#58a6ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.field-note p{font-size:13px;color:#a5c8f5;line-height:1.7;margin:0}
+.next-btn{margin-top:16px;background:#6e40c9;border:none;color:#fff;font-size:14px;font-weight:600;padding:10px 22px;border-radius:8px;cursor:pointer}
+.next-btn:hover{background:#8957e5}
+.score-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:32px;text-align:center;display:none}
+.score-card.show{display:block}
+.score-big{font-size:56px;font-weight:800;color:#a371f7;margin-bottom:8px}
+.score-label{font-size:15px;color:#8b949e;margin-bottom:20px}
+.restart-btn{background:#161b22;border:2px solid #8957e5;color:#a371f7;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;cursor:pointer}
+.isa-footer{margin-top:28px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;font-size:12px;color:#8b949e}
+.isa-footer strong{color:#c9d1d9}
+@media(max-width:600px){.symptom-row{grid-template-columns:1fr}.day-title{font-size:22px}}
 </style>
 </head>
 <body>
-
 <div class="header">
-  <div class="header-logo">🦠</div>
-  <div>
-    <div class="header-title">Microbe Tree Training</div>
-    <div class="header-sub">West Kelowna, BC · Okanagan Interior</div>
-  </div>
-  <div class="day-badge">Thursday · Week 1</div>
+  <div class="header-logo">🌲 Microbe Tree</div>
+  <div class="header-sub">Crew Training · Week 22</div>
+  <div class="week-badge">🦠 Pests &amp; Diseases</div>
 </div>
-
 <div class="container">
+  <div class="day-banner">
+    <div class="day-label">🦠 Thursday · Pests &amp; Diseases</div>
+    <div class="day-title">Cytospora Canker</div>
+    <div class="day-subtitle">The opportunist that punishes stressed trees — biology, ID, and what you can actually do about it</div>
+  </div>
 
-  <div class="home-screen" id="homeScreen">
-    <div class="page-title">Pests & Diseases</div>
-    <div class="page-sub">Week 1 · Cytospora Canker — Diagnosis, Biology, and PHC in the Okanagan</div>
-
-    <div class="ref-card">
-      <h3>📋 Quick Reference — Cytospora Canker</h3>
-      <div class="disease-overview">
-        <div class="overview-item">
-          <div class="oi-label">Causal agents</div>
-          <div class="oi-value"><em>Leucostoma kunzei</em> (spruces); <em>L. cincta</em>, <em>L. persoonii</em> (stone fruit, poplar); multiple <em>Cytospora</em> spp.</div>
-        </div>
-        <div class="overview-item">
-          <div class="oi-label">Primary hosts in Okanagan</div>
-          <div class="oi-value">Colorado blue spruce, Norway spruce, stone fruit (cherry, peach, plum), poplars, willows</div>
-        </div>
-        <div class="overview-item">
-          <div class="oi-label">Disease type</div>
-          <div class="oi-value">Fungal canker — opportunistic pathogen; stress-dependent</div>
-        </div>
-        <div class="overview-item">
-          <div class="oi-label">Spread vector</div>
-          <div class="oi-value">Wind and water-dispersed conidia (asexual spores) entering through wounds, sunscald, drought cracks</div>
-        </div>
-        <div class="overview-item">
-          <div class="oi-label">Key field sign</div>
-          <div class="oi-value">Resin-soaked, sunken canker at branch base; white to amber resin ooze; blue-gray stain in underlying wood</div>
-        </div>
-        <div class="overview-item">
-          <div class="oi-label">PHC approach</div>
-          <div class="oi-value">Reduce stress; improve site conditions; prune dead branches; no chemical cure exists</div>
-        </div>
+  <!-- Reference card -->
+  <div class="qref">
+    <h3>📋 Quick Reference — Cytospora Canker</h3>
+    <div class="host-grid">
+      <div class="host-item"><strong>Conifers</strong><span>Norway spruce, blue spruce, white spruce, ponderosa pine</span></div>
+      <div class="host-item"><strong>Stone fruit</strong><span>Peach, plum, cherry, apricot (Okanagan orchards)</span></div>
+      <div class="host-item"><strong>Poplars/Willows</strong><span>Cottonwood, trembling aspen, hybrid poplar</span></div>
+      <div class="host-item"><strong>Other broadleaf</strong><span>Siberian elm, Manitoba maple (less commonly)</span></div>
+    </div>
+    <div class="symptom-row">
+      <div class="sym-box">
+        <h5>🌲 Conifer Symptoms</h5>
+        <ul>
+          <li>Resinous, orange-amber pitch oozing from bark</li>
+          <li>Needles discolour from tips inward</li>
+          <li>Branch death — lower canopy first</li>
+          <li>Sunken, discoloured bark at infection site</li>
+          <li>Pycnidia (orange tendrils) in wet weather</li>
+        </ul>
+      </div>
+      <div class="sym-box">
+        <h5>🌸 Stone Fruit / Broadleaf Symptoms</h5>
+        <ul>
+          <li>Gum or sap oozing from bark (gummosis)</li>
+          <li>Sunken, dark-bordered cankers on branches</li>
+          <li>Wood beneath canker: tan-brown discoloration</li>
+          <li>Branch death beyond canker</li>
+          <li>Bark "target" pattern in cross-section</li>
+        </ul>
       </div>
     </div>
-
-    <button class="start-btn" id="startBtn">Start Lesson — 5 Questions →</button>
   </div>
 
-  <div class="quiz-screen" id="quizScreen">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="q-counter" id="qCounter">Question 1 of 5</div>
-    <div id="questionArea"></div>
+  <!-- Quiz nav -->
+  <div class="quiz-nav" id="quizNav">
+    <div class="q-dot active" onclick="goTo(0)">1</div>
+    <div class="q-dot" onclick="goTo(1)">2</div>
+    <div class="q-dot" onclick="goTo(2)">3</div>
+    <div class="q-dot" onclick="goTo(3)">4</div>
+    <div class="q-dot" onclick="goTo(4)">5</div>
   </div>
 
+  <div id="questionArea"></div>
+  <div class="score-card" id="scoreCard">
+    <div class="score-big" id="scoreBig"></div>
+    <div class="score-label" id="scoreLabel"></div>
+    <button class="restart-btn" onclick="restart()">Review from Q1</button>
+  </div>
+
+  <div class="isa-footer">
+    <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) · Pruning (15%) &nbsp;·&nbsp;
+    <strong>Sources:</strong> ISA Arborists' Certification Study Guide 4th Ed. · BC Ministry of Forests Disease Notes · Sinclair, Lyon &amp; Johnson, Diseases of Trees and Shrubs (2nd Ed.)
+  </div>
 </div>
 
 <script>
-var questions = [
+const questions = [
   {
-    q: "Cytospora canker on Colorado blue spruce is best classified as:",
-    options: [
-      "A primary pathogen that attacks healthy, well-maintained trees regardless of site conditions",
-      "An opportunistic pathogen that colonizes trees already weakened by drought, compaction, or other stressors",
-      "A soil-borne vascular pathogen that spreads through root systems between adjacent trees",
-      "An obligate parasite that completes its lifecycle only on living spruce tissue"
+    text: "Cytospora canker is classified as an 'opportunistic' or 'secondary' pathogen. What does this mean in practical terms?",
+    options:[
+      "It only infects trees that have been previously infected by primary pathogens like Armillaria or Phytophthora",
+      "It is a weak pathogen that requires predisposing stress — drought, freeze damage, root compaction, nutrient deficiency — to establish in living bark tissue",
+      "It alternates between insect vectors and tree hosts, requiring an insect outbreak as the first stage of infection",
+      "It is opportunistic in the sense that it spreads only through pruning wounds caused by arborists"
     ],
-    correct: 1,
-    title: "Cytospora as an Opportunistic Pathogen",
-    lesson: `<h4>The Critical Distinction: Primary vs. Opportunistic Pathogens</h4>
-<p>Understanding pathogen category is foundational to plant health care. <strong>Primary (aggressive) pathogens</strong> — like Dutch elm disease or fire blight — can kill otherwise healthy trees. <strong>Opportunistic pathogens</strong> — like <em>Leucostoma/Cytospora</em> species — are already present in the environment and on most trees, but can only establish significant infections when host defenses are lowered by stress.</p>
-<p>Cytospora is textbook opportunistic: the fungus produces conidia (asexual spores) that are constantly raining down in any landscape environment. They enter through natural openings and microscopic wounds. A healthy, well-watered spruce with a robust resin system responds effectively and walls off the infection (CODIT!). A drought-stressed spruce with suppressed resin production and multiple small injuries cannot — and Cytospora establishes, kills cambium, and expands the canker.</p>
+    correct:1,
+    title:"Cytospora as a Stress Pathogen: The Predisposition Triangle",
+    lesson:`<p>Understanding Cytospora begins with understanding the disease triangle — and specifically where Cytospora sits on it.</p>
 <ul>
-  <li>Cytospora is present in nearly every Okanagan landscape — it's the host condition that determines disease</li>
-  <li>No amount of fungicide makes a stressed tree resistant if the stress isn't addressed</li>
-  <li>PHC for Cytospora is fundamentally about the tree, not the pathogen</li>
-  <li>This principle — <em>the disease triangle</em> (susceptible host + virulent pathogen + favorable environment) — is a core ISA exam concept</li>
+<li><strong>Pathogen:</strong> <em>Cytospora</em> spp. (the exact species varies by host — <em>C. kunzei</em> on spruce, <em>C. leucostoma</em> on stone fruit, <em>C. chrysosperma</em> on poplar). These fungi are ubiquitous in the environment — spores are present in virtually every landscape that has had susceptible hosts.</li>
+<li><strong>Host susceptibility:</strong> This is the key variable. Healthy, vigorously growing trees with adequate water, nutrition, and non-compacted root systems can resist Cytospora even with spore exposure. Stressed trees cannot.</li>
+<li><strong>Predisposing conditions:</strong> Drought stress, winter injury (freeze-thaw), root compaction, nutrient deficiency, physical injury, previous defoliation events — anything that reduces the tree's capacity to produce the resin pressure (conifers) or phenolic compounds (broadleaves) needed to wall off the pathogen.</li>
+<li><strong>The implication:</strong> You cannot treat the pathogen — there is no registered fungicide that cures an active Cytospora canker in living bark. You treat the tree. Improve conditions, reduce stress, improve vigor, and the tree's own defense mechanisms do the work.</li>
+<li><strong>Repeat victim pattern:</strong> A tree that develops Cytospora once is telling you that its site conditions are inadequate. Address the site condition or expect repeat infection.</li>
+</ul>
+<p>The ISA Certification Study Guide covers the disease triangle (host–pathogen–environment) under Tree Biology and is directly applicable to PHC diagnosis questions on the exam.</p>`,
+    fieldnote:`In the Okanagan, the trigger for Cytospora is almost always drought stress — combined with freeze-thaw damage in late winter or early spring. Norway and blue spruce planted in parkways, parking lots, or under-irrigated yards are the highest-risk population. When you get called to assess a spruce "losing branches from the bottom up," the first three questions are: (1) What's the irrigation history? (2) Was last winter harsh? (3) How deep is the soil over compacted fill? Those three answers point you at the predisposing condition.`
+  },
+  {
+    text: "On a Norway spruce, Cytospora canker classically progresses in a specific pattern within the crown. Which pattern is most characteristic?",
+    options:[
+      "Infection begins at branch tips and progresses inward toward the trunk, causing tip blight before branch death",
+      "Infection begins at the trunk and girdles main scaffold branches, causing sudden collapse of large crown sections",
+      "Infection begins on lower branches and progresses upward over years, with lower third of crown most heavily affected in early stages",
+      "Infection is random across the crown with no predictable pattern — all branches at equal risk"
+    ],
+    correct:2,
+    title:"Crown Progression: Why Lower Branches Die First",
+    lesson:`<p>The bottom-up progression of Cytospora in spruce is so consistent it's practically diagnostic. Understanding why it happens this way helps you explain it to clients and distinguish it from other causes of branch dieback.</p>
+<ul>
+<li><strong>Why lower branches first:</strong> Lower branches are the most physiologically stressed parts of a spruce. They receive the least light (shaded by upper canopy), photosynthesize the least, and therefore have the lowest carbon reserves to mount defensive resin production.</li>
+<li><strong>Hydraulic disadvantage:</strong> Lower branches on spruce often have the lowest water potential because transpiration demand from the upper canopy draws water upward. Under drought, lower branches may be the first to experience water deficits.</li>
+<li><strong>Spore exposure:</strong> <em>Cytospora</em> spores are dispersed by rain splash and water runoff down the trunk. Lower branches and branch unions with the trunk receive concentrated spore inoculum during rain events.</li>
+<li><strong>Progression rate:</strong> In early-stage Cytospora, only the lowest 1–2 whorls of branches are affected. Over 3–8 years without intervention (addressing stress), the necrotic zone moves progressively upward. When infection reaches the upper third of the crown, the tree's prognosis becomes poor.</li>
+<li><strong>Differential from normal lower-branch mortality:</strong> Normal self-pruning (lower branch death from shade) produces dry, brown dead wood with no pitch or discoloration. Cytospora produces resinous pitch, orange-amber ooze, and sunken bark at the branch collar — visually distinct.</li>
 </ul>`,
-    fieldnote: `When you see Cytospora canker on a spruce in West Kelowna, the first question isn't "what do we spray?" — it's "what is stressing this tree?" In the Okanagan, the answer is almost always drought, compaction, or both. The irrigation system runs in a pattern that misses the drip line, or the root zone is paved over, or the tree was planted in 2009 during a dry year and never got adequate establishment water. Fix the stress, and the tree's own defenses handle the rest. Leave the stress in place, and the cankers keep coming.`
+    fieldnote:`The client conversation on this is important: "This is a disease that's taking the lower branches, but it doesn't have to take the whole tree." That's an accurate framing that preserves the client's confidence and opens the door to a PHC recommendation. A spruce with Cytospora in the bottom third of the crown is a tree worth treating — irrigation assessment, mulch ring, possible soil remediation. A spruce with Cytospora in the top two-thirds is a different conversation. Know which one you're looking at before you talk.`
   },
   {
-    q: "The primary mechanism by which Cytospora canker spreads between trees in an urban landscape is:",
-    options: [
-      "Bark beetle vectors carrying fungal spores from infected to healthy trees during flight season",
-      "Root grafts between adjacent conifers allowing mycelial spread through the shared root system",
-      "Wind and water-dispersed conidia (asexual spores) entering through wounds, sunscald cracks, pruning cuts, or branch stubs",
-      "Infected soil particles moved during construction or landscape maintenance"
+    text: "A stone fruit tree (peach) in a West Kelowna residential yard shows gummosis (amber, gummy exudate) on the main trunk in July. What is the most important diagnostic step to distinguish Cytospora canker from other causes of gummosis?",
+    options:[
+      "Submit the gum exudate directly to a lab — the gum itself contains diagnostic chemical markers specific to Cytospora",
+      "Examine the underlying bark at the gummosis site: Cytospora canker shows sunken, discoloured bark with a distinct margin; a cross-section reveals brown-tan wood discoloration, and pycnidia may be visible as orange tendrils in wet conditions",
+      "Apply a diagnostic strip test directly to the bark — commercial kits for Cytospora are available at most agricultural suppliers in BC",
+      "Measure the pH of the gum — Cytospora gum is characteristically acidic (pH &lt;4.5) while other causes of gummosis produce neutral gum"
     ],
-    correct: 2,
-    title: "Spore Dispersal and Infection Courts",
-    lesson: `<h4>How Cytospora Gets In</h4>
-<p><em>Leucostoma</em> spp. produce conidia (asexual spores) in pycnidia — small, flask-shaped fruiting bodies embedded in cankered bark. During wet weather, these pycnidia exude conidia in long, thread-like, orange-to-amber cirri (spore tendrils) that are dispersed by:</p>
+    correct:1,
+    title:"Diagnosing Cytospora in Stone Fruit: What to Look For",
+    lesson:`<p>Gummosis on stone fruit has multiple causes — Cytospora is one, but not the only one. Accurate differential diagnosis determines whether there's any management option at all.</p>
 <ul>
-  <li><strong>Rain splash and water movement</strong> — the most important dispersal mechanism; spores move up and down the tree surface during rain events</li>
-  <li><strong>Wind</strong> — dried spores become airborne; range typically within the immediate landscape but can travel further</li>
-  <li><strong>Contaminated tools</strong> — pruning equipment moving from infected to healthy tissue without disinfection</li>
-</ul>
-<p>Spores must enter through an <strong>infection court</strong> — a wound, crack, or natural opening. Common infection courts on Okanagan spruce:</p>
-<ul>
-  <li>Pruning stubs and improperly made cuts</li>
-  <li>Sunscald cracks on southwest-facing bark exposed to winter sun/cold cycles</li>
-  <li>Drought cracks in the bark of water-stressed trees</li>
-  <li>Insect feeding wounds and borings</li>
-  <li>Natural branch scars from snow/ice breakage</li>
-</ul>
-<p>Per ISA PHC Best Management Practices: understanding the infection court is critical — reducing wound frequency (correct pruning cuts, avoiding mechanical damage) directly reduces infection opportunities, independent of the pathogen.</p>`,
-    fieldnote: `Tool sanitation matters on Cytospora-affected sites. A 70% isopropyl alcohol wipe between cuts, or a 10% bleach solution, is sufficient to kill Cytospora conidia on blade surfaces. This is especially important when pruning multiple spruce in a row — moving infected debris from tree to tree on your saw blade is a real pathway. WorkSafeBC and ISA BMP both recommend tool disinfection as standard practice when working on trees with known fungal cankers.`
-  },
-  {
-    q: "In the Okanagan, which combination of conditions most strongly predisposes Colorado blue spruce to severe Cytospora canker infection?",
-    options: [
-      "High soil nitrogen combined with excessive summer irrigation promoting rapid succulent growth",
-      "Prolonged drought stress combined with alkaline soil pH limiting micronutrient availability",
-      "Root damage from voles combined with spring frost events cracking the bark",
-      "Excessive shading from neighbouring trees reducing photosynthetic output below the compensation point"
-    ],
-    correct: 1,
-    title: "Why the Okanagan Is Hard on Blue Spruce",
-    lesson: `<h4>Colorado Blue Spruce: Beautiful, Popular, and Struggling in the Wrong Place</h4>
-<p>Colorado blue spruce (<em>Picea pungens</em>) is native to the Rocky Mountain riparian zones of Colorado, Wyoming, and Utah — sites with cool temperatures, adequate moisture, and acidic, well-drained soils. The Okanagan offers hot summers, winter-cold desiccation, alkaline soils (pH 7.5–8.5), and chronic drought. The mismatch is significant.</p>
-<p><strong>How the Okanagan stress profile plays out with Cytospora:</strong></p>
-<ul>
-  <li><strong>Drought stress:</strong> Suppresses resin production (the tree's primary defense against fungal entry), reduces turgor in cortical tissue (makes bark crack more easily), and weakens the immune response generally</li>
-  <li><strong>Alkaline pH:</strong> At pH &gt;7.5, iron, manganese, zinc, and boron become less plant-available. Iron chlorosis (yellowing between green veins) is common in Okanagan spruce — reduced chlorophyll means reduced photosynthesis means reduced carbohydrate reserves for defense</li>
-  <li><strong>Hot, dry summers:</strong> Stomata close during peak heat to prevent desiccation — photosynthesis drops, defensive chemical production follows</li>
-  <li><strong>Winter desiccation:</strong> South-facing bark experiences freeze-thaw cycles that crack bark, creating the infection courts Cytospora needs</li>
-</ul>
-<p>The tree didn't fail — it was planted in the wrong bioclimate for its native range. This is a <strong>plant selection problem</strong> that becomes a disease problem. ISA BMP Tree Selection and Establishment: right tree, right place is the most powerful disease prevention tool available.</p>`,
-    fieldnote: `Walk through any West Kelowna or Kelowna subdivision built in the 1990s and 2000s and you'll find blue spruce lining every boulevard, planted at 2m height, now 20 years old and dying from the bottom up — Cytospora removing branch after branch from the inside out. These trees are past the point of PHC intervention in many cases. The conversation with strata councils and homeowners is: this tree will continue to decline, it will look progressively worse, and it will eventually require removal. The replacement should be a species matched to the Okanagan — interior Douglas-fir, ponderosa pine, or drought-tolerant deciduous species with proven Okanagan track records.`
-  },
-  {
-    q: "Which of the following is the most reliable field sign of active Cytospora canker on a mature blue spruce?",
-    options: [
-      "Orange, powdery pustules on the needle surface, arranged in rows along the midrib",
-      "White, globose galls on major scaffold branches measuring 5–15 cm in diameter",
-      "Sunken, resin-soaked cankers at branch bases with white to amber resin ooze; blue-gray stain in the wood beneath the bark when peeled",
-      "Yellowing of needles from the tip downward, with discrete tan bands separating green and brown tissue"
-    ],
-    correct: 2,
-    title: "Diagnostic Field Signs of Cytospora",
-    lesson: `<h4>Reading the Signs — What to Look For</h4>
-<p>Correct diagnosis is everything in PHC — treatments and conversations differ completely depending on whether you're looking at Cytospora, Rhizosphaera needle cast, gall rust, or Dothistroma. Here's how Cytospora presents specifically:</p>
-<ul>
-  <li><strong>Cankers at branch bases:</strong> Discrete, sunken, discoloured areas of bark — often at the junction of the branch and main stem. The bark looks brown-to-gray, slightly sunken compared to surrounding healthy bark, and may be cracked.</li>
-  <li><strong>Resin ooze:</strong> White to amber (or blue-gray with age) resin exudate at the canker margin. This is the tree's Wall 1 response — resin flooding the infection site. The resin often runs down the branch or stem below the canker.</li>
-  <li><strong>Blue-gray wood stain:</strong> Peel the bark at the canker margin — the cambium and sapwood beneath show a characteristic blue-gray to brownish discolouration (the fungal mycelium invading the tissue). Healthy cambium beneath healthy bark is cream-to-green.</li>
-  <li><strong>Pycnidia:</strong> On older cankers, use a hand lens — you'll see small, embedded black dots (pycnidia) in the dead bark surface. These are the spore-producing structures. In wet conditions, orange spore cirri emerge from pycnidia.</li>
-  <li><strong>Dieback pattern:</strong> Lower branches die first and progressively — the disease moves up the tree from the base over years.</li>
-</ul>
-<p><strong>Differential diagnosis:</strong></p>
-<ul>
-  <li><em>Rhizosphaera needle cast:</em> Black dots on needles (not bark); needles drop in rows; no cankers</li>
-  <li><em>Gall rust:</em> Round woody galls on branches; orange pustules in spring; no resin canker</li>
-  <li><em>Dothistroma:</em> Tan bands mid-needle with yellow halo; needle drop</li>
-  <li><em>Cytospora:</em> Resin cankers at branch/stem junctions; blue-gray stained wood; lower branch dieback</li>
+<li><strong>Causes of stone fruit gummosis:</strong>
+  <ul>
+    <li>Cytospora canker (fungal) — the focus here</li>
+    <li>Bacterial canker (<em>Pseudomonas syringae</em>) — distinct bacterial etiology, different management</li>
+    <li>Physical injury (borers, mechanical damage) — no pathogen involved</li>
+    <li>Excessive soil moisture or poor drainage — abiotic, no pathogen</li>
+    <li>Rapid temperature fluctuations (frost crack) — abiotic</li>
+  </ul>
+</li>
+<li><strong>Cytospora-specific signs:</strong> The bark at and around the gummosis point is sunken and discolored (gray-brown, distinct from healthy bark color). A shallow cut into the bark reveals discolored, brown-tan wood beneath — healthy peach bark is white-green underneath. The canker has a distinct margin where diseased tissue meets healthy tissue. In wet weather, Cytospora produces pycnidia — tiny fruiting bodies that release cirrhi (orange, tendril-like spore masses).</li>
+<li><strong>Bacterial canker distinction:</strong> <em>Pseudomonas syringae</em> cankers tend to be more water-soaked in appearance, often associated with bud blast and twig dieback, and occur more frequently following late spring frosts. The wood staining may be darker (reddish-brown rather than tan).</li>
+<li><strong>When to sample:</strong> If the field diagnosis is uncertain, cut a fresh section of affected bark including the canker margin and submit to BC Ministry of Agriculture's plant diagnostic lab. Accurate ID matters because management differs significantly.</li>
 </ul>`,
-    fieldnote: `When you peel the bark at a suspected Cytospora site and you see that blue-gray stain in the wood, you're seeing where the fungus has already killed the cambium. The canker boundary — where blue-gray stain meets healthy cream — tells you how far the pathogen has progressed. If the canker has girdled the branch, that branch is already dead whether the needles have browned yet or not. This is useful for pruning decisions: cut back to healthy wood with a cream cambium, at least 15cm past the last visible stain.`
+    fieldnote:`Peach gummosis calls in West Kelowna are common — the Okanagan is orchard country and residential stone fruit trees are ubiquitous. The field diagnostic is quick once you've seen it a few times: peel a corner of bark at the gummosis site. Healthy cambium = cream-white, moist. Cytospora-infected cambium = brown to tan, with a faint sour smell. The margin between healthy and diseased tissue is distinct under a hand lens. You can do this with a pocket knife in 30 seconds and give a confident field diagnosis. Know the difference before you recommend a management approach.`
   },
   {
-    q: "A crew is assessing a Colorado blue spruce with Cytospora canker affecting three lower branches and one mid-crown branch. The tree is otherwise structurally sound. What is the most appropriate PHC response?",
-    options: [
-      "Apply a systemic fungicide (propiconazole trunk injection) to halt the spread of fungal mycelium through the vascular system",
-      "Recommend immediate removal — Cytospora canker is lethal and will inevitably kill the tree within 2 seasons",
-      "Remove affected branches with clean cuts 15–20 cm past the last visible stain, improve soil moisture with deep irrigation and mulching, monitor annually",
-      "Spray the entire tree with copper-based fungicide during wet weather in spring to protect healthy branches from new infection"
+    text: "What is the primary management strategy for Cytospora canker on an established landscape spruce, and why are fungicide treatments generally ineffective?",
+    options:[
+      "Systemic fungicide injection (propiconazole or thiophanate-methyl) into the root flare is the primary treatment, reaching the canker site through the vascular system",
+      "The primary strategy is removing infected branches to slow canker spread, combined with improving tree vigor through irrigation and soil management; fungicides cannot cure active cankers because the pathogen is established in bark tissue beyond the reach of foliar or soil-applied treatments",
+      "Copper-based fungicide sprays applied to the entire crown during spore release periods (spring and fall) prevent new infections and are the standard first-line treatment",
+      "Biological control using Trichoderma-based soil inoculants is the recommended primary treatment per ISA Best Management Practices"
     ],
-    correct: 2,
-    title: "PHC Response — What Actually Works",
-    lesson: `<h4>Managing Cytospora: There Is No Magic Spray</h4>
-<p>This question trips up a lot of people because the instinct is to reach for a chemical solution. Here's the clinical reality:</p>
-<p><strong>Why systemic fungicides don't work well for Cytospora:</strong> The fungus operates in the cortex and cambium — not in the vascular system in the way a wilt pathogen does. Propiconazole and similar systemic fungicides are most effective against vascular pathogens (Verticillium, Dutch elm disease). They have limited efficacy against a cambium-colonizing canker fungus that isn't being delivered to via xylem flow in the right tissues.</p>
-<p><strong>Why copper sprays don't work well:</strong> Copper fungicides (copper hydroxide, Bordeaux mixture) are protectant sprays — they protect tissue from infection before it occurs. Once the canker is established and the fungus is in the cambium, a surface spray cannot reach it. Copper sprays may have some value as a protectant on healthy branches not yet infected, but this is rarely cost-effective or recommended as a standalone strategy.</p>
-<p><strong>What actually works — the integrated PHC approach:</strong></p>
+    correct:1,
+    title:"Cytospora Management: What Works and Why",
+    lesson:`<p>Cytospora management is an exercise in understanding what you can and cannot control — and being honest about that with clients.</p>
 <ul>
-  <li><strong>Prune infected branches:</strong> Make clean cuts 15–20 cm past the last visible blue-gray stain; this removes the active fungal tissue. Disinfect tools between cuts.</li>
-  <li><strong>Improve soil moisture:</strong> Deep, infrequent irrigation (preferably through a drip system at the drip line) during summer dry periods. Stressed trees are susceptible trees.</li>
-  <li><strong>Mulch the root zone:</strong> Wide mulch ring (to the drip line if possible, minimum 1m radius), 10 cm depth, pulled back from the root collar. Mulch retains moisture, moderates temperature, and eliminates turf competition.</li>
-  <li><strong>Avoid mechanical wounds:</strong> Instruct the client to keep string trimmers and mowers away from the base — every wound is a new infection court.</li>
-  <li><strong>Monitor annually:</strong> Cytospora on a well-managed tree can be held at bay for many years. On a chronically stressed tree in the wrong location, it is progressive.</li>
+<li><strong>Why fungicides don't work on active cankers:</strong> <em>Cytospora</em> establishes in the inner bark (phloem/cambium). It is protected from external spray applications by the outer bark. Systemic fungicides move in the xylem stream, not the phloem — so they do not reach the primary infection site at the rates needed. There is no registered, evidence-supported fungicide treatment for active Cytospora cankers in Canada.</li>
+<li><strong>What pruning accomplishes:</strong> Removing infected branches below the canker margin (10–15 cm into healthy wood) reduces the inoculum load and eliminates the dead-wood reservoir where spores are produced. Per ANSI A300 Part 1, make cuts at appropriate attachment points with sharp, clean tools. The cut itself creates a wound — minimize cut size to reduce new infection opportunities.</li>
+<li><strong>Pruning timing for canker pathogens:</strong> Dry weather is preferred. Spores are dispersed by water; working in rain or immediately after increases cross-contamination risk. Disinfect tools between cuts with 10% bleach solution or 70% isopropyl alcohol — note that bleach is corrosive to tools; rinse and oil after use.</li>
+<li><strong>Vigor improvement is the actual treatment:</strong>
+  <ul>
+    <li>Irrigation: address drought stress — the primary predisposing factor</li>
+    <li>Mulching: 7–10 cm organic mulch over root zone reduces soil temperature and moisture loss</li>
+    <li>Soil aeration: if compaction is a factor, vertical mulching or air excavation improves root conditions</li>
+    <li>Fertilization: if nutrient deficiency is confirmed (soil test), appropriate supplementation; avoid excessive nitrogen (promotes succulent growth, increases susceptibility)</li>
+  </ul>
+</li>
+<li><strong>Prognosis:</strong> A spruce in the early stage of Cytospora (lower 1–3 whorls) on a site where stress can be addressed has a good prognosis. A spruce in late-stage Cytospora on a chronically dry, compacted site is not a good candidate for continued investment.</li>
 </ul>`,
-    fieldnote: `The hardest conversation in PHC is telling a client that their beautiful blue spruce — the statement tree in the front yard — cannot be saved with a spray. It feels like you're telling them there's nothing you can do, but what you're actually telling them is that the solution is in the ground and the roots, not on the branches. Clients hear this better when you frame it positively: "Here's what we can do to give this tree the best chance." Deep irrigation, mulching, careful pruning — these are concrete, billable, effective interventions. The honest prognosis alongside a real plan is the mark of a professional arborist.`
+    fieldnote:`Be careful about overpromising on Cytospora. "We'll spray that for you" is a statement that will damage your credibility when the canker continues. The honest conversation is: "There's no spray that cures this once it's in the bark. What we can do is remove the infected branches, improve the tree's water situation, and give it the best chance to wall off the infection on its own. The tree can do this — but it needs better conditions than it's had." That's a true statement, it sets appropriate expectations, and it leads directly to a PHC service recommendation that you can deliver.`
+  },
+  {
+    text: "Cytospora chrysosperma is a common canker pathogen on trembling aspen and black cottonwood in the Okanagan. Which site condition most consistently predisposes these species to Cytospora infection?",
+    options:[
+      "Alkaline soil pH above 7.5 — cottonwood and aspen are acidophiles and cannot access micronutrients above this pH threshold, creating nutritional stress",
+      "Soil compaction reducing fine root density, combined with seasonal drought stress, impairs the tree's ability to produce phenolic defensive compounds in bark",
+      "Proximity to coniferous hosts — Cytospora spreads via insect vectors that overwinter in pine and spruce bark, then infect adjacent hardwoods in spring",
+      "High soil calcium levels from caliche deposits precipitate in xylem vessels of aspen and cottonwood, creating embolic conditions that the pathogen exploits"
+    ],
+    correct:1,
+    title:"Cytospora in Okanagan Poplars: The Drought-Compaction Combination",
+    lesson:`<p>Trembling aspen and black cottonwood — the two dominant native broadleaf trees of the Okanagan — are commonly affected by <em>Cytospora chrysosperma</em>. The predisposing story is particularly relevant to urban landscape trees.</p>
+<ul>
+<li><strong>Natural context:</strong> In their native riparian and moist upland habitats, aspen and cottonwood have reliable access to groundwater and loose, well-aerated soils. They are physiologically adapted to high water availability — both species have high stomatal conductance and transpiration rates compared to xeric-adapted conifers.</li>
+<li><strong>Urban stress mismatch:</strong> When planted in compacted urban soils — parking lots, boulevard strips, fill-over-grade sites — their extensive root systems cannot develop properly. Reduced root volume = reduced water and nutrient uptake = reduced capacity to produce defensive chemistry.</li>
+<li><strong>Defensive chemistry:</strong> Aspen and cottonwood defend against fungal invasion using phenolic compounds (salicylates, catechins, tannins) produced in the bark parenchyma. Phenolic production requires carbon — which requires photosynthesis — which requires water and open stomata. Under drought, the defensive chemistry budget is the first thing to get cut.</li>
+<li><strong>Freeze-thaw amplifier:</strong> Winter freeze-thaw events crack bark on southwest-facing trunk surfaces (sunscald). These cracks are ideal entry points for Cytospora. The pattern in Okanagan is typically: drought-stressed tree in fall → severe freeze-thaw in February → bark cracking → Cytospora establishment in spring → symptoms visible by June–July.</li>
+<li><strong>Species-specific note:</strong> Cytospora on cottonwood is often associated with dieback of entire upper crown sections, not just lower branches — different pattern from spruce, because the pathogen can infect the trunk and girdle main stems in a way that it typically doesn't on spruce.</li>
+</ul>`,
+    fieldnote:`The combination you see repeatedly on Okanagan cottonwood: a nice big tree, planted in a landscaped area, growing fast for 15 years, and then starting to die from the top down in its 20s. The site looks fine — there's even lawn irrigation. But the irrigation is shallow, the root zone is compacted under the turf, and the tree has been running on a deficit for years. Cytospora is the final expression of that accumulated stress. PHC intervention on a 15-year-old cottonwood is a better investment than removal and replacement at 25. The lesson: do the site assessment early, while the tree is healthy enough to respond to improvement.`
   }
 ];
 
-var current = 0;
-var answered = false;
+let current=0, answers=new Array(5).fill(null), score=0;
 
-function startQuiz() {
-  document.getElementById('homeScreen').style.display = 'none';
-  document.getElementById('quizScreen').style.display = 'block';
-  renderQuestion();
-}
-
-function renderQuestion() {
-  answered = false;
-  var q = questions[current];
-  var total = questions.length;
-  document.getElementById('qCounter').textContent = 'Question ' + (current + 1) + ' of ' + total;
-  document.getElementById('progressFill').style.width = ((current / total) * 100) + '%';
-
-  var optionsHtml = q.options.map(function(o, i) {
-    return '<button class="option-btn" data-index="' + i + '">' + String.fromCharCode(65 + i) + '. ' + o + '</button>';
-  }).join('');
-
-  document.getElementById('questionArea').innerHTML =
-    '<div class="question-card"><div class="question-text">' + q.q + '</div><div class="options" id="options">' + optionsHtml + '</div></div>' +
-    '<div class="lesson-panel" id="lessonPanel"><div class="lesson-header">📖 Lesson — ' + q.title + '</div><div class="lesson-body">' + q.lesson +
-    '<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan Context</div><p>' + q.fieldnote + '</p></div></div></div>' +
-    (current < questions.length - 1
-      ? '<button class="next-btn" id="nextBtn" style="display:none">Next Question →</button>'
-      : '<button class="next-btn" id="nextBtn" style="display:none">Complete Lesson ✓</button>') +
-    '<div class="isa-tag"><strong>📚 ISA Exam Domain:</strong> Tree Biology (11%), Soil Management (11%) · <strong>Sources:</strong> ISA Certification Study Guide 4th Ed.; BC Ministry of Forests Forest Health — Cytospora Canker; ISA BMP Plant Health Care</div>';
-
-  document.getElementById('options').addEventListener('click', function(e) {
-    var btn = e.target.closest('.option-btn');
-    if (!btn || answered) return;
-    answered = true;
-    var i = parseInt(btn.getAttribute('data-index'));
-    document.querySelectorAll('.option-btn').forEach(function(b, idx) {
-      b.disabled = true;
-      if (idx === q.correct) b.classList.add('correct');
-      else if (idx === i && i !== q.correct) b.classList.add('wrong');
-    });
-    document.getElementById('lessonPanel').classList.add('visible');
-    document.getElementById('nextBtn').style.display = 'block';
-    document.getElementById('lessonPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+function render(){
+  const q=questions[current];
+  const answered=answers[current]!==null;
+  let html=`<div class="question-card">
+    <div class="q-number">Question ${current+1} of 5</div>
+    <div class="q-text">${q.text}</div>
+    <div class="options">`;
+  q.options.forEach((opt,i)=>{
+    let cls='option', dis='';
+    if(answered){
+      dis='disabled';
+      if(i===q.correct) cls+=' correct';
+      else if(i===answers[current]&&i!==q.correct) cls+=' wrong';
+      else cls+=' dimmed';
+    }
+    html+=`<button class="${cls}" ${dis} onclick="answer(${i})"><span class="opt-letter">${['A','B','C','D'][i]}</span><span>${opt}</span></button>`;
   });
-
-  var nextBtn = document.getElementById('nextBtn');
-  if (nextBtn) {
-    nextBtn.addEventListener('click', function() {
-      if (current < questions.length - 1) {
-        current++;
-        renderQuestion();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        showComplete();
-      }
-    });
+  html+='</div>';
+  if(answered){
+    const correct=answers[current]===q.correct;
+    html+=`<div class="reveal show">
+      <div class="reveal-header">${correct?'✅ Correct':'❌ Incorrect — Answer: '+['A','B','C','D'][q.correct]}</div>
+      <div class="reveal-title">${q.title}</div>
+      ${q.lesson}
+      <div class="field-note"><div class="field-note-header">📋 Field Note — Okanagan</div><p>${q.fieldnote}</p></div>
+      ${current<4?`<button class="next-btn" onclick="goTo(${current+1})">Next Question →</button>`:'<button class="next-btn" onclick="showScore()">See Results →</button>'}
+    </div>`;
   }
-}
-
-function showComplete() {
-  document.getElementById('progressFill').style.width = '100%';
-  document.getElementById('questionArea').innerHTML =
-    '<div class="complete-card"><div class="complete-icon">🦠</div><h2>Lesson Complete</h2>' +
-    '<p>You\'ve worked through Cytospora canker — from pathogen type to field diagnosis to PHC. The core insight: this disease is a stress indicator, not a death sentence. Address the stress, and the tree can do the rest.</p>' +
-    '<p style="font-size:13px; color:#888; margin-bottom:20px;">Next time you prune a declining blue spruce, peel a small section of bark at the branch base and see if you can find the stain line.</p>' +
-    '<button class="restart-btn" id="restartBtn">← Review from Start</button></div>' +
-    '<div class="isa-tag"><strong>📚 ISA Exam Domain:</strong> Tree Biology (11%), Soil Management (11%) · <strong>Sources:</strong> ISA Certification Study Guide 4th Ed.; ISA BMP Plant Health Care; BC Ministry of Forests</div>';
-  document.getElementById('restartBtn').addEventListener('click', function() {
-    current = 0;
-    renderQuestion();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  html+='</div>';
+  document.getElementById('questionArea').innerHTML=html;
+  document.querySelectorAll('.q-dot').forEach((d,i)=>{
+    d.classList.remove('active','correct','wrong');
+    if(i===current) d.classList.add('active');
+    if(answers[i]!==null) d.classList.add(answers[i]===questions[i].correct?'correct':'wrong');
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('startBtn').addEventListener('click', startQuiz);
-});
-</script>
+function answer(i){
+  if(answers[current]!==null) return;
+  answers[current]=i;
+  if(i===questions[current].correct) score++;
+  render();
+}
 
+function goTo(i){
+  current=i;
+  document.getElementById('scoreCard').classList.remove('show');
+  document.getElementById('questionArea').style.display='';
+  render();
+}
+
+function showScore(){
+  document.getElementById('questionArea').style.display='none';
+  document.getElementById('scoreCard').classList.add('show');
+  document.getElementById('scoreBig').textContent=score+'/5';
+  const msgs=['Review the field notes — the diagnosis patterns are the key takeaway.','Good start. The predisposition triangle is the concept to internalize.','Solid. Cytospora management conversations are directly billable.','Strong work — you can diagnose and explain this one in the field.','Perfect. This is ISA exam material and real-world PHC knowledge.'];
+  document.getElementById('scoreLabel').textContent=msgs[score];
+  document.querySelectorAll('.q-dot').forEach(d=>d.classList.remove('active'));
+}
+
+function restart(){
+  current=0;
+  document.getElementById('scoreCard').classList.remove('show');
+  document.getElementById('questionArea').style.display='';
+  render();
+}
+
+render();
+</script>
 </body>
 </html>
