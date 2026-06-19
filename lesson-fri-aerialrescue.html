@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aerial Rescue Procedures &#x2014; Microbe Tree Training</title>
+<style>
+:root{--bg:#1a1e23;--surface:#242930;--surface2:#2d333b;--accent:#42a5f5;--accent-dim:#1565c0;--text:#e8eaed;--text-dim:#9aa0a6;--border:#383f47;--green:#4caf50;--red:#e53935;--amber:#ff8f00}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
+.header{background:linear-gradient(135deg,#001020 0%,#002244 100%);padding:20px 24px;border-bottom:2px solid var(--accent)}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.brand{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:600}
+.week-label{font-size:12px;color:var(--text-dim);margin-left:auto}
+.lesson-title{font-size:22px;font-weight:700;line-height:1.2}
+.lesson-sub{font-size:14px;color:var(--text-dim);margin-top:4px}
+.day-badge{display:inline-block;background:#001428;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-top:8px}
+.section{background:var(--surface);border:1px solid var(--border);margin:16px;border-radius:10px;overflow:hidden}
+.section-header{background:#0a1e32;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px}
+.section-header h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700}
+.section-body{padding:16px}
+.section-body p{font-size:14px;line-height:1.75;color:#d0d5db;margin-bottom:10px}
+.section-body p:last-child{margin-bottom:0}
+.section-body ul{margin:8px 0 10px 0;padding-left:20px}
+.section-body li{font-size:14px;line-height:1.65;color:#d0d5db;margin-bottom:5px}
+strong.hl{color:var(--accent)}
+strong.red{color:#ef9a9a}
+strong.green{color:#81c784}
+strong.amber{color:#ffcc80}
+.step-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.step-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px}
+.step-num{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700;margin-bottom:6px}
+.step-box p{font-size:13px;line-height:1.55;color:var(--text-dim)}
+.step-box .step-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.rescue-type{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+.rescue-type .rt-badge{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:12px;margin-bottom:8px}
+.rt-badge.self{background:#003300;color:#81c784}
+.rt-badge.ground{background:#001a33;color:var(--accent)}
+.rt-badge.emergency{background:#330000;color:#ef9a9a}
+.rescue-type .rt-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.rescue-type p{font-size:13px;line-height:1.55;color:var(--text-dim)}
+.spec-table{width:100%;border-collapse:collapse;margin:10px 0}
+.spec-table th{background:var(--surface2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.spec-table td{font-size:13px;color:#d0d5db;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.spec-table tr:last-child td{border-bottom:none}
+.spec-table td:first-child{font-weight:600;color:var(--text);width:35%}
+.warn-box{background:#2e1a00;border:1px solid #8b4513;border-left:4px solid var(--red);border-radius:6px;padding:12px 14px;margin:10px 0}
+.warn-box .warn-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#ef9a9a;margin-bottom:6px}
+.warn-box p{font-size:13px;line-height:1.6;color:#ffccbc;margin-bottom:0}
+.field-note{background:#001428;border:1px solid #0a3a6e;border-left:4px solid var(--accent);border-radius:6px;padding:12px 14px;margin-top:12px}
+.field-note .fn-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:6px}
+.field-note p{font-size:13px;line-height:1.6;color:#bbdefb;margin-bottom:0}
+.protocol-steps{counter-reset:steps;margin:12px 0}
+.proto-step{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+.proto-step .ps-num{width:28px;height:28px;border-radius:50%;background:var(--accent-dim);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.proto-step .ps-content .ps-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.proto-step .ps-content p{font-size:13px;line-height:1.55;color:var(--text-dim)}
+.signal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.signal-item{background:var(--surface2);border-radius:6px;padding:10px 12px}
+.signal-item .sig{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:3px}
+.signal-item p{font-size:12px;color:var(--text-dim);line-height:1.4}
+.isa-footer{margin:24px 16px 0;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);line-height:1.6}
+.isa-footer strong{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <span class="brand">&#x1F332; Microbe Tree Training</span>
+    <span class="week-label">Week 4 &middot; June 26, 2026</span>
+  </div>
+  <div class="lesson-title">Aerial Rescue Procedures</div>
+  <div class="lesson-sub">ANSI Z133 &sect;9 protocols for incapacitated climber response</div>
+  <span class="day-badge">&#x1F6A8; Friday &mdash; Worksite Techniques</span>
+</div>
+
+<!-- When Rescue Activates -->
+<div class="section">
+  <div class="section-header"><h2>&#x26A0; When Aerial Rescue Protocol Activates</h2></div>
+  <div class="section-body">
+    <p>An <strong class="hl">aerial rescue</strong> is required any time a climber becomes incapacitated while suspended in a tree and cannot self-rescue. Incapacitation triggers include: <strong>loss of consciousness</strong> (cardiac event, heat stroke, anaphylaxis, bee sting reaction), <strong>physical injury</strong> (chainsaw cut, falling wood strike, broken limb failure), or <strong>suspension trauma</strong> (also called harness hang syndrome) &mdash; a life-threatening condition where a conscious but immobile climber sustains circulatory compromise from prolonged static hanging.</p>
+    <p>Every crew must have a <strong class="amber">written aerial rescue plan</strong> before any climbing operation begins &mdash; required by ANSI Z133-2017 &sect;9.1 and reinforced by WorkSafeBC OHS Regulation Part 26. The plan must identify: the rescue type to be used, who is the designated rescuer, where rescue equipment is staged, and the EMS contact protocol.</p>
+    <div class="warn-box">
+      <div class="warn-label">&#x26A1; Suspension Trauma &mdash; Time-Critical</div>
+      <p>A conscious climber hanging motionless in a harness can develop <strong class="red">orthostatic hypotension and venous pooling</strong> within 5&ndash;30 minutes, leading to unconsciousness and cardiac arrest. If a climber reports leg numbness, weakness, or nausea while suspended &mdash; treat as an emergency. Get them moving or get them down immediately. Never have them hang motionless &quot;to rest.&quot;</p>
+    </div>
+  </div>
+</div>
+
+<!-- Rescue Types -->
+<div class="section">
+  <div class="section-header"><h2>&#x1F9B4; Rescue Types &mdash; Decision Framework</h2></div>
+  <div class="section-body">
+    <div class="rescue-type">
+      <div class="rt-badge self">Type 1 &mdash; Self-Rescue</div>
+      <div class="rt-title">Climber descends under own power</div>
+      <p>Applicable when the climber is conscious, mobile, and capable. Climber activates their personal descent device (hitch cord lowering, SRS descent, or descender). Ground crew clears the drop zone and communicates continuously. Fastest option &mdash; always preferred if physically possible.</p>
+    </div>
+    <div class="rescue-type">
+      <div class="rt-badge ground">Type 2 &mdash; Assisted Lowering (Tender-Assisted)</div>
+      <div class="rt-title">Second climber or tender lowers the incapacitated climber</div>
+      <p>A second trained climber ascends or a ground tender uses a pre-rigged lowering line to bring the climber to the ground. Requires a pre-installed rescue line at the climber&apos;s working position or access to an adjacent line. The most common planned rescue method in tree work. Requires the ground crew to be trained in operating lowering devices under load.</p>
+    </div>
+    <div class="rescue-type">
+      <div class="rt-badge emergency">Type 3 &mdash; Emergency Services Rescue</div>
+      <div class="rt-title">Fire/rescue services required</div>
+      <p>When no ground-based rescue option is available in an acceptable time frame, or the tree structure prevents a second climber from reaching the victim. Call 911 immediately. Ground crew maintains visual contact with the climber, reports condition to dispatch, and clears the work zone. Do NOT attempt a rescue beyond your training and equipment.</p>
+    </div>
+    <div class="field-note">
+      <div class="fn-label">&#x1F4CB; Decision Rule</div>
+      <p>Time to rescue is the critical variable. Suspension trauma can become fatal in under 30 minutes. If Type 1 or Type 2 cannot be initiated within 10 minutes by a trained crew member, call 911 immediately &mdash; do not delay EMS while attempting a complex ground rescue beyond your team&apos;s competency.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Pre-Climb Rescue Setup -->
+<div class="section">
+  <div class="section-header"><h2>&#x1F6E0; Pre-Climb Rescue Setup (ANSI Z133 &sect;9.3)</h2></div>
+  <div class="section-body">
+    <p>Rescue equipment must be <strong class="hl">staged and accessible before climbing begins</strong> &mdash; not retrieved from a locked truck box after an incident. Per ANSI Z133, the following must be established at every aerial operation:</p>
+    <div class="step-grid">
+      <div class="step-box">
+        <div class="step-num">Equipment Check</div>
+        <div class="step-title">Rescue Line Ready</div>
+        <p>A second rope (rescue line) of adequate length is pre-installed in the tree or immediately available. For DdRT systems, the working line can double as rescue line if second anchor point is set.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Equipment Check</div>
+        <div class="step-title">Lowering Device Staged</div>
+        <p>A friction device (Portawrap, GRCS, Figure-8, or rescue Munter) capable of handling the climber&apos;s weight is at the base of the tree, ready to use, not packed away.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Communication</div>
+        <div class="step-title">Signals Established</div>
+        <p>Verbal, whistle, or radio signals agreed upon pre-climb. Ground crew knows the distress signal vs. normal work signals. Written in the rescue plan.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Personnel</div>
+        <div class="step-title">Rescuer Designated</div>
+        <p>A trained crew member is identified as primary rescuer before climbing begins. They do not simultaneously operate the chipper or other isolating equipment during the climb.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">EMS</div>
+        <div class="step-title">Address &amp; Access Confirmed</div>
+        <p>Job site address, cross street, and access route confirmed and written down. Who calls 911 is pre-assigned. EMS access to the site pre-checked (locked gates, narrow laneways).</p>
+      </div>
+      <div class="step-box">
+        <div class="step-num">PPE</div>
+        <div class="step-title">First Aid Kit Staged</div>
+        <p>Comprehensive first aid kit including trauma dressings, tourniquet, and epinephrine autoinjector (if carried). First aid trained crew member identified.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Protocol Steps -->
+<div class="section">
+  <div class="section-header"><h2>&#x1F4CB; Rescue Protocol &mdash; Step by Step</h2></div>
+  <div class="section-body">
+    <p>When a climber is observed to be incapacitated or unresponsive:</p>
+    <div class="protocol-steps">
+      <div class="proto-step">
+        <div class="ps-num">1</div>
+        <div class="ps-content">
+          <div class="ps-title">Call out &amp; assess</div>
+          <p>Call the climber by name loudly. Establish if conscious and responsive. If no response, initiate rescue immediately &mdash; do not delay to assess injuries from the ground.</p>
+        </div>
+      </div>
+      <div class="proto-step">
+        <div class="ps-num">2</div>
+        <div class="ps-content">
+          <div class="ps-title">Assign roles</div>
+          <p>One crew member is the rescuer and focuses entirely on the rescue. A second crew member calls 911 and stays on with dispatch. Everyone else clears the drop zone and maintains crowd control.</p>
+        </div>
+      </div>
+      <div class="proto-step">
+        <div class="ps-num">3</div>
+        <div class="ps-content">
+          <div class="ps-title">Establish control of victim&apos;s line</div>
+          <p>Locate the climber&apos;s rope. Install the lowering device (friction hitch or mechanical device) on the rope. If the victim is on a life-safety device (SRS), the rescuer must understand how to actuate descent &mdash; this is system-specific and must be trained in advance.</p>
+        </div>
+      </div>
+      <div class="proto-step">
+        <div class="ps-num">4</div>
+        <div class="ps-content">
+          <div class="ps-title">Lower to ground under control</div>
+          <p>Lower the victim smoothly at a controlled rate. Communicate with EMS on location and ETD. Ground crew supports the victim during the final 2 m of descent &mdash; do not let an unconscious climber impact the ground.</p>
+        </div>
+      </div>
+      <div class="proto-step">
+        <div class="ps-num">5</div>
+        <div class="ps-content">
+          <div class="ps-title">Position victim &amp; begin first aid</div>
+          <p>For unconscious climber: check airway, breathing, circulation. Do not remove the harness if you suspect spinal injury from a fall. If victim is conscious after suspension trauma: keep them moving (walking if possible), <strong class="red">never lay them flat immediately</strong> &mdash; gradual position change prevents re-perfusion cardiac event.</p>
+        </div>
+      </div>
+      <div class="proto-step">
+        <div class="ps-num">6</div>
+        <div class="ps-content">
+          <div class="ps-title">Transfer to EMS &amp; document</div>
+          <p>Brief EMS on mechanism of incident, time suspended, interventions given. Secure the site. Preserve equipment for investigation. Complete WorkSafeBC incident report within 24 hours for any injury requiring medical attention. Notify your employer immediately per WCB OHS Regulation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ground Crew Signals -->
+<div class="section">
+  <div class="section-header"><h2>&#x1F4E1; Communication Signals</h2></div>
+  <div class="section-body">
+    <p>Establish <strong class="hl">pre-agreed signals</strong> before each climb. Standard ANSI Z133 / TCIA-recommended rope signal system (when verbal communication is obstructed by equipment noise):</p>
+    <div class="signal-grid">
+      <div class="signal-item"><div class="sig">1 tug</div><p>Stop / Hold &mdash; do not move the rope</p></div>
+      <div class="signal-item"><div class="sig">2 tugs</div><p>Give slack / lower slowly</p></div>
+      <div class="signal-item"><div class="sig">3 tugs</div><p>Take up slack / lift</p></div>
+      <div class="signal-item"><div class="sig">Continuous tugging</div><p>Emergency / distress &mdash; initiate rescue</p></div>
+    </div>
+    <p>Rope signals only work on taut lines. On slack-rope systems (SRS), radio communication or a spotter with visual line-of-sight is required. Confirm your system before climbing.</p>
+  </div>
+</div>
+
+<!-- Post-Incident -->
+<div class="section">
+  <div class="section-header"><h2>&#x1F4DD; Post-Incident Requirements</h2></div>
+  <div class="section-body">
+    <table class="spec-table">
+      <tr><th>Requirement</th><th>Detail</th></tr>
+      <tr><td>WorkSafeBC Reporting</td><td>Serious injury: notify WorkSafeBC immediately (1-888-621-7233); written report within 24 hours. Minor injury: record in first aid book.</td></tr>
+      <tr><td>Equipment Inspection</td><td>All life-safety equipment involved in the rescue (ropes, harnesses, carabiners) must be removed from service and inspected or retired before any return to work.</td></tr>
+      <tr><td>Incident Investigation</td><td>Employer must investigate root cause. Crew debrief within 24 hours while events are fresh. Identify corrective actions.</td></tr>
+      <tr><td>Critical Incident Support</td><td>Aerial rescue and trauma response cause psychological stress. Arrange CISM (Critical Incident Stress Management) debrief for crew within 24&ndash;72 hours.</td></tr>
+      <tr><td>Rescue Plan Review</td><td>Update the aerial rescue plan based on lessons learned before returning to work.</td></tr>
+    </table>
+    <div class="field-note">
+      <div class="fn-label">&#x1F4CB; Field Note &mdash; Okanagan</div>
+      <p>In the Okanagan, EMS response times to urban Kelowna are typically 8&ndash;12 minutes. Rural West Kelowna or hillside sites can be 15&ndash;20+ minutes. This means your crew must be capable of executing a Type 2 rescue independently &mdash; you cannot rely on fire rescue arriving in time if the climber is in suspension trauma. At Microbe Tree, every crew member with climbing duties must complete the <strong class="hl">ISA Tree Worker Aerial Rescue</strong> practical training (ANSI Z133 &sect;9 hands-on component) before their first solo aerial operation. Staged rescue drills minimum once per season keep skills sharp.</p>
+    </div>
+  </div>
+</div>
+
+<div class="isa-footer">
+  <strong>&#x1F4DA; ISA Exam Domain:</strong> Safe Work Practices (28%) &mdash; highest-weighted domain on the ISA CA exam<br>
+  <strong>Sources:</strong> ANSI Z133-2017 &sect;9 (Aerial Rescue) &middot; WorkSafeBC OHS Regulation Part 26 (Arborists) &middot; ISA Best Management Practices: Climbing &middot; TCIA Aerial Rescue Training Program &middot; ISA Certified Arborist Study Guide, 4th ed. &middot; Lilly, S.J. (2001) <em>Arborists&apos; Certification Study Guide</em>, ISA &middot; Seddon, P. (2009) Suspension Trauma, <em>J. Emergency Medicine</em>
+</div>
+
+</body>
+</html>
