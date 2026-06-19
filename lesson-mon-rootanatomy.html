@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Root Architecture &amp; Function — Microbe Tree Training</title>
+<style>
+:root{--bg:#1a1e23;--surface:#242930;--surface2:#2d333b;--accent:#4caf50;--accent-dim:#2e7d32;--text:#e8eaed;--text-dim:#9aa0a6;--correct:#4caf50;--wrong:#e53935;--border:#383f47;--gold:#ffd600}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
+.header{background:linear-gradient(135deg,#1b3a1b 0%,#2e5a2e 100%);padding:20px 24px;border-bottom:2px solid var(--accent)}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.brand{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:600}
+.week-label{font-size:12px;color:var(--text-dim);margin-left:auto}
+.lesson-title{font-size:22px;font-weight:700;line-height:1.2}
+.lesson-sub{font-size:14px;color:var(--text-dim);margin-top:4px}
+.day-badge{display:inline-block;background:var(--accent-dim);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-top:8px}
+.ref-card{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);margin:20px 16px;border-radius:8px;padding:16px}
+.ref-card h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:12px}
+.key-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.fact-item{background:var(--surface2);border-radius:6px;padding:10px 12px;border-left:3px solid var(--accent)}
+.fact-item .label{font-size:11px;text-transform:uppercase;color:var(--text-dim);letter-spacing:.5px;margin-bottom:3px}
+.fact-item .value{font-size:14px;font-weight:600;color:var(--text)}
+.score-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border)}
+.score-label{font-size:13px;color:var(--text-dim)}
+.dots{display:flex;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:background .3s}
+.dot.correct{background:var(--correct)}
+.dot.wrong{background:var(--wrong)}
+.questions{padding:0 16px;margin-top:16px;display:flex;flex-direction:column;gap:16px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.q-header{padding:16px 16px 12px}
+.q-num{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700;margin-bottom:8px}
+.q-text{font-size:16px;line-height:1.5;font-weight:500}
+.options{padding:0 12px 12px;display:flex;flex-direction:column;gap:6px}
+.option{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;cursor:pointer;font-size:14px;line-height:1.4;transition:border-color .2s,background .2s;text-align:left;color:var(--text)}
+.option:hover:not(:disabled){border-color:var(--accent);background:#2a3a2a}
+.option.correct{background:#1b3a1b;border-color:var(--correct);color:#81c784}
+.option.wrong{background:#3a1b1b;border-color:var(--wrong);color:#ef9a9a}
+.option:disabled{cursor:default}
+.lesson-reveal{display:none;background:var(--surface2);border-top:1px solid var(--border);padding:16px}
+.lesson-reveal.visible{display:block}
+.lesson-reveal h4{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:12px}
+.lesson-reveal p{font-size:14px;line-height:1.7;color:#d0d5db;margin-bottom:10px}
+.lesson-reveal ul{margin:8px 0 12px 0;padding-left:20px}
+.lesson-reveal li{font-size:14px;line-height:1.6;color:#d0d5db;margin-bottom:5px}
+.field-note{background:#1b2e1b;border:1px solid var(--accent-dim);border-left:4px solid var(--accent);border-radius:6px;padding:12px 14px;margin-top:12px}
+.field-note .fn-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:6px}
+.field-note p{font-size:13px;line-height:1.6;color:#a5d6a7;margin-bottom:0}
+strong.hl{color:var(--accent)}
+.isa-footer{margin:24px 16px 0;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);line-height:1.6}
+.isa-footer strong{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <span class="brand">🌲 Microbe Tree Training</span>
+    <span class="week-label">Week 4 · June 23, 2026</span>
+  </div>
+  <div class="lesson-title">Root Architecture &amp; Function</div>
+  <div class="lesson-sub">How trees anchor, absorb, and allocate underground</div>
+  <span class="day-badge">🌿 Monday — Tree Biology</span>
+</div>
+
+<div class="ref-card">
+  <h3>📐 Root System Quick Reference</h3>
+  <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:0 auto 8px">
+    <rect x="218" y="0" width="44" height="75" fill="#5d4037" rx="4"/>
+    <path d="M240 75 Q155 95 65 125" stroke="#6d4c41" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M240 75 Q185 105 110 145" stroke="#6d4c41" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M240 75 Q295 105 370 145" stroke="#6d4c41" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M240 75 Q325 95 415 125" stroke="#6d4c41" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <ellipse cx="240" cy="122" rx="195" ry="52" fill="none" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <path d="M72 132 Q77 143 68 153 Q63 162 72 168" stroke="#81c784" stroke-width="1.5" fill="none"/>
+    <path d="M105 148 Q110 158 100 168 Q95 178 105 183" stroke="#81c784" stroke-width="1.5" fill="none"/>
+    <path d="M360 148 Q365 158 355 168 Q350 178 360 183" stroke="#81c784" stroke-width="1.5" fill="none"/>
+    <path d="M408 130 Q413 141 403 151 Q398 161 408 167" stroke="#81c784" stroke-width="1.5" fill="none"/>
+    <path d="M195 150 Q200 163 190 173 Q185 183 195 188" stroke="#81c784" stroke-width="1.5" fill="none"/>
+    <path d="M285 152 Q290 163 280 173 Q275 183 285 188" stroke="#81c784" stroke-width="1.5" fill="none"/>
+    <text x="240" y="192" text-anchor="middle" fill="#4caf50" font-size="11" font-family="sans-serif">— — Critical Root Zone (CRZ) — —</text>
+    <text x="20" y="118" fill="#bcaaa4" font-size="10" font-family="sans-serif">Structural</text>
+    <text x="20" y="130" fill="#bcaaa4" font-size="10" font-family="sans-serif">roots (coarse)</text>
+    <text x="28" y="175" fill="#81c784" font-size="10" font-family="sans-serif">Fine absorbing</text>
+    <text x="30" y="187" fill="#81c784" font-size="10" font-family="sans-serif">roots (&lt;2 mm)</text>
+    <line x1="0" y1="78" x2="480" y2="78" stroke="#5d4037" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+    <text x="8" y="74" fill="#6d4c41" font-size="9" font-family="sans-serif">SOIL SURFACE</text>
+  </svg>
+  <div class="key-facts">
+    <div class="fact-item"><div class="label">CRZ Radius</div><div class="value">12″ per inch DBH</div></div>
+    <div class="fact-item"><div class="label">Fine Root Depth</div><div class="value">Top 45 cm (18″)</div></div>
+    <div class="fact-item"><div class="label">Lateral Spread</div><div class="value">2–3× crown radius</div></div>
+    <div class="fact-item"><div class="label">Fine Root Diameter</div><div class="value">&lt;2 mm</div></div>
+  </div>
+</div>
+
+<div class="score-bar">
+  <span class="score-label">Progress:</span>
+  <div class="dots" id="dots">
+    <div class="dot" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div><div class="dot" id="d4"></div><div class="dot" id="d5"></div>
+  </div>
+</div>
+
+<div class="questions">
+
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">Question 1 of 5</div>
+      <div class="q-text">Which root type performs the majority of water and mineral uptake in most trees?</div>
+    </div>
+    <div class="options" id="q1">
+      <button class="option" onclick="answer(1,this,false)">A) Structural roots (coarse roots &gt;5 cm diameter) — provide the largest surface area</button>
+      <button class="option" onclick="answer(1,this,false)">B) Transport roots (2–5 mm diameter) — move resources between fine roots and trunk</button>
+      <button class="option" onclick="answer(1,this,true)">C) Fine absorbing roots (&lt;2 mm diameter) — short-lived, concentrated in top 45 cm of soil</button>
+      <button class="option" onclick="answer(1,this,false)">D) Sinker roots descending from lateral roots — access deep moisture reserves</button>
+    </div>
+    <div class="lesson-reveal" id="r1">
+      <h4>📖 The Root Hierarchy: Who Does What</h4>
+      <p>Roots are not a monolithic system. They are a hierarchy of structures with fundamentally different jobs — and the largest-looking roots do the least absorptive work.</p>
+      <ul>
+        <li><strong class="hl">Fine absorbing roots (&lt;2 mm):</strong> The primary uptake organ. Short-lived — often replaced within weeks. Concentrated in the top 15–45 cm of soil. Frequently mycorrhizal. These are the roots most vulnerable to compaction, drought, and grade change.</li>
+        <li><strong class="hl">Transport roots (2–5 mm):</strong> Move water and dissolved minerals from fine roots toward the trunk. Some absorptive capacity but primarily a conduit.</li>
+        <li><strong class="hl">Structural/coarse roots (&gt;5 mm to many cm):</strong> Mechanical anchorage and carbohydrate storage. Negligible direct absorption despite their impressive mass.</li>
+        <li><strong class="hl">Root hairs:</strong> Microscopic extensions of epidermal cells on fine root tips. Dramatically increase surface area. They live only days — the tree is constantly rebuilding its absorptive surface.</li>
+      </ul>
+      <p>The ISA <em>Arborists' Certification Study Guide</em> (4th Ed.) is explicit: fine roots, though a fraction of total root biomass, perform the overwhelming majority of water and nutrient uptake. This is why compaction events that crush the fine root layer produce rapid, visible canopy decline — often within a single growing season.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>In the silty-clay and gravelly loam soils common around West Kelowna and Kelowna, fine roots stay shallow — often in the top 20–25 cm where organic matter concentrates. When you're working around a boulevard linden or Norway maple and the compactor comes out for paving work, you're destroying the most metabolically active layer of the root system. Canopy thinning may not show up for 12–24 months — but the damage is done the day the machine runs over the root zone.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">Question 2 of 5</div>
+      <div class="q-text">A tree has a trunk diameter at breast height (DBH) of 20 inches (50 cm). What minimum radius does the ISA standard specify for its Critical Root Zone (CRZ)?</div>
+    </div>
+    <div class="options" id="q2">
+      <button class="option" onclick="answer(2,this,false)">A) 10 feet (3 m) — 6 inches of radius per inch DBH</button>
+      <button class="option" onclick="answer(2,this,true)">B) 20 feet (6 m) — 1 foot of radius per inch DBH</button>
+      <button class="option" onclick="answer(2,this,false)">C) 30 feet (9 m) — 1.5 feet of radius per inch DBH</button>
+      <button class="option" onclick="answer(2,this,false)">D) The drip line radius — CRZ is defined by canopy edge, not DBH</button>
+    </div>
+    <div class="lesson-reveal" id="r2">
+      <h4>📖 The Critical Root Zone: Calculation and Meaning</h4>
+      <p>The <strong class="hl">Critical Root Zone (CRZ)</strong> — also called the Root Protection Zone (RPZ) in some standards — is the defined soil area around a tree where root disturbance must be minimized during construction and development. The ISA formula is simple: <strong class="hl">1 foot of radius for every inch of DBH</strong>.</p>
+      <ul>
+        <li><strong>20-inch DBH:</strong> CRZ = 20-foot (6 m) radius in all directions from the trunk</li>
+        <li><strong>8-inch DBH:</strong> CRZ = 8-foot (2.4 m) radius</li>
+        <li>Referenced in the ISA <em>Arborists' Certification Study Guide</em> and the ISA <em>Tree Risk Assessment Manual</em></li>
+        <li><strong>ANSI A300 Part 5</strong> (Management of Trees and Shrubs During Site Planning, Site Development, and Construction) uses the CRZ as the basis for tree protection zone specifications</li>
+        <li>Protection fencing must be installed at or beyond the CRZ <em>before</em> any equipment arrives on site — not retrofitted after initial ground disturbance</li>
+      </ul>
+      <p>Critical point: the CRZ is a <em>minimum protection standard</em>, not the outer boundary of the root system. The actual root system extends 2–3× the crown radius. The CRZ targets the zone most critical to tree survival if disturbed, which research shows is the area of highest fine root density nearest the trunk.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Many strata and boulevard development projects in the Central Okanagan involve mature Siberian elm, cottonwood, or Norway maple at 40–60 cm DBH. At 50 cm (~20 inches), you're specifying a 6-metre CRZ in every direction. That eliminates a lot of assumed staging area. When a GC says "we'll just stay outside the drip line," calculate the actual CRZ and put it on paper. The number usually ends the argument — or at minimum creates a written record that you flagged the risk.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">Question 3 of 5</div>
+      <div class="q-text">Ponderosa pine and interior Douglas-fir associate primarily with ectomycorrhizal (ECM) fungi. What distinguishes ECM from arbuscular mycorrhizae (AM), and what does the ECM association specifically provide these trees?</div>
+    </div>
+    <div class="options" id="q3">
+      <button class="option" onclick="answer(3,this,false)">A) ECM fungi penetrate root cortex cells to form arbuscules; they primarily transfer nitrogen fixed from the atmosphere</button>
+      <button class="option" onclick="answer(3,this,true)">B) ECM fungi form a sheath around root tips without penetrating cells; hyphae extend into soil to dramatically increase phosphorus and water uptake</button>
+      <button class="option" onclick="answer(3,this,false)">C) ECM fungi are internal, indistinguishable from non-mycorrhizal roots; they primarily protect against root pathogens</button>
+      <button class="option" onclick="answer(3,this,false)">D) ECM and AM are functionally identical; the distinction is taxonomic, not functional</button>
+    </div>
+    <div class="lesson-reveal" id="r3">
+      <h4>📖 Mycorrhizae: Two Systems, Two Strategies</h4>
+      <p>Roughly 90% of all plant species form mycorrhizal associations. For arborists, two types matter in practice — and they're found on different species in your regular work.</p>
+      <ul>
+        <li><strong class="hl">Ectomycorrhizae (ECM):</strong> The fungal mantle (sheath) wraps around fine root tips without entering cells. A network of hyphae (the Hartig net) grows between cortex cells, and external hyphae extend metres into the soil to access phosphorus, water, and micronutrients far beyond the root's reach. ECM roots are visibly different — short, swollen, branched (often coral-like), with a visible fungal coat. Associated with: ponderosa pine, interior Douglas-fir, spruce, larch, oaks, birch.</li>
+        <li><strong class="hl">Arbuscular mycorrhizae (AM/VAM):</strong> Fungal hyphae penetrate root cortex cells and form branched structures (arbuscules) — the actual nutrient exchange interface. No external sheath; these roots look normal. AM fungi also extend external hyphae into soil. Associated with: most deciduous ornamentals — maple, linden, ash, elm, cottonwood, fruit trees, most shrubs.</li>
+        <li><strong>What both provide:</strong> Enhanced phosphorus uptake, improved drought tolerance (access to water in micropores roots can't enter), and some pathogen resistance — in exchange for tree carbohydrates (sugars)</li>
+      </ul>
+      <p>Mycorrhizal networks are disrupted by: soil fungicides, fumigants, deep tillage, removal of topsoil (where spores concentrate), and heavy synthetic fertilizer application (which reduces the tree's reliance on the fungal partner). Disturbing the network doesn't kill the tree immediately — it reduces resilience and becomes apparent under stress.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>The ECM network around a ponderosa pine grove is a primary reason these trees handle Okanagan July–August drought without irrigatiobn — fungal hyphae access moisture in soil pores no root can enter. When a homeowner grades or sototills within the root zone to install drip irrigation or sod, they sever that network. The tree often looks fine for two seasons, then shows dieback from the top down. On PHC calls involving ponderosa pine showing unexplained drought stress, always ask: was there soil disturbance in the last two or three years?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">Question 4 of 5</div>
+      <div class="q-text">Soil compaction reduces pore space. What is the primary mechanism by which this kills tree roots?</div>
+    </div>
+    <div class="options" id="q4">
+      <button class="option" onclick="answer(4,this,false)">A) Compaction increases soil pH, making iron and manganese unavailable to roots</button>
+      <button class="option" onclick="answer(4,this,false)">B) Compaction traps heat in soil, raising temperatures beyond root tissue tolerance</button>
+      <button class="option" onclick="answer(4,this,true)">C) Compaction eliminates macropores that supply oxygen to roots, causing anaerobic conditions that halt root respiration and elongation</button>
+      <button class="option" onclick="answer(4,this,false)">D) Compaction draws water away from root zones by increasing surface drainage and runoff</button>
+    </div>
+    <div class="lesson-reveal" id="r4">
+      <h4>📖 Roots Need Oxygen — Here's the Chemistry</h4>
+      <p>Roots are living tissue. Like all aerobic cells, they require oxygen for <strong class="hl">cellular respiration</strong> — the process that converts carbohydrates into ATP (usable energy). Without ATP, cells cannot maintain ion gradients, cannot elongate, and eventually die. Roots cannot photosynthesize; they depend entirely on carbohydrates from the canopy and on soil gas exchange for oxygen.</p>
+      <ul>
+        <li><strong>Healthy soil structure:</strong> Approximately 50% solid particles, 25% water-filled micropores, 25% air-filled macropores. Macropores supply the oxygen roots need.</li>
+        <li><strong>Compaction collapses macropores:</strong> Bulk density rises, gas exchange plummets. Root cells shift to anaerobic fermentation (inefficient, produces toxic byproducts). Elongation stops. Below ~5% soil oxygen, root growth effectively ceases; at near-zero, root cells die.</li>
+        <li><strong>Optimal soil oxygen:</strong> 10–15% for most temperate tree roots (atmospheric oxygen is 21%)</li>
+        <li><strong>Secondary effects:</strong> Anaerobic conditions favour water mould pathogens (Phytophthora, Pythium) that devastate stressed root systems. And physically dense soil resists root elongation even if oxygen were present.</li>
+        <li>A penetrometer reading exceeding <strong>300 psi (2,100 kPa)</strong> in the top 30 cm indicates compaction severe enough to restrict root growth for most species</li>
+      </ul>
+      <p>The ISA <em>Certification Study Guide</em> (Ch. 4 — Soil) identifies compaction as one of the most common and damaging soil problems in urban arboriculture. Construction compaction after rain is the worst scenario — all macropores filled with water simultaneously removes both oxygen and any remaining gas exchange pathways.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Boulevard soils in Kelowna and West Kelowna are often clay-loam — already prone to poor gas exchange when wet. Vehicle parking, foot traffic, and equipment staging push many of these sites past the 300 psi threshold. On any PHC assessment where a boulevard tree shows sparse canopy, small leaf size, or early autumn colour — particularly near curb cuts or parking areas — check for compaction before assuming disease. Air spade decompaction or vertical mulching (drilling 5 cm holes on 45 cm centres through the CRZ, backfilling with compost/perlite) are effective interventions when addressed before irreversible root loss.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-header">
+      <div class="q-num">Question 5 of 5</div>
+      <div class="q-text">A contractor claims that grading 3 metres outside the drip line of a mature silver maple is safe because "roots don't grow beyond the canopy." What does research show about the actual lateral extent of root systems?</div>
+    </div>
+    <div class="options" id="q5">
+      <button class="option" onclick="answer(5,this,false)">A) The contractor is broadly correct — root spread typically mirrors canopy spread in most species</button>
+      <button class="option" onclick="answer(5,this,false)">B) Root spread varies too widely to generalize — no usable rule of thumb exists for field use</button>
+      <button class="option" onclick="answer(5,this,false)">C) Roots rarely extend past 1.5× the crown radius in urban environments due to hardscape barriers</button>
+      <button class="option" onclick="answer(5,this,true)">D) Root systems typically extend 2–3× the crown radius in most species — the drip line is not the root boundary</button>
+    </div>
+    <div class="lesson-reveal" id="r5">
+      <h4>📖 How Far Do Roots Actually Go?</h4>
+      <p>The "roots stay under the canopy" myth is one of the most expensive misunderstandings in urban tree care. Research consistently shows that <strong class="hl">most tree root systems extend 2 to 3 times the crown radius</strong> from the trunk — and in some species (cottonwood, silver maple, Siberian elm) they can reach 4–5× in open, uncompacted soils.</p>
+      <ul>
+        <li><strong>Crown radius:</strong> horizontal distance from trunk to canopy edge (the drip line)</li>
+        <li><strong>2–3× crown radius</strong> is the well-documented range cited in the ISA <em>Arborists' Certification Study Guide</em> and research by Gilman (1988) in <em>Journal of Arboriculture</em></li>
+        <li>The drip line is useful for the <em>CRZ calculation</em>, but it is not the outer boundary of the root system</li>
+        <li>Roots grow toward resources — moisture, oxygen, nutrients. In urban environments this concentrates them in irrigated lawn zones, permeable soil strips, and leaking utility lines — sometimes well beyond the visible canopy</li>
+        <li><strong>Infrastructure conflicts</strong> (sewer lines, water mains, conduits) regularly occur at distances that contractors considered "safely outside" the tree</li>
+      </ul>
+      <p>When advising on development near existing trees, map the 2–3× crown radius zone on the site plan. This is where root conflicts and construction damage risk actually live.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>In West Kelowna strata and infill development, root conflicts during utility excavation are a near-constant occurrence. A mature Siberian elm with a 7-metre crown radius can have live roots at 15–20+ metres from the trunk. When a client insists grading 3 metres past the drip line is safe, you have research to cite — and when the tree declines the following year, you have documentation that you raised the concern. Map the zone. Put it in writing. The drip line is not the root line.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="isa-footer">
+  <strong>📚 ISA Exam Domains:</strong> Tree Biology (11%) · Soil Management (11%)<br>
+  <strong>Sources:</strong> ISA Arborists' Certification Study Guide, 4th Ed. (Ch. 2, Ch. 4) · ANSI A300 Part 5 (Tree Protection During Construction) · Gilman, E.F. (1988) "Predicting Root Spread from Trunk and Branch Characteristics." <em>Journal of Arboriculture</em> 14(4)
+</div>
+
+<script>
+function answer(n,btn,correct){
+  var c=document.getElementById('q'+n);
+  var r=document.getElementById('r'+n);
+  var d=document.getElementById('d'+n);
+  if(c.dataset.answered)return;
+  c.dataset.answered='1';
+  Array.from(c.children).forEach(function(b){
+    b.disabled=true;
+    if(b===btn)b.classList.add(correct?'correct':'wrong');
+    if(!correct&&b.getAttribute('onclick')&&b.getAttribute('onclick').indexOf('true')>-1)b.classList.add('correct');
+  });
+  r.classList.add('visible');
+  d.classList.add(correct?'correct':'wrong');
+  setTimeout(function(){r.scrollIntoView({behavior:'smooth',block:'nearest'})},100);
+}
+</script>
+</body>
+</html>
