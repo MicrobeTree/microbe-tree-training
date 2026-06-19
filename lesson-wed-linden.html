@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Littleleaf Linden — Microbe Tree Training</title>
+<style>
+:root{--bg:#1a1e23;--surface:#242930;--surface2:#2d333b;--accent:#26a69a;--accent-dim:#00695c;--text:#e8eaed;--text-dim:#9aa0a6;--border:#383f47;--green:#4caf50;--red:#e53935;--amber:#ff8f00}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+.header{background:linear-gradient(135deg,#002e2c 0%,#00574b 100%);padding:20px 24px;border-bottom:2px solid var(--accent)}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.brand{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:600}
+.week-label{font-size:12px;color:var(--text-dim);margin-left:auto}
+.lesson-title{font-size:22px;font-weight:700;line-height:1.2}
+.lesson-sub{font-size:14px;color:var(--text-dim);margin-top:4px}
+.day-badge{display:inline-block;background:#003330;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-top:8px}
+.layout{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 120px)}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);padding:0 16px 8px;font-weight:700}
+.nav-item{display:block;padding:10px 16px;font-size:13px;color:var(--text-dim);text-decoration:none;border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.nav-item:hover,.nav-item.active{background:var(--surface2);color:var(--accent);border-left-color:var(--accent)}
+.nav-item .num{font-size:10px;color:var(--accent);font-weight:700;display:block;margin-bottom:2px}
+.content{padding:20px 24px;max-width:720px}
+.section{margin-bottom:28px}
+.section-title{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px}
+.section-body p{font-size:14px;line-height:1.75;color:#d0d5db;margin-bottom:10px}
+.section-body p:last-child{margin-bottom:0}
+.section-body ul{margin:8px 0 10px 0;padding-left:20px}
+.section-body li{font-size:14px;line-height:1.65;color:#d0d5db;margin-bottom:5px}
+strong.hl{color:var(--accent)}
+strong.red{color:#ef9a9a}
+strong.amber{color:#ffcc80}
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.id-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px}
+.id-card .label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px;font-weight:700}
+.id-card .value{font-size:13px;color:var(--text);line-height:1.5}
+.field-note{background:#002e2c;border:1px solid #005a52;border-left:4px solid var(--accent);border-radius:6px;padding:12px 14px;margin-top:12px}
+.field-note .fn-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:6px}
+.field-note p{font-size:13px;line-height:1.6;color:#b2dfdb;margin-bottom:0}
+.warn-box{background:#2e1a00;border:1px solid #8b4513;border-left:4px solid var(--red);border-radius:6px;padding:12px 14px;margin:10px 0}
+.warn-box .warn-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#ef9a9a;margin-bottom:6px}
+.warn-box p{font-size:13px;line-height:1.6;color:#ffccbc;margin-bottom:0}
+.pest-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px}
+.pest-item .pest-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.pest-item .pest-desc{font-size:12px;color:var(--text-dim);line-height:1.5}
+.spec-table{width:100%;border-collapse:collapse;margin:10px 0}
+.spec-table th{background:var(--surface2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.spec-table td{font-size:13px;color:#d0d5db;padding:9px 12px;border-bottom:1px solid var(--border)}
+.spec-table tr:last-child td{border-bottom:none}
+.spec-table td:first-child{font-weight:600;color:var(--text);width:40%}
+.isa-footer{margin:24px 0 0;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);line-height:1.6}
+.isa-footer strong{color:var(--text)}
+@media(max-width:600px){.layout{grid-template-columns:1fr}.sidebar{display:none}.id-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <span class="brand">&#x1F332; Microbe Tree Training</span>
+    <span class="week-label">Week 4 &middot; June 24, 2026</span>
+  </div>
+  <div class="lesson-title">Littleleaf Linden <em style="font-weight:400;font-size:16px">Tilia cordata</em> Mill.</div>
+  <div class="lesson-sub">Structure, care, and urban performance of BC&#39;s most planted street tree</div>
+  <span class="day-badge">&#x1F333; Wednesday &mdash; Tree Profile</span>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-label">Sections</div>
+    <a class="nav-item active" onclick="scrollTo('s1')"><span class="num">01</span>Overview &amp; ID</a>
+    <a class="nav-item" onclick="scrollTo('s2')"><span class="num">02</span>Identification Keys</a>
+    <a class="nav-item" onclick="scrollTo('s3')"><span class="num">03</span>Site &amp; Soil</a>
+    <a class="nav-item" onclick="scrollTo('s4')"><span class="num">04</span>Pruning &amp; Structure</a>
+    <a class="nav-item" onclick="scrollTo('s5')"><span class="num">05</span>Pests &amp; Diseases</a>
+    <a class="nav-item" onclick="scrollTo('s6')"><span class="num">06</span>Okanagan Notes</a>
+  </nav>
+
+  <main class="content">
+
+    <div class="section" id="s1">
+      <div class="section-title">01 &mdash; Overview &amp; Taxonomy</div>
+      <div class="section-body">
+        <p>The <strong class="hl">Littleleaf Linden</strong> (<em>Tilia cordata</em> Mill.) is the dominant broadleaf street and landscape tree across temperate Canada. Its combination of heat tolerance, structural adaptability, fragrant summer flowers, and clean canopy habit makes it the go-to nursery choice for urban foresters from West Kelowna to Winnipeg. Understanding its biology directly maps to ISA exam domains in <strong>Tree Biology</strong> and <strong>Urban Forestry Management</strong>.</p>
+        <p>Formerly placed in family Tiliaceae, <em>T. cordata</em> is now correctly classified in <strong class="hl">Malvaceae</strong> (the mallow family) following molecular phylogenetics. It is native to Europe and Western Asia and was widely introduced to North American nursery trade in the early 20th century. The cultivar <strong>&#x2018;Greenspire&#x2019;</strong> (Zone 3b, strong central leader, 12&ndash;14 m) is by far the most commonly planted selection in BC Interior cities.</p>
+        <div class="id-grid">
+          <div class="id-card"><div class="label">Family</div><div class="value">Malvaceae (formerly Tiliaceae)</div></div>
+          <div class="id-card"><div class="label">Hardiness Zone</div><div class="value">Zone 3b&ndash;8 (&#x2018;Greenspire&#x2019;)</div></div>
+          <div class="id-card"><div class="label">Mature Height</div><div class="value">12&ndash;18 m (urban conditions)</div></div>
+          <div class="id-card"><div class="label">Crown Spread</div><div class="value">8&ndash;12 m at maturity</div></div>
+          <div class="id-card"><div class="label">Growth Rate</div><div class="value">Moderate: 30&ndash;60 cm/year</div></div>
+          <div class="id-card"><div class="label">Longevity</div><div class="value">150&ndash;500+ years (ideal sites)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <div class="section-title">02 &mdash; Identification Keys</div>
+      <div class="section-body">
+        <p><strong class="hl">Leaf:</strong> Alternate, simple; broadly ovate to cordate (heart-shaped base), 4&ndash;8 cm; margin finely serrated with bristle-tipped teeth; upper surface dark green, glossy; lower surface pale glaucous with characteristic <strong>tufts of rust-coloured hairs in vein axils</strong> (a key ID feature distinguishing it from American Linden <em>T. americana</em>, which has larger leaves). Petiole 2&ndash;4 cm.</p>
+        <p><strong class="hl">Flower:</strong> Small, fragrant, yellowish-white; borne in pendulous cymes of 5&ndash;11 in late June&ndash;early July; attached to a distinctive <strong>strap-shaped bract</strong> (3&ndash;7 cm) which doubles as a dispersal wing. The bloom period is a critical pollinator resource &mdash; linden honey is prized across Europe.</p>
+        <p><strong class="hl">Fruit:</strong> Small, round, hard nutlet (6&ndash;8 mm), downy; persistent on the bract through winter. Not a significant litter problem.</p>
+        <p><strong class="hl">Bark:</strong> Young stems smooth and gray-brown; mature trees develop flat-topped ridges with shallow furrows; inner bark fibrous (historically used for cordage).</p>
+        <p><strong class="hl">Twig:</strong> Slender, zigzag; buds alternate, oblique, reddish, with 2&ndash;3 visible scales. No terminal bud present.</p>
+        <div class="field-note">
+          <div class="fn-label">&#x1F4CB; Quick ID Trick</div>
+          <p>Flip the leaf: rust-coloured axillary hair tufts on the underside + the bract attached to the flower/fruit cluster = definitive linden. No other common street tree in the Okanagan has this combination.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <div class="section-title">03 &mdash; Site &amp; Soil Requirements</div>
+      <div class="section-body">
+        <p><em>Tilia cordata</em> is remarkably adaptable but performs best in specific conditions that arborists should understand for both planting recommendations and post-establishment care decisions.</p>
+        <table class="spec-table">
+          <tr><th>Factor</th><th>Preference / Tolerance</th></tr>
+          <tr><td>Light</td><td>Full sun preferred; tolerates partial shade (reduces flowering)</td></tr>
+          <tr><td>Soil pH</td><td>Adaptable 5.5&ndash;7.5; performs best near neutral</td></tr>
+          <tr><td>Drainage</td><td>Moist, well-drained; tolerates brief wet periods; <strong class="red">poor tolerance of extended waterlogging</strong></td></tr>
+          <tr><td>Drought</td><td>Moderate; established trees handle Okanagan summers with supplemental irrigation first 3&ndash;5 years</td></tr>
+          <tr><td>Compaction</td><td>Moderate sensitivity; avoid heavily compacted urban soils without soil amendments or structural cells</td></tr>
+          <tr><td>Salt</td><td>Moderate de-icing salt tolerance; better than many broadleaves, not as tolerant as honey locust</td></tr>
+          <tr><td>Air pollution</td><td>Good tolerance; widely used in industrial corridors</td></tr>
+        </table>
+        <p>In the Okanagan, the primary site constraint is <strong class="amber">summer heat and drought</strong>. New plantings need 60&ndash;90 L/week irrigation for the first two growing seasons. Mulching 75&ndash;100 mm deep over the root zone (keeping clear of the stem) dramatically improves establishment success.</p>
+        <div class="warn-box">
+          <div class="warn-label">&#x26A0;&#xFE0F; Planting Depth</div>
+          <p>Deep planting is the #1 cause of slow establishment and structural defects in nursery linden. The root flare must be at or <em>above</em> grade. Nursery stock often has the flare buried under 10&ndash;15 cm of soil in the container &mdash; always excavate to confirm flare position before finalizing planting depth (per ISA BMP: Planting).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <div class="section-title">04 &mdash; Pruning &amp; Structural Development</div>
+      <div class="section-body">
+        <p>Linden naturally develops a <strong class="hl">strong excurrent form</strong> (dominant central leader) in youth, which arborists should reinforce during the structural pruning phase (years 1&ndash;10 post-planting). Without intervention, multiple co-dominant stems with included bark can develop, particularly after heading cuts or storm damage.</p>
+        <ul>
+          <li><strong>Timing:</strong> Late dormancy (late February&ndash;March in Okanagan) is ideal. Avoid heavy pruning in spring when sap is actively moving &mdash; large wounds weep heavily and attract insects. Summer pruning (post-leaf flush) is acceptable for clearance and live crown work.</li>
+          <li><strong>Structural phase:</strong> Select permanent scaffold branches with wide attachment angles and appropriate spacing along the leader (30&ndash;50 cm vertical). Remove co-dominant stems early &mdash; linden forms included bark quickly once stems reach similar diameter ratios.</li>
+          <li><strong>Epicormic sprouts:</strong> Linden produces vigorous basal and stem epicormic growth, especially after stress (drought, construction damage, over-pruning). Remove annually if clearance is required; they indicate the tree is compensating for reduced photosynthetic capacity.</li>
+          <li><strong>Lion-tailing:</strong> Linden responds to lion-tailing (removing interior foliage) with increased epicormic growth and increased end-weight on remaining branches &mdash; a common pruning mistake that increases failure risk. Maintain distributed foliage throughout the live crown (ISA BMP: Pruning).</li>
+          <li><strong>ANSI A300 limits:</strong> Do not remove &gt;25% of live crown in a single growing season. Linden compartmentalizes decay adequately (moderate CODIT response) but large wounds in the lower bole are slow to occlude.</li>
+        </ul>
+        <div class="field-note">
+          <div class="fn-label">&#x1F4CB; Field Note &mdash; Okanagan</div>
+          <p>In West Kelowna strata and municipal work, the most common linden pruning request is crown lift for clearance over parking and sidewalks. Set clearance objectives early (2.4 m pedestrian, 4.2 m vehicle per City of Kelowna specs) and achieve them gradually over 2&ndash;3 cycles rather than in one cut. Rapid crown lift on young lindens promotes the compensatory epicormic flush that clients then want removed every season.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <div class="section-title">05 &mdash; Pests &amp; Diseases</div>
+      <div class="section-body">
+        <p>Linden is generally robust but has a handful of predictable issues arborists encounter in urban BC plantings.</p>
+        <div class="pest-item">
+          <div class="pest-name">&#x1F41B; Linden Aphid (<em>Eucallipterus tiliae</em>)</div>
+          <div class="pest-desc">The most commonly encountered linden pest in Okanagan urban settings. Colonies form on undersides of leaves in June&ndash;August, producing copious honeydew that coats vehicles, pedestrians, and ground surfaces below. Sooty mold (Capnodium spp.) colonizes the honeydew. Heavy infestations cause leaf curl and premature drop. Management: tolerate light infestations (parasitoid wasps are effective biological control); strong water spray for moderate infestations; targeted insecticidal soap or neem if severe. Systemic soil-applied imidacloprid is effective but use cautiously &mdash; linden bloom is a major bee forage source and systemics appear in nectar.</div>
+        </div>
+        <div class="pest-item">
+          <div class="pest-name">&#x1F41B; European Linden Bark Borer (<em>Chrysobothris affinis</em> complex / <em>Agrilus viridis</em>)</div>
+          <div class="pest-desc">Flat-headed borers that attack stressed or necently transplanted linden. Entry via sunscald wounds on the southwest-facing bole. Symptoms: D-shaped exit holes (1&ndash;3 mm), serpentine galleries under bark, bark sloughing. Prevention: avoid wounding; protect young trees from sunscald with light-coloured wrap for the first two winters; maintain irrigation.</div>
+        </div>
+        <div class="pest-item">
+          <div class="pest-name">&#x1F344; Anthracnose (<em>Kabatiella apocrypta</em>)</div>
+          <div class="pest-desc">Causes irregular tan-brown leaf spots and shoot blight in cool, wet springs. Typically aesthetic only in leaf meoved trees. Serious on newly transplanted stock in wet years &mdash; defoliation can significantly stress establishment. Management: rake and dispose of infected leaf litter; avoid overhead irrigation; fungicide application at bud break in nursery situations.</div>
+        </div>
+        <div class="pest-item">
+          <div class="pest-name">&#x1F344; Verticillium Wilt (<em>Verticillium dahliae / V. albo-atrum</em>)</div>
+          <div class="pest-desc">Linden is susceptible. Symptoms: sudden wilt of individual branches, green-stained sapwood in affected limbs (diagnostic &mdash; cut symptomatic branch and look for olive-green discolouration in the outer xylem ring). No cure; manage by improving tree vigour, removing dead wood, and avoiding wounding near the root zone. Do not replant with susceptible species if soil is confirmed infected.</div>
+        </div>
+        <div class="warn-box">
+          <div class="warn-label">&#x26A0;&#xFE0F; Japanese Beetle Concern</div>
+          <p>Japanese Beetle (<em>Popillia japonica</em>) is an <strong class="red">CFIA-regulated</strong> pest now established in parts of BC (Lower Mainland). Linden is a preferred host. If detected in the Okanagan, immediate reporting to the BC Ministry of Agriculture is required. Learn the ID: metallic green head/thorax, coppery wing covers, white tufts along abdomen. Do not confuse with native bronze beetles.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <div class="section-title">06 &mdash; Okanagan Context &amp; Nursery Selection</div>
+      <div class="section-body">
+        <p>Littleleaf Linden is the <strong class="hl">most planted broadleaf street tree</strong> in Kelowna and West Kelowna municipal programs. Understanding cultivar differences helps arborists give better planting advice and manage client expectations.</p>
+        <table class="spec-table">
+          <tr><th>Cultivar</th><th>Form / Notes</th></tr>
+          <tr><td>&#x2018;Greenspire&#x2019;</td><td>Most common; strong central leader; 12&ndash;14 m; pyramidal-oval crown; Zone 3b. Standard municipal choice.</td></tr>
+          <tr><td>&#x2018;Chancellor&#x2019;</td><td>Narrower columnar form; 14&ndash;16 m x 4&ndash;5 m; good for tight streetscape clearances.</td></tr>
+          <tr><td>&#x2018;PNI 6025&#x2019; (Olympic)</td><td>Vigorous, broader crown; useful for parks where spread is not a constraint.</td></tr>
+          <tr><td>&#x2018;Rancho&#x2019;</td><td>Compact; 9&ndash;10 m; good for smaller residential lots and utility line clearance zones.</td></tr>
+        </table>
+        <p>When evaluating nursery stock, apply <strong class="hl">ISA BMP: Selecting and Planting Trees</strong> criteria: inspect for girdling roots (common in container-grown linden), confirm root flare location, check for co-dominant stems in the crown, and reject stock with circling roots that have not been corrected. Root flare burial is the single most common defect in B&amp;B linden arriving at BC nurseries.</p>
+        <div class="field-note">
+          <div class="fn-label">&#x1F4CB; Field Note &mdash; West Kelowna</div>
+          <p>In the Gellatly Road and Boucherie streetscape replanting projects, &#x2018;Greenspire&#x2019; lindens planted at 6&ndash;7 cm caliper in 2015 are now reaching clearance target heights (6&ndash;7 m at 12 years). The biggest maintenance issue is aphid honeydew complaints from adjacent commercial properties in July. Client education on biological control timelines (3&ndash;4 weeks for parasitoid buildup) prevents unnecessary insecticide requests. In drought years (2021, 2023), lindens on south-facing slopes with no supplemental irrigation showed significant tip dieback &mdash; always confirm irrigation access before planting in exposed sites.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="isa-footer">
+      <strong>&#x1F4DA; ISA Exam Domains:</strong> Tree Biology (11%), Urban Forestry Management, Soil Management (11%)<br>
+      <strong>Sources:</strong> Dirr, M.A. (2009) <em>Manual of Woody Landscape Plants</em>, Stipes Publishing &middot; ISA Best Management Practices: Planting &amp; Establishment &middot; ISA Best Management Practices: Pruning &middot; City of Kelowna Urban Forest Management Plan (2020) &middot; BC Ministry of Forests Tree Book: Tiliaceae &middot; TCIA Standards &amp; Best Practices reference materials &middot; Johnson, W.T. &amp; Lyon, H.H. (1991) <em>Insects That Feed on Trees and Shrubs</em>, Cornell UP
+    </div>
+
+  </main>
+</div>
+
+<script>
+function scrollTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  event.target.classList.add('active');
+}
+const sections=document.querySelectorAll('.section');
+const navItems=document.querySelectorAll('.nav-item');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{if(s.getBoundingClientRect().top<=160)current=s.id});
+  navItems.forEach((n,i)=>{
+    n.classList.remove('active');
+    if(current==='s'+(i+1))n.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
