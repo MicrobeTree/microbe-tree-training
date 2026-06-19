@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bronze Birch Borer &#x2014; Microbe Tree Training</title>
+<style>
+:root{--bg:#1a1e23;--surface:#242930;--surface2:#2d333b;--accent:#ef5350;--accent-dim:#c62828;--text:#e8eaed;--text-dim:#9aa0a6;--border:#383f47;--green:#4caf50;--amber:#ff8f00}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding-bottom:60px}
+.header{background:linear-gradient(135deg,#1a0000 0%,#4a0000 100%);padding:20px 24px;border-bottom:2px solid var(--accent)}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.brand{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:600}
+.week-label{font-size:12px;color:var(--text-dim);margin-left:auto}
+.lesson-title{font-size:22px;font-weight:700;line-height:1.2}
+.lesson-sub{font-size:14px;color:var(--text-dim);margin-top:4px}
+.day-badge{display:inline-block;background:#3e0000;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-top:8px}
+.intro-card{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);margin:16px;border-radius:10px;padding:16px}
+.intro-card p{font-size:14px;line-height:1.7;color:#d0d5db}
+.intro-card p+p{margin-top:8px}
+.score-bar{background:var(--surface);border:1px solid var(--border);margin:0 16px 16px;border-radius:10px;padding:14px;display:flex;align-items:center;gap:16px}
+.score-label{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);font-weight:700}
+.score-val{font-size:28px;font-weight:700;color:var(--accent)}
+.score-sub{font-size:12px;color:var(--text-dim)}
+.q-block{background:var(--surface);border:1px solid var(--border);margin:0 16px 14px;border-radius:10px;overflow:hidden}
+.q-header{background:#2a0000;padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.q-num{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700}
+.q-text{font-size:15px;font-weight:600;color:var(--text);line-height:1.45;padding:14px 16px 10px}
+.options{padding:0 16px 12px}
+.option{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;margin-bottom:6px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;background:var(--surface2)}
+.option:hover{border-color:var(--accent);background:#2a0a0a}
+.option.selected{border-color:var(--accent);background:#2a0a0a}
+.option.correct{border-color:var(--green);background:#0a2a0a}
+.option.wrong{border-color:#e53935;background:#2a0a0a}
+.opt-letter{width:26px;height:26px;border-radius:50%;background:var(--border);color:var(--text);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.option.correct .opt-letter{background:var(--green);color:#fff}
+.option.wrong .opt-letter{background:#e53935;color:#fff}
+.opt-text{font-size:14px;color:#d0d5db;line-height:1.5}
+.reveal{display:none;margin:0 16px 16px;background:#0a1f0a;border:1px solid #2e5c2e;border-left:4px solid var(--green);border-radius:6px;padding:14px 16px}
+.reveal.show{display:block}
+.reveal .r-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#81c784;margin-bottom:8px}
+.reveal p{font-size:13px;line-height:1.65;color:#c8e6c9}
+.reveal p+p{margin-top:6px}
+.reveal strong{color:#a5d6a7}
+.isa-footer{margin:24px 16px 0;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);line-height:1.6}
+.isa-footer strong{color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <span class="brand">&#x1F332; Microbe Tree Training</span>
+    <span class="week-label">Week 4 &middot; June 25, 2026</span>
+  </div>
+  <div class="lesson-title">Bronze Birch Borer <em style="font-weight:400;font-size:16px">Agrilus anxius</em> Gory</div>
+  <div class="lesson-sub">The wood-boring beetle that kills birch from the top down</div>
+  <span class="day-badge">&#x1F41B; Thursday &mdash; Pests &amp; Diseases</span>
+</div>
+
+<div class="intro-card">
+  <p>The <strong>Bronze Birch Borer</strong> (BBB) is the most destructive insect pest of birch (<em>Betula</em> spp.) in western Canada. A native flatheaded borer in family Buprestidae, it is an opportunistic pathogen &mdash; healthy, well-irrigated birch in suitable sites resist attack; stressed trees succumb rapidly. Understanding its biology and diagnostic signs is essential for every arborist working in Okanagan urban and park settings, where paper and white birch are common ornamentals.</p>
+  <p>5 questions &mdash; each question locks after you answer. Read the explanations carefully; the ISA CA exam tests both biology and integrated management principles for this species.</p>
+</div>
+
+<div class="score-bar">
+  <div class="score-label">Score</div>
+  <div class="score-val" id="scoreVal">0</div>
+  <div class="score-sub">/ 5 correct</div>
+</div>
+
+<!-- Q1 -->
+<div class="q-block" id="q1">
+  <div class="q-header"><span class="q-num">Question 1 of 5</span></div>
+  <div class="q-text">What are the characteristic adult exit holes left by Bronze Birch Borer in the bark of an infested birch?</div>
+  <div class="options">
+    <div class="option" onclick="answer(1,'A')"><div class="opt-letter">A</div><div class="opt-text">Round holes, 3&ndash;4 mm diameter, scattered randomly in the bark</div></div>
+    <div class="option" onclick="answer(1,'B')"><div class="opt-letter">B</div><div class="opt-text">D-shaped (flattened on one side) holes, 3&ndash;4 mm, in mid-crown to upper bole bark</div></div>
+    <div class="option" onclick="answer(1,'C')"><div class="opt-letter">C</div><div class="opt-text">Oval pitch tubes, 8&ndash;12 mm, with amber resin exudate</div></div>
+    <div class="option" onclick="answer(1,'D')"><div class="opt-letter">D</div><div class="opt-text">Irregular 1&ndash;2 cm ragged holes clustered at branch crotches</div></div>
+  </div>
+</div>
+<div class="reveal" id="r1">
+  <div class="r-label">&#x2714; Correct &mdash; B: D-shaped exit holes</div>
+  <p>Buprestid beetles (family Buprestidae) are called <strong>flatheaded borers</strong> because their larvae are dorso-ventrally flattened. They bore galleries through the phloem and outer xylem, and when adults emerge, they create the diagnostic <strong>D-shaped hole</strong> (flat on top, rounded below) that reflects the borer&apos;s body cross-section. This is the key field diagnostic for all <em>Agrilus</em> species, including Emerald Ash Borer.</p>
+  <p>Round holes indicate roundheaded borers (Cerambycidae) or Woodpeckers excavating for larvae. Pitch tubes indicate bark beetles (Scolytinae). Ragged holes suggest woodpecker feeding damage. The D-shape is definitive for buprestids.</p>
+</div>
+
+<!-- Q2 -->
+<div class="q-block" id="q2">
+  <div class="q-header"><span class="q-num">Question 2 of 5</span></div>
+  <div class="q-text">Crown dieback from Bronze Birch Borer infestation in white/paper birch typically progresses in which pattern?</div>
+  <div class="options">
+    <div class="option" onclick="answer(2,'A')"><div class="opt-letter">A</div><div class="opt-text">From the base of the crown upward, with lower branch death first</div></div>
+    <div class="option" onclick="answer(2,'B')"><div class="opt-letter">B</div><div class="opt-text">Randomly distributed throughout the crown, with no predictable pattern</div></div>
+    <div class="option" onclick="answer(2,'C')"><div class="opt-letter">C</div><div class="opt-text">From the top of the crown downward, with upper branches dying first</div></div>
+    <div class="option" onclick="answer(2,'D')"><div class="opt-letter">D</div><div class="opt-text">Along one side of the crown (directional dieback toward sun exposure)</div></div>
+  </div>
+</div>
+<div class="reveal" id="r2">
+  <div class="r-label">&#x2714; Correct &mdash; C: Top-down dieback</div>
+  <p>BBB larvae feed in the phloem and cambium layer, girdling the vascular tissue. Female adults preferentially oviposit on <strong>sun-exposed upper stem and scaffold branch tissue</strong> where bark temperatures are highest &mdash; the beetle is thermophilic and attracted to warm, stressed bark. As larval galleries girdle progressively larger stem sections, water and nutrient transport fails in the upper crown first.</p>
+  <p>This top-down dieback pattern is called <strong>&quot;flagging&quot;</strong> in early stages (individual branches in the upper crown die while still retaining dried leaves) and progresses downward over 2&ndash;4 years until the entire tree is dead. By the time lower crown symptoms appear, infestation is typically severe. ISA exam note: this pattern also helps distinguish BBB from Verticillium wilt (which can cause sudden wilt of entire side branches at any crown position).</p>
+</div>
+
+<!-- Q3 -->
+<div class="q-block" id="q3">
+  <div class="q-header"><span class="q-num">Question 3 of 5</span></div>
+  <div class="q-text">Which birch species or cultural condition makes birch <em>most</em> susceptible to Bronze Birch Borer attack?</div>
+  <div class="options">
+    <div class="option" onclick="answer(3,'A')"><div class="opt-letter">A</div><div class="opt-letter" style="width:0"></div><div class="opt-text">River Birch (<em>Betula nigra</em>) planted in full shade with consistent moisture</div></div>
+    <div class="option" onclick="answer(3,'B')"><div class="opt-letter">B</div><div class="opt-text">White/Paper Birch (<em>Betula papyrifera</em>) planted in hot, exposed urban sites with drought stress</div></div>
+    <div class="option" onclick="answer(3,'C')"><div class="opt-letter">C</div><div class="opt-text">European White Birch (<em>Betula pendula</em>) in its native Alpine range</div></div>
+    <div class="option" onclick="answer(3,'D')"><div class="opt-letter">D</div><div class="opt-text">Yellow Birch (<em>Betula alleghaniensis</em>) in cool, moist riparian settings</div></div>
+  </div>
+</div>
+<div class="reveal" id="r3">
+  <div class="r-label">&#x2714; Correct &mdash; B: Stressed paper birch in hot urban sites</div>
+  <p><em>Betula papyrifera</em> (Paper/Canoe Birch) is the most susceptible species and is also the most commonly planted ornamental birch in Okanagan cities &mdash; a poor horticultural match for the hot, dry Interior climate. Paper birch is a <strong>cool-climate riparian species</strong> adapted to moist soils and cool summers; it is fundamentally out of its range in West Kelowna sun-baked boulevards.</p>
+  <p><strong>Stressed trees produce volatiles (ethanol, terpenes) that BBB adults detect and use as host-selection cues.</strong> Drought stress is the primary predisposing factor. <em>Betula nigra</em> (River Birch) is notably more heat and BBB tolerant and is now recommended over paper birch for Interior BC plantings. <em>Betula pendula</em> (European White Birch) is intermediate in susceptibility. Yellow Birch in native moist sites is rarely attacked.</p>
+</div>
+
+<!-- Q4 -->
+<div class="q-block" id="q4">
+  <div class="q-header"><span class="q-num">Question 4 of 5</span></div>
+  <div class="q-text">In BC&apos;s Thompson-Okanagan region, when do Bronze Birch Borer adults typically emerge, mate, and oviposit?</div>
+  <div class="options">
+    <div class="option" onclick="answer(4,'A')"><div class="opt-letter">A</div><div class="opt-text">March&ndash;April, concurrent with early spring leaf flush</div></div>
+    <div class="option" onclick="answer(4,'B')"><div class="opt-letter">B</div><div class="opt-text">Late May through early July, with peak activity in June</div></div>
+    <div class="option" onclick="answer(4,'C')"><div class="opt-letter">C</div><div class="opt-text">August&ndash;September during late summer heat</div></div>
+    <div class="option" onclick="answer(4,'D')"><div class="opt-letter">D</div><div class="opt-text">October&ndash;November just before dormancy</div></div>
+  </div>
+</div>
+<div class="reveal" id="r4">
+  <div class="r-label">&#x2714; Correct &mdash; B: Late May through early July</div>
+  <p>Adult BBB emerge when cumulative growing degree days (GDD, base 10&deg;C) reach approximately 200&ndash;400. In the Okanagan, this corresponds to <strong>late May through late June</strong> in most years. Adults are active during warm, sunny days; they feed on birch leaves briefly before mating and ovipositing under bark crevices and lenticels.</p>
+  <p>This phenology window is critical for <strong>insecticide timing</strong>: preventive bark applications of emamectin benzoate or imidacloprid trunk injection must be applied <em>before</em> egg hatch and larval entry into phloem (June treatment window in Okanagan). Once larvae are feeding beneath bark, topical treatments are ineffective. The larvae overwinter as mature larvae and pupate in early spring. Life cycle is typically one year in warm Interior climates (vs. two years in cooler northern BC).</p>
+</div>
+
+<!-- Q5 -->
+<div class="q-block" id="q5">
+  <div class="q-header"><span class="q-num">Question 5 of 5</span></div>
+  <div class="q-text">An arborist is asked to manage a lightly infested white birch (10&ndash;15% crown dieback, D-shaped exit holes confirmed in upper bole). The tree is otherwise structurally sound, well-positioned, and the client wants to save it. What is the most appropriate integrated management approach?</div>
+  <div class="options">
+    <div class="option" onclick="answer(5,'A')"><div class="opt-letter">A</div><div class="opt-text">Remove the tree immediately to prevent spread to adjacent birch</div></div>
+    <div class="option" onclick="answer(5,'B')"><div class="opt-letter">B</div><div class="opt-text">Inject imidacloprid into the soil now; repeat annually indefinitely</div></div>
+    <div class="option" onclick="answer(5,'C')"><div class="opt-letter">C</div><div class="opt-text">Improve tree vigour with deep-watering and mulching; apply targeted trunk injection (emamectin benzoate or imidacloprid) before next adult emergence window; remove dead wood; monitor annually</div></div>
+    <div class="option" onclick="answer(5,'D')"><div class="opt-letter">D</div><div class="opt-text">Spray the entire crown with pyrethroid insecticide to kill larvae feeding inside the bark</div></div>
+  </div>
+</div>
+<div class="reveal" id="r5">
+  <div class="r-label">&#x2714; Correct &mdash; C: Integrated management with vigour improvement</div>
+  <p>At 10&ndash;15% crown dieback, a vigorous management response can save the tree. The ISA and TCIA both recommend an <strong>integrated approach</strong>: (1) Address the predisposing stress first &mdash; deep root watering (slow drip, 3x/week in summer), apply 75&ndash;100 mm of organic mulch over the drip zone; (2) Remove dead and declining wood (reduces breeding habitat); (3) Apply a <strong>prophylactic trunk injection</strong> of emamectin benzoate (TREE-&auml;ge) or soil-applied imidacloprid timed 4&ndash;6 weeks before adult emergence; (4) Monitor annually for new exit holes.</p>
+  <p><strong>Why the other options fail:</strong> Immediate removal is premature at this dieback level. Annual imidacloprid alone without addressing the root cause (drought stress) is not a long-term solution and raises pollinator concerns (linden is a bee forage tree). Pyrethroid sprays do not penetrate bark and have no efficacy against larvae feeding in the phloem. Trees with &gt;50% crown dieback or extensive structural girdling in the lower bole are generally not viable candidates for treatment and should be removed.</p>
+</div>
+
+<div class="isa-footer">
+  <strong>&#x1F4DA; ISA Exam Domain:</strong> Plant Pathology &amp; Entomology (insect identification, integrated pest management, borer biology)<br>
+  <strong>Sources:</strong> Haack, R.A. &amp; Benjamin, D.M. (1982) <em>The Biology and Ecology of the Two-lined Chestnut Borer</em> &middot; BC Ministry of Forests Forest Health: Bronze Birch Borer factsheet &middot; ISA Certified Arborist Study Guide, 4th ed. &middot; TCIA Best Management Practices: Plant Health Care &middot; Cranshaw, W. (2004) <em>Garden Insects of North America</em>, Princeton UP &middot; Lilly, S.J. (2001) <em>Arborists&apos; Certification Study Guide</em>, ISA
+</div>
+
+<script>
+var answers={1:'B',2:'C',3:'B',4:'B',5:'C'};
+var locked={};
+var score=0;
+function answer(q,choice){
+  if(locked[q])return;
+  locked[q]=true;
+  var block=document.getElementById('q'+q);
+  var opts=block.querySelectorAll('.option');
+  var correct=answers[q];
+  opts.forEach(function(o,i){
+    var letter=String.fromCharCode(65+i);
+    if(letter===correct)o.classList.add('correct');
+    else if(letter===choice&&choice!==correct)o.classList.add('wrong');
+    o.style.cursor='default';
+  });
+  if(choice===correct){score++;document.getElementById('scoreVal').textContent=score;}
+  var rev=document.getElementById('r'+q);
+  rev.classList.add('show');
+  setTimeout(function(){rev.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+}
+</script>
+</body>
+</html>
