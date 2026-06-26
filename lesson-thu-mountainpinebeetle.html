@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦠 Pests & Diseases — Mountain Pine Beetle | Microbe Tree Training</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+header {
+  background: #161b22;
+  border-bottom: 2px solid #ef4444;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-size: 20px; font-weight: 800; color: #ef4444; letter-spacing: -0.5px; }
+.logo span { color: #e6edf3; }
+.day-badge {
+  background: #ef444418;
+  color: #ef4444;
+  border: 1px solid #ef444435;
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.header-title { color: #8b949e; font-size: 14px; margin-left: auto; }
+.container { max-width: 820px; margin: 0 auto; padding: 32px 20px; }
+
+.week-label { color: #ef4444; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.binomial { color: #8b949e; font-style: italic; font-size: 15px; margin-bottom: 8px; }
+.subtitle { color: #8b949e; font-size: 15px; margin-bottom: 28px; max-width: 580px; }
+
+/* HOME REFERENCE CARD */
+.ref-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 22px;
+  margin-bottom: 28px;
+}
+.ref-card h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #ef4444; margin-bottom: 16px; }
+
+/* ATTACK STAGES VISUAL */
+.stages-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.stage-card {
+  border-radius: 8px;
+  padding: 14px 12px;
+  text-align: center;
+}
+.stage-1 { background: #22c55e12; border: 1px solid #22c55e35; }
+.stage-2 { background: #f9731612; border: 1px solid #f9731635; }
+.stage-3 { background: #8b949e12; border: 1px solid #8b949e35; }
+.stage-icon { font-size: 28px; margin-bottom: 6px; }
+.stage-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.stage-1 .stage-name { color: #22c55e; }
+.stage-2 .stage-name { color: #f97316; }
+.stage-3 .stage-name { color: #8b949e; }
+.stage-timing { font-size: 11px; color: #484f58; margin-bottom: 8px; }
+.stage-signs { font-size: 12px; color: #8b949e; line-height: 1.5; text-align: left; }
+.stage-signs li { padding-left: 12px; position: relative; margin-bottom: 4px; }
+.stage-signs li::before { content: "•"; position: absolute; left: 0; }
+
+/* QUICK FACTS */
+.quick-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.qf-item { background: #1c2128; border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; }
+.qf-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #484f58; margin-bottom: 3px; }
+.qf-val { font-size: 13px; color: #e6edf3; }
+
+/* QUIZ */
+.quiz-screen { display: none; }
+.home-screen { display: block; }
+.progress-bar { background: #21262d; border-radius: 4px; height: 4px; margin-bottom: 28px; overflow: hidden; }
+.progress-fill { background: #ef4444; height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.q-counter { color: #8b949e; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+.question-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 26px; margin-bottom: 18px; }
+.question-text { font-size: 17px; font-weight: 500; line-height: 1.55; }
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.option-btn {
+  background: #1c2128;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 13px 16px;
+  color: #e6edf3;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.option-btn:hover:not(:disabled) { border-color: #ef4444; background: #ef444410; }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { border-color: #22c55e; background: #22c55e18; }
+.option-btn.incorrect { border-color: #ef4444; background: #ef444418; }
+.opt-letter {
+  background: #30363d;
+  color: #8b949e;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.option-btn.correct .opt-letter { background: #22c55e; color: #0d1117; }
+.option-btn.incorrect .opt-letter { background: #ef4444; color: #fff; }
+
+/* LESSON REVEAL */
+.lesson-reveal { display: none; }
+.lesson-reveal.shown { display: block; }
+.result-tag { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+.result-tag.correct { color: #22c55e; }
+.result-tag.incorrect { color: #ef4444; }
+.lesson-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-left: 3px solid #ef4444;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.lesson-card h3 { font-size: 16px; font-weight: 700; color: #ef4444; margin-bottom: 12px; }
+.lesson-card p { font-size: 14px; color: #c9d1d9; line-height: 1.65; margin-bottom: 12px; }
+.lesson-card p:last-child { margin-bottom: 0; }
+.key-points { margin: 14px 0; }
+.key-points h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; margin-bottom: 8px; }
+.key-points ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.key-points li { font-size: 14px; color: #c9d1d9; padding-left: 18px; position: relative; }
+.key-points li::before { content: "→"; position: absolute; left: 0; color: #ef4444; font-size: 12px; top: 2px; }
+.field-note { background: #1c2128; border: 1px solid #388bfd30; border-left: 3px solid #388bfd; border-radius: 8px; padding: 16px; margin-top: 14px; }
+.field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #388bfd; margin-bottom: 8px; }
+.field-note p { font-size: 13px; color: #c9d1d9; line-height: 1.6; }
+.next-btn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 11px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 4px;
+}
+.next-btn:hover { background: #dc2626; }
+.start-btn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 13px 30px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.start-btn:hover { background: #dc2626; }
+
+/* FINAL */
+.final-screen { display: none; text-align: center; }
+.score-circle { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #ef4444; display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 0 auto 24px; }
+.score-num { font-size: 30px; font-weight: 800; color: #ef4444; }
+.score-denom { font-size: 13px; color: #8b949e; }
+.final-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+.final-subtitle { color: #8b949e; font-size: 15px; margin-bottom: 28px; }
+.restart-btn { background: #ef444418; color: #ef4444; border: 1px solid #ef444435; padding: 11px 26px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.restart-btn:hover { background: #ef444430; }
+
+.isa-tag { margin-top: 40px; padding-top: 20px; border-top: 1px solid #21262d; color: #484f58; font-size: 12px; line-height: 1.6; }
+.isa-tag span { color: #6e7681; }
+
+@media (max-width: 600px) {
+  h1 { font-size: 22px; }
+  .stages-grid { grid-template-columns: 1fr; }
+  .quick-facts { grid-template-columns: 1fr; }
+  .question-text { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="day-badge">🦠 Thursday · Pests & Diseases</div>
+  <div class="header-title">Week 6 · Mountain Pine Beetle</div>
+</header>
+
+<div class="container">
+
+  <!-- HOME SCREEN -->
+  <div class="home-screen" id="homeScreen">
+    <div class="week-label">Week 6 · Pests & Diseases</div>
+    <h1>Mountain Pine Beetle</h1>
+    <p class="binomial">Dendroctonus ponderosae Hopkins — Family Curculionidae, Scolytinae</p>
+    <p class="subtitle">The bark beetle behind the largest recorded insect outbreak in BC's history — 18+ million hectares of pine killed. Know the biology, recognize the stages, assess the hazard.</p>
+
+    <div class="ref-card">
+      <h3>📋 Attack Stage Reference</h3>
+      <div class="stages-grid">
+        <div class="stage-card stage-1">
+          <div class="stage-icon">🌲</div>
+          <div class="stage-name">Green Attack</div>
+          <div class="stage-timing">Season 1: July–Oct</div>
+          <ul class="stage-signs">
+            <li>Crown looks healthy</li>
+            <li>White/pink pitch tubes on lower bole</li>
+            <li>Frass boring dust at base</li>
+            <li>Fresh galleries under bark</li>
+            <li>Tree is DYING</li>
+          </ul>
+        </div>
+        <div class="stage-card stage-2">
+          <div class="stage-icon">🍂</div>
+          <div class="stage-name">Red Attack</div>
+          <div class="stage-timing">Season 2: following spring/summer</div>
+          <ul class="stage-signs">
+            <li>Reddish-brown needles</li>
+            <li>Tree is DEAD</li>
+            <li>Beetles have emerged</li>
+            <li>Blue-stain in sapwood</li>
+            <li>No pitch tubes (old)</li>
+          </ul>
+        </div>
+        <div class="stage-card stage-3">
+          <div class="stage-icon">🪨</div>
+          <div class="stage-name">Grey Attack</div>
+          <div class="stage-timing">Season 3–5+</div>
+          <ul class="stage-signs">
+            <li>Needles dropped</li>
+            <li>Grey-silver snag</li>
+            <li>Root decay begins</li>
+            <li>Structural risk HIGH</li>
+            <li>Widow-maker hazard</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="quick-facts">
+        <div class="qf-item">
+          <div class="qf-label">Primary Hosts</div>
+          <div class="qf-val">Lodgepole pine, ponderosa pine, western white pine, whitebark pine</div>
+        </div>
+        <div class="qf-item">
+          <div class="qf-label">Life Cycle</div>
+          <div class="qf-val">Univoltine (1 year); adults fly Jul–Aug; overwinter as larvae</div>
+        </div>
+        <div class="qf-item">
+          <div class="qf-label">Flight Threshold</div>
+          <div class="qf-val">~16°C, calm winds; typically evening flights</div>
+        </div>
+        <div class="qf-item">
+          <div class="qf-label">Kill Mechanism</div>
+          <div class="qf-val">Gallery girdling (phloem) + blue-stain fungus (xylem block)</div>
+        </div>
+        <div class="qf-item">
+          <div class="qf-label">Natural Control</div>
+          <div class="qf-val">Sustained cold &lt; −25°C for 3+ days kills overwintering larvae</div>
+        </div>
+        <div class="qf-item">
+          <div class="qf-label">BC Outbreak Scale</div>
+          <div class="qf-val">~18.1 M ha killed 1999–2015+; largest recorded insect outbreak in N. America</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">Start Quiz — 5 Questions →</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="quiz-screen" id="quizScreen">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="q-counter" id="qCounter">Question 1 of 5</div>
+    <div class="question-card">
+      <div class="question-text" id="questionText"></div>
+      <div class="options" id="optionsContainer"></div>
+    </div>
+    <div class="lesson-reveal" id="lessonReveal">
+      <div class="result-tag" id="resultTag"></div>
+      <div class="lesson-card">
+        <h3 id="lessonTitle"></h3>
+        <div id="lessonContent"></div>
+        <div class="key-points">
+          <h4>Key Points</h4>
+          <ul id="keyPointsList"></ul>
+        </div>
+        <div class="field-note">
+          <div class="field-note-label">📋 Field Note — Okanagan</div>
+          <p id="fieldNoteText"></p>
+        </div>
+      </div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div class="final-screen" id="finalScreen">
+    <div class="score-circle">
+      <div class="score-num" id="finalScore">0</div>
+      <div class="score-denom">out of 5</div>
+    </div>
+    <h2 class="final-title">Week 6 — MPB Complete</h2>
+    <p class="final-subtitle" id="finalMessage"></p>
+    <button class="restart-btn" onclick="restart()">← Back to Reference Card</button>
+  </div>
+
+  <div class="isa-tag">
+    <span>📚 ISA Exam Domains: Tree Biology (11%) · Safe Work Practices (28%)</span> · Sources: BC Ministry of Forests, Mountain Pine Beetle: A Synthesis of Biology, Management, and Impacts (Safranyik & Wilson, 2006) · BC Forest Service Forest Health Stand Management publications · USDA Forest Service, Bark beetle management guidelines · ISA Arborists' Certification Study Guide (4th Ed.) · BC WorkSafeBC OHS Regulation Part 26
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    question: "Mountain pine beetle kills its host trees through a combination of two distinct biological mechanisms. Which answer correctly identifies BOTH mechanisms working together to cause tree death?",
+    options: [
+      "Direct root damage from adult beetle emergence + bark splitting from gallery construction pressure",
+      "Larval gallery construction that girdles the phloem COMBINED with blue-stain fungus (Ophiostoma spp.) introduced by beetles that blocks xylem water transport",
+      "Mass defoliation by adult beetles feeding on needles + phloem disruption from larval mining",
+      "Adult feeding on crown terminals + secondary bacterial infection establishing in the sapwood"
+    ],
+    correct: 1,
+    lesson: {
+      title: "How MPB Kills — A Two-Part Attack",
+      content: "<p>Mountain pine beetle is devastating precisely because it kills trees through two simultaneous mechanisms, and either one alone can be fatal:</p><p><strong>Mechanism 1 — Gallery construction:</strong> After mass attack, female beetles bore through the bark and construct S-shaped egg galleries in the phloem layer (the living tissue between bark and wood). These meandering galleries, packed with larval frass and bark tissue, physically girdle the tree by disrupting the phloem transport system. The tree cannot move carbohydrates from the canopy to the roots.</p><p><strong>Mechanism 2 — Blue-stain fungi:</strong> Beetles carry spores of blue-stain fungi (primarily <em>Ophiostoma montium</em> and <em>O. clavigerum</em>) in specialized structures called mycangia. When beetles bore into the sapwood, they introduce these fungi, which colonize the xylem (water-conducting cells). The fungal hyphae physically block water movement from roots to canopy. The tree, already unable to conduct carbohydrates down, now can't move water up either. Death typically occurs within weeks of successful mass attack, even in trees that initially mount a pitch-tube defense.</p>",
+      keyPoints: [
+        "Phloem girdling: serpentine larval galleries disrupt carbohydrate transport root-ward",
+        "Blue-stain fungi (Ophiostoma spp.) colonize xylem and block upward water transport",
+        "Both mechanisms operate simultaneously — death is rapid after successful mass attack",
+        "Blue-stain is carried in beetle mycangia — specialized spore-carrying structures",
+        "The characteristic blue-grey staining in cut wood is the fungal mycelium in xylem vessels"
+      ],
+      fieldNote: "When you're bidding on a ponderosa pine removal in West Kelowna or Peachland and the wood inside has blue-grey streaks throughout the sapwood, you're looking at beetle kill confirmed by fungal colonization. That staining is purely diagnostic — it doesn't affect the wood's structural properties in the short term, but it tells you when the tree died and confirms MPB as the cause. Blue-stained pine sells as a specialty lumber product in some markets ('denim pine'), but for the arborist, it's hazard tree confirmation."
+    }
+  },
+  {
+    question: "After a successful mountain pine beetle attack on a ponderosa pine, what is the correct sequence of the three field-observable attack stages in chronological order?",
+    options: [
+      "Red attack → Green attack → Grey attack",
+      "Grey attack → Green attack → Red attack",
+      "Green attack → Red attack → Grey attack",
+      "Green attack → Grey attack → Red attack"
+    ],
+    correct: 2,
+    lesson: {
+      title: "The Three Attack Stages — Green, Red, Grey",
+      content: "<p>The three attack stages reflect the tree's progressive death and decomposition and are essential field knowledge for hazard assessment and management response.</p><p><strong>Green Attack (Season 1, July–October):</strong> The crown looks completely healthy — no needle discoloration yet. This is the most critical detection window because the tree is actively dying and beetles are still potentially present. The diagnostic sign is <em>pitch tubes</em> on the lower bole (first 3–5 m) — popcorn-sized masses of white or pink crystallized resin where the tree has tried to push beetles out with sap flow. If the tree successfully repels the attack, pitch tubes harden and beetles die inside. If the attack succeeds, pitch tube resin becomes dark and saturated with frass.</p><p><strong>Red Attack (Season 2, following spring/summer):</strong> Needles turn reddish-brown throughout the crown over roughly 6–12 months following initial attack. The tree is dead; adult beetles have already emerged and flown to new hosts. This is the stage that makes large outbreaks visually dramatic in aerial surveys.</p><p><strong>Grey Attack (Season 3–5+):</strong> Needles have dropped, leaving a grey-silver snag. The snag persists for years, but structural integrity deteriorates rapidly — root rot sets in, and wind events can topple the tree suddenly. The grey snag phase represents the highest ongoing hazard risk for anyone working in or around beetle-killed stands.</p>",
+      keyPoints: [
+        "Green = looks healthy but dying; pitch tubes on bole = active attack window",
+        "Red = dead tree, needles turning/turned red; beetles already departed",
+        "Grey = needles dropped, structural decomposition underway; hazard risk highest",
+        "Timeline: green (year 1) → red (year 2) → grey (years 3–5+)",
+        "Management is most effective in green attack — only stage where removal stops spread"
+      ],
+      fieldNote: "In the Okanagan ponderosa pine zone, summer wildfire risk in red and grey attack stands is extreme. Dry, standing dead pines are among the most flammable fuel types in the BC Interior — they burn hot, fast, and in the crown. If you're assessing or working near beetle-killed ponderosa on an Okanagan hillside, know the fire weather rating for that day before you fire up the saw. A single spark into red-attack pine in August is a completely different situation than the same spark in June."
+    }
+  },
+  {
+    question: "A crew member is scouting a ponderosa pine stand on an Okanagan hillside for active MPB infestation. Which field sign would be MOST diagnostic of a current (green attack phase) infestation, as opposed to a completed attack or a different pest?",
+    options: [
+      "D-shaped exit holes visible in the bark surface at chest height",
+      "Reddish-brown needles throughout the entire crown on multiple trees",
+      "White or pink pitch tube masses on the lower bole (basal 5 m), sometimes with boring dust",
+      "Blue-grey staining visible in the sapwood when a bark section is peeled back"
+    ],
+    correct: 2,
+    lesson: {
+      title: "Green Attack Detection — The Pitch Tube Diagnostic",
+      content: "<p>Identifying the attack stage correctly determines your management response. Each sign correlates to a specific phase:</p><p><strong>Pitch tubes (correct answer)</strong> are the most time-sensitive and actionable finding. The tree is actively fighting the attack, producing resin to pitch out the attacking beetles. White or pink coloration indicates fresh pitch with live pitch flow; grey-brown pitch with frass embedded indicates beetles may have overcome the defense. <em>Find pitch tubes = active or very recent attack = still in green phase = possible management intervention window.</em></p><p><strong>D-shaped exit holes</strong> indicate that adult beetles have ALREADY emerged from a previous season's attack. The tree is dead, the beetles have moved on. No action reduces spread from this tree; it's now a hazard tree for removal.</p><p><strong>Reddish-brown needles</strong> = red attack phase. Tree has been dead for months; beetles long departed. Again, no ability to reduce spread; focus shifts to hazard management.</p><p><strong>Blue-stained sapwood</strong> is visible at any stage after successful attack — it's evidence of beetle-kill but doesn't indicate current activity. It persists in the wood for years.</p>",
+      keyPoints: [
+        "Pitch tubes = current or very recent attack (green phase); active management possible",
+        "Pitch tube color: fresh white/pink (ongoing defense) vs dark/frass-embedded (beetles winning)",
+        "D-shaped holes = beetles already emerged; past the management intervention window",
+        "Blue-stain = confirms beetle kill but doesn't indicate active attack",
+        "Green phase detection is the only point where removing infested trees reduces spread"
+      ],
+      fieldNote: "Checking the lower bole of ponderosa pines during your climb pre-assessment in the Okanagan is a quick habit to build. Pitch tubes on a live tree mean you're potentially looking at an active attack; pitch tubes on a dead tree mean you're confirming beetle kill cause-of-death. Either way, it changes your work plan. On active attacks, flag the tree for discussion with the client — removal removes a population of larvae that will emerge next summer and attack adjacent trees. That's a concrete PHC argument with an actual dollar-value outcome."
+    }
+  },
+  {
+    question: "The unprecedented scale of BC's mountain pine beetle outbreak (1999–ongoing) has been attributed in part to climate change. Which specific climate-related factor most directly reduced the natural population suppression mechanism that previously kept MPB outbreaks in check?",
+    options: [
+      "Increased summer temperatures allowed faster larval development, producing two generations per year instead of one",
+      "Reduced winter snowpack exposed overwintering larvae to lethal air temperatures at the soil surface",
+      "Milder winters with fewer and shorter episodes of sustained cold (below −25°C) dramatically reduced larval winter mortality",
+      "Increased summer drought severely weakened lodgepole pine resin defenses across the entire province simultaneously"
+    ],
+    correct: 2,
+    lesson: {
+      title: "Climate Change and MPB — The Cold Kill Threshold",
+      content: "<p>Mountain pine beetle's natural population regulator has historically been winter cold. Larval MPB overwinter beneath the bark of killed trees, and prolonged cold snaps can kill significant proportions of the overwintering population. The lethal cold thresholds are reasonably well established from research by Dr. Allan Carroll and others at UBC:</p><p>— Temperatures below <strong>−25°C for 3 or more consecutive days</strong> cause significant larval mortality<br>— Temperatures below <strong>−35°C</strong> can cause near-complete population collapse<br>— Sudden early-autumn cold snaps (before larvae have developed cold-hardening compounds) are more lethal than mid-winter cold</p><p>In BC's lodgepole pine forests, the late 1990s and 2000s saw a dramatic reduction in these episodic cold kill events — winters were not only warmer on average but also shorter, reducing the window for lethal cold to occur. Beetle populations that would have been knocked back by a hard January cold snap instead survived at near-complete rates and emerged the following summer at outbreak densities.</p><p>A secondary factor: warming also enabled range expansion. MPB has historically been limited by cold at higher elevations and at the Rocky Mountain barrier. Warmer temperatures allowed the beetle to spread into <strong>jack pine</strong> forests east of the Rockies — a host tree with no evolutionary history with MPB and therefore no co-evolved resistance mechanisms. The Alberta jack pine connection represents a potential transcontinental spread pathway.</p>",
+      keyPoints: [
+        "MPB overwinter as larvae under bark; cold is the primary natural mortality agent",
+        "Threshold: sustained below −25°C for 3+ days causes significant larval die-off",
+        "Warmer winters with fewer cold events = higher overwintering survival = higher outbreak population",
+        "Range expansion enabled by warming: MPB now in jack pine east of the Rockies",
+        "BC outbreak (1999–2015+) killed ~18.1 M ha — larger than the area of Nova Scotia"
+      ],
+      fieldNote: "From an Okanagan perspective, the ponderosa pine MPB story is somewhat different from the lodgepole story that dominated the provincial headlines. Ponderosa pine zones (Kelowna hillsides, Okanagan Mountain, Penticton benches) have seen localized MPB pressure that intensifies during drought years when tree resin defenses weaken. Unlike lodgepole stands where beetles achieve landscape-level mass attack, ponderosa pine attacks tend to be more dispersed and related to individual tree stress. The trees that get hit first are the ones that are already struggling — drought stress, poor soil, root damage, ozone exposure. The beetle is finishing what stress started."
+    }
+  },
+  {
+    question: "Per BC WorkSafeBC OHS Regulation Part 26 (Forestry Operations), what is the PRIMARY safe-work concern when an arborist crew is assigned to work in or adjacent to a stand of mountain pine beetle-killed pines in the grey attack phase?",
+    options: [
+      "Respiratory exposure to blue-stain fungus spores released from beetle emergence holes",
+      "Skin irritation from beetle aggregation pheromone compounds (verbenone) used in management",
+      "Compromised structural integrity of standing dead trees — widow-makers, failing root plates, and unpredictable stem or limb failure",
+      "Chainsaw contact with emergence holes creating unpredictable kickback events"
+    ],
+    correct: 2,
+    lesson: {
+      title: "Working Near Beetle-Kill — The Structural Hazard",
+      content: "<p>Grey-attack MPB snags are among the most hazardous tree conditions an arborist crew encounters. The hazard is not chemical or biological — it is mechanical and structural, and it is severe.</p><p><strong>Why grey snags are so dangerous:</strong></p><p>1. <em>Root decay:</em> After a ponderosa pine has been dead for 2–5+ years, root decay (primarily Armillaria and other white-rot fungi) has often advanced significantly. The root plate can fail with little warning, especially on slopes or in wind. Trees that look stable can fall with no pre-signal.</p><p>2. <em>Top and limb failure:</em> Dead branches lose bark, become checking and brittle, and may fail in any wind event — including the windstorm created by a falling adjacent tree. Working under a grey-attack snag in a stand-level removal operation exposes crew to widow-maker hazards from multiple directions.</p><p>3. <em>Stem integrity:</em> Sapwood decomposition progresses outward from where the tree died. In very advanced snags, the stem may have a hollow core or severely reduced cross-section at the base, making cutting behavior unpredictable.</p><p><strong>WorkSafeBC OHS Regulation Part 26</strong> requires formal hazard assessment before work begins in beetle-killed timber. This includes assessing each tree's stability, root plate condition, and overhead hazards before felling begins. At Microbe Tree, this means pre-work site assessment with the foreman, clear drop zones, no crew in the hazard zone unless actively felling, and extra vigilance for aerial hazards during cuts.</p>",
+      keyPoints: [
+        "Primary hazard: structural failure — root decay, brittle limbs, compromised stem integrity",
+        "Grey-attack trees can fall without warning; root plates fail silently",
+        "Widow-maker risk: brittle dead limbs can fall from any direction, including from adjacent trees",
+        "WorkSafeBC OHS Regulation Part 26 requires hazard assessment before work in beetle-killed stands",
+        "Never work alone in beetle-killed timber; maintain clear escape routes at all times"
+      ],
+      fieldNote: "When Microbe Tree crews are working on Okanagan hillside properties with beetle-killed ponderosa — West Kelowna, Summerland, Naramata benches — the pre-work conversation needs to include the age of the kill. A tree dead for 2 years is a different situation than one dead for 6 years. Probe the root crown for decay before pulling on the stem. Sound the trunk. Look up before cutting. In our dry climate, decomposition is slower than in wetter BC regions, but structural integrity does decrease. A tree that looked solid last season may not be this season after a wet spring."
+    }
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function startQuiz() {
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  loadQuestion(0);
+}
+
+function loadQuestion(index) {
+  answered = false;
+  const q = questions[index];
+  document.getElementById('qCounter').textContent = `Question ${index + 1} of ${questions.length}`;
+  document.getElementById('progressFill').style.width = `${(index / questions.length) * 100}%`;
+  document.getElementById('questionText').textContent = q.question;
+  document.getElementById('lessonReveal').classList.remove('shown');
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectOption(i);
+    container.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.textContent = index < questions.length - 1 ? 'Next Question →' : 'See Results →';
+}
+
+function selectOption(selected) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[currentQ];
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    if (i === selected && i !== q.correct) btn.classList.add('incorrect');
+  });
+
+  if (selected === q.correct) score++;
+
+  const resultTag = document.getElementById('resultTag');
+  resultTag.className = 'result-tag ' + (selected === q.correct ? 'correct' : 'incorrect');
+  resultTag.textContent = selected === q.correct ? '✓ Correct' : '✗ Incorrect — Here\'s the concept:';
+
+  document.getElementById('lessonTitle').textContent = q.lesson.title;
+  document.getElementById('lessonContent').innerHTML = q.lesson.content;
+
+  const kpList = document.getElementById('keyPointsList');
+  kpList.innerHTML = '';
+  q.lesson.keyPoints.forEach(pt => {
+    const li = document.createElement('li');
+    li.textContent = pt;
+    kpList.appendChild(li);
+  });
+
+  document.getElementById('fieldNoteText').textContent = q.lesson.fieldNote;
+  document.getElementById('lessonReveal').classList.add('shown');
+  document.getElementById('lessonReveal').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showFinal();
+  } else {
+    loadQuestion(currentQ);
+    document.getElementById('quizScreen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function showFinal() {
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('finalScreen').style.display = 'block';
+  document.getElementById('finalScore').textContent = score;
+  const msgs = [
+    "Review the attack stages — they're the foundation. Come back to this one.",
+    "Getting there. The pitch tube and structural hazard sections are worth re-reading.",
+    "Solid. Know the stages cold — they change the work plan on every affected site.",
+    "Strong work. The WorkSafeBC hazard piece is the one that actually keeps people safe.",
+    "Nailed it. You can assess an MPB site and brief a crew properly — that's real value."
+  ];
+  document.getElementById('finalMessage').textContent = msgs[score] || msgs[4];
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' });
+}
+
+function restart() {
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('finalScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('homeScreen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
