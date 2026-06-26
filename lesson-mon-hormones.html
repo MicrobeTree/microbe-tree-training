@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Tree Biology — Plant Hormones | Microbe Tree Training</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+header {
+  background: #161b22;
+  border-bottom: 2px solid #22c55e;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-size: 20px; font-weight: 800; color: #22c55e; letter-spacing: -0.5px; }
+.logo span { color: #e6edf3; }
+.day-badge {
+  background: #22c55e18;
+  color: #22c55e;
+  border: 1px solid #22c55e35;
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.header-title { color: #8b949e; font-size: 14px; margin-left: auto; }
+.container { max-width: 820px; margin: 0 auto; padding: 32px 20px; }
+
+/* HOME SCREEN */
+.home-screen { display: block; }
+.week-label { color: #22c55e; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.subtitle { color: #8b949e; font-size: 15px; margin-bottom: 28px; max-width: 560px; }
+.ref-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 22px;
+  margin-bottom: 28px;
+}
+.ref-card h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #22c55e; margin-bottom: 16px; }
+.hormone-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.hormone-table th {
+  text-align: left;
+  color: #8b949e;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #30363d;
+}
+.hormone-table td { padding: 9px 10px; border-bottom: 1px solid #21262d; vertical-align: top; }
+.hormone-table tr:last-child td { border-bottom: none; }
+.hormone-table tr:hover td { background: #1c2128; }
+.h-name { color: #e6edf3; font-weight: 600; }
+.h-made { color: #8b949e; }
+.h-func { color: #d2a679; }
+.h-rel { color: #79c0ff; }
+.start-btn {
+  background: #22c55e;
+  color: #0d1117;
+  border: none;
+  padding: 13px 30px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.start-btn:hover { background: #16a34a; }
+
+/* QUIZ SCREEN */
+.quiz-screen { display: none; }
+.progress-bar {
+  background: #21262d;
+  border-radius: 4px;
+  height: 4px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.progress-fill {
+  background: #22c55e;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.q-counter { color: #8b949e; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+.question-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 26px;
+  margin-bottom: 18px;
+}
+.question-text { font-size: 17px; font-weight: 500; line-height: 1.55; }
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.option-btn {
+  background: #1c2128;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 13px 16px;
+  color: #e6edf3;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.option-btn:hover:not(:disabled) { border-color: #22c55e; background: #22c55e10; }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { border-color: #22c55e; background: #22c55e18; }
+.option-btn.incorrect { border-color: #f85149; background: #f8514918; }
+.opt-letter {
+  background: #30363d;
+  color: #8b949e;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.option-btn.correct .opt-letter { background: #22c55e; color: #0d1117; }
+.option-btn.incorrect .opt-letter { background: #f85149; color: #fff; }
+
+/* LESSON REVEAL */
+.lesson-reveal { display: none; }
+.lesson-reveal.shown { display: block; }
+.result-tag {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.result-tag.correct { color: #22c55e; }
+.result-tag.incorrect { color: #f85149; }
+.lesson-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-left: 3px solid #22c55e;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.lesson-card h3 { font-size: 16px; font-weight: 700; color: #22c55e; margin-bottom: 12px; }
+.lesson-card p { font-size: 14px; color: #c9d1d9; line-height: 1.65; margin-bottom: 12px; }
+.lesson-card p:last-child { margin-bottom: 0; }
+.key-points { margin: 14px 0; }
+.key-points h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; margin-bottom: 8px; }
+.key-points ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.key-points li { font-size: 14px; color: #c9d1d9; padding-left: 18px; position: relative; }
+.key-points li::before { content: "→"; position: absolute; left: 0; color: #22c55e; font-size: 12px; top: 2px; }
+.field-note {
+  background: #1c2128;
+  border: 1px solid #388bfd30;
+  border-left: 3px solid #388bfd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 14px;
+}
+.field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #388bfd; margin-bottom: 8px; }
+.field-note p { font-size: 13px; color: #c9d1d9; line-height: 1.6; }
+.next-btn {
+  background: #22c55e;
+  color: #0d1117;
+  border: none;
+  padding: 11px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 4px;
+}
+.next-btn:hover { background: #16a34a; }
+
+/* FINAL SCREEN */
+.final-screen { display: none; text-align: center; }
+.score-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 4px solid #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto 24px;
+}
+.score-num { font-size: 30px; font-weight: 800; color: #22c55e; }
+.score-denom { font-size: 13px; color: #8b949e; }
+.final-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+.final-subtitle { color: #8b949e; font-size: 15px; margin-bottom: 28px; }
+.restart-btn {
+  background: #22c55e18;
+  color: #22c55e;
+  border: 1px solid #22c55e35;
+  padding: 11px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.restart-btn:hover { background: #22c55e30; }
+
+/* ISA TAG */
+.isa-tag {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #21262d;
+  color: #484f58;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.isa-tag span { color: #6e7681; }
+
+@media (max-width: 600px) {
+  h1 { font-size: 22px; }
+  .question-text { font-size: 15px; }
+  .hormone-table { font-size: 12px; }
+  .hormone-table th, .hormone-table td { padding: 6px 6px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="day-badge">🌿 Monday · Tree Biology</div>
+  <div class="header-title">Week 6 · Plant Hormones</div>
+</header>
+
+<div class="container">
+
+  <!-- HOME SCREEN -->
+  <div class="home-screen" id="homeScreen">
+    <div class="week-label">Week 6 · Tree Biology</div>
+    <h1>Plant Hormones</h1>
+    <p class="subtitle">How auxin, cytokinin, ethylene, ABA, and gibberellin control tree growth — and why every pruning cut is a hormonal event.</p>
+
+    <div class="ref-card">
+      <h3>📋 Hormone Quick Reference</h3>
+      <table class="hormone-table">
+        <thead>
+          <tr>
+            <th>Hormone</th>
+            <th>Produced In</th>
+            <th>Primary Function</th>
+            <th>Arborist Relevance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="h-name">Auxin (IAA)</span></td>
+            <td><span class="h-made">Apical meristems, young leaves</span></td>
+            <td><span class="h-func">Apical dominance, root initiation, cell elongation</span></td>
+            <td><span class="h-rel">Pruning response, epicormic growth, callus formation</span></td>
+          </tr>
+          <tr>
+            <td><span class="h-name">Cytokinin</span></td>
+            <td><span class="h-made">Root tips (primary source)</span></td>
+            <td><span class="h-func">Cell division, delays senescence, lateral bud break</span></td>
+            <td><span class="h-rel">Root–shoot communication, canopy health signal</span></td>
+          </tr>
+          <tr>
+            <td><span class="h-name">Ethylene</span></td>
+            <td><span class="h-made">All tissues, ↑ under stress</span></td>
+            <td><span class="h-func">Abscission, fruit ripening, stress signaling</span></td>
+            <td><span class="h-rel">Stress indicator, premature leaf drop, senescence</span></td>
+          </tr>
+          <tr>
+            <td><span class="h-name">Abscisic Acid (ABA)</span></td>
+            <td><span class="h-made">Roots, leaves (water-stressed)</span></td>
+            <td><span class="h-func">Stomatal closure, dormancy induction</span></td>
+            <td><span class="h-rel">Drought response, winter hardening, transplant stress</span></td>
+          </tr>
+          <tr>
+            <td><span class="h-name">Gibberellin (GA)</span></td>
+            <td><span class="h-made">Young leaves, root tips, seeds</span></td>
+            <td><span class="h-func">Stem elongation, seed germination, flowering</span></td>
+            <td><span class="h-rel">Shoot extension rate, internode spacing</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">Start Quiz — 5 Questions →</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="quiz-screen" id="quizScreen">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="q-counter" id="qCounter">Question 1 of 5</div>
+
+    <div class="question-card">
+      <div class="question-text" id="questionText"></div>
+      <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <div class="lesson-reveal" id="lessonReveal">
+      <div class="result-tag" id="resultTag"></div>
+      <div class="lesson-card">
+        <h3 id="lessonTitle"></h3>
+        <div id="lessonContent"></div>
+        <div class="key-points">
+          <h4>Key Points</h4>
+          <ul id="keyPointsList"></ul>
+        </div>
+        <div class="field-note">
+          <div class="field-note-label">📋 Field Note — Okanagan</div>
+          <p id="fieldNoteText"></p>
+        </div>
+      </div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div class="final-screen" id="finalScreen">
+    <div class="score-circle">
+      <div class="score-num" id="finalScore">0</div>
+      <div class="score-denom">out of 5</div>
+    </div>
+    <h2 class="final-title">Week 6 — Hormones Complete</h2>
+    <p class="final-subtitle" id="finalMessage"></p>
+    <button class="restart-btn" onclick="restart()">← Review Reference Card</button>
+  </div>
+
+  <!-- ISA TAG -->
+  <div class="isa-tag">
+    <span>📚 ISA Exam Domain: Tree Biology (11%)</span> · Sources: ISA Arborists' Certification Study Guide (4th Ed.) Ch. 2 · Taiz & Zeiger, Plant Physiology · Hartmann, Kester et al., Plant Propagation
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    question: "Which plant hormone is primarily responsible for apical dominance — the suppression of lateral bud growth by the main shoot tip — and moves from the apex toward the roots?",
+    options: [
+      "Ethylene — produced under stress and diffuses outward from all tissues",
+      "Abscisic acid (ABA) — produced in roots and signals drought response",
+      "Auxin (IAA) — produced in apical meristems and young expanding leaves",
+      "Cytokinin — produced in root tips and travels up through the xylem"
+    ],
+    correct: 2,
+    lesson: {
+      title: "Auxin and Apical Dominance",
+      content: "<p>Auxin (indole-3-acetic acid, IAA) is produced in apical meristems and young, actively expanding leaves. It moves <strong>basipetally</strong> — tip to root — through a specialized polar auxin transport system in the stem. High auxin concentrations from the shoot tip suppress the growth of lateral (axillary) buds below. This is the mechanism behind <em>apical dominance</em>.</p><p>When the terminal bud is removed — by pruning, mechanical damage, or animal browsing — auxin production from that source collapses. The suppression of lateral buds below is released, and those buds break dormancy and grow. This is why every heading cut, every topping job, and every broken terminal produces a flush of regrowth below it. The response is hormonal and completely predictable.</p><p>Auxin also plays a central role in wound response: it stimulates the vascular cambium to produce callus and woundwood at pruning wounds, and it drives root initiation — which is why IBA (indole-3-butyric acid) is used in commercial rooting compounds for cuttings.</p>",
+      keyPoints: [
+        "Auxin moves tip → root (basipetally) through polar transport cells",
+        "Suppresses lateral (axillary) buds while the terminal is intact",
+        "Remove the terminal → auxin drops → laterals break → regrowth flush",
+        "Drives callus formation at wounds and root initiation in cuttings",
+        "Concentration gradient, not absolute level, controls the dominance effect"
+      ],
+      fieldNote: "When you see epicormic sprouts erupting from a ponderosa pine trunk after heavy lion's-tailing, or a topped cottonwood covered in dense watershoots, you're watching apical dominance collapse in real time. The auxin gradient from the crown is gone; every dormant bud responds. Those sprouts grow rapidly, attach weakly, and become the next structural problem. ANSI A300 prohibits lion's tailing precisely because the hormonal outcome is this predictable and this bad."
+    }
+  },
+  {
+    question: "A boulevard trembling aspen is showing premature leaf yellowing and early drop in late August after a prolonged dry spell. Which hormone, elevated in response to water deficit, is most directly responsible for triggering stomatal closure and accelerating leaf senescence?",
+    options: [
+      "Auxin — declining levels signal leaf blade senescence to the abscission zone",
+      "Abscisic acid (ABA) — synthesized in water-stressed roots and leaves, rapidly closes stomata",
+      "Cytokinin — reduced production in drought-stressed roots accelerates canopy senescence",
+      "Gibberellin — reduced production under drought stress limits shoot extension"
+    ],
+    correct: 1,
+    lesson: {
+      title: "Abscisic Acid — The Drought Signal",
+      content: "<p>Abscisic acid (ABA) is the primary hormone of stress and dormancy. When a tree's roots detect water deficit, ABA is synthesized in root cells and exported to the shoot via the xylem. In leaves, ABA binds to guard cell receptors and triggers rapid stomatal closure — the tree's first-line drought response. This happens within minutes of ABA reaching the leaf.</p><p>Under sustained drought, leaf ABA concentrations continue to rise, accelerating chlorophyll breakdown and senescence. The abscission zone at the leaf petiole base becomes active — leaves begin to drop. This is not disease. It's a controlled hormonal retreat: the tree is shedding surface area to reduce water loss.</p><p>ABA also drives dormancy. As days shorten in autumn, rising ABA levels signal meristems to cease growth and harden off for winter. Transplant stress, flooded roots, and soil compaction all elevate ABA — one reason why newly planted trees in a dry Okanagan summer can show leaf drop and apparent decline even when irrigation is provided (the root system hasn't established enough to match the ABA from the damaged root zone).</p>",
+      keyPoints: [
+        "ABA synthesized in water-stressed roots and leaves",
+        "Rapidly closes stomata via guard cell receptor signaling",
+        "Accelerates leaf senescence and abscission under sustained stress",
+        "Drives dormancy induction in autumn (responds to both drought and photoperiod)",
+        "Elevated ABA from damaged/stressed roots can cause canopy symptoms even with irrigation"
+      ],
+      fieldNote: "In a Kelowna summer — 35°C afternoons, low humidity, alkaline soil with low water-holding capacity — mid-day stomatal closure via ABA is a daily event in boulevard trees. When a client calls about leaves curling or drooping mid-afternoon on their linden or cottonwood, this is often physiological drought response, not wilt disease. The tree opens stomata early, transpires through the morning, then ABA-driven closure kicks in by early afternoon. If the leaves recover overnight, it's drought response. If they don't — look harder at the roots and soil."
+    }
+  },
+  {
+    question: "A Norway spruce on a client's property is showing mid-summer needle drop and early crown thinning following a summer of construction soil disturbance near the drip line. Which plant hormone, produced in ALL plant tissues and elevated by mechanical stress, flooding, drought, and wounding, most likely explains the accelerated senescence?",
+    options: [
+      "Gibberellin — reduced stem elongation diverts energy toward senescence",
+      "Abscisic acid — elevated by soil compaction, closes stomata and forces dormancy",
+      "Auxin — reduced flow from stressed canopy decreases root growth",
+      "Ethylene — elevated by mechanical injury and root stress, accelerates chlorophyll breakdown and abscission"
+    ],
+    correct: 3,
+    lesson: {
+      title: "Ethylene — The Stress Hormone",
+      content: "<p>Ethylene is unique: it's a gas (C₂H₄), not a liquid compound, and it diffuses through intercellular spaces. Almost every plant tissue can produce it, and production spikes under stress: mechanical wounding, flooding (anaerobic soil), drought, pathogen attack, and extremes of temperature all trigger ethylene synthesis via the ACC pathway.</p><p>In trees, ethylene accelerates <em>senescence processes</em>: chlorophyll breakdown, cell wall degradation in abscission zones, and fruit/seed ripening. Elevated ethylene in a stressed tree shows up as premature needle or leaf drop, early autumn colour, and rapid decline of damaged tissue. It's the tree mobilizing resources away from expendable tissue — accelerated triage.</p><p>In construction damage scenarios, soil compaction and root severing create both mechanical wounding (direct ethylene trigger) and anaerobic pockets from compacted soil (flooding-response ethylene). The combined effect can cause visible crown symptoms within a single growing season, well before the tree's energy reserves are actually depleted.</p><p>Ethylene is also the hormone behind the \"triple response\" in seedlings under mechanical pressure: shortened, thickened stems with a horizontal growth hook. Understanding this response helps explain why trees in tight urban situations show atypical growth forms.</p>",
+      keyPoints: [
+        "Ethylene is a gas — diffuses through intercellular spaces",
+        "Elevated by: mechanical wounding, flooding, drought, pathogens, temperature extremes",
+        "Accelerates chlorophyll breakdown → yellowing/browning",
+        "Drives abscission zone activity → leaf, needle, and fruit drop",
+        "Construction damage triggers ethylene via both wounding and soil compaction / anaerobic conditions"
+      ],
+      fieldNote: "Okanagan new-build sites are one of the most common ethylene-surge environments we work in. Graders remove topsoil, compact subsoil, sever roots, and may trench for services — all within the drip line of existing trees. The result: ethylene-driven crown decline that shows up 1-3 years after construction, by which time the client has forgotten the connection. When you see mid-crown needle drop or premature senescence on a site with recent construction history, map the disturbance zone against the drip line before reaching for a spray program. Root damage is usually the story."
+    }
+  },
+  {
+    question: "An arborist performs a crown reduction cut, removing the terminal of a scaffold branch and cutting back to a vigorous lateral that is approximately 40% the diameter of the removed portion. Per ISA Best Management Practices, why is cutting to this lateral biologically superior to leaving a stub at the same point?",
+    options: [
+      "The lateral produces more ethylene, which seals the wound faster",
+      "The lateral branch re-establishes auxin flow through the reduced crown, suppressing epicormic regrowth below the cut",
+      "Cutting to a lateral increases cytokinin production at the wound site, promoting faster compartmentalization",
+      "The lateral prevents ABA from accumulating at the cut stub, which would otherwise cause dieback"
+    ],
+    correct: 1,
+    lesson: {
+      title: "Auxin, Reduction Cuts, and Why Stubs Fail",
+      content: "<p>When you make a proper reduction cut to a viable lateral branch, that lateral becomes the new terminal for its portion of the crown. As it grows and expands, its own apical meristems begin producing auxin, which flows basipetally through the branch below the cut. This re-established auxin gradient suppresses the dormant buds in the area — preventing the dense epicormic flush that invariably follows heading cuts (which cut to no lateral at all).</p><p>A stub has no auxin source. With no apical dominance restored, every dormant bud near the wound is free to break. The result: dense, weakly attached watershoot clusters growing directly from the stump. These are structurally unsound, grow rapidly, and create greater hazard than the original condition the cut was meant to address. This is why the ISA BMP for Pruning specifies that reduction cuts must be made to a lateral with adequate size to assume the terminal role.</p><p>The <strong>1/3 rule</strong>: the lateral must be at least 1/3 the diameter of the portion being removed. A lateral that is too small cannot assume terminal dominance and will fail to maintain auxin flow effectively. ANSI A300 Part 1 requires that reduction cuts be made to \"a lateral branch large enough to assume the terminal role of the removed branch.\"</p>",
+      keyPoints: [
+        "Proper reduction cut → lateral assumes terminal role → auxin gradient re-established",
+        "Re-established auxin suppresses dormant buds → minimal epicormic flush",
+        "Stub = no auxin source = every bud near the wound breaks dormancy",
+        "ISA BMP: lateral must be ≥ 1/3 diameter of removed portion",
+        "ANSI A300 Part 1: reduction cuts must be to laterals capable of assuming terminal dominance"
+      ],
+      fieldNote: "On Okanagan boulevard elms, cottonwoods, and silver maples, the difference between a proper reduction cut and a heading cut becomes obvious by the following July. Proper reduction: clean wound, one or two small shoots max, the lateral is growing up and out. Heading cut: an exploding fistful of watershoots from every bud within 30 cm of the stub. The crew comes back the next year, and the year after. Getting one proper cut right saves three service calls."
+    }
+  },
+  {
+    question: "Which plant hormone is produced primarily in root tips, travels upward through the xylem, and promotes cell division in the canopy — is it a critical signal about below-ground health that shows up as above-ground decline when roots are compromised?",
+    options: [
+      "Gibberellin — produced in young expanding leaves and drives internode elongation",
+      "Ethylene — a gaseous stress hormone produced by all tissues",
+      "Abscisic acid — synthesized in stressed root cells and exported to close stomata",
+      "Cytokinin — synthesized in root tips and transported acropetally via xylem to drive cell division in the shoot"
+    ],
+    correct: 3,
+    lesson: {
+      title: "Cytokinin — Root-to-Canopy Communication",
+      content: "<p>Cytokinin (CK) is the primary root-to-shoot signal in trees. It is synthesized in root tips (meristematic cells) and transported upward (acropetally) through the xylem in the transpiration stream. In the canopy, cytokinin promotes cell division, delays senescence, stimulates lateral bud break, and keeps leaves green and metabolically active.</p><p>This makes cytokinin production a real-time report card from the root system. When root volume is healthy and active, CK supply to the canopy is steady — leaves stay green longer, shoot growth is vigorous, and the tree is resilient. When roots are damaged (construction, drought, disease, grade change, compaction), CK production falls. The canopy gets less cell-division signal. The result: smaller leaves, poor shoot extension, premature yellowing, dieback that starts at the branch tips and moves inward. Exactly the pattern you'd associate with drought or decline — because physiologically, it is the same cascade.</p><p>This is why root health drives canopy appearance. A tree with 60% of its roots severed by a trench can look completely normal for the remainder of that growing season (it's living on stored energy and the remaining roots' CK production), then decline visibly the following spring when it tries to push new growth with an inadequate root-to-shoot ratio.</p>",
+      keyPoints: [
+        "Cytokinin synthesized in root tips → travels acropetally (root-to-shoot) via xylem",
+        "Promotes cell division, shoot growth, and delays leaf senescence",
+        "Reduced CK from damaged roots = smaller leaves, tip dieback, early yellowing",
+        "Canopy decline often trails root damage by one full growing season",
+        "CK production correlates with absorbing root tip density — measure below to understand above"
+      ],
+      fieldNote: "When a client on a Kelowna hillside site shows you a ponderosa pine or birch with progressive tip dieback, reduced shoot extension, and leaves that are smaller than normal — the story is usually in the roots before it's in the canopy. Check for grade changes, compaction, root conflicts with buried utilities, or recent irrigation changes. Declining cytokinin from a reduced or stressed root system is writing the story you're reading in the crown. Fix the soil environment and protect remaining roots; the canopy often responds within one to two growing seasons."
+    }
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function startQuiz() {
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  loadQuestion(0);
+}
+
+function loadQuestion(index) {
+  answered = false;
+  const q = questions[index];
+  document.getElementById('qCounter').textContent = `Question ${index + 1} of ${questions.length}`;
+  document.getElementById('progressFill').style.width = `${(index / questions.length) * 100}%`;
+  document.getElementById('questionText').textContent = q.question;
+  document.getElementById('lessonReveal').classList.remove('shown');
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectOption(i);
+    container.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.textContent = index < questions.length - 1 ? 'Next Question →' : 'See Results →';
+}
+
+function selectOption(selected) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[currentQ];
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    if (i === selected && i !== q.correct) btn.classList.add('incorrect');
+  });
+
+  if (selected === q.correct) score++;
+
+  const resultTag = document.getElementById('resultTag');
+  resultTag.className = 'result-tag ' + (selected === q.correct ? 'correct' : 'incorrect');
+  resultTag.textContent = selected === q.correct ? '✓ Correct' : '✗ Incorrect — Here\'s the concept:';
+
+  document.getElementById('lessonTitle').textContent = q.lesson.title;
+  document.getElementById('lessonContent').innerHTML = q.lesson.content;
+
+  const kpList = document.getElementById('keyPointsList');
+  kpList.innerHTML = '';
+  q.lesson.keyPoints.forEach(pt => {
+    const li = document.createElement('li');
+    li.textContent = pt;
+    kpList.appendChild(li);
+  });
+
+  document.getElementById('fieldNoteText').textContent = q.lesson.fieldNote;
+  document.getElementById('lessonReveal').classList.add('shown');
+  document.getElementById('lessonReveal').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showFinal();
+  } else {
+    loadQuestion(currentQ);
+    document.getElementById('quizScreen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function showFinal() {
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('finalScreen').style.display = 'block';
+  document.getElementById('finalScore').textContent = score;
+  const msgs = [
+    "Keep at it — review the field notes and bring questions to tailgate.",
+    "Solid foundation. Re-read the sections that tripped you up.",
+    "Good work. The field notes are where the gaps close.",
+    "Strong. You've got the hormone logic down — now apply it in the field.",
+    "Nailed it. Next time you see a bad heading cut, you'll know exactly why it fails."
+  ];
+  document.getElementById('finalMessage').textContent = msgs[score] || msgs[4];
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' });
+}
+
+function restart() {
+  currentQ = 0; score = 0; answered = false;
+  document.getElementById('finalScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('homeScreen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
