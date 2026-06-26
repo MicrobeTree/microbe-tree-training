@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌳 Tree Profile — Paper Birch | Microbe Tree Training</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+header {
+  background: #161b22;
+  border-bottom: 2px solid #06b6d4;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-size: 20px; font-weight: 800; color: #06b6d4; letter-spacing: -0.5px; }
+.logo span { color: #e6edf3; }
+.day-badge {
+  background: #06b6d418;
+  color: #06b6d4;
+  border: 1px solid #06b6d435;
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.header-title { color: #8b949e; font-size: 14px; margin-left: auto; }
+
+/* LAYOUT */
+.layout { display: flex; min-height: calc(100vh - 53px); }
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #161b22;
+  border-right: 1px solid #21262d;
+  padding: 24px 0;
+  position: sticky;
+  top: 53px;
+  height: calc(100vh - 53px);
+  overflow-y: auto;
+}
+.sidebar-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #484f58;
+  padding: 0 20px;
+  margin-bottom: 12px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #8b949e;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-item:hover { color: #e6edf3; background: #1c2128; }
+.nav-item.active { color: #06b6d4; border-left-color: #06b6d4; background: #06b6d410; }
+.nav-icon { font-size: 16px; }
+
+.content { flex: 1; padding: 32px 32px; max-width: 680px; }
+.section-panel { display: none; }
+.section-panel.active { display: block; }
+
+/* CONTENT STYLES */
+.species-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #06b6d4; margin-bottom: 6px; }
+h2 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+.binomial { color: #8b949e; font-style: italic; font-size: 16px; margin-bottom: 24px; }
+p { font-size: 14px; color: #c9d1d9; line-height: 1.7; margin-bottom: 14px; }
+p:last-child { margin-bottom: 0; }
+h3 { font-size: 15px; font-weight: 700; color: #e6edf3; margin: 20px 0 10px; }
+strong { color: #e6edf3; }
+
+/* INFO GRID */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.info-item {
+  background: #1c2128;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.info-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #484f58; margin-bottom: 4px; }
+.info-val { font-size: 14px; color: #e6edf3; font-weight: 600; }
+.info-sub { font-size: 12px; color: #8b949e; }
+
+/* TOLERANCE BARS */
+.tolerance-section { margin: 18px 0; }
+.tol-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.tol-label { font-size: 13px; color: #c9d1d9; width: 140px; flex-shrink: 0; }
+.tol-bar-bg { flex: 1; background: #21262d; border-radius: 4px; height: 8px; }
+.tol-bar { height: 8px; border-radius: 4px; }
+.tol-val { font-size: 12px; color: #8b949e; width: 60px; text-align: right; }
+
+/* PEST / DISEASE CARDS */
+.pest-card {
+  background: #1c2128;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.pest-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.pest-name { font-size: 15px; font-weight: 700; color: #e6edf3; }
+.pest-binomial { font-size: 12px; color: #8b949e; font-style: italic; }
+.severity-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.sev-critical { background: #f8514920; color: #f85149; border: 1px solid #f8514940; }
+.sev-moderate { background: #f9731620; color: #f97316; border: 1px solid #f9731640; }
+.sev-low { background: #22c55e20; color: #22c55e; border: 1px solid #22c55e40; }
+.pest-meta { display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+.pest-meta-item { font-size: 12px; }
+.pest-meta-item span { color: #484f58; }
+.pest-meta-item strong { color: #8b949e; font-weight: 600; }
+.pest-card p { font-size: 13px; color: #8b949e; line-height: 1.6; margin-bottom: 0; }
+
+/* HIGHLIGHT / WARNING BOXES */
+.highlight-box {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 14px 0;
+}
+.hb-warn { background: #f8514910; border: 1px solid #f8514930; border-left: 3px solid #f85149; }
+.hb-tip { background: #06b6d410; border: 1px solid #06b6d430; border-left: 3px solid #06b6d4; }
+.hb-info { background: #22c55e10; border: 1px solid #22c55e30; border-left: 3px solid #22c55e; }
+.hb-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.hb-warn .hb-label { color: #f85149; }
+.hb-tip .hb-label { color: #06b6d4; }
+.hb-info .hb-label { color: #22c55e; }
+.highlight-box p { font-size: 13px; margin-bottom: 0; }
+
+/* PRUNE TABLE */
+.prune-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+.prune-table th { text-align: left; color: #484f58; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px; border-bottom: 1px solid #30363d; }
+.prune-table td { padding: 9px 10px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
+.prune-table tr:last-child td { border-bottom: none; }
+
+/* ISA TAG */
+.isa-tag {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid #21262d;
+  color: #484f58;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.isa-tag span { color: #6e7681; }
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; display: flex; overflow-x: auto; padding: 12px 0; }
+  .sidebar-title { display: none; }
+  .nav-item { border-left: none; border-bottom: 3px solid transparent; padding: 8px 16px; white-space: nowrap; }
+  .nav-item.active { border-bottom-color: #06b6d4; border-left-color: transparent; }
+  .content { padding: 20px 16px; }
+  .info-grid { grid-template-columns: 1fr; }
+  h2 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="day-badge">🌳 Wednesday · Tree Profile</div>
+  <div class="header-title">Week 6 · Paper Birch</div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">Sections</div>
+    <div class="nav-item active" onclick="showSection('identity')"><span class="nav-icon">🔍</span>Identity</div>
+    <div class="nav-item" onclick="showSection('origin')"><span class="nav-icon">🗺</span>Origin</div>
+    <div class="nav-item" onclick="showSection('biology')"><span class="nav-icon">🌱</span>Biology</div>
+    <div class="nav-item" onclick="showSection('pests')"><span class="nav-icon">🐛</span>Pest Pressures</div>
+    <div class="nav-item" onclick="showSection('disease')"><span class="nav-icon">🍄</span>Disease Pressures</div>
+    <div class="nav-item" onclick="showSection('arborist')"><span class="nav-icon">🪚</span>Arborist Notes</div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- IDENTITY -->
+    <div class="section-panel active" id="panel-identity">
+      <div class="species-name">Week 6 · Tree Profile</div>
+      <h2>Paper Birch</h2>
+      <div class="binomial">Betula papyrifera Marsh. — Family Betulaceae</div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Common Names</div>
+          <div class="info-val">Paper birch, canoe birch</div>
+          <div class="info-sub">White birch (colloquial)</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Typical Height</div>
+          <div class="info-val">15–25 m</div>
+          <div class="info-sub">Up to 30 m in ideal conditions</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Crown Spread</div>
+          <div class="info-val">8–15 m</div>
+          <div class="info-sub">Oval to rounded, open canopy</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Longevity</div>
+          <div class="info-val">60–100 years (open sites)</div>
+          <div class="info-sub">80–140 yr in forests</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Bark (Mature)</div>
+          <div class="info-val">White, papery, peeling</div>
+          <div class="info-sub">Brown and furrowed at base</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Fall Color</div>
+          <div class="info-val">Clear yellow</div>
+          <div class="info-sub">Early — often mid-September in Okanagan</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Leaves</div>
+          <div class="info-val">Alternate, simple, doubly serrate</div>
+          <div class="info-sub">5–10 cm, ovate, pointed tip</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Form</div>
+          <div class="info-val">Single or multi-stem</div>
+          <div class="info-sub">Often clump form in landscape</div>
+        </div>
+      </div>
+
+      <h3>Identification at a Glance</h3>
+      <p>Paper birch is unmistakable when mature: the chalky-white, horizontally peeling bark makes it one of the most recognizable trees in Canada. Younger trees show brownish-gray, non-peeling bark for the first several years. The characteristic papery layers peel in thin horizontal strips. <strong>Important:</strong> do not peel bark from living trees — it damages the living tissue beneath and can introduce infection.</p>
+      <p>Twigs are slender, slightly rough (with small resinous glands), and reddish-brown. Winter ID relies on the bark, twig character, and the distinctive triangular-ovate bud. The tree is monoecious: separate male catkins (long, pendulous, produced in autumn and overwintering) and female catkins (smaller, upright) appear on the same tree, with wind pollination in early spring.</p>
+
+      <div class="highlight-box hb-tip">
+        <div class="hb-label">🔑 Field ID Note</div>
+        <p>Distinguish paper birch from European white birch (Betula pendula) planted in Okanagan landscapes: European white birch has pendulous (weeping) branchlets, smaller leaves with more elongated tip, and bark that does not peel as cleanly. Paper birch has more upright to spreading branches and characteristically peels in broad, white sheets.</p>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section-panel" id="panel-origin">
+      <h2>Origin & Natural Range</h2>
+      <p>Paper birch has one of the widest natural distributions of any deciduous tree in North America. Its native range spans from Newfoundland and Labrador across the entire boreal forest belt to Alaska, and south through the Appalachians, the Great Lakes region, and the northern Rockies. In British Columbia, it is found throughout the province — from the coast (where it is less common) across the Interior, through the Columbia Mountains, and into the Okanagan Highlands.</p>
+
+      <p>In the Okanagan region specifically, paper birch occupies <strong>cool, moist microsites</strong>: north-facing valley slopes, riparian corridors, higher elevations (Silver Star, Apex, Okanagan Mountain), and areas with consistent soil moisture. It is not a valley-floor species in the Okanagan interior — the hot, dry semi-arid conditions of Kelowna, Penticton, and Osoyoos valley floors are at the edge of or beyond its climate tolerance.</p>
+
+      <h3>Ecological Role</h3>
+      <p>Paper birch is a <strong>pioneer species</strong> — one of the first trees to colonize disturbed sites following wildfire, clearcut, or windthrow. Its tiny, winged seeds are produced in enormous quantities and dispersed by wind across wide areas. It is extremely intolerant of shade; seedlings require full sun to establish, which is why it thrives in post-disturbance environments before slower-growing, more shade-tolerant species (spruce, fir) overtake it.</p>
+
+      <p>In mixed boreal/subalpine forest, paper birch commonly grows alongside trembling aspen (which we covered last week), black spruce, white spruce, and balsam fir. In BC's Interior Wet Belt, it associates with interior Douglas-fir and western red cedar on moist sites. It plays an important role in post-fire recovery, providing rapid canopy closure that shades the ground for subsequent species establishment.</p>
+
+      <p>The mycorrhizal network beneath birch stands is extensive and ecologically significant. Paper birch forms ectomycorrhizal associations with dozens of fungal species, and research by Dr. Suzanne Simard (UBC) has documented carbon transfer between paper birch and Douglas-fir through shared mycorrhizal networks — a finding that changed our understanding of forest ecosystem connectivity.</p>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section-panel" id="panel-biology">
+      <h2>Biology — What Paper Birch Needs</h2>
+
+      <h3>Cultural Requirements</h3>
+      <p>Paper birch is a demanding tree for urban plantings in hot, dry climates. It evolved in cool, moist environments and brings those requirements with it. Understanding where it will and won't thrive is essential for honest client conversations and long-term PHC plans.</p>
+
+      <div class="tolerance-section">
+        <div class="tol-row">
+          <div class="tol-label">Shade Tolerance</div>
+          <div class="tol-bar-bg"><div class="tol-bar" style="width:15%;background:#f85149"></div></div>
+          <div class="tol-val">Very Low</div>
+        </div>
+        <div class="tol-row">
+          <div class="tol-label">Drought Tolerance</div>
+          <div class="tol-bar-bg"><div class="tol-bar" style="width:20%;background:#f85149"></div></div>
+          <div class="tol-val">Very Low</div>
+        </div>
+        <div class="tol-row">
+          <div class="tol-label">Heat Tolerance</div>
+          <div class="tol-bar-bg"><div class="tol-bar" style="width:25%;background:#f97316"></div></div>
+          <div class="tol-val">Low</div>
+        </div>
+        <div class="tol-row">
+          <div class="tol-label">Cold Hardiness</div>
+          <div class="tol-bar-bg"><div class="tol-bar" style="width:95%;background:#22c55e"></div></div>
+          <div class="tol-val">Excellent</div>
+        </div>
+        <div class="tol-row">
+          <div class="tol-label">Compaction Tolerance</div>
+          <div class="tol-bar-bg"><div class="tol-bar" style="width:20%;background:#f85149"></div></div>
+          <div class="tol-val">Very Low</div>
+        </div>
+        <div class="tol-row">
+          <div class="tol-label">Alkaline Soil</div>
+          <div class="tol-bar-bg"><div class="tol-bar" style="width:25%;background:#f97316"></div></div>
+          <div class="tol-val">Poor</div>
+        </div>
+        <div class="tol-row">
+          <div class="tol-label">Urban Stress</div>
+          <div class="tol-bar-bg"><div class="tol-bar" style="width:20%;background:#f85149"></div></div>
+          <div class="tol-val">Very Low</div>
+        </div>
+      </div>
+
+      <h3>Root System</h3>
+      <p>Paper birch has a <strong>shallow, wide-spreading fibrous root system</strong>. The bulk of absorbing roots are in the top 30–60 cm of soil. This makes it highly vulnerable to soil compaction, grade changes, and root zone disturbance. Roots extend well beyond the drip line — typically 1.5–2× the crown radius. Compaction within the drip line directly compromises the root system's water and nutrient uptake capacity.</p>
+
+      <h3>Growth Rate and Form</h3>
+      <p>Paper birch is fast-growing in youth — 50–80 cm of new shoot extension per year in good conditions is typical in the first two decades. Growth slows significantly after 30–40 years. The canopy is open, allowing significant light penetration, which makes it useful in multi-story plantings. In landscape settings, it is commonly planted in clumps of 3–5 stems for visual effect.</p>
+
+      <div class="highlight-box hb-warn">
+        <div class="hb-label">⚠ Okanagan Planting Reality</div>
+        <p>Paper birch is <strong>a poor choice for hot valley-floor sites</strong> in Kelowna, West Kelowna, Penticton, and Osoyoos. Summer temperatures regularly exceed 35°C, soils are alkaline, and evapotranspiration demand far exceeds what most urban irrigation delivers. Trees planted here are chronically water-stressed, which opens the door to bronze birch borer — the primary killer (see Pest Pressures). On cool north-facing sites, near water features, or at higher elevations, paper birch can perform well with thoughtful establishment.</p>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section-panel" id="panel-pests">
+      <h2>Pest Pressures</h2>
+
+      <div class="pest-card">
+        <div class="pest-header">
+          <div>
+            <div class="pest-name">Bronze Birch Borer</div>
+            <div class="pest-binomial">Agrilus anxius Gory (Buprestidae)</div>
+          </div>
+          <span class="severity-badge sev-critical">Critical</span>
+        </div>
+        <div class="pest-meta">
+          <div class="pest-meta-item"><span>Season: </span><strong>Adults active June–August (Okanagan)</strong></div>
+          <div class="pest-meta-item"><span>Signs: </span><strong>D-shaped exit holes; top dieback; serpentine galleries under bark</strong></div>
+        </div>
+        <p>The bronze birch borer is the most destructive pest of paper birch across North America and the primary killer of stressed birch in the Okanagan. Adults are slender, olive-bronze beetles (8–12 mm) that emerge in June, mate, and lay eggs in bark crevices of stressed trees. Larvae bore into the cambium layer and create meandering, frass-packed galleries that interrupt water and nutrient transport. Trees in poor health are preferentially attacked; vigorous trees can defend with resin flow.</p>
+        <p style="margin-top:10px;">Progression is top-down: upper crown dieback appears first (1–2 seasons after initial attack), then works downward over 2–4 years until the tree is dead. The diagnostic sign is the <strong>D-shaped adult emergence hole</strong> (approximately 4 mm across) on the bark surface, often in clusters. Serpentine larval galleries are visible under the bark when a section is peeled back. See last week's Thursday lesson (bronze birch borer) for full diagnosis and management detail.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-header">
+          <div>
+            <div class="pest-name">Birch Leafminer</div>
+            <div class="pest-binomial">Fenusa pusilla Lepeletier (Tenthredinidae)</div>
+          </div>
+          <span class="severity-badge sev-moderate">Moderate</span>
+        </div>
+        <div class="pest-meta">
+          <div class="pest-meta-item"><span>Season: </span><strong>First generation May–June; multiple generations possible</strong></div>
+          <div class="pest-meta-item"><span>Signs: </span><strong>Brown blotch mines on leaves; skeletonized leaf appearance</strong></div>
+        </div>
+        <p>A European sawfly introduced to North America, birch leafminer is now widespread throughout BC. Adults lay eggs in expanding leaves in spring; larvae mine between the leaf surfaces, creating tan-brown blotch mines that coalesce as the larvae grow. Heavily mined trees develop a scorched appearance by midsummer. Birch leafminer rarely kills trees on its own but significantly weakens them — contributing to the overall stress load that makes trees attractive to bronze birch borer. Management: systemic imidacloprid soil injection (spring) provides effective control in high-value trees.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-header">
+          <div>
+            <div class="pest-name">Forest Tent Caterpillar</div>
+            <div class="pest-binomial">Malacosoma disstria Hübner (Lasiocampidae)</div>
+          </div>
+          <span class="severity-badge sev-moderate">Cyclic</span>
+        </div>
+        <div class="pest-meta">
+          <div class="pest-meta-item"><span>Season: </span><strong>Larvae active May–June; outbreak years</strong></div>
+          <div class="pest-meta-item"><span>Signs: </span><strong>Mass defoliation; egg bands on small twigs; silky tents NOT in tree (unlike eastern tent caterpillar)</strong></div>
+        </div>
+        <p>Forest tent caterpillar undergoes population cycles with major outbreaks every 10–15 years in BC. At outbreak levels, paper birch and trembling aspen can be completely defoliated across thousands of hectares. Healthy trees typically survive 1–2 years of complete defoliation by leafing out again late in the season from stored energy reserves. Repeated defoliation (3+ consecutive years) weakens trees significantly and increases borer susceptibility. Outbreaks are typically controlled by disease (nuclear polyhedrosis virus) and parasitoid wasps naturally within 2–4 years.</p>
+      </div>
+
+      <div class="highlight-box hb-info">
+        <div class="hb-label">🌿 Key PHC Principle</div>
+        <p>For paper birch, <strong>pest prevention is vigour management</strong>. Bronze birch borer targets stressed trees. Leafminer adds stress. Caterpillar defoliation adds stress. Every layer of stress compounds the others. A well-sited, properly irrigated, mulched birch with a protected root zone will fend off borer attack indefinitely. A stressed birch in compacted soil on a hot south-facing slope is a borer fatality waiting to happen.</p>
+      </div>
+    </div>
+
+    <!-- DISEASE -->
+    <div class="section-panel" id="panel-disease">
+      <h2>Disease Pressures</h2>
+
+      <div class="pest-card">
+        <div class="pest-header">
+          <div>
+            <div class="pest-name">Birch Dieback / Anthracnose</div>
+            <div class="pest-binomial">Marssonina betulae; Discula betulina (various)</div>
+          </div>
+          <span class="severity-badge sev-moderate">Moderate</span>
+        </div>
+        <p>Leaf spot and anthracnose diseases cause irregular brown spots with yellow halos, particularly during cool, wet spring weather. Severe infection can cause premature defoliation. In the Okanagan, dry summer conditions limit this disease compared to coastal BC, but cool wet springs can trigger notable infection. Rarely fatal; healthy trees typically push new foliage and recover. Cultural control: rake and remove fallen leaves; avoid overhead irrigation. Fungicide applications are seldom warranted in the Okanagan climate.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-header">
+          <div>
+            <div class="pest-name">Neonectria / Birch Canker</div>
+            <div class="pest-binomial">Neonectria galligena; Cytospora spp.</div>
+          </div>
+          <span class="severity-badge sev-moderate">Moderate</span>
+        </div>
+        <p>Canker pathogens infect birch through wounds and stressed bark tissue. Neonectria galligena causes Target Canker — distinctive concentric ring scars on larger branches and the main stem. Cytospora species (covered in a previous lesson) also affect weakened birch, producing sunken, discolored bark lesions with orange-red pycnidia visible when wet. Both are <em>stress-opportunist</em> pathogens: they typically cannot colonize vigorous trees but move rapidly on stressed, wounded, or freeze-thawed bark. Management focuses on improving tree health; surgical canker removal is not recommended as infection typically spreads beyond the visible margin.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-header">
+          <div>
+            <div class="pest-name">Chaga / White Rot (Inonotus obliquus)</div>
+            <div class="pest-binomial">Inonotus obliquus (Ach. ex Pers.) Pilát</div>
+          </div>
+          <span class="severity-badge sev-critical">Structural Risk</span>
+        </div>
+        <p>Inonotus obliquus, commonly known as chaga, is a wood-decay fungus that causes white rot of birch heartwood and sapwood. The sterile conk (the black, charcoal-like growth on the outside of the bark) is the vegetative stage — it indicates extensive internal decay is already present. The fertile stage is a bracket produced only when the tree is nearly dead. <strong>A tree with a chaga conk has significant internal decay and must be assessed for structural risk.</strong> Chaga has gained popular attention as a health supplement, but the presence of the conk on a landscape birch is a red flag for the climbing arborist. Probe for cavity depth; assess lean, defects, and targets before recommending retention.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-header">
+          <div>
+            <div class="pest-name">Armillaria Root Rot</div>
+            <div class="pest-binomial">Armillaria spp.</div>
+          </div>
+          <span class="severity-badge sev-moderate">Moderate</span>
+        </div>
+        <p>Armillaria (honey fungus) is present throughout BC forest soils and can attack weakened birch root systems. Signs: honey-colored mushroom clusters at the base of the tree in fall, white mycelial fans under the bark at the root collar, and characteristic black rhizomorphs (root-like fungal threads) spreading through soil. Root rot leads to destabilization and increased windthrow risk. Trees with suspected Armillaria should be assessed for lean, basal decay, and root plate integrity before any climbing work is authorized.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section-panel" id="panel-arborist">
+      <h2>Arborist Notes</h2>
+
+      <h3>Pruning</h3>
+      <p>Paper birch is a <strong>profuse sap bleeder in late winter and early spring</strong> when temperatures fluctuate above and below freezing. Pruning during this window (typically February–mid-April in the Okanagan) results in heavy sap flow from wounds. This is not harmful to the tree — sap bleeding is cosmetically unpleasant and may attract insects, but does not cause disease or lasting damage. However, many clients are alarmed by it.</p>
+
+      <table class="prune-table">
+        <thead>
+          <tr><th>Season</th><th>Sap Flow Risk</th><th>Recommended?</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Late fall (Oct–Nov)</td><td>None</td><td>✓ Preferred</td><td>Fully dormant; no sap flow; good wound compartmentalization timing</td></tr>
+          <tr><td>Winter (Dec–Jan)</td><td>None</td><td>✓ Good</td><td>Fully dormant; clear visibility of structure</td></tr>
+          <tr><td>Late winter (Feb–Mar)</td><td>High</td><td>⚠ Avoid if possible</td><td>Sap rises; profuse bleeding; client concerns</td></tr>
+          <tr><td>Spring leaf-out (Apr–May)</td><td>Moderate</td><td>⚠ Avoid</td><td>Wounds during expansion stress tree significantly</td></tr>
+          <tr><td>Mid-summer (Jul–Aug)</td><td>Low</td><td>✓ Acceptable</td><td>Fully leafed out; lower sap pressure; second-best window</td></tr>
+        </tbody>
+      </table>
+
+      <h3>PHC Approach</h3>
+      <p>The dominant PHC strategy for paper birch in the Okanagan is <strong>stress reduction and vigor maintenance</strong>. This is not abstract advice — it is the direct prevention strategy for bronze birch borer, the tree's primary killer. Specific interventions:</p>
+      <ul style="list-style:none; margin:10px 0 14px; display:flex; flex-direction:column; gap:8px;">
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">Deep mulching (5–10 cm):</strong> Extend to drip line; keeps root zone cool and moist, mimics forest floor conditions the tree evolved in</li>
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">Deep root watering (summer):</strong> Weekly deep soak during July–August heat; shallow frequent irrigation encourages root shallowness and heat stress</li>
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">Root zone protection:</strong> No cultivation within drip line; limit foot traffic; no grade changes</li>
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">Systemic insecticide (preventive):</strong> Imidacloprid or dinotefuran soil injection in early spring for high-value trees in borer-pressure areas; prevention is far more effective than curative treatment</li>
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">Avoid unnecessary wounding:</strong> Every wound is a potential borer entry point; minimize pruning cuts and protect from mechanical damage</li>
+      </ul>
+
+      <h3>Client Conversation Points</h3>
+      <div class="highlight-box hb-tip">
+        <div class="hb-label">💬 What to say</div>
+        <p><em>"Paper birch is naturally a short-lived tree — 60 to 100 years in a good forest site, often less in urban conditions. If your tree is 40+ years old and showing dieback, this may be part of its natural lifespan. Bronze birch borer is the immediate cause, but the underlying driver is usually site stress. The honest conversation is: can we reduce that stress enough to extend its life, or is it time to plan for a replacement species that's better suited to the site?"</em></p>
+      </div>
+
+      <h3>Replacement Species for Hot, Dry Okanagan Sites</h3>
+      <p>When paper birch is failing in a hot, dry site, recommend species with better heat and drought tolerance that provide similar aesthetic character:</p>
+      <ul style="list-style:none; margin:10px 0; display:flex; flex-direction:column; gap:6px;">
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">River birch (Betula nigra):</strong> Better heat tolerance; exfoliating cinnamon bark; moist sites preferred but more adaptable</li>
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">Bur oak (Quercus macrocarpa):</strong> Extremely drought tolerant; long-lived; excellent Okanagan landscape tree</li>
+        <li style="font-size:14px;color:#c9d1d9;padding-left:18px;position:relative;"><span style="position:absolute;left:0;color:#06b6d4;">→</span> <strong style="color:#e6edf3;">Hackberry (Celtis occidentalis):</strong> Underused in the Interior; tough, adaptable, good fall color</li>
+      </ul>
+
+      <div class="isa-tag">
+        <span>📚 ISA Exam Domains: Tree Biology (11%) · Tree Risk Assessment (11%) · Tree Selection & Establishment (7%)</span> · Sources: ISA Arborists' Certification Study Guide (4th Ed.) · BC Ministry of Forests, Pests of BC publication series · Johnson & Lyon, Insects that Feed on Trees and Shrubs · Farrar, Trees in Canada · Simard et al. (1997), Net transfer of carbon between ectomycorrhizal tree species, Nature
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.querySelector('.content').scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
