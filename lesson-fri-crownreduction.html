@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧗 Worksite Techniques — Crown Reduction | Microbe Tree Training</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+header {
+  background: #161b22;
+  border-bottom: 2px solid #3b82f6;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-size: 20px; font-weight: 800; color: #3b82f6; letter-spacing: -0.5px; }
+.logo span { color: #e6edf3; }
+.day-badge {
+  background: #3b82f618;
+  color: #3b82f6;
+  border: 1px solid #3b82f635;
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.header-title { color: #8b949e; font-size: 14px; margin-left: auto; }
+.container { max-width: 860px; margin: 0 auto; padding: 32px 20px; }
+.week-label { color: #3b82f6; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.subtitle { color: #8b949e; font-size: 15px; margin-bottom: 32px; max-width: 600px; }
+
+/* SECTION HEADERS */
+.section { margin-bottom: 36px; }
+.section-header {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #3b82f6;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3b82f630;
+}
+.card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 22px;
+  margin-bottom: 14px;
+}
+.card p { font-size: 14px; color: #c9d1d9; line-height: 1.65; margin-bottom: 10px; }
+.card p:last-child { margin-bottom: 0; }
+strong { color: #e6edf3; }
+
+/* ANSI DEFINITION BOX */
+.ansi-def {
+  background: #3b82f610;
+  border: 1px solid #3b82f630;
+  border-left: 3px solid #3b82f6;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.ansi-def-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #3b82f6; margin-bottom: 8px; }
+.ansi-def p { font-size: 14px; color: #c9d1d9; line-height: 1.6; margin-bottom: 8px; }
+.ansi-def p:last-child { margin-bottom: 0; }
+.ansi-def em { color: #e6edf3; font-style: italic; }
+
+/* COMPARISON DIAGRAMS */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.compare-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 18px; }
+.compare-card.bad { border-top: 3px solid #ef4444; }
+.compare-card.good { border-top: 3px solid #22c55e; }
+.compare-label { font-size: 13px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.compare-card.bad .compare-label { color: #ef4444; }
+.compare-card.good .compare-label { color: #22c55e; }
+.compare-card svg { display: block; margin: 0 auto 12px; }
+.compare-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.compare-card li { font-size: 13px; color: #8b949e; padding-left: 16px; position: relative; }
+.compare-card.bad li::before { content: "✕"; position: absolute; left: 0; color: #ef4444; font-size: 11px; }
+.compare-card.good li::before { content: "✓"; position: absolute; left: 0; color: #22c55e; font-size: 11px; }
+
+/* RULE DIAGRAM */
+.diagram-container {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.diagram-caption { font-size: 13px; color: #8b949e; text-align: center; margin-top: 14px; line-height: 1.5; }
+
+/* STEP LIST */
+.steps { display: flex; flex-direction: column; gap: 12px; }
+.step { display: flex; gap: 14px; align-items: flex-start; background: #1c2128; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
+.step-num { width: 28px; height: 28px; border-radius: 50%; background: #3b82f6; color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-text { font-size: 14px; color: #c9d1d9; line-height: 1.55; }
+
+/* TABLE */
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-table th { text-align: left; color: #8b949e; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; border-bottom: 1px solid #30363d; }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid #21262d; color: #c9d1d9; vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.td-ok { color: #22c55e; font-weight: 600; }
+.td-warn { color: #f97316; font-weight: 600; }
+.td-bad { color: #ef4444; font-weight: 600; }
+
+/* BOXES */
+.warn-box { background: #ef444410; border: 1px solid #ef444430; border-left: 3px solid #ef4444; border-radius: 8px; padding: 16px; margin: 14px 0; }
+.warn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #ef4444; margin-bottom: 8px; }
+.tip-box { background: #22c55e10; border: 1px solid #22c55e30; border-left: 3px solid #22c55e; border-radius: 8px; padding: 16px; margin: 14px 0; }
+.tip-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #22c55e; margin-bottom: 8px; }
+.field-note { background: #1c2128; border: 1px solid #388bfd30; border-left: 3px solid #388bfd; border-radius: 8px; padding: 16px; margin: 14px 0; }
+.field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #388bfd; margin-bottom: 8px; }
+.field-note p, .warn-box p, .tip-box p { font-size: 13px; color: #c9d1d9; line-height: 1.6; margin-bottom: 6px; }
+.field-note p:last-child, .warn-box p:last-child, .tip-box p:last-child { margin-bottom: 0; }
+ul.bullet-list { list-style: none; display: flex; flex-direction: column; gap: 7px; margin: 10px 0; }
+ul.bullet-list li { font-size: 14px; color: #c9d1d9; padding-left: 18px; position: relative; }
+ul.bullet-list li::before { content: "→"; position: absolute; left: 0; color: #3b82f6; font-size: 12px; top: 2px; }
+
+.isa-tag { margin-top: 40px; padding-top: 20px; border-top: 1px solid #21262d; color: #484f58; font-size: 12px; line-height: 1.6; }
+.isa-tag span { color: #6e7681; }
+
+@media (max-width: 600px) {
+  .compare-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="day-badge">🧗 Friday · Worksite Techniques</div>
+  <div class="header-title">Week 6 · Crown Reduction</div>
+</header>
+
+<div class="container">
+  <div class="week-label">Week 6 · Worksite Techniques</div>
+  <h1>Crown Reduction Pruning</h1>
+  <p class="subtitle">What ANSI A300 actually requires, where the cut goes, why the 1/3 rule matters, and how to tell the difference between a proper reduction and a heading cut with good intentions.</p>
+
+  <!-- DEFINITION & STANDARDS -->
+  <div class="section">
+    <div class="section-header">⊕ Standard Definition</div>
+    <div class="ansi-def">
+      <div class="ansi-def-label">📐 ANSI A300 Part 1 — Section 8.7</div>
+      <p><em>"Crown reduction pruning reduces the height and/or spread of a tree. Crown reduction is preferred over topping and is used to reduce end-weight on limbs, provide clearance, or reduce stress on the structure of the tree."</em></p>
+      <p><em>"Crown reduction pruning should be used only when other pruning types will not accomplish the goal."</em></p>
+    </div>
+    <div class="card">
+      <p>Crown reduction is not the first tool you reach for. It is a specific technique with specific indications. The standard places it below other pruning types in preference because it involves removing significant terminal material, which — if done incorrectly — creates heading cuts, opens large wounds, and produces structurally inferior regrowth.</p>
+      <p>The legitimate indications for crown reduction include: reducing end-weight on structurally suspect limbs, providing clearance to structures where the tree cannot be removed, managing storm damage response, or restoring a previously topped tree over multiple seasons. The common misuse: using it as a "size reduction" service without structural justification, or executing it as a batch of heading cuts with no lateral selection discipline.</p>
+    </div>
+  </div>
+
+  <!-- HEADING CUT vs REDUCTION CUT -->
+  <div class="section">
+    <div class="section-header">⊕ Reduction Cut vs. Heading Cut — The Critical Difference</div>
+    <div class="compare-grid">
+      <div class="compare-card bad">
+        <div class="compare-label">✕ Heading Cut (Wrong)</div>
+        <svg viewBox="0 0 180 200" width="160" height="180" xmlns="http://www.w3.org/2000/svg">
+          <!-- Main branch going up-right -->
+          <line x1="30" y1="180" x2="130" y2="30" stroke="#58a6ff" stroke-width="10" stroke-linecap="round"/>
+          <!-- Cut line - straight across, no lateral -->
+          <line x1="100" y1="20" x2="155" y2="72" stroke="#ef4444" stroke-width="3" stroke-dasharray="6,3"/>
+          <!-- Stub end -->
+          <circle cx="130" cy="30" r="6" fill="#ef4444"/>
+          <text x="135" y="26" fill="#ef4444" font-size="11" font-family="sans-serif">STUB</text>
+          <!-- Regrowth arrows from stub -->
+          <line x1="130" y1="30" x2="115" y2="5" stroke="#f97316" stroke-width="2"/>
+          <polygon points="115,5 111,13 119,13" fill="#f97316"/>
+          <line x1="130" y1="30" x2="148" y2="8" stroke="#f97316" stroke-width="2"/>
+          <polygon points="148,8 148,17 156,12" fill="#f97316"/>
+          <line x1="130" y1="30" x2="155" y2="25" stroke="#f97316" stroke-width="2"/>
+          <polygon points="155,25 150,33 158,32" fill="#f97316"/>
+          <text x="90" y="60" fill="#f97316" font-size="10" font-family="sans-serif">Dense</text>
+          <text x="88" y="72" fill="#f97316" font-size="10" font-family="sans-serif">epicormic</text>
+          <text x="88" y="84" fill="#f97316" font-size="10" font-family="sans-serif">sprouts</text>
+          <text x="8" y="175" fill="#8b949e" font-size="10" font-family="sans-serif">Cut to nothing</text>
+          <text x="8" y="187" fill="#8b949e" font-size="10" font-family="sans-serif">→ violates A300</text>
+        </svg>
+        <ul>
+          <li>Cut made where no viable lateral exists</li>
+          <li>Leaves a dead stub</li>
+          <li>Stub dies, wound stays open</li>
+          <li>Dense epicormic regrowth below cut</li>
+          <li>Sprouts weakly attached, grow fast</li>
+          <li>Violates ANSI A300 Part 1</li>
+          <li>Often called "topping" — prohibited</li>
+        </ul>
+      </div>
+      <div class="compare-card good">
+        <div class="compare-label">✓ Reduction Cut (Correct)</div>
+        <svg viewBox="0 0 180 200" width="160" height="180" xmlns="http://www.w3.org/2000/svg">
+          <!-- Main branch going up-right -->
+          <line x1="30" y1="180" x2="100" y2="80" stroke="#58a6ff" stroke-width="10" stroke-linecap="round"/>
+          <!-- Lateral branch going up-left from union -->
+          <line x1="100" y1="80" x2="60" y2="20" stroke="#58a6ff" stroke-width="7" stroke-linecap="round"/>
+          <!-- Removed portion (ghost/dashed) -->
+          <line x1="100" y1="80" x2="150" y2="10" stroke="#58a6ff" stroke-width="3" stroke-dasharray="5,5" opacity="0.3"/>
+          <!-- Cut line at lateral union -->
+          <line x1="85" y1="65" x2="118" y2="95" stroke="#22c55e" stroke-width="3" stroke-dasharray="6,3"/>
+          <!-- Lateral growing vigorously -->
+          <text x="25" y="15" fill="#22c55e" font-size="10" font-family="sans-serif">Lateral</text>
+          <text x="25" y="27" fill="#22c55e" font-size="10" font-family="sans-serif">assumes</text>
+          <text x="25" y="39" fill="#22c55e" font-size="10" font-family="sans-serif">terminal</text>
+          <text x="115" y="30" fill="#8b949e" font-size="10" font-family="sans-serif" opacity="0.5">Removed</text>
+          <text x="115" y="42" fill="#8b949e" font-size="10" font-family="sans-serif" opacity="0.5">portion</text>
+          <!-- 1/3 diameter label -->
+          <line x1="62" y1="72" x2="100" y2="80" stroke="#22c55e" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="8" y="175" fill="#8b949e" font-size="10" font-family="sans-serif">Cut to lateral</text>
+          <text x="8" y="187" fill="#8b949e" font-size="10" font-family="sans-serif">≥ 1/3 diameter</text>
+        </svg>
+        <ul>
+          <li>Cut made to a living, viable lateral</li>
+          <li>Lateral assumes terminal role</li>
+          <li>Wound closes over properly</li>
+          <li>Auxin gradient re-established</li>
+          <li>Minimal epicormic flush</li>
+          <li>Complies with ANSI A300 Part 1</li>
+          <li>Tree maintains natural structure</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE 1/3 DIAMETER RULE -->
+  <div class="section">
+    <div class="section-header">⊕ The 1/3 Diameter Rule</div>
+    <div class="diagram-container">
+      <svg viewBox="0 0 500 220" width="500" height="220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="500" height="220" fill="#161b22"/>
+
+        <!-- EXAMPLE 1: Too small (fail) -->
+        <!-- Main branch (large) -->
+        <rect x="60" y="60" width="30" height="140" rx="4" fill="#58a6ff" opacity="0.8"/>
+        <!-- Tiny lateral -->
+        <rect x="40" y="60" width="8" height="60" rx="4" fill="#58a6ff" transform="rotate(-30, 48, 60)" opacity="0.6"/>
+        <!-- X mark -->
+        <text x="30" y="175" fill="#ef4444" font-size="28" font-family="sans-serif" font-weight="bold">✕</text>
+        <text x="25" y="198" fill="#ef4444" font-size="11" font-family="sans-serif">Too small</text>
+        <text x="23" y="212" fill="#8b949e" font-size="10" font-family="sans-serif">&lt;1/3 diameter</text>
+        <!-- Arrow showing small lateral -->
+        <line x1="50" y1="70" x2="50" y2="100" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="2" y="75" fill="#ef4444" font-size="10" font-family="sans-serif">8mm</text>
+        <text x="62" y="90" fill="#8b949e" font-size="9" font-family="sans-serif">30mm</text>
+
+        <!-- EXAMPLE 2: Borderline (marginal) -->
+        <rect x="200" y="60" width="30" height="140" rx="4" fill="#58a6ff" opacity="0.8"/>
+        <!-- Marginal lateral - exactly 1/3 -->
+        <rect x="175" y="60" width="10" height="70" rx="4" fill="#58a6ff" transform="rotate(-25, 185, 60)" opacity="0.7"/>
+        <text x="175" y="198" fill="#f97316" font-size="28" font-family="sans-serif" font-weight="bold">~</text>
+        <text x="168" y="198" fill="#f97316" font-size="11" font-family="sans-serif" dy="0">Marginal</text>
+        <text x="166" y="212" fill="#8b949e" font-size="10" font-family="sans-serif">≈1/3 diameter</text>
+        <text x="148" y="75" fill="#f97316" font-size="10" font-family="sans-serif">10mm</text>
+        <text x="202" y="90" fill="#8b949e" font-size="9" font-family="sans-serif">30mm</text>
+
+        <!-- EXAMPLE 3: Good (pass) -->
+        <rect x="350" y="60" width="30" height="140" rx="4" fill="#58a6ff" opacity="0.8"/>
+        <!-- Good lateral - >1/3 -->
+        <rect x="320" y="60" width="14" height="80" rx="4" fill="#58a6ff" transform="rotate(-25, 334, 60)" opacity="0.85"/>
+        <text x="323" y="198" fill="#22c55e" font-size="28" font-family="sans-serif" font-weight="bold">✓</text>
+        <text x="320" y="198" fill="#22c55e" font-size="11" font-family="sans-serif" dy="0">Good</text>
+        <text x="318" y="212" fill="#8b949e" font-size="10" font-family="sans-serif">&gt;1/3 diameter</text>
+        <text x="296" y="75" fill="#22c55e" font-size="10" font-family="sans-serif">14mm+</text>
+        <text x="352" y="90" fill="#8b949e" font-size="9" font-family="sans-serif">30mm</text>
+
+        <!-- Title -->
+        <text x="250" y="30" fill="#e6edf3" font-size="14" font-family="sans-serif" font-weight="bold" text-anchor="middle">ISA BMP: Lateral Must Be ≥ 1/3 Diameter of Removed Portion</text>
+        <text x="250" y="48" fill="#8b949e" font-size="12" font-family="sans-serif" text-anchor="middle">Example: removing a 30mm branch — acceptable lateral must be ≥ 10mm diameter at union</text>
+      </svg>
+      <p class="diagram-caption">The 1/3 rule ensures the lateral is large enough to assume terminal dominance after the cut. A lateral that is too small will not re-establish adequate auxin flow and will not sustain apical control over the reduced branch.</p>
+    </div>
+  </div>
+
+  <!-- CUT PLACEMENT -->
+  <div class="section">
+    <div class="section-header">⊕ Cut Placement — Branch Bark Ridge & Collar</div>
+    <div class="diagram-container">
+      <svg viewBox="0 0 440 260" width="440" height="260" xmlns="http://www.w3.org/2000/svg">
+        <rect width="440" height="260" fill="#161b22"/>
+
+        <!-- Parent branch (horizontal) -->
+        <rect x="20" y="110" width="200" height="40" rx="6" fill="#4a5568" opacity="0.9"/>
+        <!-- Lateral branch going up from parent -->
+        <rect x="145" y="20" width="35" height="120" rx="6" fill="#58a6ff" opacity="0.85"/>
+        <!-- Branch bark ridge (raised area on upper surface of union) -->
+        <ellipse cx="162" cy="108" rx="22" ry="8" fill="#3b82f6" opacity="0.7"/>
+        <text x="105" y="100" fill="#3b82f6" font-size="11" font-family="sans-serif">Branch</text>
+        <text x="105" y="113" fill="#3b82f6" font-size="11" font-family="sans-serif">Bark Ridge</text>
+        <line x1="135" y1="108" x2="148" y2="108" stroke="#3b82f6" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Branch collar (swelling at base of branch) -->
+        <ellipse cx="162" cy="148" rx="26" ry="10" fill="#22c55e" opacity="0.5"/>
+        <text x="195" y="152" fill="#22c55e" font-size="11" font-family="sans-serif">Branch Collar</text>
+        <line x1="190" y1="150" x2="200" y2="150" stroke="#22c55e" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- CORRECT cut line (angled from outside BBR to just outside collar) -->
+        <line x1="142" y1="100" x2="185" y2="152" stroke="#22c55e" stroke-width="3" stroke-dasharray="0"/>
+        <text x="190" y="100" fill="#22c55e" font-size="12" font-family="sans-serif" font-weight="bold">✓ Correct Cut</text>
+        <text x="190" y="115" fill="#8b949e" font-size="10" font-family="sans-serif">Outside BBR on top</text>
+        <text x="190" y="128" fill="#8b949e" font-size="10" font-family="sans-serif">Outside collar on bottom</text>
+        <text x="190" y="141" fill="#8b949e" font-size="10" font-family="sans-serif">Angled to match BBR</text>
+
+        <!-- WRONG CUT 1: Too far out (stub) -->
+        <line x1="148" y1="60" x2="185" y2="80" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+        <text x="190" y="65" fill="#ef4444" font-size="11" font-family="sans-serif">✕ Too far out</text>
+        <text x="190" y="78" fill="#8b949e" font-size="10" font-family="sans-serif">(stub remains)</text>
+
+        <!-- WRONG CUT 2: Flush cut (into parent) -->
+        <line x1="148" y1="162" x2="178" y2="160" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+        <text x="185" y="165" fill="#ef4444" font-size="11" font-family="sans-serif">✕ Flush cut</text>
+        <text x="185" y="178" fill="#8b949e" font-size="10" font-family="sans-serif">(removes collar)</text>
+
+        <!-- Labels for main branch, lateral -->
+        <text x="25" y="135" fill="#8b949e" font-size="11" font-family="sans-serif">Parent branch</text>
+        <text x="148" y="16" fill="#58a6ff" font-size="11" font-family="sans-serif">Lateral</text>
+      </svg>
+      <p class="diagram-caption">The correct reduction cut starts just outside the Branch Bark Ridge (BBR) on the upper surface of the union and angles down to just outside the branch collar on the underside. Cutting into the collar removes the natural defense zone; leaving a stub cuts too far out and the stub dies back.</p>
+    </div>
+
+    <div class="card">
+      <p>The <strong>Branch Bark Ridge (BBR)</strong> is the raised, often darker ridge of bark that forms on the upper surface of a branch union. It marks the boundary between the parent branch's and lateral branch's tissues. Your cut starts just outside (above) the BBR on the top side of the union.</p>
+      <p>The <strong>branch collar</strong> is the swollen zone of parent-branch tissue that wraps around the base of the lateral branch. It contains defense chemicals and specialized tissues that drive woundwood formation. Cutting into the collar removes this defense zone and dramatically slows wound closure. Your cut ends just outside (below) the visible collar swell on the underside.</p>
+      <p>The resulting cut angle varies by branch attachment geometry — typically 45–60° from horizontal on branches with normal angles. On steeply angled branches, the BBR may be less prominent; look for the slight color or texture change at the union boundary.</p>
+    </div>
+  </div>
+
+  <!-- STEP-BY-STEP PROCESS -->
+  <div class="section">
+    <div class="section-header">⊕ The Reduction Cut — Step by Step</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Identify the objective and the target lateral.</strong> Crown reduction must have a stated objective (end-weight reduction, clearance, structure). Identify the lateral branch you are cutting to — confirm it meets the 1/3 diameter requirement and is growing in an appropriate upward/outward direction to assume terminal dominance.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Calculate total removal.</strong> Per ISA BMP for Pruning, a single pruning event should not exceed <strong>25% of the live crown</strong>. Assess the full scope before starting cuts. If the job requires more than 25%, discuss a multi-year programme with the client — it's better practice and produces better outcomes.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Undercut first on large branches (>8 cm diameter).</strong> Per the three-cut method: first undercut 30–40 cm out from the final cut location (prevents bark tearing); second cut removes the bulk of the branch from the topside (removes weight, stopping at the stub); third cut is the final reduction cut at the lateral union.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Locate the Branch Bark Ridge (BBR).</strong> Find the raised ridge on the upper surface of the branch union. Your cut angle follows the BBR — starting just outside it on the top side. On clear unions, the BBR is obvious; on embedded branches with included bark, probe carefully as the collar may not be well-defined.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-text"><strong>Execute the final cut.</strong> Clean, single-pass cut from just outside the BBR on the top, angling down to just outside the branch collar on the underside. No tearing, rocking, or binding. If using a handsaw on position, ensure your body position and rigging are set before committing to the cut — a redirected running end surprises you once.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-text"><strong>Assess the wound.</strong> A clean reduction cut shows a smooth, oval wound face with no torn fibers, no stub, and the collar intact on the lower margin. The cut should smell clean — not like rot. If you see decay in the wound face, flag it for the client report. Do NOT apply wound dressings — ANSI A300 does not recommend their use; they do not improve compartmentalization and can trap moisture.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANSI A300 LIMITS -->
+  <div class="section">
+    <div class="section-header">⊕ Standards — What the Numbers Say</div>
+    <div class="card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Standard</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Maximum single-event removal</td>
+            <td><span class="td-warn">25% of live crown</span></td>
+            <td>ISA BMP for Pruning</td>
+          </tr>
+          <tr>
+            <td>Minimum lateral diameter</td>
+            <td><span class="td-warn">≥ 1/3 of removed portion</span></td>
+            <td>ISA BMP for Pruning</td>
+          </tr>
+          <tr>
+            <td>Wound dressings</td>
+            <td><span class="td-bad">Not recommended</span></td>
+            <td>ANSI A300 Part 1, Section 9</td>
+          </tr>
+          <tr>
+            <td>Flush cuts</td>
+            <td><span class="td-bad">Prohibited</span></td>
+            <td>ANSI A300 Part 1</td>
+          </tr>
+          <tr>
+            <td>Topping / heading cuts</td>
+            <td><span class="td-bad">Prohibited (not arboricultural practice)</span></td>
+            <td>ANSI A300 Part 1, ISA Ethics</td>
+          </tr>
+          <tr>
+            <td>Preferred pruning type</td>
+            <td><span class="td-ok">Crown cleaning / thinning over reduction</span></td>
+            <td>ANSI A300 Part 1</td>
+          </tr>
+          <tr>
+            <td>Crown reduction vs. topping</td>
+            <td><span class="td-ok">Crown reduction preferred when needed</span></td>
+            <td>ANSI A300 Part 1, Section 8.7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SAFE WORK (ANSI Z133) -->
+  <div class="section">
+    <div class="section-header">⊕ Safe Work — ANSI Z133 Considerations</div>
+
+    <div class="warn-box">
+      <div class="warn-label">⚠ Overhead and Drop Zone Hazards</div>
+      <p>Crown reduction generates large falling sections of wood from height. Before beginning cuts: <strong>clear the drop zone</strong> (ANSI Z133 requires establishing a work zone with barricades or signage and excluding non-crew personnel). Brief the groundperson on the cut sequence and expected drop location before each cut. Never cut above an area where a crew member is positioned.</p>
+    </div>
+
+    <ul class="bullet-list" style="background:#1c2128; border:1px solid #30363d; border-radius:8px; padding:16px 16px 16px 32px;">
+      <li><strong>Rigging large sections:</strong> For branches that cannot be dropped freely, establish rigging (redirect + lowering line) before making the cut. Verify the anchor, the friction device, and the groundperson's position before committing the saw.</li>
+      <li><strong>Three-point contact:</strong> When working from a saddle on a reduction cut, ensure your positioning lanyard and climbing system are set at the cut point before the saw engages. The wood shifts as the cut progresses — your connection point must stay above or equal to the cut throughout.</li>
+      <li><strong>Saw kickback zone:</strong> On aerial cuts, be conscious of the saw's kickback zone relative to your body. Position the saw so that kickback (if it occurs) does not direct the bar toward the climbing system or your body.</li>
+      <li><strong>Escape route for groundspeople:</strong> Per ANSI Z133, groundspeople must have an identified escape route before any cut begins. The escape is typically 45° behind and away from the planned fall direction — communicate this before the cut.</li>
+      <li><strong>Stem diameter limits:</strong> Large reduction cuts (removing branches &gt;25 cm diameter) warrant pre-work discussion about rigging capacity, anchor strength, and crew skill level. TCIA recommends documented hazard assessment for high-risk cuts.</li>
+    </ul>
+
+    <div class="field-note">
+      <div class="field-note-label">📋 Field Note — Okanagan</div>
+      <p>A common scenario in Kelowna and West Kelowna: a homeowner with a large silver maple or Norway maple overhanging a roof or power line who wants "the top taken off." The instinct is a crown reduction job. Before quoting, ask: can we achieve the clearance objective with crown cleaning + targeted structural pruning instead? If the answer is yes, that's the better job — less trauma to the tree, better long-term outcome, and a smaller risk of regrowth calls in two years. If crown reduction is genuinely warranted (large limbs with included bark, structural problems requiring end-weight reduction), plan it properly: identify your laterals in advance, confirm they meet the 1/3 rule, calculate total removal, and price for doing it right. A flat-rate "take it down to the roofline" conversation is a setup for a substandard job.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">💬 Client Conversation — Setting Expectations</div>
+      <p>"Crown reduction is not a haircut — it's a surgical procedure. We can reduce this tree's height by removing back to major laterals, but the tree will respond by pushing new growth. In two to three years, it may be back to where it is now unless we address the underlying issue (usually the wrong tree in the wrong spot). The honest long-term conversation is whether this species and size is right for this location, or whether we're managing a mismatch one prune at a time."</p>
+    </div>
+  </div>
+
+  <div class="isa-tag">
+    <span>📚 ISA Exam Domains: Pruning (15%) · Safe Work Practices (28%)</span> · Sources: ANSI A300 Part 1 — Pruning (2017 Ed.) · ISA Best Management Practices for Pruning (2nd Ed.) · ANSI Z133 (2017 Ed.) Section 5 — Working Aloft · ISA Arborists' Certification Study Guide (4th Ed.) Ch. 7 · Shigo, A., A New Tree Biology (wound response and CODIT implications for cut placement)
+  </div>
+</div>
+
+</body>
+</html>
