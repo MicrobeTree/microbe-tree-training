@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRT vs DdRT Climbing Systems | Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+  .header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 20px;display:flex;align-items:center;gap:12px}
+  .logo{color:#3fb950;font-weight:700;font-size:15px;letter-spacing:.5px}
+  .day-badge{background:#8957e520;border:1px solid #8957e550;color:#bc8cff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
+  .header-title{font-size:13px;color:#8b949e;margin-left:auto}
+  .container{max-width:860px;margin:0 auto;padding:28px 20px}
+  .hero{background:linear-gradient(135deg,#8957e518 0%,#1f6feb15 100%);border:1px solid #8957e540;border-radius:12px;padding:24px;margin-bottom:28px}
+  .hero h1{font-size:22px;font-weight:700;color:#e6edf3;margin-bottom:6px}
+  .hero p{color:#8b949e;font-size:14px;line-height:1.6}
+  .section{margin-bottom:32px}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#8957e5;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #8957e530}
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  @media(max-width:640px){.compare-grid{grid-template-columns:1fr}}
+  .compare-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px}
+  .compare-card.srt{border-top:3px solid #1f6feb}
+  .compare-card.ddrt{border-top:3px solid #8957e5}
+  .card-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+  .srt .card-type{color:#79c0ff}
+  .ddrt .card-type{color:#d2a8ff}
+  .compare-card h3{font-size:16px;font-weight:700;color:#e6edf3;margin-bottom:4px}
+  .compare-card .aka{font-size:12px;color:#8b949e;margin-bottom:14px}
+  .compare-card p{font-size:13px;color:#c9d1d9;line-height:1.6;margin-bottom:8px}
+  .compare-card ul{margin-left:16px}
+  .compare-card li{font-size:13px;color:#c9d1d9;line-height:1.6;margin-bottom:4px}
+  .diagram-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  @media(max-width:640px){.diagram-row{grid-template-columns:1fr}}
+  .diagram-box{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
+  .diagram-label{font-size:11px;color:#8b949e;margin-top:8px;text-align:center}
+  .pros-cons-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:640px){.pros-cons-grid{grid-template-columns:1fr}}
+  .pros{background:#3fb95010;border:1px solid #3fb95040;border-radius:8px;padding:14px}
+  .cons{background:#da363310;border:1px solid #da363340;border-radius:8px;padding:14px}
+  .pc-title{font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;font-weight:700}
+  .pros .pc-title{color:#3fb950}
+  .cons .pc-title{color:#da3633}
+  .pc-list{margin-left:16px}
+  .pc-list li{font-size:13px;color:#c9d1d9;line-height:1.6;margin-bottom:4px}
+  .card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px;margin-bottom:14px}
+  .card h3{font-size:14px;font-weight:700;color:#e6edf3;margin-bottom:10px}
+  .card p{font-size:14px;color:#c9d1d9;line-height:1.7;margin-bottom:8px}
+  .card p:last-child{margin-bottom:0}
+  .card ul{margin-left:18px;margin-bottom:10px}
+  .card li{font-size:14px;color:#c9d1d9;line-height:1.7;margin-bottom:4px}
+  .ansi-box{background:#1f6feb10;border:1px solid #1f6feb40;border-radius:8px;padding:16px;margin-bottom:14px}
+  .ansi-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#79c0ff;margin-bottom:8px}
+  .ansi-box p{font-size:13px;color:#c9d1d9;line-height:1.6;margin-bottom:6px}
+  .ansi-box p:last-child{margin-bottom:0}
+  .ansi-box ul{margin-left:16px}
+  .ansi-box li{font-size:13px;color:#c9d1d9;line-height:1.6;margin-bottom:4px}
+  .field-note{background:#3fb95010;border:1px solid #3fb95040;border-radius:8px;padding:14px;margin-top:14px}
+  .field-note-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#3fb950;margin-bottom:6px}
+  .field-note p{font-size:13px;color:#c9d1d9;line-height:1.6}
+  .when-table{width:100%;border-collapse:collapse;margin-top:10px}
+  .when-table th{background:#21262d;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#8b949e;padding:8px 12px;text-align:left;border-bottom:1px solid #30363d}
+  .when-table td{font-size:13px;color:#c9d1d9;padding:9px 12px;border-bottom:1px solid #21262d;line-height:1.5;vertical-align:top}
+  .when-table tr:last-child td{border-bottom:none}
+  .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+  .badge-srt{background:#1f6feb20;color:#79c0ff;border:1px solid #1f6feb40}
+  .badge-ddrt{background:#8957e520;color:#d2a8ff;border:1px solid #8957e540}
+  .badge-both{background:#3fb95020;color:#3fb950;border:1px solid #3fb95040}
+  .warn{background:#da363310;border:1px solid #da363340;border-radius:8px;padding:14px;margin-top:8px}
+  .warn-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#da3633;margin-bottom:6px}
+  .warn p{font-size:13px;color:#c9d1d9;line-height:1.6}
+  .isa-tag{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 16px;margin-top:28px;font-size:12px;color:#8b949e;line-height:1.6}
+  .isa-tag span{color:#3fb950;font-weight:600}
+  .gear-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media(max-width:500px){.gear-list{grid-template-columns:1fr}}
+  .gear-item{background:#21262d;border-radius:6px;padding:10px 12px;border-left:3px solid #1f6feb}
+  .gear-item.purple{border-left-color:#8957e5}
+  .gear-item .gear-name{font-size:13px;font-weight:600;color:#e6edf3;margin-bottom:2px}
+  .gear-item .gear-desc{font-size:11px;color:#8b949e}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="day-badge">Friday · Worksite Techniques</div>
+  <div class="header-title">Week 7</div>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>🧗 SRT vs DdRT — Two Climbing Systems, One Question</h1>
+    <p>The industry has split on climbing systems. SRS/SRT is gaining ground for production climbing in tall trees; the moving rope system (DdRT/MRS) remains the familiar default for many climbers. This lesson breaks down the mechanics, requirements, hardware, and the judgment calls that tell you which system fits the job.</p>
+  </div>
+
+  <!-- TERMINOLOGY -->
+  <div class="section">
+    <div class="section-title">Terminology — Getting It Straight</div>
+    <div class="compare-grid">
+      <div class="compare-card srt">
+        <div class="card-type">System A</div>
+        <h3>SRS — Stationary Rope System</h3>
+        <div class="aka">Also called: SRT (Single Rope Technique), Fixed Rope, Static System</div>
+        <p>One end of the climbing line is <strong>fixed at the anchor point (TIP)</strong>. The climber moves along the rope using ascenders, friction devices, or mechanical systems. The rope does not pass through the anchor — the anchor holds one end firm.</p>
+        <p>The "S" means the rope itself is stationary at the anchor. The climber moves independently.</p>
+      </div>
+      <div class="compare-card ddrt">
+        <div class="card-type">System B</div>
+        <h3>MRS — Moving Rope System</h3>
+        <div class="aka">Also called: DdRT (Doubled Rope Technique), Double Rope, Dynamic System</div>
+        <p>The climbing line is threaded through (or over) the anchor point (TIP) so that <strong>both ends hang free</strong>. The climber ascends by taking up slack on both strands simultaneously using a friction hitch or mechanical device.</p>
+        <p>The "M" means the rope moves through the anchor as the climber goes up. The midpoint of the rope is at the anchor when fully ascended.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Why the Naming Is Confusing</h3>
+      <p>"SRT" (Single Rope Technique) is a term borrowed from caving/rope access and refers to moving on a single line — it has been widely adopted in arboriculture but some use it interchangeably with "SRS." "DdRT" (Doubled rope technique) emphasizes that the rope is doubled through the redirect, not that there are two ropes. <strong>ANSI Z133-2017</strong> uses the terms <strong>SRS</strong> (stationary rope system) and <strong>MRS</strong> (moving rope system) — use these when referencing the standard or in formal contexts.</p>
+    </div>
+  </div>
+
+  <!-- DIAGRAMS -->
+  <div class="section">
+    <div class="section-title">How Each System Works — Mechanics</div>
+    <div class="diagram-row">
+      <div class="diagram-box">
+        <svg width="200" height="260" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Tree branch -->
+          <rect x="60" y="20" width="80" height="14" rx="4" fill="#2d4a22" stroke="#3fb950" stroke-width="1.5"/>
+          <!-- Fixed anchor at TIP -->
+          <circle cx="100" cy="20" r="6" fill="#1f6feb" stroke="#79c0ff" stroke-width="1.5"/>
+          <text x="115" y="24" fill="#79c0ff" font-size="10">Fixed anchor</text>
+          <!-- Single rope going down -->
+          <line x1="100" y1="26" x2="100" y2="200" stroke="#1f6feb" stroke-width="3"/>
+          <!-- Climber box -->
+          <rect x="75" y="145" width="50" height="30" rx="5" fill="#1f6feb20" stroke="#1f6feb" stroke-width="1.5"/>
+          <text x="100" y="163" text-anchor="middle" fill="#79c0ff" font-size="11">Climber</text>
+          <!-- Ascender on rope -->
+          <rect x="85" y="115" width="30" height="16" rx="3" fill="#d2992220" stroke="#d29922" stroke-width="1.5"/>
+          <text x="100" y="127" text-anchor="middle" fill="#d29922" font-size="9">Ascender</text>
+          <!-- Tail end -->
+          <line x1="100" y1="200" x2="100" y2="240" stroke="#1f6feb" stroke-width="2" stroke-dasharray="5,4"/>
+          <text x="100" y="254" text-anchor="middle" fill="#8b949e" font-size="9">Tail / anchor end</text>
+        </svg>
+        <div class="diagram-label"><span style="color:#79c0ff;font-weight:700">SRS / SRT</span> — Rope fixed at TIP; climber moves up single line with ascender</div>
+      </div>
+      <div class="diagram-box">
+        <svg width="200" height="260" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Tree branch -->
+          <rect x="60" y="20" width="80" height="14" rx="4" fill="#2d4a22" stroke="#3fb950" stroke-width="1.5"/>
+          <!-- Redirect ring at TIP -->
+          <circle cx="100" cy="20" r="6" fill="none" stroke="#8957e5" stroke-width="2.5"/>
+          <text x="112" y="14" fill="#d2a8ff" font-size="9">Ring/redirect</text>
+          <!-- Two strands down -->
+          <line x1="92" y1="26" x2="78" y2="180" stroke="#8957e5" stroke-width="3"/>
+          <line x1="108" y1="26" x2="122" y2="180" stroke="#8957e5" stroke-width="3"/>
+          <!-- Climber box -->
+          <rect x="68" y="148" width="64" height="30" rx="5" fill="#8957e520" stroke="#8957e5" stroke-width="1.5"/>
+          <text x="100" y="166" text-anchor="middle" fill="#d2a8ff" font-size="11">Climber</text>
+          <!-- Friction hitch -->
+          <ellipse cx="100" cy="130" rx="16" ry="8" fill="none" stroke="#d29922" stroke-width="2"/>
+          <text x="100" y="133" text-anchor="middle" fill="#d29922" font-size="9">Hitch</text>
+          <!-- Free ends at bottom -->
+          <line x1="78" y1="180" x2="65" y2="230" stroke="#8957e5" stroke-width="2" stroke-dasharray="5,4"/>
+          <line x1="122" y1="180" x2="135" y2="230" stroke="#8957e5" stroke-width="2" stroke-dasharray="5,4"/>
+          <text x="100" y="248" text-anchor="middle" fill="#8b949e" font-size="9">Free ends (standing &amp; running)</text>
+        </svg>
+        <div class="diagram-label"><span style="color:#d2a8ff;font-weight:700">MRS / DdRT</span> — Rope through redirect; both strands loaded; friction hitch controls position</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROS AND CONS -->
+  <div class="section">
+    <div class="section-title">Comparing the Systems</div>
+
+    <div style="margin-bottom:8px"><span class="badge badge-srt">SRS / SRT</span></div>
+    <div class="pros-cons-grid" style="margin-bottom:16px">
+      <div class="pros">
+        <div class="pc-title">✓ Advantages</div>
+        <ul class="pc-list">
+          <li>More efficient ascending — direct 1:1 mechanical advantage</li>
+          <li>Less rope wear (single pass through anchor vs continuous movement through redirect)</li>
+          <li>Better for tall trees (50m+) — no mechanical disadvantage</li>
+          <li>Faster movement on long traverses</li>
+          <li>Rope can be pre-installed before ascent</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <div class="pc-title">✗ Disadvantages / Requirements</div>
+        <ul class="pc-list">
+          <li>Requires separate descent device (rack, I'D, Rope Wrench)</li>
+          <li>ANSI Z133 mandates a secondary backup (Prusik or mechanical)</li>
+          <li>Less lateral movement flexibility during work positioning</li>
+          <li>Transition between ascent and descent requires deliberate system change</li>
+          <li>More complex for new climbers to learn</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-bottom:8px"><span class="badge badge-ddrt">MRS / DdRT</span></div>
+    <div class="pros-cons-grid" style="margin-bottom:20px">
+      <div class="pros">
+        <div class="pc-title">✓ Advantages</div>
+        <ul class="pc-list">
+          <li>Familiar to most trained arborists</li>
+          <li>Redirect can be repositioned without coming down</li>
+          <li>Fine-grained position control for multi-point pruning work</li>
+          <li>Descent and ascent managed through same device</li>
+          <li>Rope can be coiled around branches for mid-canopy anchoring</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <div class="pc-title">✗ Disadvantages</div>
+        <ul class="pc-list">
+          <li>2:1 mechanical disadvantage — harder work in tall trees</li>
+          <li>Increased rope wear at the redirect/ring point</li>
+          <li>Greater friction loss with dirty or wet rope through metal rings</li>
+          <li>Half the rope length available for working (both ends consumed)</li>
+          <li>Redirect rated WLL must account for redirected load (≈ 2× climber weight)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANSI REQUIREMENTS -->
+  <div class="section">
+    <div class="section-title">ANSI Z133 Requirements</div>
+
+    <div class="ansi-box">
+      <div class="ansi-title">Per ANSI Z133-2017 — Key Requirements for Both Systems</div>
+      <ul>
+        <li>All climbing lines must have a minimum breaking strength of <strong>22.2 kN (5,000 lbf)</strong> per ANSI Z133 Section 9.1.1</li>
+        <li>All hardware used as part of the climbing system must be compatible with the rope diameter and rated appropriately by the manufacturer</li>
+        <li>Arborists must be trained in the specific system they are using and demonstrate competency before solo use</li>
+        <li>Both systems require a work positioning lanyard or secondary connection when performing cutting operations — the climbing line alone is not sufficient</li>
+      </ul>
+    </div>
+
+    <div class="ansi-box" style="margin-top:12px">
+      <div class="ansi-title">Specific SRS / SRT Requirements — ANSI Z133-2017 Section 9.1.5</div>
+      <p>When operating on a stationary rope system, the climber <strong>must use a secondary friction hitch or approved mechanical backup device</strong>. This is non-negotiable — SRS without a backup is non-compliant regardless of the climber's experience level.</p>
+      <ul>
+        <li>The backup must be capable of arresting a fall independently if the primary system fails</li>
+        <li>The backup must be positioned correctly (above the primary device on ascent, below on descent — follow manufacturer guidance for your specific device)</li>
+        <li>Common solutions: Prusik hitch loop, Klemheist, or approved mechanical backup (e.g., Edelrid Spoc, DMM Hitch Climber with Prusik)</li>
+      </ul>
+    </div>
+
+    <div class="warn" style="margin-top:0">
+      <div class="warn-title">⚠ Redirect WLL in MRS — The Load Math Matters</div>
+      <p>In a moving rope system, the redirect point (friction saver, ring sling, or carabiner over a branch) takes approximately <strong>twice the climber's weight</strong> — both loaded strands pull through the redirect. A 90 kg climber + 15 kg gear = 105 kg. The redirect sees approximately 210 kg plus dynamic load. Ensure your friction saver, ring, or redirect hardware is rated appropriately. Swivel-type friction savers rated ≥40 kN MBS are standard industry practice.</p>
+    </div>
+  </div>
+
+  <!-- WHEN TO USE WHICH -->
+  <div class="section">
+    <div class="section-title">When to Use Which System</div>
+    <div class="card">
+      <table class="when-table">
+        <tr>
+          <th>Scenario</th>
+          <th>Preferred System</th>
+          <th>Reason</th>
+        </tr>
+        <tr>
+          <td>Tall tree (30m+) with single primary TIP</td>
+          <td><span class="badge badge-srt">SRS</span></td>
+          <td>Mechanical efficiency; MRS ascending over 30m is exhausting and slow</td>
+        </tr>
+        <tr>
+          <td>Multi-point pruning work requiring lateral movement</td>
+          <td><span class="badge badge-ddrt">MRS</span></td>
+          <td>Redirect flexibility; easier repositioning without system change</td>
+        </tr>
+        <tr>
+          <td>Long aerial traverse between anchor points</td>
+          <td><span class="badge badge-srt">SRS</span></td>
+          <td>Single line moves with climber; MRS limits traverse to rope length/2</td>
+        </tr>
+        <tr>
+          <td>Shorter trees (under 15m), complex crown structure</td>
+          <td><span class="badge badge-ddrt">MRS</span></td>
+          <td>Versatile redirecting in complex crown; mechanical disadvantage less significant</td>
+        </tr>
+        <tr>
+          <td>Production climbing — multiple similar trees</td>
+          <td><span class="badge badge-srt">SRS</span></td>
+          <td>Speed advantage compounding across multiple setups</td>
+        </tr>
+        <tr>
+          <td>New or transitioning climber learning systems</td>
+          <td><span class="badge badge-ddrt">MRS</span></td>
+          <td>More intuitive for most climbers; established training framework</td>
+        </tr>
+        <tr>
+          <td>Work positioning during chainsaw operations</td>
+          <td><span class="badge badge-both">Both</span></td>
+          <td>Either — but secondary lanyard required regardless of primary system; follow ANSI Z133</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- COMMON HARDWARE -->
+  <div class="section">
+    <div class="section-title">Common Hardware by System</div>
+    <div class="card">
+      <h3>SRS / SRT Hardware</h3>
+      <div class="gear-list">
+        <div class="gear-item"><div class="gear-name">Foot Ascender (Pantin)</div><div class="gear-desc">Foot-powered rope grab for SRS ascending</div></div>
+        <div class="gear-item"><div class="gear-name">Hand Ascender (Croll/Basic)</div><div class="gear-desc">Chest or hand-operated rope grab</div></div>
+        <div class="gear-item"><div class="gear-name">Rope Wrench (Teufelberger)</div><div class="gear-desc">Friction device for SRS descent &amp; positioning</div></div>
+        <div class="gear-item"><div class="gear-name">I'D / Rig (Petzl)</div><div class="gear-desc">Assisted-braking descent device for SRS</div></div>
+        <div class="gear-item"><div class="gear-name">Prusik loop (8mm)</div><div class="gear-desc">Mandatory ANSI backup friction hitch</div></div>
+        <div class="gear-item"><div class="gear-name">Fixed anchor system</div><div class="gear-desc">Termination knot or anchor connector at TIP</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>MRS / DdRT Hardware</h3>
+      <div class="gear-list">
+        <div class="gear-item purple"><div class="gear-name">Hitch Climber (HC)</div><div class="gear-desc">Pulley + carabiner combo for friction hitch attachment</div></div>
+        <div class="gear-item purple"><div class="gear-name">Friction Saver / Ring Sling</div><div class="gear-desc">Protects bark and reduces redirect friction at TIP</div></div>
+        <div class="gear-item purple"><div class="gear-name">Tending pulley</div><div class="gear-desc">Single or double sheave at redirect for smoother rope movement</div></div>
+        <div class="gear-item purple"><div class="gear-name">Prusik / VT Hitch loop</div><div class="gear-desc">Friction hitch controlling ascent/descent in MRS</div></div>
+        <div class="gear-item purple"><div class="gear-name">Steel carabiner (TIP)</div><div class="gear-desc">Rated steel locking 'biner for redirect point</div></div>
+        <div class="gear-item purple"><div class="gear-name">Throwline + bag</div><div class="gear-desc">Installing the redirect without rigging a ladder</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field-note">
+    <div class="field-note-title">📋 Field Note — Okanagan Context</div>
+    <p>In the Okanagan we work on ponderosa pine and Douglas-fir that routinely exceed 30 metres — SRS is becoming the production standard for a reason. But the argument for MRS on a mature Silver maple in a Kelowna boulevard — multi-fork crown, complex canopy, lots of lateral movement — is equally valid. The best climbers in the region use both systems and switch based on the job. If you're only comfortable in one system, you're leaving efficiency and safety on the table. Take a weekend course on the system you haven't trained in formally — the ISA and TCIA offer skill development clinics for exactly this transition.</p>
+  </div>
+
+  <div class="isa-tag">
+    <span>📚 ISA Exam Domain:</span> Safe Work Practices (28%) · Pruning (15%) &nbsp;·&nbsp;
+    <span>Sources:</span> ANSI Z133-2017 (Safe Work Practices for Arborists) &nbsp;·&nbsp; ISA BMP — Climbing Safety Guide &nbsp;·&nbsp; TCIA Aerial Rescue and Climbing Techniques · Teufelberger Rope Wrench User Manual
+  </div>
+
+</div>
+</body>
+</html>

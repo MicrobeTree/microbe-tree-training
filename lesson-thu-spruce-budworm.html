@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Western Spruce Budworm | Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+  .header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 20px;display:flex;align-items:center;gap:12px}
+  .logo{color:#3fb950;font-weight:700;font-size:15px;letter-spacing:.5px}
+  .day-badge{background:#da363315;border:1px solid #da363340;color:#f85149;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
+  .header-title{font-size:13px;color:#8b949e;margin-left:auto}
+  .home{max-width:760px;margin:0 auto;padding:28px 20px}
+  .hero{background:linear-gradient(135deg,#da363318 0%,#d2992215 100%);border:1px solid #da363340;border-radius:12px;padding:28px;margin-bottom:24px}
+  .hero h1{font-size:22px;font-weight:700;color:#e6edf3;margin-bottom:6px}
+  .hero .subtitle{color:#8b949e;font-size:14px;margin-bottom:16px;line-height:1.6}
+  .ref-card{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:16px}
+  .ref-card h3{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#da3633;margin-bottom:12px}
+  .life-cycle{display:flex;flex-direction:column;gap:8px}
+  .lc-item{display:flex;align-items:flex-start;gap:12px;background:#161b22;border-radius:6px;padding:10px 12px}
+  .lc-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+  .lc-text{font-size:13px;color:#c9d1d9;line-height:1.5}
+  .lc-text strong{color:#e6edf3}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#8b949e;margin-bottom:12px;margin-top:24px}
+  .q-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px;margin-bottom:12px;cursor:pointer;transition:border-color .2s}
+  .q-card:hover{border-color:#da363344}
+  .q-card.done{border-left:3px solid #3fb950}
+  .q-num{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:#8b949e;margin-bottom:8px}
+  .q-text{font-size:15px;color:#e6edf3;line-height:1.5;font-weight:500}
+  .q-status{font-size:11px;color:#3fb950;margin-top:8px;display:none}
+  .q-card.done .q-status{display:block}
+  .progress-bar{background:#21262d;border-radius:4px;height:6px;margin-bottom:20px}
+  .progress-fill{background:#3fb950;height:6px;border-radius:4px;transition:width .4s}
+  .progress-text{font-size:12px;color:#8b949e;margin-bottom:6px}
+  .quiz-screen{display:none;max-width:760px;margin:0 auto;padding:28px 20px}
+  .quiz-screen.active{display:block}
+  .home.hidden{display:none}
+  .back-btn{background:none;border:1px solid #30363d;color:#8b949e;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:13px;margin-bottom:20px;transition:all .2s}
+  .back-btn:hover{border-color:#3fb950;color:#3fb950}
+  .question-header{margin-bottom:20px}
+  .question-header h2{font-size:18px;font-weight:600;color:#e6edf3;line-height:1.5;margin-bottom:4px}
+  .question-header .qnum{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#da3633;margin-bottom:10px}
+  .options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+  .option{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s;font-size:14px;color:#e6edf3;line-height:1.4;text-align:left;width:100%}
+  .option:hover{border-color:#da363344;background:#da36330a}
+  .option.correct{border-color:#3fb950;background:#3fb95015;color:#3fb950}
+  .option.wrong{border-color:#da3633;background:#da363315;color:#da3633}
+  .option.reveal{border-color:#3fb950;background:#3fb95015;color:#3fb950}
+  .option:disabled{cursor:default}
+  .explanation{display:none;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px;margin-top:4px}
+  .explanation.show{display:block}
+  .explanation h3{font-size:14px;font-weight:700;color:#3fb950;margin-bottom:10px}
+  .explanation p{font-size:14px;color:#c9d1d9;line-height:1.7;margin-bottom:10px}
+  .explanation ul{margin-left:18px;margin-bottom:10px}
+  .explanation li{font-size:14px;color:#c9d1d9;line-height:1.7;margin-bottom:4px}
+  .field-note{background:#3fb95010;border:1px solid #3fb95040;border-radius:8px;padding:14px;margin-top:12px}
+  .field-note-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#3fb950;margin-bottom:6px}
+  .field-note p{font-size:13px;color:#c9d1d9;line-height:1.6}
+  .next-btn{background:#da3633;color:#fff;border:none;padding:10px 24px;border-radius:7px;cursor:pointer;font-size:14px;font-weight:600;margin-top:14px;transition:background .2s}
+  .next-btn:hover{background:#f85149}
+  .isa-tag{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 16px;margin-top:28px;font-size:12px;color:#8b949e;line-height:1.6}
+  .isa-tag span{color:#3fb950;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="day-badge">Thursday · Pests &amp; Diseases</div>
+  <div class="header-title">Week 7</div>
+</div>
+
+<div class="home" id="homeScreen">
+  <div class="hero">
+    <h1>🦠 Western Spruce Budworm</h1>
+    <div class="subtitle"><em>Choristoneura freemani</em> (formerly <em>C. occidentalis</em>) · The active BC Interior outbreak you're driving through every day</div>
+
+    <div class="ref-card">
+      <h3>Life Cycle — Quick Reference</h3>
+      <div class="life-cycle">
+        <div class="lc-item">
+          <div class="lc-icon">🥚</div>
+          <div class="lc-text"><strong>July–August:</strong> Eggs laid on needle undersides in masses of ~25. Hatch in ~10 days. L1 larvae spin hibernaculum (silk shelter) on bark and enter dormancy.</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-icon">😴</div>
+          <div class="lc-text"><strong>September–April:</strong> 2nd instar larvae (L2) overwinter under bark scales. Do not feed during this period.</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-icon">🌱</div>
+          <div class="lc-text"><strong>Late April–May:</strong> L2 larvae emerge, mine into developing buds, feed on expanding new growth. This is the critical damage period.</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-icon">🟤</div>
+          <div class="lc-text"><strong>June–July:</strong> Late instar larvae consume current-year needles and strobili. Silk webbing and frass visible. Brown tips appear on Douglas-fir throughout the crown.</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-icon">🦋</div>
+          <div class="lc-text"><strong>Late July:</strong> Adults (rusty-brown moths, 20–25 mm wingspan) emerge, mate, lay eggs. One generation per year.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-text" id="progressText">0 of 5 questions complete</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <div class="section-title">Questions</div>
+  <div class="q-card" id="qc0" onclick="openQuestion(0)">
+    <div class="q-num">Question 1</div>
+    <div class="q-text">Which conifer species is the primary host of western spruce budworm in the BC Interior?</div>
+    <div class="q-status">✓ Complete</div>
+  </div>
+  <div class="q-card" id="qc1" onclick="openQuestion(1)">
+    <div class="q-num">Question 2</div>
+    <div class="q-text">When do western spruce budworm larvae cause the most visible crown damage?</div>
+    <div class="q-status">✓ Complete</div>
+  </div>
+  <div class="q-card" id="qc2" onclick="openQuestion(2)">
+    <div class="q-num">Question 3</div>
+    <div class="q-text">How do you distinguish budworm defoliation on Douglas-fir from drought or root stress?</div>
+    <div class="q-status">✓ Complete</div>
+  </div>
+  <div class="q-card" id="qc3" onclick="openQuestion(3)">
+    <div class="q-num">Question 4</div>
+    <div class="q-text">What is the most appropriate PHC response when a client's Douglas-fir shows budworm defoliation for the first time?</div>
+    <div class="q-status">✓ Complete</div>
+  </div>
+  <div class="q-card" id="qc4" onclick="openQuestion(4)">
+    <div class="q-num">Question 5</div>
+    <div class="q-text">The taxonomic name for western spruce budworm was recently changed. What was the former name and why was the name revised?</div>
+    <div class="q-status">✓ Complete</div>
+  </div>
+
+  <div class="isa-tag">
+    <span>📚 ISA Exam Domain:</span> Tree Biology (11%) · Soil Management / PHC context &nbsp;·&nbsp;
+    <span>Sources:</span> BC Ministry of Forests Pest Leaf L-41 · USDA Forest Service Forest Insect &amp; Disease Leaflet 53 · ISA Arborists' Certification Study Guide · Steed, B.E. et al. — Western spruce budworm management guide
+  </div>
+</div>
+
+<div id="quizArea"></div>
+
+<script>
+const questions = [
+  {
+    q: "Which conifer species is the primary host of western spruce budworm in the BC Interior?",
+    options: [
+      "Ponderosa pine (Pinus ponderosa var. ponderosa)",
+      "Interior Douglas-fir (Pseudotsuga menziesii var. glauca)",
+      "Engelmann spruce (Picea engelmannii)",
+      "Lodgepole pine (Pinus contorta var. latifolia)"
+    ],
+    correct: 1,
+    explanation: {
+      title: "Interior Douglas-Fir — The Primary Host",
+      body: `<p><strong>Interior Douglas-fir</strong> (<em>Pseudotsuga menziesii</em> var. <em>glauca</em>) is the primary host and the species most severely damaged in the BC Interior. Grand fir (<em>Abies grandis</em>), subalpine fir (<em>Abies lasiocarpa</em>), and white spruce (<em>Picea glauca</em>) are also attacked — note that the "spruce" in the common name is a historical misnomer — but Douglas-fir experiences the greatest crown damage in most BC outbreaks.</p>
+      <p>The interior variety of Douglas-fir (<em>glauca</em>) is notably more susceptible than the coastal variety (<em>menziesii</em>), which is ecologically relevant for the Okanagan where all Douglas-fir is the interior variety.</p>
+      <ul>
+        <li>Ponderosa pine is not a host — budworm larvae are specifically adapted to the phenology of Douglas-fir and true firs, whose bud break timing synchronizes with L2 larval emergence.</li>
+        <li>Lodgepole pine is host to <em>Choristoneura lambertiana</em> (the lodgepole pine budworm), a different species.</li>
+        <li>Engelmann spruce is a secondary host but rarely shows the same level of damage as Douglas-fir in Interior BC outbreaks.</li>
+      </ul>`,
+      fieldNote: "On your next drive through Crown land between West Kelowna and Peachland, or through the hills above Lake Country, you're looking at active budworm defoliation on a significant portion of the Douglas-fir stands. The reddish-brown crowns on fir trees across the hillsides in late June–July are the signature. Urban Douglas-fir trees within the outbreak zone are equally at risk — they don't have a 'city exemption' from the moth."
+    }
+  },
+  {
+    q: "When do western spruce budworm larvae cause the most visible crown damage?",
+    options: [
+      "Late August to September, when larvae defoliate the previous year's needles before pupation",
+      "Early spring (March–April), when overwintering larvae immediately attack winter buds upon emergence",
+      "Late May through July, when larvae consume the current year's new growth as it flushes",
+      "Mid-winter, when larvae move between trees via silk threads in wind events"
+    ],
+    correct: 2,
+    explanation: {
+      title: "The Damage Window: May–July on New Growth",
+      body: `<p>The critical damage period is <strong>late May through July</strong>, when 3rd through 6th instar larvae consume the current year's expanding needles and developing strobili (cones). The sequence is important:</p>
+      <ul>
+        <li><strong>Late April–May:</strong> L2 larvae emerge from bark hibernacula and mine into developing buds. At this stage they're tiny (2–3 mm) and damage is invisible from ground level.</li>
+        <li><strong>May–June:</strong> Later instar larvae (L3–L6) emerge from bud tissue and begin consuming the current-year needles as they expand. The new growth is preferred because it's more nutritious than older needles.</li>
+        <li><strong>June–July:</strong> By L5–L6, larvae are 20–30 mm long and consuming large quantities of foliage. Silk webbing ties together damaged needles; frass accumulates in the branch tips. The characteristic reddish-brown coloration of dead new growth appears across the crown.</li>
+      </ul>
+      <p>The timing is critical because it's the current year's photosynthetic tissue being destroyed. Unlike many defoliating insects that attack older leaves, budworm eliminates the tree's newest and most productive foliage — the equivalent of stripping the newest pages from a book before they're read.</p>`,
+      fieldNote: "The field diagnosis window is narrow: if a Douglas-fir shows brown-red branch tips in June or July, that's budworm (or occasionally conifer tip blight, but the silk webbing distinguishes them). By late August, the frass and webbing weather out and the browned tips become indistinguishable from other dieback causes. If you're doing a site assessment in September and want to diagnose budworm history, look for the characteristic 'flags' of dead current-year growth still attached at branch tips."
+    }
+  },
+  {
+    q: "How do you distinguish budworm defoliation on Douglas-fir from drought or root stress?",
+    options: [
+      "Budworm damage affects the entire crown uniformly; drought stress causes dieback that progresses from the bottom up",
+      "Budworm causes reddish-brown discoloration of branch tips (current year growth only) in early summer, with silk webbing and frass; drought or root stress causes browning of older interior needles, often in July–September",
+      "Drought stress produces distinctive larval frass pellets at the base of the tree; budworm does not produce frass",
+      "Budworm turns needles yellow before they brown; drought stress causes immediate reddening of entire branches without yellowing"
+    ],
+    correct: 1,
+    explanation: {
+      title: "Diagnostic Differentiation — Tips vs Interior, Early vs Late",
+      body: `<p>Getting the diagnosis right matters because the PHC response is different. Here are the key differentiators:</p>
+      <ul>
+        <li><strong>Budworm:</strong> Brown-red discoloration confined to <em>branch tips (current year growth only)</em>. Timing: visible June–July. Physical evidence: silk webbing at branch tips, frass (tiny green-brown pellets) visible in the webbing, larval cast skins in July. The rest of the needle complement (2+ year old needles) is green. The tree looks like it has brown scorched tips on every branch.</li>
+        <li><strong>Drought/root stress:</strong> Browning begins in <em>older, interior needles</em> (2–3+ year old foliage) first — the opposite of budworm. No silk webbing. No frass. Often progresses through the season and may not be uniformly distributed by crown position. Drought stress frequently shows in the upper crown first where the hydraulic path is longest; root stress may show as dieback starting from branch ends of certain scaffold branches or sectors.</li>
+        <li><strong>Cytospora canker on fir:</strong> Localized branch dieback with clear margin; resin flow at infection point; no webbing.</li>
+        <li><strong>Dothistroma needle blight:</strong> Yellow and red banding on needles, with current and previous year needles both affected; common on ponderosa pine, less so on Douglas-fir.</li>
+      </ul>
+      <p>The BC Ministry of Forests publishes diagnostic guides for these conditions — always confirm diagnosis before advising on treatment.</p>`,
+      fieldNote: "The classic mistake is seeing a Douglas-fir with reddish branch tips in August and telling the client it's drought stress. By August the budworm larvae have pupated and left — there's no insect to find. But the pattern is telling: it's only the tips, only the current growth, only the firs. Drought would show on the interior needles and often on the ponderosa pines nearby too. Read the evidence in the whole landscape, not just the one tree."
+    }
+  },
+  {
+    q: "What is the most appropriate PHC response when a client's Douglas-fir shows budworm defoliation for the first time?",
+    options: [
+      "Immediate soil drench with a systemic neonicotinoid insecticide to protect the root zone",
+      "Recommend tree removal to prevent the pest spreading to neighbouring conifers",
+      "Assess tree vigor, reduce other stressors (compaction, drought), and monitor — most healthy trees tolerate 1–2 years of defoliation without lasting damage",
+      "Apply a foliar pyrethroid spray immediately to eliminate all larvae for the remainder of the season"
+    ],
+    correct: 2,
+    explanation: {
+      title: "PHC Response: Reduce Stressors, Monitor, Assess",
+      body: `<p>A single season of moderate budworm defoliation rarely kills an otherwise healthy, vigorous Douglas-fir. The appropriate first-year response is <strong>integrated PHC — not chemical intervention</strong>:</p>
+      <ul>
+        <li><strong>Assess tree vigor:</strong> Is this a young, vigorously growing tree or a mature tree already under water, soil, or structural stress? A stressed tree with budworm is a compound problem; a vigorous tree with budworm has good recovery odds.</li>
+        <li><strong>Reduce background stressors:</strong> Mulch the root zone if compacted, establish supplemental irrigation through the August drought, check for any soil grade changes or root injuries from adjacent construction. The tree's ability to re-flush after defoliation depends on stored carbohydrate reserves — a well-fed, well-watered tree has more.</li>
+        <li><strong>Monitor:</strong> One year of defoliation = watch it. Two consecutive years = elevated concern. Three or more consecutive years of heavy defoliation on an already stressed tree = possible mortality and a treatment conversation is justified.</li>
+        <li><strong>Chemical control:</strong> Bacillus thuringiensis var. kurstaki (Btk) is an effective biological insecticide applied by foliar spray at the L2–L3 stage (late April to mid-May). Timing is critical — it must coincide with larval emergence. Ground application is impractical on tall trees; aerial application is used in forestry but rarely at urban scale.</li>
+        <li><strong>Systemic neonicotinoids</strong> via trunk injection are used in some urban contexts for high-value trees when other management options are limited. Consult current BC pesticide registration before use.</li>
+      </ul>
+      <p>Per the ISA BMP for Plant Health Care: the first goal in any PHC program is to reduce predisposing stressors before chemical intervention. This holds for budworm as much as any other agent.</p>`,
+      fieldNote: "The most valuable thing you can do for a client with a budworm-affected Douglas-fir right now — in July — is set their expectations accurately. Tell them: this tree is going to look rough for the rest of this season; those brown tips won't green up; but if the tree is otherwise healthy, it will push new growth next spring and recover. The clients who panic and demand immediate spray at 11 AM in July don't realize that every larva on that tree has already pupated and left. Good diagnostic communication saves the relationship and prevents unnecessary pesticide applications."
+    }
+  },
+  {
+    q: "The taxonomic name for western spruce budworm was recently revised. What was the former name, and what drove the change?",
+    options: [
+      "Formerly Choristoneura pinus — revised after genetic analysis showed it was distinct from the eastern jack pine budworm complex",
+      "Formerly Choristoneura occidentalis — revised after molecular phylogenetic analysis showed the western and two-year-cycle budworms are more closely related to each other than to eastern species, prompting reclassification to C. freemani",
+      "Formerly Tortrix viridana — reclassified into Choristoneura genus after wing morphology studies in the 1990s",
+      "Formerly Choristoneura fumiferana var. occidentalis — split into a full species after host preference studies confirmed host fidelity to Douglas-fir"
+    ],
+    correct: 1,
+    explanation: {
+      title: "Taxonomy Update: Choristoneura freemani",
+      body: `<p>Western spruce budworm was reclassified from <strong><em>Choristoneura occidentalis</em></strong> to <strong><em>Choristoneura freemani</em></strong> (Razowski, 2008) following molecular phylogenetic analysis. The name honours entomologist T.N. Freeman.</p>
+      <p>The Choristoneura genus (family Tortricidae, subfamily Archipinae) includes several economically significant forest defoliators across North America:</p>
+      <ul>
+        <li><em>C. fumiferana</em> — Eastern spruce budworm (different species; attacks white and black spruce, balsam fir in eastern Canada)</li>
+        <li><em>C. freemani</em> — Western spruce budworm (our species in BC Interior)</li>
+        <li><em>C. biennis</em> — Two-year-cycle budworm (attacks spruce and fir on 2-year outbreak cycle)</li>
+        <li><em>C. lambertiana</em> — Lodgepole pine budworm</li>
+        <li><em>C. conflictana</em> — Large aspen tortrix (attacks aspen in BC)</li>
+      </ul>
+      <p>The eastern spruce budworm (<em>C. fumiferana</em>) is often cited in ISA exam materials — the western species (<em>C. freemani</em>) is our local concern but the biology, life cycle, and management principles are broadly similar. Understanding the genus helps contextualize the ecology.</p>
+      <p>Older references and field guides will still use <em>C. occidentalis</em> — both names refer to the same organism. For ISA exam purposes, recognizing both names and understanding the organism's biology is more important than knowing the precise taxonomic revision date.</p>`,
+      fieldNote: "The taxonomy matters practically because BCMOF publications and pest management bulletins may use either name depending on their publication date. BC's most current pest management advisory uses C. freemani. When you're referencing pest ID in a client report or ISA exam answer, use C. freemani as the current accepted name — but if you see C. occidentalis in older Ministry publications you're referencing, that's the same insect."
+    }
+  }
+];
+
+let completed = [];
+
+function openQuestion(i) {
+  document.getElementById('homeScreen').classList.add('hidden');
+  const area = document.getElementById('quizArea');
+  const q = questions[i];
+  const wasAnswered = completed.includes(i);
+
+  area.innerHTML = `
+    <div class="quiz-screen active">
+      <button class="back-btn" onclick="goHome()">← Back to Lessons</button>
+      <div class="question-header">
+        <div class="qnum">Question ${i+1} of 5 · Thursday Pests &amp; Diseases</div>
+        <h2>${q.q}</h2>
+      </div>
+      <div class="options" id="opts">
+        ${q.options.map((o,idx)=>`<button class="option" id="opt${idx}" onclick="answer(${i},${idx})">${String.fromCharCode(65+idx)}. ${o}</button>`).join('')}
+      </div>
+      <div class="explanation" id="exp"></div>
+    </div>`;
+
+  if(wasAnswered) revealAnswer(i, -1, true);
+}
+
+function answer(qi, chosen) {
+  const q = questions[qi];
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.disabled = true);
+  if(chosen === q.correct) { opts[chosen].classList.add('correct'); }
+  else { opts[chosen].classList.add('wrong'); opts[q.correct].classList.add('reveal'); }
+  revealAnswer(qi, chosen, false);
+  if(!completed.includes(qi)) { completed.push(qi); updateProgress(); }
+}
+
+function revealAnswer(qi, chosen, silent) {
+  const q = questions[qi];
+  const exp = document.getElementById('exp');
+  if(!exp) return;
+  if(silent) {
+    const opts = document.querySelectorAll('.option');
+    opts.forEach(o => o.disabled = true);
+    opts[q.correct].classList.add('reveal');
+  }
+  exp.classList.add('show');
+  exp.innerHTML = `
+    <h3>✓ ${q.explanation.title}</h3>
+    ${q.explanation.body}
+    <div class="field-note">
+      <div class="field-note-title">📋 Field Note — Okanagan Context</div>
+      <p>${q.explanation.fieldNote}</p>
+    </div>
+    ${qi < 4 ? `<button class="next-btn" onclick="openQuestion(${qi+1})">Next Question →</button>` : `<button class="next-btn" onclick="goHome()">Finish →</button>`}
+  `;
+}
+
+function updateProgress() {
+  const n = completed.length;
+  document.getElementById('progressText').textContent = `${n} of 5 questions complete`;
+  document.getElementById('progressFill').style.width = (n*20)+'%';
+  completed.forEach(i => { document.getElementById('qc'+i).classList.add('done'); });
+}
+
+function goHome() {
+  document.getElementById('homeScreen').classList.remove('hidden');
+  document.getElementById('quizArea').innerHTML = '';
+  updateProgress();
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
