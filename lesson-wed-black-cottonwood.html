@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Black Cottonwood | Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+  .header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+  .logo{color:#3fb950;font-weight:700;font-size:15px;letter-spacing:.5px}
+  .day-badge{background:#2ea04315;border:1px solid #2ea04340;color:#56d364;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
+  .header-title{font-size:13px;color:#8b949e;margin-left:auto}
+  .layout{display:flex;flex:1;min-height:calc(100vh - 53px)}
+  .sidebar{width:220px;background:#161b22;border-right:1px solid #30363d;padding:20px 0;flex-shrink:0;position:sticky;top:0;height:calc(100vh - 53px);overflow-y:auto}
+  .sidebar-title{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:#8b949e;padding:0 16px 10px;border-bottom:1px solid #30363d;margin-bottom:8px}
+  .sidebar-item{display:block;padding:10px 16px;font-size:13px;color:#8b949e;cursor:pointer;transition:all .15s;border-left:3px solid transparent;text-decoration:none}
+  .sidebar-item:hover{color:#e6edf3;background:#1c2128}
+  .sidebar-item.active{color:#56d364;border-left-color:#56d364;background:#2ea04310}
+  .sidebar-item .icon{margin-right:8px}
+  .content{flex:1;padding:32px;overflow-y:auto;max-width:700px}
+  .section{display:none}
+  .section.active{display:block}
+  .section-header{margin-bottom:24px}
+  .section-header h1{font-size:24px;font-weight:700;color:#e6edf3;margin-bottom:4px}
+  .section-header .subtitle{font-size:14px;color:#8b949e}
+  .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+  @media(max-width:700px){.spec-grid{grid-template-columns:1fr 1fr}.layout{flex-direction:column}.sidebar{width:100%;height:auto;position:static;overflow-x:auto}.sidebar-content{display:flex;flex-direction:row;overflow-x:auto;gap:0}.sidebar-item{white-space:nowrap}.content{padding:20px}}
+  .spec-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px}
+  .spec-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#8b949e;margin-bottom:4px}
+  .spec-value{font-size:14px;color:#e6edf3;line-height:1.4}
+  .card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px;margin-bottom:14px}
+  .card h3{font-size:14px;font-weight:700;color:#e6edf3;margin-bottom:10px}
+  .card p{font-size:14px;color:#c9d1d9;line-height:1.7;margin-bottom:8px}
+  .card p:last-child{margin-bottom:0}
+  .card ul{margin-left:18px}
+  .card li{font-size:14px;color:#c9d1d9;line-height:1.7;margin-bottom:4px}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:600px){.two-col{grid-template-columns:1fr}}
+  .tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding:2px 8px;border-radius:4px;margin-bottom:8px}
+  .tag-green{background:#3fb95020;color:#3fb950;border:1px solid #3fb95040}
+  .tag-red{background:#da363320;color:#da3633;border:1px solid #da363340}
+  .tag-amber{background:#d2992220;color:#d29922;border:1px solid #d2992240}
+  .tag-blue{background:#1f6feb20;color:#79c0ff;border:1px solid #1f6feb40}
+  .severity-bar{display:flex;align-items:center;gap:10px;margin-top:6px}
+  .severity-label{font-size:11px;color:#8b949e;width:60px;flex-shrink:0}
+  .bar-track{flex:1;background:#21262d;border-radius:3px;height:6px}
+  .bar-fill{height:6px;border-radius:3px}
+  .bar-high{background:#da3633;width:80%}
+  .bar-med{background:#d29922;width:55%}
+  .bar-low{background:#3fb950;width:25%}
+  .field-note{background:#3fb95010;border:1px solid #3fb95040;border-radius:8px;padding:14px;margin-top:14px}
+  .field-note-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#3fb950;margin-bottom:6px}
+  .field-note p{font-size:13px;color:#c9d1d9;line-height:1.6}
+  .warn{background:#da363310;border:1px solid #da363340;border-radius:8px;padding:14px;margin-top:8px}
+  .warn-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#da3633;margin-bottom:6px}
+  .warn p{font-size:13px;color:#c9d1d9;line-height:1.6}
+  .isa-tag{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 16px;margin-top:24px;font-size:12px;color:#8b949e;line-height:1.6}
+  .isa-tag span{color:#3fb950;font-weight:600}
+  .intro-hero{background:linear-gradient(135deg,#2ea04318 0%,#3fb95012 100%);border:1px solid #2ea04340;border-radius:12px;padding:24px;margin-bottom:24px}
+  .range-badge{display:inline-block;font-size:12px;color:#56d364;background:#2ea04318;border:1px solid #2ea04340;padding:4px 12px;border-radius:20px;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="day-badge">Wednesday · Tree Profile</div>
+  <div class="header-title">Week 7</div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-title">Black Cottonwood</div>
+    <a class="sidebar-item active" onclick="show('identity')"><span class="icon">🏷</span>Identity</a>
+    <a class="sidebar-item" onclick="show('origin')"><span class="icon">🗺</span>Origin &amp; Range</a>
+    <a class="sidebar-item" onclick="show('biology')"><span class="icon">🌿</span>Biology</a>
+    <a class="sidebar-item" onclick="show('pests')"><span class="icon">🐛</span>Pest Pressures</a>
+    <a class="sidebar-item" onclick="show('diseases')"><span class="icon">🔬</span>Disease Pressures</a>
+    <a class="sidebar-item" onclick="show('arborist')"><span class="icon">🧑‍🌾</span>Arborist Notes</a>
+  </div>
+
+  <div class="content">
+
+    <!-- IDENTITY -->
+    <div class="section active" id="s-identity">
+      <div class="section-header">
+        <h1>🌳 Black Cottonwood</h1>
+        <div class="subtitle"><em>Populus trichocarpa</em> Torr. &amp; A.Gray ex Hook. · Family: Salicaceae</div>
+      </div>
+
+      <div class="intro-hero">
+        <p style="font-size:15px;font-weight:600;color:#e6edf3;margin-bottom:6px">BC's largest native broadleaf tree</p>
+        <p style="font-size:14px;color:#c9d1d9;line-height:1.6">Black cottonwood dominates riparian corridors throughout the Okanagan, growing faster than almost anything else on the landscape — and presenting a distinct set of challenges for every arborist who works near one. The cotton it produces in June, the roots that find every water line, and the branches that fall without warning: this is a tree that demands respect.</p>
+        <div class="range-badge">Native to BC Interior · Common in Okanagan riparian zones</div>
+      </div>
+
+      <div class="spec-grid">
+        <div class="spec-card"><div class="spec-label">Mature Height</div><div class="spec-value">30–50 m<br><span style="font-size:11px;color:#8b949e">Occasionally to 60 m</span></div></div>
+        <div class="spec-card"><div class="spec-label">DBH</div><div class="spec-value">Up to 2 m<br><span style="font-size:11px;color:#8b949e">Typically 60–120 cm</span></div></div>
+        <div class="spec-card"><div class="spec-label">Lifespan</div><div class="spec-value">60–200 yrs<br><span style="font-size:11px;color:#8b949e">Fast-growing, short-lived</span></div></div>
+        <div class="spec-card"><div class="spec-label">Crown Form</div><div class="spec-value">Broad pyramidal to irregular oval; open with age</div></div>
+        <div class="spec-card"><div class="spec-label">Bark (mature)</div><div class="spec-value">Deeply furrowed, dark gray-brown; corky ridges</div></div>
+        <div class="spec-card"><div class="spec-label">Leaves</div><div class="spec-value">Ovate to heart-shaped, 5–15 cm; dark green above, whitish below</div></div>
+      </div>
+
+      <div class="card">
+        <h3>Field Identification Features</h3>
+        <ul>
+          <li><strong>Buds:</strong> Large, resinous, reddish-brown — highly aromatic (balsam scent). This is the tree's most distinctive ID feature at any season.</li>
+          <li><strong>Leaves:</strong> Alternate, broadly ovate to deltoid, abruptly pointed tip, fine rounded teeth. White to pale silver undersurface catches the breeze distinctively.</li>
+          <li><strong>Petiole:</strong> Round (not flattened like trembling aspen) — leaves do not quake in the wind.</li>
+          <li><strong>Catkins:</strong> Dioecious — male and female on separate trees. Female catkins produce abundant cottony white seeds dispersed in June/July. The "cotton snowfall" is one of the most recognizable events on the Okanagan floodplain.</li>
+          <li><strong>Bark evolution:</strong> Young stems are smooth, yellowish-green. With age, bark becomes deeply furrowed and dark. Old trees look entirely different from young ones — confirm with buds or leaves if uncertain.</li>
+        </ul>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-title">📋 Field Note</div>
+        <p>The balsam scent from fresh buds and crushed leaves is unmistakable — one sniff and you'll never forget it. On a warm March day when no leaves are present, you can positively ID a black cottonwood by the scent alone. Use it. The resin from balsam poplar buds has been used medicinally for centuries; bees collect it as propolis.</p>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section" id="s-origin">
+      <div class="section-header">
+        <h1>🗺 Origin &amp; Range</h1>
+        <div class="subtitle">Native distribution, ecology, and introduction context</div>
+      </div>
+
+      <div class="card">
+        <h3>Native Range</h3>
+        <p>Black cottonwood is native from <strong>coastal Alaska south through BC, Washington, Oregon, and California into Baja Mexico</strong>, and eastward through the mountain and interior west. It is the dominant riparian tree across a massive geographic range — from sea-level river deltas to mountain valley floors at 1,500 m elevation.</p>
+        <p>In BC, it occurs <strong>throughout the province wherever reliable moisture is available</strong>: along river floodplains, creek margins, lake shores, and seasonally wet depressions. In the Okanagan, it is concentrated along Okanagan Creek and River, Mission Creek, Trout Creek, and the shores of Okanagan, Skaha, and Vaseux Lakes.</p>
+      </div>
+
+      <div class="card">
+        <h3>Ecological Role</h3>
+        <ul>
+          <li><strong>Pioneer species:</strong> One of the first trees to colonize disturbed or deposited alluvial soils after flooding. Grows faster than competing vegetation in full sun with reliable moisture.</li>
+          <li><strong>Riparian anchor:</strong> Root systems bind stream banks and reduce erosion. The overstory structure creates shade that moderates stream temperature, critical for cold-water fish habitat.</li>
+          <li><strong>Wildlife keystone:</strong> Used for nesting by over 40 bird species; provides structural habitat for osprey, great blue heron, pileated woodpecker, and cavity nesters. Beaver harvest it intensively.</li>
+          <li><strong>Clonal colonies:</strong> Root sprouting is common after disturbance (cutting, flooding, fire). A grove of cottonwoods may be a single genetic individual connected by a root system — similar to trembling aspen but less extreme.</li>
+        </ul>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-title">📋 Field Note</div>
+        <p>When you cut down a black cottonwood in a yard near a creek, advise the client that root suckering is likely in the following 1–2 growing seasons. The disturbance stimulates dormant root buds. In some cases a single removed tree will produce a thicket of shoots from the root system — requiring follow-up stump treatment or repeated manual removal. Factor this into your assessment and client conversation.</p>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section" id="s-biology">
+      <div class="section-header">
+        <h1>🌿 Biology &amp; What It Wants</h1>
+        <div class="subtitle">Cultural requirements, site tolerances, and growth characteristics</div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="tag tag-green">Needs</div>
+          <h3>Site Requirements</h3>
+          <ul>
+            <li>Full sun — does not tolerate shade</li>
+            <li>Reliable, accessible soil moisture (prefers water table within 2–3 m)</li>
+            <li>Deep alluvial soils with good oxygen availability</li>
+            <li>Neutral to slightly alkaline pH (tolerates Okanagan alkaline soils well)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="tag tag-red">Dislikes</div>
+          <h3>Stress Factors</h3>
+          <ul>
+            <li>Drought — rapidly shows stress; Okanagan summers push even riparian trees</li>
+            <li>Soil compaction over root zone — frequent in urban floodplain developments</li>
+            <li>Root zone fill or grade change — poorly tolerated</li>
+            <li>Waterlogged anaerobic soils for prolonged periods</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Growth Rate &amp; Wood Properties</h3>
+        <p>Black cottonwood is one of the fastest-growing native trees in BC. Under ideal conditions, seedlings can grow 1–2 m per year in the early years. Mature trees add 30–60 cm of height annually. This rapid growth comes at a structural cost: the wood is <strong>low-density, brittle, and prone to failure</strong>, particularly at branch unions that develop included bark as the crown expands. By age 60–80, structural defects accumulate rapidly.</p>
+        <p>Wood characteristics relevant to arborists:</p>
+        <ul>
+          <li>Low specific gravity (~0.35) — cuts easily but chips and splits unpredictably</li>
+          <li>Prone to internal decay, often before external symptoms are visible</li>
+          <li>Branch failures common in ice storms, high winds, and after heavy snowfall</li>
+          <li>Large co-dominant stems with included bark are extremely common — the tree rarely dominates to a single leader</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Root System</h3>
+        <p>The root system is <strong>extensive, shallow, and aggressively water-seeking</strong>. Lateral roots commonly extend 2–3× the crown radius in moist soils. Key implications:</p>
+        <ul>
+          <li>Roots regularly invade sewer lines, irrigation sleeves, and water mains — a persistent client complaint for boulevard or yard specimens</li>
+          <li>Surface rooting in compacted or shallow soils creates trip hazards in lawns and sidewalks</li>
+          <li>Root grafting between adjacent trees is common — cutting one tree's roots may affect a neighbour's stability</li>
+          <li>Grade change over roots, even filling with 15 cm of topsoil, can initiate decline by reducing oxygen availability</li>
+        </ul>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-title">📋 Field Note</div>
+        <p>Black cottonwood in the Okanagan experiences a compounded stress load: the hot dry summers create drought stress even in riparian trees when the water table drops in August; then the alkaline soils restrict micronutrient availability (Fe, Mn) at high pH; then any added compaction or root injury tips the balance. A tree that looked vigorous in May may show significant dieback by September. Seasonal reassessment matters more with cottonwood than with most species.</p>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section" id="s-pests">
+      <div class="section-header">
+        <h1>🐛 Pest Pressures</h1>
+        <div class="subtitle">Insects and other animal pests — BC Interior context</div>
+      </div>
+
+      <div class="card">
+        <h3>Poplar Borer <em>(Saperda calcarata)</em></h3>
+        <div class="severity-bar"><div class="severity-label">Severity</div><div class="bar-track"><div class="bar-fill bar-high"></div></div><span style="font-size:11px;color:#da3633">High</span></div>
+        <p style="margin-top:10px">The most structurally damaging insect pest of black cottonwood in BC Interior. A large longhorn beetle (25–35 mm), larvae tunnel extensively in the sapwood and inner bark of trunks and large branches over a 2–3 year life cycle.</p>
+        <ul>
+          <li><strong>Signs:</strong> Oval entry/exit holes 10–15 mm wide; large amounts of coarse reddish-brown frass pushed out of galleries; pitch tubes; swollen gall-like callus tissue around old entry sites; woodpecker foraging damage</li>
+          <li><strong>Structural impact:</strong> Multiple larval galleries can reduce stem cross-section significantly. Combined with decay fungi that colonize wounded tissue, large branches become failure risks.</li>
+          <li><strong>PHC approach:</strong> No practical chemical control in established trees. Maintain tree vigor (irrigation, mulching) to reduce susceptibility. Flag heavily attacked trees for risk assessment — the galleries are not visible from outside but can be probed with a sonic tomograph or resistance drill.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Cottonwood Leaf Beetle <em>(Chrysomela scripta)</em></h3>
+        <div class="severity-bar"><div class="severity-label">Severity</div><div class="bar-track"><div class="bar-fill bar-med"></div></div><span style="font-size:11px;color:#d29922">Moderate</span></div>
+        <p style="margin-top:10px">A defoliating beetle with distinctive metallic green and orange adults (6–8 mm). Multiple generations per summer. Larvae skeletonize leaves from below; adults chew through leaves. Severe infestations give the tree a scorched brown appearance by July.</p>
+        <ul>
+          <li>Rarely fatal to established trees but significantly stresses already compromised specimens</li>
+          <li>Young trees and new plantings are more at risk of dieback from repeated heavy defoliation</li>
+          <li>Biological control exists (parasitic wasps) but is impractical at urban scale</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Clearwing Moths <em>(Paranthrene spp.)</em></h3>
+        <div class="severity-bar"><div class="severity-label">Severity</div><div class="bar-track"><div class="bar-fill bar-med"></div></div><span style="font-size:11px;color:#d29922">Moderate</span></div>
+        <p style="margin-top:10px">Larvae bore into young branches and trunks. Entry points at branch stubs or wounds are preferred. Adults are wasp-mimics with clear wings. Damage creates galleries similar to, but smaller than, poplar borer. Often contributes to canker initiation at wound sites.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-title">📋 Field Note</div>
+        <p>When you're scoping a mature black cottonwood for risk assessment, look for woodpecker activity (elongated holes, bark scaling) as a proxy indicator for borer activity in the trunk. Woodpeckers locate larval galleries acoustically — if there's significant excavation on a stem, larvae are likely present. The combination of borer galleries + decay fungi + co-dominant stem with included bark is a high-risk triad on any cottonwood over 60 cm DBH.</p>
+      </div>
+    </div>
+
+    <!-- DISEASES -->
+    <div class="section" id="s-diseases">
+      <div class="section-header">
+        <h1>🔬 Disease Pressures</h1>
+        <div class="subtitle">Fungal, bacterial, and abiotic disorders — BC Interior context</div>
+      </div>
+
+      <div class="card">
+        <h3>Cytospora Canker <em>(Cytospora chrysosperma)</em></h3>
+        <div class="severity-bar"><div class="severity-label">Severity</div><div class="bar-track"><div class="bar-fill bar-high"></div></div><span style="font-size:11px;color:#da3633">High</span></div>
+        <p style="margin-top:10px">The most common and destructive canker disease of cottonwood and willow in the BC Interior. <em>Cytospora chrysosperma</em> is a <strong>stress pathogen</strong> — present in the bark of all healthy cottonwoods but only causes disease when tree vigor is reduced.</p>
+        <ul>
+          <li><strong>Symptoms:</strong> Sunken, discolored cankers on branches or trunks; orange-pink spore masses (cirri) extruded from pycnidia during wet conditions; branch dieback progressing from tips inward; distinct margin between healthy and dead bark</li>
+          <li><strong>Trigger conditions:</strong> Drought stress, root injury, soil compaction, freeze-thaw events, heavy pruning wounds, borer damage</li>
+          <li><strong>Okanagan context:</strong> Very common. Any cottonwood under compaction or drought stress in a development site will likely develop Cytospora within 2–3 years.</li>
+          <li><strong>Management:</strong> No fungicide is effective. Management is entirely PHC: reduce stressors, improve soil conditions, remove cankered branches well below the infected margin in dry weather (spores are water-dispersed). Severely affected trees with trunk cankers should be assessed for removal.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Marssonina Leaf Spot <em>(Marssonina populi)</em></h3>
+        <div class="severity-bar"><div class="severity-label">Severity</div><div class="bar-track"><div class="bar-fill bar-low"></div></div><span style="font-size:11px;color:#3fb950">Low–Moderate</span></div>
+        <p style="margin-top:10px">A common foliar disease causing brown spots with yellowish halos, followed by premature defoliation in late summer. Most trees lose 30–50% of leaves by August in heavy infection years. Rarely fatal; primarily cosmetic but stresses already compromised trees.</p>
+        <ul>
+          <li>Spreads via water splash — overhead irrigation on boulevard trees accelerates the cycle</li>
+          <li>Improve air circulation and avoid overhead watering where practical</li>
+          <li>Rake and remove fallen leaves to reduce inoculum the following year</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Hypoxylon Canker <em>(Hypoxylon mammatum)</em></h3>
+        <div class="severity-bar"><div class="severity-label">Severity</div><div class="bar-track"><div class="bar-fill bar-high"></div></div><span style="font-size:11px;color:#da3633">High</span></div>
+        <p style="margin-top:10px">A serious bark and wood decay fungus of trembling aspen (primary host) but also affecting cottonwood. Once established it can girdle large stems. Blackened, blistered bark with powdery gray-green conidial pustules. No treatment — affected stems must be removed.</p>
+      </div>
+
+      <div class="card">
+        <h3>Abiotic Disorders — Okanagan Specific</h3>
+        <ul>
+          <li><strong>Drought stress:</strong> Wilting, early leaf drop, shoot dieback — amplifies susceptibility to all biotic agents</li>
+          <li><strong>Alkaline soil chlorosis:</strong> High pH (>7.8) reduces Fe and Mn availability — yellow leaves with green veins, stunted growth</li>
+          <li><strong>Frost damage:</strong> Late spring frosts kill new growth — flush of new leaves followed by browning; tree typically re-flushes but at a vigor cost</li>
+          <li><strong>Salt spray:</strong> Near roads — marginal leaf scorch, crown dieback from sodium accumulation</li>
+        </ul>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-title">📋 Field Note</div>
+        <p>Cytospora and drought stress form a feedback loop that's hard to break once established. The drought opens the door for Cytospora; Cytospora cankers disrupt the xylem and phloem at the infected site, reducing water and nutrient flow; the reduced vigor makes the tree even more susceptible to further infection and borer attack. If a client wants to save a stressed riparian cottonwood on a development site, the conversation has to start with honest assessment of whether the root zone can be protected. If not, removal and replacement with a more site-appropriate species is the honest recommendation.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section" id="s-arborist">
+      <div class="section-header">
+        <h1>🧑‍🌾 Arborist Notes</h1>
+        <div class="subtitle">Pruning, PHC, client conversations, and site suitability</div>
+      </div>
+
+      <div class="warn">
+        <div class="warn-title">⚠ Risk Flagging — Know When to Say It</div>
+        <p>A mature black cottonwood over 50 cm DBH with two or more of the following is a high-risk tree requiring formal assessment: co-dominant stems with included bark, visible borer frass/exit holes, Cytospora cankers on main stem, crown dieback >30%, history of branch failure, or root zone disturbance within 5 years. Do not leave these flagged verbally — put it in writing to the client.</p>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>Pruning Timing</h3>
+        <p>Black cottonwood should be pruned in <strong>late summer to early fall (August–September)</strong> in the Okanagan. Reasons:</p>
+        <ul>
+          <li>Compartmentalization response (per Dr. Shigo's CODIT model) is most active when the tree is still metabolically active but borer emergence has peaked</li>
+          <li>Spore dispersal of Cytospora is highest in wet spring weather — avoid creating pruning wounds during spring rains</li>
+          <li>Avoid mid-winter pruning which leaves wounds exposed to freeze-thaw without CODIT response</li>
+          <li>Spring pruning should only be done if deadwood removal is the objective — live wood cuts in April–May are high-Cytospora-risk period</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Boulevard &amp; Strata Suitability</h3>
+        <p><strong>Native black cottonwood is not suitable for boulevard or small strata planting</strong>. The combination of aggressive roots, large mature size, cottony seed dispersal, branch failure risk, and short urban lifespan makes it a poor fit in constrained spaces. Clients who have inherited a mature boulevard cottonwood need a clear, honest conversation about the risk timeline.</p>
+        <p>Where a poplar is desired for urban planting, specify <strong>male cultivars</strong> (cotton-free) of hybrid poplars developed for urban use, with the understanding that the structural and longevity issues still apply to any fast-growing poplar.</p>
+      </div>
+
+      <div class="card">
+        <h3>PHC Approach — Existing Trees</h3>
+        <ul>
+          <li><strong>Water management:</strong> Supplemental irrigation in July–August drought is the single highest-value intervention. Deep, infrequent watering (drip at drip line) beats shallow frequent watering that encourages surface rooting.</li>
+          <li><strong>Soil aeration:</strong> Vertical mulching or radial aeration in the root zone of compacted trees improves gas exchange and water infiltration.</li>
+          <li><strong>Mulching:</strong> 7–10 cm of wood chip mulch over the root zone (not volcano-style around the base) dramatically reduces soil temperature fluctuation and moisture loss.</li>
+          <li><strong>Root zone protection:</strong> The most important factor. Establish a no-vehicle, no-fill zone at minimum equal to the crown radius before any adjacent construction begins. Retroactively protecting a root zone once compaction has occurred gives limited results.</li>
+          <li><strong>Wound management:</strong> No wound sealants. Clean cuts, proper removal of crossing or rubbing branches, and removal of stubs. Let CODIT do its job.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Client Conversation Points</h3>
+        <ul>
+          <li>"That cotton comes from female trees only — if the client wants cotton suppression, we can discuss trunk injection options (growth regulators) but this is a temporary and partial solution."</li>
+          <li>"The roots are looking for water. The way to reduce root infiltration into infrastructure is to reduce the tree's water deficit — which means adequate irrigation to the root zone."</li>
+          <li>"A healthy cottonwood can live 150 years. A stressed cottonwood in an urban setting might have 10–20 years of useful life remaining once decline sets in. I want to be honest with you about what we're managing toward."</li>
+        </ul>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-title">📋 Field Note</div>
+        <p>Black cottonwood is a magnificent tree in the right place — a 45-metre specimen on a creek bank is one of the most impressive living things you'll see in the Okanagan Interior. The arborist's job is to make honest calls about when that majesty is compatible with the site and client expectations, and when it isn't. When a client wants to build a carport 3 metres from a 70 cm DBH cottonwood, the kindest thing you can do is tell them clearly what happens next — hot manage their expectations downward over three years of call-backs.</p>
+      </div>
+
+      <div class="isa-tag">
+        <span>📚 ISA Exam Domains:</span> Tree Biology (11%) · Tree Risk Assessment (11%) · Pruning (15%) &nbsp;·&nbsp;
+        <span>Sources:</span> BC Ministry of Forests Species Profiles · ISA Arborists' Certification Study Guide · Shigo, A.L. — A New Tree Biology · ISA BMP for Pruning
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(a=>a.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  event.target.closest('.sidebar-item').classList.add('active');
+  document.querySelector('.content').scrollTop=0;
+}
+</script>
+</body>
+</html>
