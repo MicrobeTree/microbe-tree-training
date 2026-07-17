@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌳 Norway Maple | Microbe Tree Training</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --card: #1c2128;
+  --accent: #1d6fa8;
+  --accent-light: #58a6ff;
+  --accent-dim: #051a2e;
+  --text: #c9d1d9;
+  --text-muted: #8b949e;
+  --border: #30363d;
+  --green: #2ea043;
+  --red: #da3633;
+  --amber: #d4830a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; line-height: 1.6; }
+
+.header { background: #0a0e13; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.header-logo { font-size: 20px; font-weight: 800; color: var(--accent-light); letter-spacing: -0.5px; }
+.header-logo span { color: var(--text-muted); font-weight: 400; }
+.header-tag { background: var(--accent-dim); color: var(--accent-light); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; margin-left: auto; }
+
+.hero { background: linear-gradient(135deg, #0a1520 0%, #0d1720 100%); border-bottom: 1px solid var(--border); padding: 28px 20px 24px; }
+.hero-inner { max-width: 760px; margin: 0 auto; }
+.day-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; }
+.hero h1 { font-size: clamp(24px, 4vw, 32px); font-weight: 800; color: #e6edf3; margin-bottom: 2px; }
+.hero .latin { font-size: 16px; color: var(--accent-light); font-style: italic; margin-bottom: 8px; }
+.hero p { color: var(--text-muted); font-size: 14px; max-width: 580px; }
+
+.layout { max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; display: flex; gap: 20px; align-items: flex-start; }
+
+.sidebar { width: 170px; flex-shrink: 0; position: sticky; top: 16px; }
+.sidebar nav { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.nav-item { display: block; padding: 11px 14px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border-left: 3px solid transparent; transition: all 0.15s; border-bottom: 1px solid var(--border); }
+.nav-item:last-child { border-bottom: none; }
+.nav-item:hover { color: var(--accent-light); background: var(--accent-dim); }
+.nav-item.active { color: var(--accent-light); background: var(--accent-dim); border-left-color: var(--accent-light); font-weight: 700; }
+
+.main { flex: 1; min-width: 0; }
+.content-section { display: none; }
+.content-section.active { display: block; }
+.content-section h2 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 16px; }
+.content-section h3 { font-size: 15px; font-weight: 700; color: #e6edf3; margin: 18px 0 8px; }
+.content-section p { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+.content-section ul { padding-left: 20px; margin-bottom: 12px; }
+.content-section li { font-size: 14px; color: var(--text); margin-bottom: 7px; line-height: 1.6; }
+.content-section strong { color: #e6edf3; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+.spec-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.spec-table th { text-align: left; padding: 6px 10px; background: #0d1117; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.spec-table td { padding: 8px 10px; border-bottom: 1px solid #21262d; vertical-align: top; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .label { color: var(--accent-light); font-weight: 600; white-space: nowrap; }
+
+.field-note { background: #0a1520; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 14px 0; }
+.field-note .fn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 6px; }
+.field-note p { font-size: 13px; color: #7aabcc; line-height: 1.65; margin: 0; }
+
+.pest-card { background: #1a0e0e; border: 1px solid #3a1a1a; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+.pest-card .pest-name { font-size: 14px; font-weight: 700; color: #e05252; margin-bottom: 4px; }
+.pest-card .pest-latin { font-size: 12px; font-style: italic; color: var(--text-muted); margin-bottom: 8px; }
+.pest-card p { font-size: 13px; color: var(--text); line-height: 1.6; margin: 0; }
+
+.disease-card { background: #100f1a; border: 1px solid #2d2a40; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+.disease-card .disease-name { font-size: 14px; font-weight: 700; color: #8b7cf6; margin-bottom: 4px; }
+.disease-card .disease-latin { font-size: 12px; font-style: italic; color: var(--text-muted); margin-bottom: 8px; }
+.disease-card p { font-size: 13px; color: var(--text); line-height: 1.6; margin: 0; }
+
+.severity { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+.sev-high { background: #3a0e0e; color: #e05252; }
+.sev-med { background: #2e1b04; color: #e89c2a; }
+.sev-low { background: #0d2010; color: #2ea043; }
+
+.arborist-tip { background: #0c1a1c; border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; padding: 13px 15px; margin: 10px 0; }
+.arborist-tip .at-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 5px; }
+.arborist-tip p { font-size: 13px; color: #7abf8a; line-height: 1.6; margin: 0; }
+
+.warning { background: #1a0e0e; border: 1px solid #6e1a1a; border-radius: 8px; padding: 12px 14px; margin: 10px 0; }
+.warning .w-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #e05252; margin-bottom: 5px; }
+.warning p { font-size: 13px; color: #d4a4a4; line-height: 1.6; margin: 0; }
+
+.isa-footer { background: #0a0e13; border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-top: 24px; font-size: 12px; color: var(--text-muted); }
+.isa-footer strong { color: var(--accent-light); }
+
+@media (max-width: 580px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; position: static; }
+  .sidebar nav { display: flex; overflow-x: auto; }
+  .nav-item { border-bottom: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .nav-item.active { border-bottom-color: var(--accent-light); border-left-color: transparent; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Microbe Tree <span>Training</span></div>
+  <div class="header-tag">🌳 Tree Profile</div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="day-badge">🌳 Wednesday · Week 8</div>
+    <h1>Norway Maple</h1>
+    <div class="latin">Acer platanoides L.</div>
+    <p>One of the most common boulevard and residential trees in the Okanagan. Also one of the most problematic — surface roots, dense shade, invasive spread, and high Verticillium susceptibility. Understanding this species means better conversations with clients, better pruning decisions, and sharper PHC assessments.</p>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <nav>
+      <a class="nav-item active" onclick="showSection('identity')"><span>🪪</span> Identity</a>
+      <a class="nav-item" onclick="showSection('origin')"><span>🌍</span> Origin</a>
+      <a class="nav-item" onclick="showSection('biology')"><span>🌱</span> Biology</a>
+      <a class="nav-item" onclick="showSection('pests')"><span>🐛</span> Pest Pressures</a>
+      <a class="nav-item" onclick="showSection('disease')"><span>🦠</span> Disease Pressures</a>
+      <a class="nav-item" onclick="showSection('arborist')"><span>🧗</span> Arborist Notes</a>
+    </nav>
+  </div>
+
+  <div class="main">
+
+    <!-- IDENTITY -->
+    <div id="section-identity" class="content-section active">
+      <h2>🪪 Identity</h2>
+      <div class="card">
+        <table class="spec-table">
+          <tr><th>Attribute</th><th>Detail</th></tr>
+          <tr><td class="label">Family</td><td>Sapindaceae (Soapberry family; formerly Aceraceae)</td></tr>
+          <tr><td class="label">Genus / Species</td><td><em>Acer platanoides</em> L.</td></tr>
+          <tr><td class="label">Common names</td><td>Norway maple, European maple</td></tr>
+          <tr><td class="label">Notable cultivars</td><td>'Crimson King' (purple-leaved); 'Columnare' (columnar); 'Emerald Queen' (upright oval); 'Drumondii' (variegated)</td></tr>
+          <tr><td class="label">Form</td><td>Dense, broadly oval to rounded; strong central leader when young; multi-stem tendency in old age</td></tr>
+          <tr><td class="label">Mature height</td><td>15–20 m; up to 25 m in ideal conditions</td></tr>
+          <tr><td class="label">Mature spread</td><td>12–18 m crown spread; dense shade producer</td></tr>
+          <tr><td class="label">Bark</td><td>Grey-brown, developing interlaced ridges and furrows with age; not as deeply furrowed as silver maple</td></tr>
+          <tr><td class="label">Leaves</td><td>5-lobed, opposite; lobes sharply pointed (vs. sugar maple's blunter lobes); petiole exudes milky white sap when broken — the definitive field ID character</td></tr>
+          <tr><td class="label">Flowers</td><td>Yellow-green clusters, appear BEFORE or WITH leaf emergence (earlier than sugar maple); fragrant</td></tr>
+          <tr><td class="label">Fruit</td><td>Double samara with nearly horizontal wings (180° angle — wider than most maples); very high seed production</td></tr>
+          <tr><td class="label">Fall color</td><td>Yellow; some cultivars orange; not as vibrant as sugar or red maple</td></tr>
+        </table>
+      </div>
+      <p>The <strong>milky white petiole sap</strong> is the definitive field character that separates Norway maple from all native North American maples. Break a leaf petiole and look for the latex-like white exudate. If it's there: Norway maple. No other common Okanagan maple does this.</p>
+      <p>The nearly horizontal samara wings (approaching 180°) are the second key ID character — sugar maple samara wings are more curved (about 90–120°). Norway maple seeds are also larger and heavier, which affects their dispersal pattern.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note</div>
+        <p>The petiole test is something to demonstrate to clients and new crew on site. Break a leaf off at the stem, wait 2 seconds. White sap? Norway maple. This one character resolves a lot of field ID confusion between maple species in Okanagan urban settings where multiple species are intermixed. Practice it until it's instinctive.</p>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div id="section-origin" class="content-section">
+      <h2>🌍 Origin</h2>
+      <p><em>Acer platanoides</em> is native to <strong>Europe and western Asia</strong> — from Norway and Scandinavia south through central and eastern Europe to the Caucasus Mountains. It occupies a wide range of European habitats from coastal lowlands to mountain foothills, growing in mixed deciduous forests with beech, oak, and linden.</p>
+      <p>It was introduced to North America as an ornamental street tree in the colonial period, and planted extensively across Canada and the US throughout the 20th century — particularly after Dutch Elm Disease devastated urban elm populations. Municipalities planted Norway maple as a fast-growing, tough replacement. The result is that it is now one of the most common urban trees on the continent, and one of the most contentious.</p>
+      <h3>Invasive Status in BC</h3>
+      <p>Norway maple is classified as <strong>invasive in coastal British Columbia</strong> (Metro Vancouver region). It naturalizes readily in disturbed riparian areas and forest edges, where its dense shade suppresses native vegetation regeneration. In the <strong>Okanagan Interior</strong>, it is not currently on the BC provincial invasive plant list for this region, but municipalities including Kelowna are monitoring spread in naturalized areas adjacent to plantings.</p>
+      <p>The key invasive mechanism: Norway maple produces enormous quantities of viable seed annually, the seeds disperse readily on wind, and the seedlings tolerate a wide range of light and soil conditions. A single mature Norway maple can produce tens of thousands of seeds per year.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Norway maples on Kelowna and West Kelowna boulevards are legacy plantings from the 1960s–1990s, when it was a recommended street tree species. Many are now 50–60 years old, reaching large stature and beginning to show age-related decline issues: Verticillium, girdling roots, shallow root conflicts with pavement. The arborist conversation today is often about managing these trees through end-of-life rather than establishment.</p>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div id="section-biology" class="content-section">
+      <h2>🌱 Biology — What It Wants</h2>
+      <div class="card">
+        <table class="spec-table">
+          <tr><th>Factor</th><th>Preference / Tolerance</th></tr>
+          <tr><td class="label">Light</td><td>Full sun to partial shade; more shade-tolerant than most maples — will recruit as understory in natural settings</td></tr>
+          <tr><td class="label">Moisture</td><td>Prefers moist, well-drained soils; tolerates periodic drought once established; poor in waterlogged conditions</td></tr>
+          <tr><td class="label">Soil pH</td><td>Adaptable 4.5–7.5; less sensitive to alkaline soils than silver maple; performs reasonably in Okanagan's alkaline urban soils</td></tr>
+          <tr><td class="label">Soil texture</td><td>Adaptable; clay to sandy loam; urban compaction tolerance is moderate</td></tr>
+          <tr><td class="label">Cold hardiness</td><td>USDA Zone 4–5; hardy throughout Okanagan; spring frost can damage early flowers but tree is not at risk</td></tr>
+          <tr><td class="label">Urban tolerance</td><td>Moderate — better than silver maple in compaction; worse than linden; surface rooting is a persistent issue</td></tr>
+          <tr><td class="label">Salt tolerance</td><td>Moderate; better than sugar maple; lower than black locust or siberian elm</td></tr>
+          <tr><td class="label">Growth rate</td><td>Moderate to fast — 30–60 cm height gain per year in good conditions</td></tr>
+        </table>
+      </div>
+      <h3>Root Architecture</h3>
+      <p>Norway maple is notorious for its <strong>shallow, aggressive root system</strong>. Lateral roots tend to stay in the top 30–60 cm and spread extremely widely — commonly beyond the drip line by 2–3× crown radius. In boulevard situations with restricted root zones, these roots emerge at or near the surface, causing:</p>
+      <ul>
+        <li>Pavement heaving (concrete and asphalt uplift)</li>
+        <li>Trip hazards on sidewalks and curbs</li>
+        <li>Competition with lawn grass and garden plants</li>
+        <li>Girdling root development around the root collar (especially in trees planted in compacted soils)</li>
+      </ul>
+      <h3>Dense Shade</h3>
+      <p>The leaf canopy of Norway maple produces <strong>denser shade than almost any other common boulevard tree</strong>. The leaves are large, closely-spaced, and the canopy architecture is tight. This shade intensity means:</p>
+      <ul>
+        <li>Grass and most ornamentals fail beneath the canopy</li>
+        <li>Seedling regeneration (including Norway maple itself) can establish in the understory — this is the mechanism of spread in naturalized areas</li>
+        <li>Lower branch growth eventually dies out due to self-shading if unpruned</li>
+      </ul>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>When a client can't grow grass or garden plants under their large Norway maple, the answer is always shade, not soil chemistry. The canopy transmittance of Norway maple is genuinely very low — even relatively shade-tolerant hostas and ferns struggle directly under the canopy. The practical recommendation: mulch under the drip line with 8–10 cm of wood chips and accept the tree's canopy footprint rather than fighting it with repeated lawn renovations.</p>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div id="section-pests" class="content-section">
+      <h2>🐛 Pest Pressures</h2>
+
+      <div class="pest-card">
+        <div class="pest-name">Maple Bladder Gall Mite <span class="severity sev-low">Low — Cosmetic</span></div>
+        <div class="pest-latin">Vasates quadripedes Shimer</div>
+        <p><strong>Signs:</strong> Small green to red warty galls on upper leaf surface — resembling tiny blisters. Often alarming to clients but purely cosmetic. <strong>Okanagan context:</strong> Common in warm dry summers. <strong>Management:</strong> No treatment needed. Client education: "The tree is fine, these are mites making tiny houses in the leaves."</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-name">Maple Spider Mite <span class="severity sev-med">Moderate in hot/dry conditions</span></div>
+        <div class="pest-latin">Oligonychus aceris Banks</div>
+        <p><strong>Signs:</strong> Bronzing or stippling of leaves starting in mid-summer; fine webbing on undersides in heavy infestations; premature leaf drop in severe cases. <strong>Okanagan context:</strong> Mite populations explode during the dry, hot Okanagan summers — especially on water-stressed trees. <strong>Management:</strong> Irrigation improvement is the first step. Miticide application warranted in severe cases; avoid broad-spectrum insecticides that kill predatory mites (lacewings, predatory mites) which normally keep populations in check.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-name">Asian Longhorned Beetle <span class="severity sev-high">High — Not Established in Okanagan</span></div>
+        <div class="pest-latin">Anoplophora glabripennis Motschulsky</div>
+        <p><strong>Alert pest:</strong> ALB is not established in the Okanagan but is a major surveillance priority in BC. It attacks maples preferentially among other host trees. <strong>Signs:</strong> Round exit holes (15 mm diameter), oozing sap, sawdust-like frass at holes. <strong>Action if suspected:</strong> Report immediately to BC Ministry of Agriculture — this is a reportable pest. Do NOT prune or move wood without guidance. Urban maple populations in ALB-infested areas are typically destroyed entirely.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-name">Cottony Maple Scale <span class="severity sev-med">Moderate</span></div>
+        <div class="pest-latin">Pulvinaria innumerabilis Rathvon</div>
+        <p><strong>Signs:</strong> White cottony masses on branches in early summer (egg masses); sooty mold on leaves from honeydew; branch dieback in heavy infestations. <strong>Okanagan context:</strong> Populations can build rapidly in warm, dry conditions. <strong>Management:</strong> Dormant oil in late winter/early spring is most effective; horticultural oil in summer for crawlers. Attract natural enemies (parasitic wasps) by avoiding broad-spectrum insecticides.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Maple bladder gall is probably the single most-called-about Norway maple pest in Kelowna residential work. The client sees the warty galls and panics. Before you arrive on site, remind them in writing that this is cosmetic and requires no treatment — the call (and the stress) often comes from the photo they found online by searching "red spots maple leaves." Take 30 seconds on site to confirm the ID and explain it, and the client walk away informed rather than worried.</p>
+      </div>
+    </div>
+
+    <!-- DISEASE -->
+    <div id="section-disease" class="content-section">
+      <h2>🦠 Disease Pressures</h2>
+
+      <div class="disease-card">
+        <div class="disease-name">Verticillium Wilt <span class="severity sev-high">High — Primary Threat</span></div>
+        <div class="pest-latin">Verticillium dahliae Kleb.; V. albo-atrum Reinke &amp; Berthier</div>
+        <p><strong>Why Norway maple is high risk:</strong> Acer is one of the most susceptible genera to Verticillium — and Norway maple is no exception. In Okanagan urban soils, V. dahliae is widespread, and Norway maple plantings in older residential areas (where soil has been gardened for decades) are in heavily infested ground. <strong>Signs:</strong> Asymmetric wilt — one branch or one side of crown wilts while the rest appears healthy; flag branches with dead leaves still attached; olive-green to dark streaking in sapwood when branch cross-sectioned. <strong>Management:</strong> No curative treatment. PHC: reduce all stressors, optimize irrigation, avoid nitrogen excess. See Thursday's Verticillium lesson for full coverage.</p>
+      </div>
+
+      <div class="disease-card">
+        <div class="disease-name">Tar Spot <span class="severity sev-low">Low — Cosmetic</span></div>
+        <div class="pest-latin">Rhytisma acerinum (Pers.) Fries</div>
+        <p><strong>Signs:</strong> Large, glossy jet-black spots on leaves — the characteristic "tar spots" — appearing from mid-summer onward. Highly distinctive and alarming-looking but causes no significant physiological impact. <strong>Disease cycle:</strong> Overwinters in fallen leaves; ascospores infect new leaves in spring during wet weather. <strong>Management:</strong> Rake and remove fallen leaves to reduce inoculum. No treatment needed on the tree. Client education opportunity: "The spots look severe but this is strictly cosmetic — your tree is fine."</p>
+      </div>
+
+      <div class="disease-card">
+        <div class="disease-name">Maple Anthracnose <span class="severity sev-low">Low–Moderate</span></div>
+        <div class="pest-latin">Discula campestris (Berk. &amp; Broome) v. Arx and related</div>
+        <p><strong>Signs:</strong> Irregular brown to tan blotches on leaves following leaf veins; premature defoliation in wet springs; small dead branch tips (die-back of young shoot tips). <strong>Conditions:</strong> Favoured by cool, wet spring weather — less common in Okanagan's dry climate than in coastal BC. <strong>Management:</strong> Rake leaves. Ensure good air circulation through pruning. Not typically treated in Okanagan conditions.</p>
+      </div>
+
+      <div class="disease-card">
+        <div class="disease-name">Girdling Roots (Abiotic) <span class="severity sev-high">High — Major Chronic Issue</span></div>
+        <div class="pest-latin">Abiotic physiological disorder</div>
+        <p><strong>Not a disease, but acts like one:</strong> Norway maple is particularly prone to girdling root development, especially trees planted in nursery containers (where roots circle inside the pot). As the tree grows, these circling roots constrict the root collar and lower trunk, progressively restricting phloem and eventually xylem function. <strong>Signs:</strong> Crown decline, asymmetric branch dieback, basal trunk flare absent or asymmetric, bark constriction at root collar. Probe the soil at the base and look for roots crossing the trunk. <strong>Management:</strong> Corrective root pruning in the first 5–10 years of planting (air spade to expose, prune girdling roots). After 20+ years, girdling roots are usually too integral to remove safely without further destabilizing the tree. Document and monitor.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>On boulevard surveys, girdling roots and Verticillium wilt are the two conditions you'll find most often on mature Norway maples. The difference: girdling roots produce a gradual, symmetric (or root-plate-asymmetric) crown thinning; Verticillium produces a sudden, asymmetric flag-branch. When you see a Norway maple with 30% crown dieback, pull out both possible causes and use field signs to differentiate. Check the root collar for constriction. Cut a symptomatic branch for sapwood color. Often it's both.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div id="section-arborist" class="content-section">
+      <h2>🧗 Arborist Notes</h2>
+
+      <div class="arborist-tip">
+        <div class="at-label">🗓 Pruning Timing</div>
+        <p>Norway maple is a <strong>heavy bleeder</strong> — it exudes large quantities of sap from pruning wounds when cut during late winter and early spring (sap is rising, dormancy ending). Bleeding is not harmful to the tree but is unsightly on structures, vehicles, and clients' clothing. Prune in <strong>late summer (July–August)</strong> or when fully dormant in mid-winter (December–January in the Okanagan). Avoid March–May pruning for large-diameter cuts.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="at-label">🏙 Boulevard Suitability</div>
+        <p><strong>Not recommended for new plantings</strong> in most BC Interior municipalities. Invasive potential, surface roots, and Verticillium susceptibility make it a poor choice for new boulevard work. Legacy trees (existing plantings) are managed case-by-case. For new boulevard plantings, consider: linden (<em>Tilia</em> spp.), Kentucky coffeetree, bur oak, or disease-resistant elm cultivars (Dutch Elm Disease-resistant). Many Kelowna neighbourhood plans are actively transitioning away from Norway maple.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="at-label">🪚 Pruning Approach</div>
+        <p>Norway maples respond well to crown cleaning and structural pruning but require adherence to the <strong>ANSI A300 Part 1</strong> maximum removal limit (typically ≤25% of live crown in a single pruning, adjusted for tree condition). Avoid lion-tailing (removing all interior branches) — this species' high surface root competitiveness means carbohydrate reserves are important for wound compartmentalization. Over-pruning increases risk of decline and Verticillium susceptibility.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="at-label">🌿 Surface Root Management</div>
+        <p>Surface root conflicts with pavement are best addressed by: (1) structural soil systems at planting time (CU-Structural Soil, Silva Cells), (2) deep root fertilization/aeration well outside the root zone to encourage deeper growth, (3) pavement repair techniques that protect roots (permeable pavers, bridging). Root pruning should only be done within established guidelines — never more than 25% of root zone in a single season, never cut within critical root zone without impact assessment.</p>
+      </div>
+
+      <div class="warning">
+        <div class="w-label">⚠ Client Conversation — Invasive Status</div>
+        <p>If a client asks about planting a Norway maple (especially the purple-leaved 'Crimson King' which is very popular), explain that it is considered invasive in coastal BC and is not recommended for new plantings in most municipalities. Offer alternatives: 'Crimson Sentry' columnar Norway maple (less seed production), 'Atropurpureum' cultivars of Japanese maple, or purple-leaved flowering plum if they want the colour. This is a client education conversation, not a lecture.</p>
+      </div>
+
+      <div class="arborist-tip">
+        <div class="at-label">💧 PHC for Declining Trees</div>
+        <p>For Verticillium-affected Norway maples (common in Okanagan), the PHC priority order: (1) optimize deep irrigation to reduce drought stress — Okanagan summer dry periods amplify Verticillium severity; (2) mulch ring 8–10 cm deep, 1 m minimum radius; (3) avoid nitrogen fertilization unless soil test shows deficiency — excess N promotes lush susceptible growth; (4) prune symptomatic branches to healthy wood with sterilized tools (70% alcohol); (5) do not wound unnecessarily. Set realistic client expectations: recovery is possible but not guaranteed.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Norway maple is the species where our crew probably writes the most PHC reports in residential settings. The conversation is often: large tree, mature, surface roots causing pavement issues, some crown thinning from Verticillium, client wanting to know if the tree is "safe." The answer almost always involves: (1) root assessment at the collar (girdling? decay?), (2) crown assessment (Verticillium extent, structural dominance?), (3) honest conversation about the tree's trajectory. A well-supported Norway maple can live 100+ years; a poorly managed one on compacted soil with root damage is on a 10-year countdown. Know the difference.</p>
+      </div>
+    </div>
+
+    <div class="isa-footer">
+      <strong>📚 ISA Exam Domains:</strong> Tree Biology (11%) · Tree Selection &amp; Establishment (7%) · Pruning (15%) · PHC &nbsp;·&nbsp;
+      <strong>Sources:</strong> ISA Certification Study Guide 4th Ed. · ANSI A300 Part 1 · BC Invasive Species Council · Dirr — Manual of Woody Landscape Plants
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
