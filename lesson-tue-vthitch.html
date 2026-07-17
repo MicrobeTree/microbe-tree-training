@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪚 VT Hitch | Microbe Tree Training</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --card: #1c2128;
+  --accent: #d4830a;
+  --accent-light: #e89c2a;
+  --accent-dim: #2e1b04;
+  --text: #c9d1d9;
+  --text-muted: #8b949e;
+  --border: #30363d;
+  --green: #2ea043;
+  --red: #da3633;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; line-height: 1.6; }
+
+.header { background: #0a0e13; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.leader-logo { font-size: 20px; font-weight: 800; color: var(--accent-light); letter-spacing: -0.5px; }
+.header-logo span { color: var(--text-muted); font-weight: 400; }
+.header-tag { background: var(--accent-dim); color: var(--accent-light); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; margin-left: auto; }
+
+.page { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+.hero { padding: 28px 0 20px; }
+.day-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 14px; }
+.hero h1 { font-size: clamp(22px, 4vw, 28px); font-weight: 800; color: #e6edf3; margin-bottom: 8px; }
+.hero p { color: var(--text-muted); font-size: 14px; max-width: 600px; line-height: 1.65; }
+
+.section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 20px; }
+.section h2 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 18px; }
+.section h3 { font-size: 15px; font-weight: 700; color: #e6edf3; margin: 18px 0 8px; }
+.section h3:first-of-type { margin-top: 0; }
+.section p { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+.section ul { padding-left: 20px; margin-bottom: 12px; }
+.section li { font-size: 14px; color: var(--text); margin-bottom: 7px; line-height: 1.6; }
+.section strong { color: #e6edf3; }
+
+.diagram-wrap { background: #0a0e13; border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; text-align: center; }
+.diagram-caption { font-size: 12px; color: var(--text-muted); margin-top: 10px; font-style: italic; line-height: 1.5; }
+
+.steps { counter-reset: step; display: flex; flex-direction: column; gap: 12px; }
+.step { display: flex; gap: 14px; align-items: flex-start; }
+.step-num { counter-increment: step; min-width: 28px; height: 28px; background: var(--accent-dim); color: var(--accent-light); font-weight: 800; font-size: 13px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.step-num::before { content: counter(step); }
+.step-content { font-size: 14px; color: var(--text); line-height: 1.6; }
+.step-content strong { color: #e6edf3; }
+
+.warning { background: #1a0e0e; border: 1px solid #6e1a1a; border-radius: 8px; padding: 14px 16px; margin: 14px 0; }
+.warning .w-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #e05252; margin-bottom: 6px; }
+.warning p { font-size: 13px; color: #d4a4a4; line-height: 1.6; margin: 0; }
+.warning ul { padding-left: 18px; margin: 6px 0 0; }
+.warning li { font-size: 13px; color: #d4a4a4; line-height: 1.55; margin-bottom: 4px; }
+
+.field-note { background: #1a1000; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 14px 0; }
+.field-note .fn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 6px; }
+.field-note p { font-size: 13px; color: #c4a87a; line-height: 1.65; margin: 0; }
+
+.compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.compare-table th { text-align: left; padding: 8px 10px; background: #0d1117; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.compare-table td { padding: 9px 10px; border-bottom: 1px solid #21262d; vertical-align: top; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table .name { color: var(--accent-light); font-weight: 600; }
+.tag-yes { color: #2ea043; font-weight: 700; }
+.tag-no { color: #da3633; font-weight: 700; }
+.tag-ok { color: #e89c2a; font-weight: 700; }
+
+.isa-footer { background: #0a0e13; border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-top: 24px; font-size: 12px; color: var(--text-muted); }
+.isa-footer strong { color: var(--accent-light); }
+
+.callout { background: var(--accent-dim); border: 1px solid #5a3a04; border-radius: 8px; padding: 13px 16px; margin: 14px 0; }
+.callout .cl-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 6px; }
+.callout p { font-size: 13px; color: #d4b87a; line-height: 1.65; margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Microbe Tree <span>Training</span></div>
+  <div class="header-tag">🪚 Equipment &amp; Knots</div>
+</div>
+
+<div class="page">
+  <div class="hero">
+    <div class="day-badge">🪚 Tuesday · Week 8</div>
+    <h1>VT Hitch (Valdotain Tresse)</h1>
+    <p>We covered Blake's Hitch. This is its evolution. The VT Hitch is the modern standard for SRT work positioning — more versatile, better in a friction ring, and the hitch of choice for climbers transitioning to single-rope technique. Know how it's built, why it grips differently from Blake's, and when you'd choose one over the other.</p>
+  </div>
+
+  <!-- IDENTITY -->
+  <div class="section">
+    <h2>⬡ What Is the VT Hitch?</h2>
+    <p>The <strong>Valdotain Tresse</strong> (VT Hitch) is a braided friction hitch developed by French arborist/climbing instructor Bedrich Petzl (and popularized widely in the tree care industry). "Valdotain" refers to the Aosta Valley climbing tradition; "tresse" is French for braid or plait — which describes exactly how the hitch is constructed.</p>
+    <p>Unlike the Blake's Hitch, which wraps sequentially around the host rope, the VT Hitch interlocks its own strands in a braided configuration that grips the host rope through both friction <em>and</em> mechanical interlock. This produces a hitch with superior performance in a friction ring (like the Petzl Chicane or Singing Rock Ring), which is where most contemporary SRT climbing systems use it.</p>
+    <ul>
+      <li><strong>Primary application:</strong> SRT (single rope technique) work positioning with a mechanical friction ring or redirect</li>
+      <li><strong>Also used for:</strong> DRT positioning when used with a ring or redirect; backup in rope wrench systems</li>
+      <li><strong>Common pairing:</strong> VT Hitch + Rope Wrench + tether = standard SRT working configuration</li>
+      <li><strong>Cord requirement:</strong> Requires a VT-compatible climbing hitch cord, typically 7–8 mm; a spliced eye on each end is standard (and significantly improves performance)</li>
+    </ul>
+    <div class="callout">
+      <div class="cl-label">📌 SRT vs DRT Context</div>
+      <p>Single rope technique (SRT) uses one rope going straight to the anchor — the climber ascends and descends the same line. DRT (doubled rope technique) runs the rope through the anchor so both ends reach the ground. VT Hitch is used in both systems but is most associated with modern SRT setups. Blake's Hitch can work in DRT but is not typically used in SRT primary systems.</p>
+    </div>
+  </div>
+
+  <!-- ANATOMY -->
+  <div class="section">
+    <h2>⬡ Anatomy of the VT Hitch</h2>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" width="400" height="340">
+        <!-- Host rope (main line) - vertical -->
+        <rect x="188" y="10" width="14" height="310" rx="7" fill="#5a4a30" stroke="#8a7050" stroke-width="1"/>
+        <!-- VT hitch cord: 2 eyes at top and bottom, braided body around host -->
+        <!-- Top eye (carabiner) -->
+        <ellipse cx="195" cy="35" rx="14" ry="20" fill="none" stroke="#aaa" stroke-width="2.5"/>
+        <text x="225" y="30" fill="#aaa" font-size="11">Top eye</text>
+        <text x="225" y="42" fill="#aaa" font-size="11">(carabiner)</text>
+        <!-- Bottom eye (carabiner to harness) -->
+        <ellipse cx="195" cy="290" rx="14" ry="20" fill="none" stroke="#aaa" stroke-width="2.5"/>
+        <text x="225" y="285" fill="#aaa" font-size="11">Bottom eye</text>
+        <text x="225" y="297" fill="#aaa" font-size="11">(harness)</text>
+        <!-- Braided body - left strand -->
+        <path d="M 188 55 Q 155 75 155 95 Q 155 115 188 135 Q 155 155 155 175 Q 155 195 188 215 Q 155 235 155 255 Q 155 265 188 270"
+              fill="none" stroke="#d4830a" stroke-width="5" stroke-linecap="round"/>
+        <!-- Braided body - right strand -->
+        <path d="M 202 55 Q 235 75 235 95 Q 235 115 202 135 Q 235 155 235 175 Q 235 195 202 215 Q 235 235 235 255 Q 235 265 202 270"
+              fill="none" stroke="#e89c2a" stroke-width="5" stroke-linecap="round"/>
+        <!-- Cross-overs (braid interlock marks) -->
+        <circle cx="195" cy="95" r="4" fill="#0d1117" stroke="#2ea043" stroke-width="2"/>
+        <circle cx="195" cy="135" r="4" fill="#0d1117" stroke="#2ea043" stroke-width="2"/>
+        <circle cx="195" cy="175" r="4" fill="#0d1117" stroke="#2ea043" stroke-width="2"/>
+        <circle cx="195" cy="215" r="4" fill="#0d1117" stroke="#2ea043" stroke-width="2"/>
+        <circle cx="195" cy="255" r="4" fill="#0d1117" stroke="#2ea043" stroke-width="2"/>
+        <!-- Labels -->
+        <text x="85" y="95" fill="#d4830a" font-size="11" text-anchor="middle">Left</text>
+        <text x="85" y="107" fill="#d4830a" font-size="11" text-anchor="middle">strand</text>
+        <line x1="120" y1="95" x2="150" y2="95" stroke="#d4830a" stroke-width="1"/>
+        <text x="305" y="95" fill="#e89c2a" font-size="11" text-anchor="middle">Right</text>
+        <text x="305" y="107" fill="#e89c2a" font-size="11" text-anchor="middle">strand</text>
+        <line x1="240" y1="95" x2="270" y2="95" stroke="#e89c2a" stroke-width="1"/>
+        <text x="90" y="175" fill="#2ea043" font-size="11" text-anchor="middle">Braid</text>
+        <text x="90" y="187" fill="#2ea043" font-size="11" text-anchor="middle">cross-over</text>
+        <text x="90" y="199" fill="#2ea043" font-size="11" text-anchor="middle">points</text>
+        <line x1="140" y1="175" x2="190" y2="175" stroke="#2ea043" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Host rope label -->
+        <text x="90" y="40" fill="#8b949e" font-size="11" text-anchor="middle">Host rope</text>
+        <line x1="140" y1="40" x2="185" y2="40" stroke="#8b949e" stroke-width="1"/>
+      </svg>
+      <div class="diagram-caption">The VT Hitch uses two strands of the hitch cord that braid around the host rope, crossing at each interlock point. The braided geometry creates grip through both friction and mechanical interlock — different from Blake's sequential wraps.</div>
+    </div>
+    <h3>Key Components</h3>
+    <ul>
+      <li><strong>Spliced eyes:</strong> A proper VT Hitch uses a cord with a <em>sewn or spliced eye at each end</em>. While a knot-and-girth-hitch method exists, spliced eyes provide a stronger, cleaner, more consistent hitch geometry and are the professional standard</li>
+      <li><strong>Two strands:</strong> The cord is girth-hitched (or the eyes are looped) around the carabiner, creating two working strands that braid around the host rope</li>
+      <li><strong>Interlock points:</strong> Each time the strands cross creates an interlock that grips the host rope — typically 3–5 crossings depending on cord diameter and host rope diameter</li>
+      <li><strong>Both carabiners:</strong> One carabiner at each eye — top cab connects to a redirect or ring; bottom cab connects to harness or rope wrench tether</li>
+    </ul>
+  </div>
+
+  <!-- HOW TO TIE -->
+  <div class="section">
+    <h2>⬡ How to Rig the VT Hitch</h2>
+    <p>This describes the spliced-eye configuration, which is the standard for professional use. The hitch is <em>rigged</em> rather than tied — it is assembled onto the rope rather than knotted in hand first.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num"></div><div class="step-content"><strong>Girth-hitch both eyes to a carabiner</strong> at the top. This creates two equal strands hanging parallel below the carabiner, one on each side of the host rope.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-content"><strong>Cross the strands:</strong> Take the left strand and pass it behind/around the host rope to the right side. Take the right strand and pass it around to the left side. The strands have now swapped sides — this is the first cross-over.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-content"><strong>Repeat the crossing</strong> 2–4 more times (total 3–5 crossings), working downward. Each crossing wraps both strands around the host rope, increasing the bite of the hitch.</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-content"><strong>Bring the bottom eyes together</strong> and clip both onto the bottom carabiner. The carabiner is your connection point to the harness (and/or rope wrench tether).</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-content"><strong>Dress and test:</strong> Even out the crossings so they sit parallel and uniform on the host rope. Load gently first — the hitch should grip immediately. Advance by cupping the hitch body and pushing upward.</div></div>
+    </div>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Practice</div>
+      <p>The VT Hitch looks simple but requires precise geometry to perform correctly. Crossings that are uneven, twisted, or mis-counted significantly change grip behaviour. Spend time rigging this at ground level with a static rope until the motion is automatic and the hitch always looks the same. Many climbers use a 5-crossing configuration as the default; some drop to 3 on certain rope/cord diameter combinations. Test your specific rope and cord combination before climbing.</p>
+    </div>
+  </div>
+
+  <!-- GRIP MECHANISM -->
+  <div class="section">
+    <h2>⬡ How It Grips — vs. Blake's Hitch</h2>
+    <p>Understanding how the VT Hitch grips explains why it works so well with friction rings and why it behaves differently from Blake's under load.</p>
+    <ul>
+      <li><strong>Blake's grip:</strong> Sequential wraps tighten around the host rope through friction alone — a single mode of grip. It works directly on the rope surface.</li>
+      <li><strong>VT grip:</strong> The braided crossings create a <em>camming and wedging action</em> — the hitch tightens through both friction AND the mechanical interlock between strands. Under load, the strands pull against each other through the host rope, increasing grip.</li>
+      <li><strong>In a friction ring:</strong> The VT Hitch is designed to be used in a <em>friction ring</em> (like a Petzl Chicane, Singing Rock Ring, or similar). The ring acts as a redirect that changes the hitch's loading geometry — allowing descent control while keeping the hitch functional. Blake's Hitch does not perform well through a friction ring.</li>
+      <li><strong>Rope compatibility:</strong> VT Hitch has better cross-diameter tolerance than Blake's — it can function acceptably even when cord and host rope diameters are closer together, because the mechanical interlock adds grip beyond just friction.</li>
+      <li><strong>Temperature sensitivity:</strong> Both hitches are friction-dependent. In cold or icy conditions, test before committing weight. VT Hitch performs marginally better in wet conditions due to the mechanical component.</li>
+    </ul>
+  </div>
+
+  <!-- WHEN NOT TO USE -->
+  <div class="section">
+    <h2>⬡ When NOT to Use the VT Hitch</h2>
+    <div class="warning">
+      <div class="w-label">⚠ Limitations</div>
+      <ul>
+        <li><strong>Without a friction ring in SRT:</strong> The VT Hitch alone on a single rope is not optimally configured for SRT descent without a ring or redirect to change the geometry. Pair it with a ring or use a rope wrench system.</li>
+        <li><strong>Knotted-end cord (no spliced eyes):</strong> Without proper spliced eyes, hitch geometry is compromised — knots at the eyes create bulk that distorts the braid. This is not a strict prohibition but noticeably degrades performance.</li>
+        <li><strong>On ropes with significant surface damage or glazing:</strong> Any friction hitch's grip is compromised on worn rope. Inspect host rope condition before climbing.</li>
+        <li><strong>As a sole life safety connection:</strong> ANSI Z133 requires two connections. VT Hitch + work positioning does not satisfy both — a secondary lanyard or backup is required at all times.</li>
+        <li><strong>Substituting for a mechanical progress capture in SRT ascent:</strong> The VT Hitch is primarily a positioning/descent hitch. For efficient SRT ascent, mechanical ascenders (Petzl Zigzag, Rope Wrench system, etc.) are more appropriate.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COMPARISON -->
+  <div class="section">
+    <h2>⬡ VT Hitch vs. Blake's Hitch — Side by Side</h2>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>VT Hitch</th><th>Blake's Hitch</th></tr>
+      <tr>
+        <td class="name">Grip mechanism</td>
+        <td>Friction + mechanical interlock</td>
+        <td>Friction only (sequential wraps)</td>
+      </tr>
+      <tr>
+        <td class="name">Works in friction ring</td>
+        <td class="tag-yes">Yes — designed for it</td>
+        <td class="tag-no">No — not compatible</td>
+      </tr>
+      <tr>
+        <td class="name">Best system</td>
+        <td>SRT (single rope technique)</td>
+        <td>DRT (doubled rope technique)</td>
+      </tr>
+      <tr>
+        <td class="name">Setup</td>
+        <td>Rigged (assembled on rope; spliced eyes)</td>
+        <td>Tied (knotted with separate cord)</td>
+      </tr>
+      <tr>
+        <td class="name">1-hand advance while loaded</td>
+        <td class="tag-yes">Yes</td>
+        <td class="tag-yes">Yes</td>
+      </tr>
+      <tr>
+        <td class="name">Diameter tolerance</td>
+        <td class="tag-yes">Better — handles closer diameters</td>
+        <td class="tag-ok">Needs ≥2 mm difference</td>
+      </tr>
+      <tr>
+        <td class="name">Stopper knot needed</td>
+        <td class="tag-no">No — eyes self-terminate</td>
+        <td class="tag-yes">Yes — tail needs stopper knot</td>
+      </tr>
+      <tr>
+        <td class="name">Learning curve</td>
+        <td>Moderate — geometry must be consistent</td>
+        <td>Moderate — wrap count must be consistent</td>
+      </tr>
+    </table>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The shift toward SRT climbing in production arborist work is real and happening quickly. If you're doing high-volume climbing (large ornamentals, tall ponderosas), SRT with VT Hitch + Rope Wrench is faster and less physically demanding than DRT for ascent on larger trees. The investment: a spliced VT cord (about $30–40 from a supplier like Wesspur or SherrillTree), a compatible friction ring, and the practice hours to get the geometry right. The payoff is significant over a season of climbing.</p>
+    </div>
+  </div>
+
+  <!-- INSPECTION -->
+  <div class="section">
+    <h2>⬡ Inspection &amp; Retirement</h2>
+    <ul>
+      <li>Inspect the cord before every climb — look for sheath wear, flat spots, glazing (shiny, hardened surface from heat), or damage at the spliced eyes</li>
+      <li><strong>Retire immediately if:</strong> glazed/heat-damaged surface, flat spots anywhere on the cord, sheath cuts exposing core, or loss of rope-hand feel (stiffness indicating internal damage)</li>
+      <li>Per ISA BMP — Rigging: friction hitch cords showing ≥10% diameter reduction or sheath damage must be retired</li>
+      <li>Log condition on inspections — keep inspection records with your gear</li>
+      <li>VT Hitch cords with spliced eyes: inspect the splice termination carefully — fraying or opening of the splice requires retirement</li>
+    </ul>
+    <div class="callout">
+      <div class="cl-label">📜 ANSI Z133 Standard</div>
+      <p>Per ANSI Z133-2017: all climbing and work positioning equipment must be inspected before each use. Equipment found to be defective must be removed from service immediately. No friction hitch cord shall be used if it cannot reliably hold the climber's weight under normal operating conditions.</p>
+    </div>
+  </div>
+
+  <div class="isa-footer">
+    <strong>📚 ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;·&nbsp;
+    <strong>Sources:</strong> ANSI Z133-2017 · ISA BMP — Rigging · ISA Certification Study Guide 4th Ed. · WorkSafeBC OHS Regulation Part 26
+  </div>
+</div>
+</body>
+</html>
