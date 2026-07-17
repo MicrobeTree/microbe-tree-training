@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦠 Armillaria Root Rot | Microbe Tree Training</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --card: #1c2128;
+  --accent: #c84040;
+  --accent-light: #e05252;
+  --accent-dim: #2a0e0e;
+  --text: #c9d1d9;
+  --text-muted: #8b949e;
+  --correct: #2ea043;
+  --wrong: #da3633;
+  --border: #30363d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; line-height: 1.6; }
+
+.header { background: #0a0e13; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.header-logo { font-size: 20px; font-weight: 800; color: var(--accent-light); letter-spacing: -0.5px; }
+.header-logo span { color: var(--text-muted); font-weight: 400; }
+.header-tag { background: var(--accent-dim); color: var(--accent-light); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; margin-left: auto; }
+
+.screen { display: none; max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+.screen.active { display: block; }
+
+.hero { padding: 28px 0 20px; }
+.day-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 14px; }
+.hero h1 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; color: #e6edf3; margin-bottom: 8px; }
+.hero p { color: var(--text-muted); font-size: 15px; max-width: 500px; margin: 0 auto 28px; }
+.start-btn { background: var(--accent); color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.start-btn:hover { background: var(--accent-light); }
+
+.ref-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+.ref-card h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 14px; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ref-table th { text-align: left; padding: 6px 10px; background: #0d1117; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.ref-table td { padding: 8px 10px; border-bottom: 1px solid #21262d; vertical-align: top; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table .label { color: var(--accent-light); font-weight: 600; white-space: nowrap; }
+
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.q-num { background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+.progress-bar { flex: 1; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
+.progress-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.question-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.domain-tag { display: inline-block; font-size: 11px; color: var(--text-muted); background: #21262d; padding: 2px 8px; border-radius: 4px; margin-bottom: 12px; }
+.question-text { font-size: 17px; font-weight: 600; color: #e6edf3; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.option-btn { background: #1c2128; border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; text-align: left; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; gap: 12px; align-items: flex-start; }
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: #2a1010; }
+.option-label { font-weight: 700; color: var(--accent-light); min-width: 20px; }
+.option-btn.correct { background: #0d3320; border-color: #2ea043; }
+.option-btn.wrong { background: #2d0e0e; border-color: var(--wrong); animation: shake 0.3s ease; }
+.option-btn:disabled { cursor: default; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+.lesson-reveal { display: none; background: #0d0608; border: 1px solid var(--accent-dim); border-radius: 12px; padding: 24px; margin-top: 16px; }
+.lesson-reveal.visible { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.lesson-reveal h4 { color: var(--accent-light); font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.lesson-reveal p { font-size: 14px; color: var(--text); margin-bottom: 12px; line-height: 1.7; }
+.lesson-reveal ul { padding-left: 20px; margin-bottom: 12px; }
+.lesson-reveal li { font-size: 14px; color: var(--text); margin-bottom: 7px; line-height: 1.6; }
+.lesson-reveal strong { color: #e6edf3; }
+.field-note { background: #150509; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 16px; }
+.field-note .fn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 6px; }
+.field-note p { font-size: 13px; color: #c4909090; line-height: 1.65; margin: 0; }
+.source-cite { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 10px; }
+.next-btn { display: none; margin-top: 20px; background: var(--accent); color: #fff; border: none; padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.next-btn.visible { display: inline-block; }
+.next-btn:hover { background: var(--accent-light); }
+
+.complete-card { background: var(--card); border: 1px solid var(--accent-dim); border-radius: 12px; padding: 32px 24px; text-align: center; }
+.complete-icon { font-size: 48px; margin-bottom: 16px; }
+.complete-card h2 { font-size: 24px; font-weight: 800; color: #e6edf3; margin-bottom: 8px; }
+.complete-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+.isa-tag { display: inline-block; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; padding: 6px 14px; border-radius: 6px; margin-bottom: 8px; }
+.restart-btn { background: transparent; color: var(--accent-light); border: 1px solid var(--accent); padding: 10px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Microbe Tree <span>Training</span></div>
+  <div class="header-tag">🦠 Pests &amp; Diseases</div>
+</div>
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+  <div class="hero" style="text-align:center">
+    <div class="day-badge">🦠 Thursday · Week 8</div>
+    <h1>Armillaria Root Rot</h1>
+    <p style="margin:0 auto 28px">Honey mushrooms, shoestring rhizomorphs, white mycelial fans. Armillaria is one of the most important root rot pathogens in BC — it affects conifers AND hardwoods, it lives in the soil for decades, and it is a leading cause of tree death in stressed Okanagan landscapes. Learn to find it, read it, and explain it.</p>
+    <button class="start-btn" onclick="showScreen('screen-q1')">Begin Lesson →</button>
+  </div>
+
+  <div class="ref-card">
+    <h3>📋 Quick Reference — Armillaria Field Signs</h3>
+    <table class="ref-table">
+      <tr><th>Sign</th><th>What to Look For</th><th>Significance</th></tr>
+      <tr><td class="label">White mycelial fans</td><td>White to cream, flat fungal tissue between bark and wood at root collar and roots; fans or sheets with mushroom smell</td><td>Definitive diagnostic sign; confirms active infection</td></tr>
+      <tr><td class="label">Rhizomorphs</td><td>Dark brown to black, shoestring-like strands under bark and in soil; 1–4 mm diameter</td><td>Key dispersal mechanism; distinctive and diagnostic</td></tr>
+      <tr><td class="label">Honey mushrooms</td><td>Clusters of tan to brown mushrooms at base of tree or on roots in fall; ring on stem; white spore print</td><td>Fruiting body — confirms established infection</td></tr>
+      <tr><td class="label">Resin soaking</td><td>Copious resin seeping from base of conifers, soaking soil and bark</td><td>Conifer defense response to root infection</td></tr>
+      <tr><td class="label">Crown symptoms</td><td>Gradual crown decline, needle/leaf discoloration, reduced growth; often with death of lower branches first</td><td>Non-specific — late-stage indicator</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Q1 -->
+<div id="screen-q1" class="screen">
+  <div class="q-header"><span class="q-num">Question 1 of 5</span><div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div></div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology · PHC</div>
+    <div class="question-text">What type of pathogen causes Armillaria root rot, and how does it primarily spread?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">A</span> An oomycete (water mould) that spreads through waterlogged soil via zoospores</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">B</span> A bacterial pathogen that moves through the xylem via root connections</button>
+      <button class="option-btn" onclick="answer(this,'correct','q1')"><span class="option-label">C</span> A basidiomycete fungus that spreads via root contact and shoestring-like rhizomorphs through soil</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">D</span> An ascomycete that produces spores in fall fruiting bodies that infect healthy roots</button>
+    </div>
+  </div>
+  <div id="lesson-q1" class="lesson-reveal">
+    <h4>Armillaria — The Basidiomycete That Walks Through Soil</h4>
+    <p><em>Armillaria</em> is a true fungus — a <strong>basidiomycete</strong> (the same group as mushrooms, bracket fungi, and most wood-decay fungi). In BC, the dominant species is <em>Armillaria ostoyae</em> (Romagn.) Herink, the most pathogenic species in conifer-dominated forests of western North America.</p>
+    <ul>
+      <li><strong>Two spread mechanisms:</strong>
+        <ul>
+          <li><em>Root contact:</em> When the roots of an infected tree contact the roots of a healthy tree, the fungal mycelium can transfer directly. This is the primary spread pathway within a stand or group of trees.</li>
+          <li><em>Rhizomorphs:</em> Dark, shoestring-like aggregated fungal strands (technically "bootlace" strands of mycelium) that grow through soil, up to several metres, seeking new root tissue. Rhizomorphs are almost unique to <em>Armillaria</em> — no other major root pathogen makes them.</li>
+        </ul>
+      </li>
+      <li><strong>Basidiomycete classification matters:</strong> Unlike ascomycetes (Verticillium, Cytospora), basidiomycetes produce large fruiting bodies — the honey mushrooms visible at the base of infected trees in fall. These fruiting bodies (honey mushrooms) produce basidia that carry the spores.</li>
+      <li><strong>Persistence:</strong> Armillaria mycelium can survive in dead wood (stumps, buried roots) in soil for <strong>decades</strong> — this is why it's called a "residue pathogen." Old stumps and buried root systems left after logging or residential tree removal are Armillaria inoculum for years or decades.</li>
+      <li><strong>Not just a forest pathogen:</strong> Armillaria is active in urban and suburban landscape settings throughout the Okanagan — any site with a history of conifer trees (or many hardwood species) has potential inoculum.</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Many Okanagan residential lots were carved from ponderosa pine forest. The stumps and root systems left at lot creation are inoculum banks — an infected stump can maintain viable Armillaria mycelium for 30–50 years. When you're assessing a tree that's in decline for no obvious reason on an older Okanagan lot, think about what was there before the house. A few careful probe holes around the root collar might reveal rhizomorphs or white mycelium that tells the whole story.</p>
+    </div>
+    <p class="source-cite">Source: ISA Certification Study Guide, Ch. 8; BC Ministry of Forests — Forest Pathology in BC; Sinclair, Lyon &amp; Johnson — Diseases of Trees and Shrubs</p>
+  </div>
+  <button id="next-q1" class="next-btn" onclick="showScreen('screen-q2')">Next Question →</button>
+</div>
+
+<!-- Q2 -->
+<div id="screen-q2" class="screen">
+  <div class="q-header"><span class="q-num">Question 2 of 5</span><div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div></div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology · PHC Diagnosis</div>
+    <div class="question-text">Which of the following is the most DEFINITIVE field sign for confirming Armillaria root rot in a suspect tree?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">A</span> Clusters of honey mushrooms growing at the base of the tree in fall</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">B</span> Resin soaking at the base of a conifer with crown decline</button>
+      <button class="option-btn" onclick="answer(this,'correct','q2')"><span class="option-label">C</span> White to cream, fan-shaped mycelial mats between the bark and wood at the root collar</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">D</span> Dark rhizomorphs visible on the soil surface near the trunk base</button>
+    </div>
+  </div>
+  <div id="lesson-q2" class="lesson-reveal">
+    <h4>Reading the Bark for Armillaria</h4>
+    <p>All four answer options are legitimate Armillaria field signs — but they differ in their specificity and reliability as diagnostic tools:</p>
+    <ul>
+      <li><strong>White mycelial fans (correct answer):</strong> When you peel back bark at the root collar or on major roots and find white to cream, fan-shaped, flat sheets of fungal tissue — this is the most reliable field confirmation. The tissue often has a <em>distinctive mushroom smell</em>. This is the mycelium colonizing the cambium and inner bark. Finding this is essentially definitive for <em>Armillaria</em> — few other pathogens produce this structure.</li>
+      <li><strong>Honey mushrooms:</strong> Highly suggestive, but honey mushrooms (<em>Armillaria</em> fruiting bodies) can appear before crown symptoms are severe, and they can also grow from dead wood in the vicinity rather than from a living infected tree. They're a strong clue but not alone definitive — the mycelial fans under bark are more reliable.</li>
+      <li><strong>Resin soaking:</strong> A classic sign of conifer root infection, but also occurs with Phytophthora root rot and Cytospora canker at the root collar — it's not Armillaria-specific.</li>
+      <li><strong>Rhizomorphs:</strong> Dark rhizomorphs in soil are diagnostic for Armillaria as a genus, but may simply be moving through the soil without actively infecting the tree being assessed. Rhizomorphs in soil near a tree ≠ the tree is infected, though it's a serious warning sign.</li>
+    </ul>
+    <p>For the ISA exam: the white mycelial fans between bark and wood are the <strong>definitive diagnostic sign</strong> for Armillaria. Commit this to memory.</p>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>You don't need to dig extensively. Use a sharp hand tool or pocket knife and carefully lift a section of bark at the root collar and on the major lateral roots near the base — 10 cm × 10 cm sections in 3–4 places. If Armillaria is active, you'll often find the white fans within the first few attempts. The distinctive sweet-mushroom smell is often the first indicator before you even see the tissue. Keep a photo record of what you find — white mycelium plus rhizomorphs plus crown symptoms is a solid case for Armillaria in a client report.</p>
+    </div>
+    <p class="source-cite">Source: ISA Certification Study Guide, Ch. 8; BC Ministry of Forests — A Field Guide to Forest Diseases of BC</p>
+  </div>
+  <button id="next-q2" class="next-btn" onclick="showScreen('screen-q3')">Next Question →</button>
+</div>
+
+<!-- Q3 -->
+<div id="screen-q3" class="screen">
+  <div class="q-header"><span class="q-num">Question 3 of 5</span><div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div></div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology · PHC</div>
+    <div class="question-text">Which Okanagan-common tree is MOST resistant to Armillaria root rot?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">A</span> Ponderosa pine (Pinus ponderosa)</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">B</span> Interior Douglas-fir (Pseudotsuga menziesii var. glauca)</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">C</span> Trembling aspen (Populus tremuloides)</button>
+      <button class="option-btn" onclick="answer(this,'correct','q3')"><span class="option-label">D</span> Paper birch (Betula papyrifera)</button>
+    </div>
+  </div>
+  <div id="lesson-q3" class="lesson-reveal">
+    <h4>Host Susceptibility — Who Armillaria Targets</h4>
+    <p><em>Armillaria</em> has a broad host range but susceptibility varies enormously. This is critical knowledge for replanting and PHC planning in sites with known Armillaria inoculum.</p>
+    <ul>
+      <li><strong>Highly susceptible conifers:</strong> Ponderosa pine and interior Douglas-fir are among the most susceptible species to <em>A. ostoyae</em> in BC Interior forests. Stressed individuals (drought, beetle attack, construction damage) are particularly vulnerable.</li>
+      <li><strong>Moderately susceptible hardwoods:</strong> Trembling aspen, black cottonwood, green ash, and many ornamental hardwoods can be affected, though they show less susceptibility than the native conifers under equivalent stress conditions.</li>
+      <li><strong>Birch — notably resistant:</strong> Paper birch (<em>Betula papyrifera</em>) and other Betula species show significantly greater resistance to Armillaria than most conifers. This is partially attributed to bark chemistry and the physical structure of birch roots. In forest settings, birch often persists where pines and firs die from Armillaria in high-hazard zones.</li>
+      <li><strong>Resistant species for replanting:</strong> On sites with known Armillaria inoculum (old conifer stumps, known infection), consider planting birch, larch, or species from non-susceptible families. Consult BC Ministry of Forests recommendations for site-specific guidance.</li>
+      <li><strong>ISA exam note:</strong> Birch resistance to Armillaria is a commonly tested concept — know that conifers, especially pine and Douglas-fir, are among the most susceptible, while birch is notably resistant.</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>When a client wants to replant after removing a large ponderosa pine that declined from Armillaria, the choice matters. Another ponderosa or Douglas-fir on the same spot, in the same soil, with the old stump and root system still inoculating the ground, is at significant risk. Paper birch is a solid alternative that gives great fall colour, is native or near-native in the Okanagan highlands, and has substantially better prospects on that site. Make the recommendation confidently with the reasoning — this is the kind of advice that builds client trust.</p>
+    </div>
+    <p class="source-cite">Source: ISA Certification Study Guide, Ch. 8; BC Ministry of Forests — Armillaria Root Disease Management Guide</p>
+  </div>
+  <button id="next-q3" class="next-btn" onclick="showScreen('screen-q4')">Next Question →</button>
+</div>
+
+<!-- Q4 -->
+<div id="screen-q4" class="screen">
+  <div class="q-header"><span class="q-num">Question 4 of 5</span><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Risk Assessment · PHC</div>
+    <div class="question-text">A large ponderosa pine in a client's backyard shows crown decline and resin soaking at the base. You peel bark at the root collar and find white mycelial fans. What is the PRIMARY hazard concern for this tree?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">A</span> Spread of Armillaria spores via fruiting bodies to adjacent ornamental plantings</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">B</span> Loss of photosynthetic capacity from crown decline leading to carbohydrate starvation</button>
+      <button class="option-btn" onclick="answer(this,'correct','q4')"><span class="option-label">C</span> Root plate failure — Armillaria decays structural roots causing windthrow risk before visual crown symptoms peak</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">D</span> Bark beetle attack attracted to the stressed, resin-soaking tree creating co-infection</button>
+    </div>
+  </div>
+  <div id="lesson-q4" class="lesson-reveal">
+    <h4>Root Rot and Windthrow — The Hidden Danger</h4>
+    <p>Option D is a real secondary concern (bark beetles do attack Armillaria-stressed conifers), and Option B describes a real process (crown decline = reduced photosynthate). But the <strong>primary hazard concern</strong> for an Armillaria-infected tree is one that is often invisible until it's too late: <strong>root plate failure</strong>.</p>
+    <ul>
+      <li><strong>Why root plate failure:</strong> Armillaria colonizes and decays the major structural roots — the roots that anchor the tree against wind loading. This decay progresses while the crown may still look relatively full. A tree with significant root system decay can have sufficient crown density to appear "alive but stressed" right up to the point it fails catastrophically in a windstorm.</li>
+      <li><strong>The temporal disconnect:</strong> Crown symptoms lag behind root decay — sometimes by years. By the time crown decline is obvious (25–40% thinning), the root system may have been significantly compromised for 5–10 years.</li>
+      <li><strong>Failure mode:</strong> Windthrow (the whole tree uprooting, with or without root plate attached) is the primary failure mode for Armillaria-infected conifers. This is distinct from stem failure (snap), which is more common with stem decay (heart rot). Root plate failures often show as the rootball lifting and the tree falling intact — the failure plane is at the soil surface.</li>
+      <li><strong>Assessment implication:</strong> An Armillaria-confirmed tree in a target-rich area (near structures, vehicles, occupied spaces) <em>cannot be managed by watch-and-wait</em>. It requires formal risk assessment and likely proactive removal — especially large conifers in the Okanagan where summer windstorms and fall chinooks can produce sudden high-wind events.</li>
+      <li><strong>ISA Tree Risk Assessment:</strong> Armillaria root rot is a primary structural root defect — high likelihood of failure mechanism. Consequence of failure × likelihood of failure drives the risk rating, and a large conifer over an occupied structure with confirmed Armillaria = High or Very High risk.</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The most dangerous words in arborist risk assessment are "let's check it again next year." For a large ponderosa with confirmed Armillaria, over a deck, fence, or structure, in a target-rich Okanagan residential setting — that conversation needs to happen now. The client may not want to hear "the tree has to come down" if it's a large beautiful pine. But that conversation today is infinitely better than the alternative conversation after the tree goes over in a September windstorm. Document the assessment, photograph the mycelium, put the recommendation in writing.</p>
+    </div>
+    <p class="source-cite">Source: ISA Tree Risk Assessment Manual, 2nd Ed.; ISA Certification Study Guide Ch. 8; BC Ministry of Forests — Armillaria Root Disease</p>
+  </div>
+  <button id="next-q4" class="next-btn" onclick="showScreen('screen-q5')">Next Question →</button>
+</div>
+
+<!-- Q5 -->
+<div id="screen-q5" class="screen">
+  <div class="q-header"><span class="q-num">Question 5 of 5</span><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: PHC Management</div>
+    <div class="question-text">When an urban tree is confirmed with Armillaria root rot and removal is not immediately required, which PHC approach is MOST supported by the evidence?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">A</span> Soil fumigation with a broad-spectrum fungicide to eliminate rhizomorphs in the root zone</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">B</span> Trunk injection of a systemic fungicide (phosphonate) to provide direct anti-fungal activity</button>
+      <button class="option-btn" onclick="answer(this,'correct','q5')"><span class="option-label">C</span> Reduce all tree stressors — optimize irrigation, mulch, avoid wounding, improve soil conditions — to support tree defense</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">D</span> Install root barriers around the tree to prevent rhizomorph spread to adjacent trees</button>
+    </div>
+  </div>
+  <div id="lesson-q5" class="lesson-reveal">
+    <h4>PHC for Armillaria — Managing the Tree's Side of the Fight</h4>
+    <p>Like Verticillium, Armillaria has no curative treatment once established in the root system. Management focuses on maximizing the tree's ability to resist and compartmentalize infection.</p>
+    <ul>
+      <li><strong>Why stressor reduction works:</strong> Healthy, well-hydrated trees with adequate carbohydrate reserves produce resin (in conifers) and wound-response tissues that can compartmentalize Armillaria mycelium and slow its spread. Stressed trees have reduced resin production and slower compartmentalization — giving Armillaria faster access. Every stressor removed is a measurable benefit to the tree's defense.</li>
+      <li><strong>Phosphonate injections:</strong> Phosphonate (phosphorous acid) trunk injections have been studied for Armillaria in Australia and some other contexts. Results are inconclusive and context-specific — not supported as a standard treatment in North American arboricultural practice. Not listed as an effective management tool by BC Ministry of Forests or ISA BMP.</li>
+      <li><strong>Soil fumigation:</strong> Impractical and ecologically destructive around established trees. Fumigants cannot reach deep rhizomorphs without damaging root tissue, and kill beneficial mycorrhizal communities. Not recommended.</li>
+      <li><strong>Root barriers:</strong> Root barriers may slow rhizomorph spread to adjacent trees in theory, but they cannot eliminate inoculum already present, are expensive, and are not a standard management recommendation for established infection.</li>
+      <li><strong>Effective PHC actions:</strong>
+        <ul>
+          <li>Deep, infrequent irrigation to reduce drought stress — critical in Okanagan summers</li>
+          <li>10 cm wood chip mulch ring to moderate soil temperature and retain moisture</li>
+          <li>Avoid all unnecessary wounding (no root trenching, mechanical damage)</li>
+          <li>Improve soil aeration if compaction is present (air spade, vertical mulching)</li>
+          <li>Avoid nitrogen excess — focus on phosphorus and potassium for root health</li>
+          <li>Monitor regularly — document crown changes year over year</li>
+        </ul>
+      </li>
+      <li><strong>Clear direction:</strong> If risk assessment indicates high risk (large tree, target zone, confirmed root decay), no amount of PHC avoids the removal conversation. PHC extends tree life and maintains vigor — it does not eliminate Armillaria from a tree that has it.</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The best thing you can do for an Armillaria-infected ponderosa on a client's property is the same thing that helps every other stressed tree in the Okanagan: get water to the roots deeply, get organic matter on the soil surface, and protect the root zone from further damage. A stressed pine in a dry summer on compacted soil against a foundation is losing the fight quickly. The same pine in better moisture conditions with mulch and protection can survive and hold off Armillaria for years. That time is valuable — use it to plan removal if needed, not to pretend the problem went away.</p>
+    </div>
+    <p class="source-cite">Source: ISA Certification Study Guide, Ch. 8; ISA BMP — Plant Health Care; BC Ministry of Forests — Armillaria Management Guide</p>
+  </div>
+  <button id="next-q5" class="next-btn" onclick="showScreen('screen-complete')">See Results →</button>
+</div>
+
+<!-- COMPLETE -->
+<div id="screen-complete" class="screen">
+  <div class="complete-card">
+    <div class="complete-icon">🦠</div>
+    <h2>Lesson Complete</h2>
+    <p>Armillaria root rot — basidiomycete, rhizomorphs, white mycelial fans, root plate failure, and PHC priorities. This is a disease that ends trees we thought we had more time with. Know the signs before the windstorm, not after.</p>
+    <div class="isa-tag">📚 ISA Exam Domains: Tree Biology (11%) · Tree Risk Assessment (11%) · PHC</div><br>
+    <div class="isa-tag">Sources: ISA Certification Study Guide 4th Ed. · ISA Tree Risk Assessment Manual · BC Ministry of Forests</div>
+    <br><br>
+    <button class="restart-btn" onclick="showScreen('screen-home')">← Back to Start</button>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function answer(btn, result, qId) {
+  const card = btn.closest('.question-card');
+  card.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  if (result === 'correct') {
+    btn.classList.add('correct');
+    document.getElementById('lesson-' + qId).classList.add('visible');
+    document.getElementById('next-' + qId).classList.add('visible');
+    setTimeout(() => {
+      document.getElementById('lesson-' + qId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  } else {
+    btn.classList.add('wrong');
+    setTimeout(() => {
+      btn.classList.remove('wrong');
+      card.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+      btn.disabled = true;
+    }, 600);
+  }
+}
+</script>
+</body>
+</html>
