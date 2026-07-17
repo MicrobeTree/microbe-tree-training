@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Root Systems &amp; Mycorrhizae | Microbe Tree Training</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --card: #1c2128;
+  --accent: #2ea043;
+  --accent-light: #3fb950;
+  --accent-dim: #0d3320;
+  --text: #c9d1d9;
+  --text-muted: #8b949e;
+  --correct: #2ea043;
+  --wrong: #da3633;
+  --border: #30363d;
+  --tag-bg: #1a3a1a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; line-height: 1.6; }
+a { color: var(--accent-light); }
+
+/* HEADER */
+.header { background: #0a0e13; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.header-logo { font-size: 20px; font-weight: 800; color: var(--accent-light); letter-spacing: -0.5px; }
+.header-logo span { color: var(--text-muted); font-weight: 400; }
+.header-tag { background: var(--accent-dim); color: var(--accent-light); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; margin-left: auto; }
+
+/* SCREENS */
+.screen { display: none; max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+.screen.active { display: block; }
+
+/* HOME SCREEN */
+.hero { text-align: center; padding: 32px 0 24px; }
+.day-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px; }
+.hero h1 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; color: #e6edf3; margin-bottom: 8px; }
+.hero p { color: var(--text-muted); font-size: 15px; max-width: 500px; margin: 0 auto 28px; }
+.start-btn { background: var(--accent); color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.start-btn:hover { background: var(--accent-light); }
+
+/* REFERENCE CARD */
+.ref-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+.ref-card h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 16px; }
+.ref-diagram { width: 100%; max-width: 520px; margin: 0 auto 16px; display: block; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ref-table th { text-align: left; padding: 6px 10px; background: #0d1117; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.ref-table td { padding: 8px 10px; border-bottom: 1px solid #21262d; vertical-align: top; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table .label { color: var(--accent-light); font-weight: 600; white-space: nowrap; }
+
+/* QUESTION SCREEN */
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.q-num { background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+.progress-bar { flex: 1; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
+.progress-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.question-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.domain-tag { display: inline-block; font-size: 11px; color: var(--text-muted); background: #21262d; padding: 2px 8px; border-radius: 4px; margin-bottom: 12px; }
+.question-text { font-size: 17px; font-weight: 600; color: #e6edf3; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.option-btn { background: #1c2128; border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; text-align: left; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; gap: 12px; align-items: flex-start; }
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: #1e2a1e; }
+.option-label { font-weight: 700; color: var(--accent-light); min-width: 20px; }
+.option-btn.correct { background: #0d3320; border-color: var(--correct); }
+.option-btn.wrong { background: #2d0e0e; border-color: var(--wrong); animation: shake 0.3s ease; }
+.option-btn:disabled { cursor: default; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+/* LESSON REVEAL */
+.lesson-reveal { display: none; background: #0a0e13; border: 1px solid var(--accent-dim); border-radius: 12px; padding: 24px; margin-top: 16px; }
+.lesson-reveal.visible { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.lesson-reveal h4 { color: var(--accent-light); font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.lesson-reveal p { font-size: 14px; color: var(--text); margin-bottom: 12px; line-height: 1.7; }
+.lesson-reveal ul { padding-left: 20px; margin-bottom: 12px; }
+.lesson-reveal li { font-size: 14px; color: var(--text); margin-bottom: 6px; line-height: 1.6; }
+.lesson-reveal strong { color: #e6edf3; }
+.field-note { background: #0e1a10; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 16px; }
+.field-note .fn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 6px; }
+.field-note p { font-size: 13px; color: #adbfad; line-height: 1.65; margin: 0; }
+.source-cite { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 10px; }
+.next-btn { display: none; margin-top: 20px; background: var(--accent); color: #fff; border: none; padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.next-btn.visible { display: inline-block; }
+.next-btn:hover { background: var(--accent-light); }
+
+/* COMPLETE SCREEN */
+.complete-card { background: var(--card); border: 1px solid var(--accent-dim); border-radius: 12px; padding: 32px 24px; text-align: center; }
+.complete-icon { font-size: 48px; margin-bottom: 16px; }
+.complete-card h2 { font-size: 24px; font-weight: 800; color: #e6edf3; margin-bottom: 8px; }
+.complete-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+.isa-tag { display: inline-block; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; padding: 6px 14px; border-radius: 6px; margin-bottom: 8px; }
+.restart-btn { background: transparent; color: var(--accent-light); border: 1px solid var(--accent); padding: 10px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600; margin-top: 16px; }
+.restart-btn:hover { background: var(--accent-dim); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Microbe Tree <span>Training</span></div>
+  <div class="header-tag">🌿 Tree Biology</div>
+</div>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="hero">
+    <div class="day-badge">🌿 Monday · Week 4</div>
+    <h1>Root Systems, Morphology<br>&amp; Mycorrhizal Associations</h1>
+    <p>Five ISA exam-style questions. Get one right, unlock the full lesson. Field note at the end of each section is where the good stuff lives.</p>
+    <button class="start-btn" onclick="showScreen('screen-q1')">Begin Lesson →</button>
+  </div>
+
+  <div class="ref-card">
+    <h3>📋 Quick Reference — Root Zone &amp; CRZ</h3>
+    <svg class="ref-diagram" viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Tree trunk -->
+      <rect x="238" y="20" width="24" height="90" fill="#5a3a1a" rx="3"/>
+      <!-- Crown (circle) -->
+      <ellipse cx="250" cy="30" rx="60" ry="40" fill="#1a3a1a" stroke="#2ea043" stroke-width="1.5"/>
+      <text x="250" y="34" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Crown</text>
+      <!-- Ground line -->
+      <line x1="30" y1="110" x2="470" y2="110" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- Drip line (crown width = 120px total, so x=130 to x=370) -->
+      <line x1="190" y1="100" x2="190" y2="120" stroke="#8b949e" stroke-width="1.5"/>
+      <line x1="310" y1="100" x2="310" y2="120" stroke="#8b949e" stroke-width="1.5"/>
+      <text x="250" y="100" text-anchor="middle" fill="#8b949e" font-size="10">Drip line</text>
+      <!-- CRZ arc -->
+      <path d="M 130 110 Q 130 180 250 190 Q 370 180 370 110" fill="none" stroke="#e07b39" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="250" y="188" text-anchor="middle" fill="#e07b39" font-size="10" font-weight="bold">CRZ (12" radius / inch DBH)</text>
+      <!-- Root spread arc -->
+      <path d="M 50 110 Q 50 210 250 215 Q 450 210 450 110" fill="none" stroke="#2ea043" stroke-width="1.5" stroke-dasharray="3,4"/>
+      <text x="90" y="206" text-anchor="middle" fill="#2ea043" font-size="10">Root spread</text>
+      <text x="90" y="218" text-anchor="middle" fill="#2ea043" font-size="10">(2–3× crown)</text>
+      <!-- Root illustration (simplified) -->
+      <line x1="250" y1="110" x2="250" y2="165" stroke="#5a3a1a" stroke-width="3"/>
+      <line x1="250" y1="130" x2="195" y2="155" stroke="#5a3a1a" stroke-width="2"/>
+      <line x1="250" y1="130" x2="305" y2="155" stroke="#5a3a1a" stroke-width="2"/>
+      <line x1="250" y1="145" x2="155" y2="170" stroke="#5a3a1a" stroke-width="1.5"/>
+      <line x1="250" y1="145" x2="345" y2="170" stroke="#5a3a1a" stroke-width="1.5"/>
+      <line x1="250" y1="155" x2="105" y2="185" stroke="#5a3a1a" stroke-width="1"/>
+      <line x1="250" y1="155" x2="395" y2="185" stroke="#5a3a1a" stroke-width="1"/>
+      <!-- DBH label -->
+      <text x="272" y="75" fill="#c9d1d9" font-size="10">DBH</text>
+    </svg>
+
+    <table class="ref-table">
+      <tr><th>Concept</th><th>Definition / Formula</th></tr>
+      <tr><td class="label">Critical Root Zone (CRZ)</td><td>Radius = 12 inches per inch of DBH (ANSI A300 Part 5)</td></tr>
+      <tr><td class="label">Root horizontal extent</td><td>Typically 2–3× crown radius; can extend much farther under drought</td></tr>
+      <tr><td class="label">Fine root depth</td><td>80–90% of absorbing roots in top 60 cm; most in top 30 cm</td></tr>
+      <tr><td class="label">Ectomycorrhizae (ECM)</td><td>Mantle around root + Hartig net between cells; conifers &amp; some hardwoods</td></tr>
+      <tr><td class="label">Arbuscular Mycorrhizae (AM)</td><td>Arbuscules inside root cells; most hardwoods, shrubs, grasses</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- QUESTION 1 -->
+<div id="screen-q1" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 1 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology</div>
+    <div class="question-text">In open-grown conditions, how far do tree roots typically extend horizontally from the trunk?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">A</span> To the edge of the canopy drip line, and rarely beyond</button>
+      <button class="option-btn" onclick="answer(this,'correct','q1')"><span class="option-label">B</span> Up to 2–3 times the crown radius, often further under drought stress</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">C</span> Twice the trunk height in all directions</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">D</span> No farther than 1.5 times the crown spread</button>
+    </div>
+  </div>
+  <div id="lesson-q1" class="lesson-reveal">
+    <h4>Root Systems Are Much Larger Than You Think</h4>
+    <p>The idea that roots stop at the drip line is one of the most damaging myths in arboriculture — and it costs trees their lives during construction. Root systems routinely extend <strong>1–3 times the crown radius in favourable soil</strong>, and under drought, roots explore far beyond that.</p>
+    <ul>
+      <li>In the ISA Certification Study Guide, root spread is described as typically <strong>wider than the crown</strong> by a significant margin in well-drained, uncompacted soils</li>
+      <li><strong>Fine absorbing roots</strong> are densest in the top 30–60 cm of soil, but lateral spread follows water and oxygen gradients — wherever conditions are favourable, roots will go</li>
+      <li>Urban trees in compacted soils show compressed root zones, following cracks, utility trenches, and any path of least resistance</li>
+      <li>Tree species differ significantly: ponderosa pine develops deep sinker roots; trembling aspen spreads shallow but wide; Norway maple is highly competitive with surface roots</li>
+      <li>Root depth: most absorbing roots are in the top 30 cm; structural (coarse) roots may go deeper but <strong>90% of root biomass is in the top 60 cm</strong></li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>In Kelowna and West Kelowna, tree roots regularly extend under driveways, into neighbours' lots, and well beyond obvious fencing lines. When you're bidding root barrier installs or working near construction zones, picture the root system as a large disc — roughly 2–3× the canopy width — sitting mostly in the top 60 cm of soil. The damage we can't see yet is in that disc.</p>
+    </div>
+    <p class="source-cite">Source: ISA Arborists' Certification Study Guide, 4th Ed., Ch. 3 — Root Systems</p>
+  </div>
+  <button id="next-q1" class="next-btn" onclick="showScreen('screen-q2')">Next Question →</button>
+</div>
+
+<!-- QUESTION 2 -->
+<div id="screen-q2" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 2 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology · Soil Management</div>
+    <div class="question-text">Which statement correctly describes ectomycorrhizae (ECM) as distinct from arbuscular mycorrhizae (AM)?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">A</span> ECM penetrate root cells with arbuscules; AM form a surface sheath</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">B</span> AM dominate in conifer hosts; ECM are more common in broadleaf trees</button>
+      <button class="option-btn" onclick="answer(this,'correct','q2')"><span class="option-label">C</span> ECM form a fungal mantle around the root and a Hartig net between cortical cells; AM fungi produce arbuscules inside root cells</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">D</span> Both types are functionally identical but associate with different host families</button>
+    </div>
+  </div>
+  <div id="lesson-q2" class="lesson-reveal">
+    <h4>Two Very Different Partnerships</h4>
+    <p>Mycorrhizal fungi are not optional extras for trees — they are functional extensions of the root system. But not all mycorrhizae are built the same. The two most important types for arborists to understand work completely differently:</p>
+    <ul>
+      <li><strong>Ectomycorrhizae (ECM):</strong> The fungus wraps the root in a <em>mantle</em> (sheath) and grows between the outer cortical cells in a structure called the <em>Hartig net</em>. The fungal hyphae do NOT enter root cells. ECM dramatically increase nutrient and water absorption surface area. Host trees: conifers (pines, spruces, firs, Douglas-fir), oaks, birches, and beech.</li>
+      <li><strong>Arbuscular Mycorrhizae (AM):</strong> Also called VAM (vesicular-arbuscular mycorrhizae). The hyphae penetrate root cell walls and form highly branched structures called <em>arbuscules</em> inside the cells — the actual exchange interface for phosphorus and other nutrients. Host trees: most hardwoods including maples, ash, elm, cherry, cottonwood, and most ornamentals.</li>
+      <li>Practical point: because ECM don't penetrate cells, they are more sensitive to soil disruption. Deep tillage, soil sterilants, and fumigants destroy the fungal network that native conifers depend on.</li>
+      <li>In post-fire or post-construction sites, loss of ECM inoculum is a primary reason conifer transplants fail — the native fungal community needs time to re-establish.</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Ponderosa pine, interior Douglas-fir, and the spruce we work on throughout the Okanagan are all ECM hosts. When a client calls about a struggling pine after nearby construction, the conversation isn't just about root cutting — it's about fungal network disruption. Mycorrhizal community recovery can take years in disturbed soils. That's worth knowing when you're setting expectations for transplant success or post-construction recovery timelines.</p>
+    </div>
+    <p class="source-cite">Source: ISA Certification Study Guide, Ch. 5 — Soils &amp; Fertilization; Shigo, A. (1991) Modern Arboriculture</p>
+  </div>
+  <button id="next-q2" class="next-btn" onclick="showScreen('screen-q3')">Next Question →</button>
+</div>
+
+<!-- QUESTION 3 -->
+<div id="screen-q3" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 3 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology</div>
+    <div class="question-text">Which of the following is NOT a primary function of a tree's root system?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">A</span> Synthesis and export of cytokinins to the shoot system</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">B</span> Absorption of water and dissolved mineral nutrients from soil solution</button>
+      <button class="option-btn" onclick="answer(this,'correct','q3')"><span class="option-label">C</span> Photosynthate (sugar) production during periods of shoot dormancy</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">D</span> Storage of carbohydrate reserves as starch</button>
+    </div>
+  </div>
+  <div id="lesson-q3" class="lesson-reveal">
+    <h4>What Roots Do (and One Thing They Can't)</h4>
+    <p>Roots are often underestimated. They are not passive anchors — they are metabolically active organs doing several things at once. Here's the full accounting:</p>
+    <ul>
+      <li><strong>Water &amp; nutrient absorption:</strong> Root hairs and mycorrhizal hyphae absorb water, phosphorus, nitrogen, potassium, and micronutrients from soil solution. This is the primary pathway for all mineral nutrition in trees.</li>
+      <li><strong>Hormone production:</strong> Root tips synthesize <em>cytokinins</em> — plant hormones that regulate cell division, leaf senescence, and shoot growth. They also produce abscisic acid (ABA) under drought stress, which triggers stomatal closure. Roots are the site of gibberellin synthesis in some tree species.</li>
+      <li><strong>Carbohydrate storage:</strong> Coarse roots store significant quantities of starch — the energy reserve trees draw on for spring bud break and root growth before the canopy is photosynthetically active.</li>
+      <li><strong>Anchorage:</strong> Structural roots and the root plate resist wind loading and gravitational forces. Root plate failure is a primary failure mode in many windthrow events.</li>
+      <li><strong>What roots DON'T do:</strong> Roots are <em>heterotrophic</em> — they consume sugars rather than making them. Photosynthesis only happens in green tissue (primarily leaves). Roots are entirely dependent on the canopy for their carbon supply.</li>
+    </ul>
+    <p>This is why girdling is lethal: severing the phloem cuts off the sugar supply to the roots. Even with an intact crown, roots will starve and die within a season or two.</p>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Understanding the crown-root carbon relationship changes how you read a sick tree. A tree with a thin crown and sparse leaves isn't just "stressed" — it's progressively unable to feed its root system. When you see a Norway maple or green ash in Kelowna with 30% crown thinning, picture the root system being slowly starved. PHC priority shifts to anything that protects or restores leaf area — because every lost leaf is less fuel for the roots keeping the tree alive.</p>
+    </div>
+    <p class="source-cite">Source: ISA Certification Study Guide, Ch. 2 — Tree Biology; Shigo (1991) Modern Arboriculture</p>
+  </div>
+  <button id="next-q3" class="next-btn" onclick="showScreen('screen-q4')">Next Question →</button>
+</div>
+
+<!-- QUESTION 4 -->
+<div id="screen-q4" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 4 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology · Safe Work Practices</div>
+    <div class="question-text">Per ANSI A300 Part 5 (Management of Trees During Site Development), how is the Critical Root Zone (CRZ) radius calculated?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">A</span> A flat 3-metre radius applied to all trees regardless of size</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">B</span> The area directly below the canopy drip line</button>
+      <button class="option-btn" onclick="answer(this,'correct','q4')"><span class="option-label">C</span> 12 inches (approximately 30 cm) of radius for every inch of trunk DBH</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">D</span> 1 metre of radius for every centimetre of DBH</button>
+    </div>
+  </div>
+  <div id="lesson-q4" class="lesson-reveal">
+    <h4>Critical Root Zone — Know This Standard Cold</h4>
+    <p>The Critical Root Zone is one of the most applied concepts in arborist work on development sites. The ANSI A300 Part 5 formula is straightforward:</p>
+    <ul>
+      <li><strong>CRZ radius = 12 inches per inch of DBH</strong> (measured from trunk centre)</li>
+      <li>Example: A 20-inch DBH ponderosa pine has a CRZ radius of <strong>20 feet (≈ 6 metres)</strong></li>
+      <li>Example: A 10 cm DBH ornamental cherry has a CRZ radius of roughly <strong>120 cm</strong></li>
+      <li>The CRZ is the <em>minimum</em> protected zone — actual sensitive root area likely extends farther</li>
+      <li>WorkSafeBC OHS Regulation and most municipal tree protection bylaws in BC reference or mirror the CRZ concept for construction protection zones</li>
+      <li>Inside the CRZ: no grade change, no soil compaction, no trenching, no chemical storage, no machinery staging without mitigation measures</li>
+      <li>When CRZ cannot be fully protected: consult ISA BMP for Tree Protection During Construction for mitigation options (bridging, aeration, no-dig utilities)</li>
+    </ul>
+    <p>On ISA exams, the CRZ formula is tested directly — memorize: <strong>12 inches per inch of DBH</strong>. It also appears as the foundation for questions on construction impact assessment and tree preservation planning.</p>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>West Kelowna and Kelowna development sites regularly have mature ponderosa and ornamental trees within metres of proposed structures. When you're on a consultation, measuring the CRZ gives you an immediate, defensible number to put in a report. A 30-cm DBH ponderosa = 3.6 m CRZ. If the proposed trenching is 2 m from the trunk, that's well inside the CRZ and the client needs to know it in writing. This is where knowing the standard protects both the tree and you.</p>
+    </div>
+    <p class="source-cite">Source: ANSI A300 Part 5 — Management of Trees and Shrubs During Site Planning, Site Development, and Construction</p>
+  </div>
+  <button id="next-q4" class="next-btn" onclick="showScreen('screen-q5')">Next Question →</button>
+</div>
+
+<!-- QUESTION 5 -->
+<div id="screen-q5" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 5 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology · Soil Management</div>
+    <div class="question-text">In the semi-arid Okanagan, which root system characteristic most strongly determines a tree's ability to survive prolonged summer drought?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">A</span> Production of additional root hairs during dry periods to increase surface area</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">B</span> Reduction of root respiration rates to conserve stored carbohydrates</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">C</span> Complete reliance on mycorrhizal networks to substitute for water uptake by roots</button>
+      <button class="option-btn" onclick="answer(this,'correct','q5')"><span class="option-label">D</span> Root architecture and depth — access to deeper soil moisture and extensive lateral spread through mycorrhizal networks</button>
+    </div>
+  </div>
+  <div id="lesson-q5" class="lesson-reveal">
+    <h4>Drought Adaptation Starts Below Ground</h4>
+    <p>In the Okanagan, where annual precipitation can be as low as 280 mm in the valley bottom and summers bring weeks of heat above 35°C, root architecture is the single most important factor in drought survival. This is not a simple answer — it's a system.</p>
+    <ul>
+      <li><strong>Deep roots:</strong> Ponderosa pine and interior Douglas-fir develop sinker roots that can access moisture at depth well below the drying surface layers. In summer, when the top 30 cm is dust-dry, trees with access to 1-2 m depth have a critical advantage.</li>
+      <li><strong>Lateral spread:</strong> Trembling aspen develops shallow but extremely wide root systems that intercept any moisture in the soil, including infiltration from rain events and snowmelt. Wide lateral spread = large moisture-capture footprint.</li>
+      <li><strong>Mycorrhizal networks:</strong> ECM hyphal strands extend the effective root reach of individual fine roots by centimetres to metres. The network also creates connections between trees — allowing carbon and possibly water transfer in some species. However, mycorrhizae <em>supplement</em> root uptake; they don't replace it.</li>
+      <li><strong>Root:shoot ratio shift:</strong> Under drought stress, trees allocate more photosynthate below ground — investing in root growth at the expense of shoot extension. This is an adaptive response, not a sign of poor health.</li>
+      <li><strong>Options A, B, C individually:</strong> Root hair production does increase under mild stress but cannot compensate for bulk soil dryness. Root respiration reduction is a stress response, not an adaptation. Mycorrhizae help enormously but are a partner to roots, not a replacement.</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The trees that fail first in a Okanagan drought year are almost always the ones with compromised root systems — construction damage, compacted soil, girdling roots, or shallow planting in amended soil over dense subsoil (the "container effect"). When a client asks why their mature silver maple is declining despite irrigation, the answer is often underground. Deep soil probe to check actual moisture penetration, and probe around the root plate for any signs of compaction or lestriction. In our climate, water access at depth is often the margin between survive and decline.</p>
+    </div>
+    <p class="source-cite">Source: ISA Certification Study Guide, Ch. 3 &amp; Ch. 5; BC Ministry of Forests — Interior Forest Ecology</p>
+  </div>
+  <button id="next-q5" class="next-btn" onclick="showScreen('screen-complete')">See Results →</button>
+</div>
+
+<!-- COMPLETE SCREEN -->
+<div id="screen-complete" class="screen">
+  <div class="complete-card">
+    <div class="complete-icon">🌿</div>
+    <h2>Lesson Complete</h2>
+    <p>You've worked through all five questions on root systems, mycorrhizae, and the CRZ. This is foundational ISA exam material — and it's the framework behind every PHC assessment and construction consultation you'll do.</p>
+    <div class="isa-tag">📚 ISA Exam Domains: Tree Biology (11%) · Soil Management (11%)</div><br>
+    <div class="isa-tag">Sources: ISA Certification Study Guide 4th Ed. · ANSI A300 Part 5 · Shigo (1991)</div>
+    <br><br>
+    <button class="restart-btn" onclick="showScreen('screen-home')">← Back to Start</button>
+  </div>
+</div>
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function answer(btn, result, qId) {
+  const card = btn.closest('.question-card');
+  card.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  if (result === 'correct') {
+    btn.classList.add('correct');
+    document.getElementById('lesson-' + qId).classList.add('visible');
+    document.getElementById('next-' + qId).classList.add('visible');
+    setTimeout(() => {
+      document.getElementById('lesson-' + qId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  } else {
+    btn.classList.add('wrong');
+    setTimeout(() => {
+      btn.classList.remove('wrong');
+      btn.disabled = false;
+      card.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+      btn.disabled = true;
+    }, 600);
+  }
+}
+</script>
+</body>
+</html>
