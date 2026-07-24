@@ -1,0 +1,880 @@
+<!--
+SLACK INTRO — post in #microbe-lessons when lesson goes live:
+
+🦠 Pests & Diseases — Week 9, Diplodia Tip Blight (Sphaeropsis sapinea)
+
+Dead shoot tips on ponderosa, needles still attached, little black dots at the needle bases — that's Diplodia, and it's everywhere in Okanagan landscape pines. This lesson covers how to confirm the diagnosis in the field (hand lens, two minutes), why wet springs drive outbreaks, and why "spray the tree" is the wrong first instinct. PHC first. Fungicide is a tool, not the answer.
+
+→ Open the lesson and work through it. Field note at the end of each section is where the good stuff lives.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 9 · Thursday — Diplodia Tip Blight | Microbe Tree Inc.</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --header-bg:      #4a1e3a;
+      --accent:         #8b3a5c;
+      --accent-light:   #b05878;
+      --badge-bg:       #7a2a4e;
+      --badge-text:     #f5d0e0;
+      --correct-bg:     #1a3d2b;
+      --correct-border: #2e7d52;
+      --correct-text:   #6fcf97;
+      --wrong-bg:       #3d1a1a;
+      --wrong-border:   #7d2e2e;
+      --wrong-text:     #e07070;
+      --lesson-bg:      #2a1420;
+      --lesson-border:  #8b3a5c;
+      --fieldnote-bg:   #1e1020;
+      --fieldnote-border:#b05878;
+      --body-bg:        #0e0a0d;
+      --surface:        #1a0f17;
+      --surface-2:      #221529;
+      --border:         #3d2240;
+      --text-primary:   #f0e6ed;
+      --text-secondary: #c9a8bc;
+      --text-muted:     #8a6878;
+      --option-hover:   #2e1a28;
+      --option-border:  #4a2a3e;
+      --progress-track: #2e1a28;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--body-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .site-header {
+      background: var(--header-bg);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(139,58,92,0.4);
+      flex-shrink: 0;
+    }
+
+    .site-header .brand {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--badge-text);
+      opacity: 0.85;
+    }
+
+    .day-badge {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(176,88,120,0.5);
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      padding: 28px 24px 40px;
+      animation: fadeIn 0.25s ease;
+    }
+    .screen.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .home-hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .home-hero .topic-tag {
+      display: inline-block;
+  2   background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .home-hero h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .home-hero h1 em {
+      font-style: italic;
+      color: var(--accent-light);
+    }
+
+    .home-hero .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .ref-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .ref-card-header {
+      background: var(--surface-2);
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+    }
+
+    .ref-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .ref-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ref-item:nth-child(odd)  { border-right: 1px solid var(--border); }
+    .ref-item:nth-last-child(1),
+    .ref-item:nth-last-child(2) { border-bottom: none; }
+
+    .ref-item-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .ref-item-value {
+      font-size: 0.835rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .ref-item-value strong { color: var(--text-primary); }
+    .ref-item-value em     { font-style: italic; color: var(--accent-light); }
+
+    .lesson-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .meta-chip {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .meta-chip span { color: var(--text-secondary); font-weight: 600; }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-align: center;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.1s;
+    }
+    .btn-primary:hover  { background: var(--accent-light); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .quiz-progress-bar {
+      height: 4px;
+      background: var(--progress-track);
+      border-radius: 2px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.35s ease;
+    }
+
+    .quiz-counter {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .option-btn {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--option-border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: var(--option-hover);
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--option-border);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .option-btn.correct {
+      background: var(--correct-bg);
+      border-color: var(--correct-border);
+      color: var(--correct-text);
+      cursor: default;
+    }
+    .option-btn.correct .option-letter {
+      background: var(--correct-border);
+      border-color: var(--correct-border);
+      color: #fff;
+    }
+
+    .option-btn.wrong {
+      background: var(--wrong-bg);
+      border-color: var(--wrong-border);
+      color: var(--wrong-text);
+      cursor: default;
+    }
+    .option-btn.wrong .option-letter {
+      background: var(--wrong-border);
+      border-color: var(--wrong-border);
+      color: #fff;
+    }
+
+    .option-btn.dimmed { opacity: 0.38; cursor: default; }
+
+    .verdict {
+      display: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      width: fit-content;
+    }
+    .verdict.correct {
+      display: block;
+      background: var(--correct-bg);
+      color: var(--correct-text);
+      border: 1px solid var(--correct-border);
+    }
+    .verdict.wrong {
+      display: block;
+      background: var(--wrong-bg);
+      color: var(--wrong-text);
+      border: 1px solid var(--wrong-border);
+    }
+
+    .lesson-panel {
+      display: none;
+      background: var(--lesson-bg);
+      border: 1px solid var(--lesson-border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 22px;
+      animation: fadeIn 0.3s ease;
+    }
+    .lesson-panel.visible { display: block; }
+
+    .lesson-panel-header {
+      background: rgba(139,58,92,0.2);
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(139,58,92,0.3);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+    }
+
+    .lesson-body { padding: 16px 18px; }
+
+    .lesson-body p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .lesson-body p:last-of-type { margin-bottom: 0; }
+    .lesson-body strong { color: var(--text-primary); }
+    .lesson-body em { font-style: italic; color: var(--accent-light); }
+
+    .lesson-body ul {
+      margin: 10px 0 12px 20px;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      line-height: 1.8;
+    }
+
+    .field-note {
+      background: var(--fieldnote-bg);
+      border-left: 3px solid var(--fieldnote-border);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 14px;
+      margin-top: 14px;
+    }
+
+    .field-note-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 6px;
+    }
+
+    .field-note p {
+      font-size: 0.845rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 0 !important;
+    }
+
+    .btn-next {
+      display: none;
+      width: 100%;
+      padding: 13px 20px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.18s;
+      margin-top: 4px;
+    }
+    .btn-next.visible  { display: block; }
+    .btn-next:hover    { background: var(--accent-light); }
+
+    .score-screen {
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 24px;
+    }
+
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 3px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 22px;
+    }
+
+    .score-number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--accent-light);
+      line-height: 1;
+    }
+
+    .score-denom {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .score-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .score-message {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      max-width: 420px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .score-breakdown {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin-bottom: 28px;
+      width: 100%;
+      max-width: 440px;
+      text-align: left;
+    }
+
+    .score-breakdown-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+
+    .breakdown-q { color: var(--text-secondary); }
+    .breakdown-result-correct { color: var(--correct-text); font-weight: 700; }
+    .breakdown-result-wrong   { color: var(--wrong-text); font-weight: 700; }
+
+    .isa-banner {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 440px;
+      width: 100%;
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .isa-banner strong { color: var(--text-secondary); }
+
+    .btn-restart {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent-light);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .btn-restart:hover { background: rgba(139,58,92,0.15); }
+
+    @media (max-width: 540px) {
+      .ref-grid { grid-template-columns: 1fr; }
+      .ref-item { border-right: none !important; }
+      .ref-item:nth-last-child(2) { border-bottom: 1px solid var(--border) !important; }
+      .ref-item:last-child { border-bottom: none !important; }
+      .home-hero h1 { font-size: 1.4rem; }
+      .screen { padding: 20px 16px 32px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <header class="site-header">
+    <div class="brand">Microbe Tree Inc. &middot; Training</div>
+    <div class="day-badge">Thursday &middot; Week 9</div>
+  </header>
+
+  <!-- HOME SCREEN -->
+  <section class="screen active" id="screen-home">
+
+    <div class="home-hero">
+      <div class="topic-tag">&#129440; Pests &amp; Diseases</div>
+      <h1>Diplodia Tip Blight<br><em>Sphaeropsis sapinea / Diplodia pinea</em></h1>
+      <p class="subtitle">Diagnosis &middot; infection biology &middot; differential diagnosis &middot; PHC management &middot; fungicide timing &middot; Okanagan ponderosa pine context</p>
+    </div>
+
+    <div class="lesson-meta">
+      <div class="meta-chip">5 Questions &middot; <span>ISA Exam Style</span></div>
+      <div class="meta-chip">Domain: <span>Tree Biology &middot; Safe Work Practices</span></div>
+      <div class="meta-chip">~12 min</div>
+    </div>
+
+    <div class="ref-card">
+      <div class="ref-card-header">&#128203; Quick Reference &mdash; Diplodia Tip Blight</div>
+      <div class="ref-grid">
+
+        <div class="ref-item">
+          <div class="ref-item-label">Causal agent</div>
+          <div class="ref-item-value"><strong>Sphaeropsis sapinea</strong> (Diplodia pinea) &mdash; fungal pathogen, Botryosphaeriaceae. Also now called <em>Diplodia sapinea</em>.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-item-label">Hosts in BC Interior</div>
+          <div class="ref-item-value">Primary host: <strong>ponderosa pine</strong> (<em>Pinus ponderosa</em>). Also Austrian pine, Scots pine, lodgepole pine. <strong>NOT</strong> significant on Douglas-fir or spruce.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-item-label">Diagnostic signs</div>
+          <div class="ref-item-value">New shoots die back in spring; needles remain attached, turn red-brown; <strong>black pycnidia</strong> at needle bases and on cone scales; resin at shoot base.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-item-label">When symptoms appear</div>
+          <div class="ref-item-value">April&ndash;June for tip blight (infection during bud break). May appear later in summer as &ldquo;bluing&rdquo; of shoots following tip kill.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-item-label">Conditions favouring</div>
+          <div class="ref-item-value">Wet spring during bud break; stressed trees (drought, root damage, construction injury, heavy pruning). <strong>Young trees 5&ndash;20 years</strong> most severely affected.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-item-label">Key point</div>
+          <div class="ref-item-value"><strong>Stress disease.</strong> Healthy, vigorous pines resist. Weakened trees are overwhelmed. Control = tree vigor + strategic pruning of infected material.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz &rarr;</button>
+  </section>
+
+  <!-- QUIZ SCREEN -->
+  <section class="screen" id="screen-quiz">
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="quiz-counter" id="quiz-counter">Question 1 of 5</div>
+    <div class="quiz-question" id="quiz-question"></div>
+    <ul class="options-list" id="options-list"></ul>
+    <div class="verdict" id="verdict"></div>
+    <div class="lesson-panel" id="lesson-panel">
+      <div class="lesson-panel-header">&#128214; Lesson</div>
+      <div class="lesson-body" id="lesson-body"></div>
+    </div>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Question &rarr;</button>
+  </section>
+
+  <!-- SCORE SCREEN -->
+  <section class="screen" id="screen-score">
+    <div class="score-screen">
+      <div class="score-circle">
+        <div class="score-number" id="score-number">0</div>
+        <div class="score-denom">/ 5</div>
+      </div>
+      <div class="score-title" id="score-title"></div>
+      <div class="score-message" id="score-message"></div>
+      <div class="score-breakdown" id="score-breakdown"></div>
+      <div class="isa-banner">
+        <strong>&#128218; ISA Exam Domain:</strong> Tree Biology (11%), Safe Work Practices (28%) &middot;
+        Sources: ISA Certification Study Guide, 4th&nbsp;Ed.; BC Ministry of Forests pest management publications;
+        Sinclair &amp; Lyon (2005) <em>Diseases of Trees and Shrubs</em>; PMRA pesticide registration database
+      </div>
+      <button class="btn-restart" onclick="restartLesson()">&larr; Back to Lesson Home</button>
+    </div>
+  </section>
+
+</div>
+<script>
+var QUESTIONS = [
+  {
+    q: 'Which of the following best describes the symptom pattern of Diplodia tip blight on an infected ponderosa pine in the Okanagan?',
+    options: [
+      'Needles turn yellow then drop, beginning in the lower crown and progressing upward, with no associated dead shoots',
+      'New candles (extending shoots) die back in late spring; needles on affected shoots turn red-brown and remain attached; small black pycnidia appear at needle bases and on cones; symptoms begin in lower crown and progress upward in heavy infections',
+      'Circular, sunken cankers form on the main trunk with orange-amber spore tendrils extruded in wet weather, causing girdling of branches',
+      'Blue-gray discoloration of sapwood visible after bark removal; pitch tubes present; crown reddening 12–18 months after infection'
+    ],
+    correct: 1,
+    lesson: '<p>The classic Diplodia symptom is <strong>new shoot death</strong>: the current year’s candles emerge, begin extending, and then collapse and die. The needles on these shoots are often partially grown — “stunted and dead” rather than full-length.</p><p><strong>Needles remain attached</strong> to the dead shoot — they don’t drop. This distinguishing feature helps separate Diplodia from needle casts, which cause mature needles to drop in waves.</p><p><strong>Pycnidia</strong> (black, pinpoint-sized fungal fruiting bodies) form at the base of dead needles and on the scales of infected cones. These are diagnostic — if you see tiny black dots among the dead needles, look closely. A hand lens reveals them clearly.</p><p><strong>Resin</strong> is often present at the base of dying shoots or candles — the tree’s response to infection.</p><p><strong>Pattern in crown:</strong> Diplodia typically begins in the lower and inner crown, where moisture is higher and air circulation is poor. Severe, multi-year infections progress upward. Heavy infections can kill the entire crown from the bottom up.</p><p><strong>Timing:</strong> infections occur in late April to May (BC Interior) during bud break. Symptoms are visible by June–July.</p><div class="field-note"><div class="field-note-label">&#127794; Field Note</div><p>When you’re on a ponderosa in Kelowna or West Kelowna and the lower branches are full of short, dead, reddish-brown shoot tips with needles stuck on — but the upper crown is still green — think Diplodia before you think anything else. Pull off one of those dead shoots and look at the needle bases with your phone camera zoomed in. Black dots = pycnidia = Diplodia confirmed. This is an extremely common disease on landscape ponderosa in the Okanagan. It’s the needle disease, not the bark disease.</p></div>'
+  },
+  {
+    q: 'Under what conditions does Diplodia sapinea most commonly infect ponderosa pine, and why are young trees particularly vulnerable?',
+    options: [
+      'Infection occurs in late summer during hot, dry conditions; mature trees are most susceptible because they have the greatest surface area of exposed bark',
+      'Infection occurs during bud break in wet spring weather when fungal spores are released and land on elongating shoots; young trees (5–20 years) are most affected because they produce fewer resin-based defenses and have less reserve capacity',
+      'Infection occurs through root wounds in fall; trees with compact root systems are immune because the fungus cannot penetrate undisturbed roots',
+      'Infection requires insect vector activity; the fungus is carried by pine engraver beetles and can only infect through beetle galleries'
+    ],
+    correct: 1,
+    lesson: '<p><strong>Diplodia sapinea infects through natural openings and injured tissue during a very specific window:</strong> when buds are breaking and the new shoots are elongating. The actively growing tissue is especially susceptible — immature cuticle, abundant sugars, reduced resin pressure relative to mature tissue.</p><p>Spores (from pycnidia on previous season’s dead shoots and cones) are released during wet spring weather and can be rain-splashed or wind-dispersed to new growth.</p><p>Wet springs in the Okanagan (unusual but not rare) create ideal infection conditions. Cold snaps during bud break — frost damage to elongating shoots — create additional infection courts.</p><p><strong>Young trees (roughly 5–20 years):</strong> most susceptible because (1) candle proportions are larger relative to branch mass, so tip death impacts are more significant; (2) lower resin production capacity; (3) less stored NSC for immune response.</p><p>Mature, healthy ponderosa with thick bark and high resin pressure typically show tip blight on lower branches only, without significant crown deterioration. A 200-year-old ponderosa might always have some Diplodia on its lowest branches while remaining essentially healthy.</p><p><strong>Stressed trees of any age:</strong> construction injury, drought, root disease, or heavy pruning significantly increase susceptibility.</p><div class="field-note"><div class="field-note-label">&#127794; Field Note</div><p>The spring weather pattern matters a lot in the Okanagan. Dry, sunny spring = low Diplodia pressure. A spring with rain events during the critical bud-break window (typically late April to late May for valley-floor ponderosa) = elevated infection risk that won’t show up as symptoms until June. When a client calls in July saying their pine “suddenly has dead tips,” you’re seeing the result of a wet April. The disease isn’t sudden — it’s just delayed reporting.</p></div>'
+  },
+  {
+    q: 'A landscape arborist discovers Diplodia tip blight on a 12-year-old ponderosa pine in a Kelowna residential yard. The tree has a history of road salt exposure, soil compaction in the root zone, and received heavy pruning two seasons ago. Which management approach is most appropriate?',
+    options: [
+      'Apply a copper-based fungicide spray immediately in fall to protect overwintering mycelium in dead shoots',
+      'Remove the tree immediately — Diplodia-infected young pines cannot recover and pose a risk of spreading disease to adjacent conifers',
+      'Prune out infected shoots during dry weather in late summer or fall (when spores are not being actively discharged); improve site conditions (mulch, reduce compaction, reduce salt exposure); apply preventive fungicide at bud break next spring if warranted',
+      'Apply systemic imidacloprid as a trunk injection to kill the fungal mycelium throughout the tree’s vascular system'
+    ],
+    correct: 2,
+    lesson: '<p><strong>Diplodia tip blight is NOT a death sentence for young pines</strong> — it is a manageable stress disease when addressed correctly.</p><p><strong>Pruning infected material:</strong> remove dead shoots and affected cones during dry weather in late summer or fall. This reduces the spore source for next year’s infection cycle. DO NOT prune in wet weather — you will spread spores with every cut.</p><p><strong>Fungicide options:</strong> several fungicides are registered for Diplodia control when applied at bud break (thiophanate-methyl, propiconazole, chlorothalonil — verify current PMRA registration). Timing is critical: the protection window is early bud swell through \xbd candle extension. After this, spraying has no effect on current-year infection.</p><p><strong>PHC is the foundation:</strong> remove stressors (salt damage, compaction), improve soil drainage, apply a mulch ring, reduce competition. A tree with adequate NSC reserves and resin production capacity will suppress infections naturally.</p><ul><li>Copper fungicides do NOT work against Diplodia — it is a fungus, not a bacterium.</li><li>Imidacloprid is an insecticide with no antifungal activity. Not applicable here.</li></ul><div class="field-note"><div class="field-note-label">&#127794; Field Note</div><p>The worst case I’ve seen for Diplodia in the Okanagan was a row of young ponderosa (planted 8 years prior) adjacent to a parking lot — salt drift, compacted clay, concrete radiant heat on the south side. Every tree had severe tip blight top to bottom, multiple seasons. The treatment wasn’t spray — it was a 1-metre mulch ring, aeration of the root zone, elimination of the salt source, and supplemental water for two seasons. Three years later, the disease had receded to the lower branches where it belongs on a stressed-site pine. The fungicide wasn’t the answer. The site conditions were the answer.</p></div>'
+  },
+  {
+    q: 'Diplodia sapinea pycnidia are found at the base of dead needles and on infected cone scales. Why does this matter to an arborist conducting an ISA risk assessment?',
+    options: [
+      'Pycnidia presence confirms that the dead needles were killed by Diplodia rather than by drought, frost, or needle cast — narrowing the differential diagnosis and identifying the specific pathogen',
+      'Pycnidia on cones indicate the tree will produce infected seed that will spread the disease to other sites, triggering mandatory reporting to the BC Ministry of Forests',
+      'Pycnidia are spore-producing structures whose presence confirms the infection is in an advanced terminal stage — any tree with pycnidia must be removed within 30 days per BC pest management regulations',
+      'Pycnidia indicate that the tree has successfully compartmentalized the infection and is producing its own antifungal compounds to defeat the pathogen'
+    ],
+    correct: 0,
+    lesson: '<p><strong>Differential diagnosis is critical in pathology: many things kill pine shoot tips. The pycnidia confirm the diagnosis.</strong></p><p>What else kills pine tips:<ul><li><strong>Frost damage:</strong> kills elongating shoots in spring but no pycnidia; damage is uniform across the crown (frost is non-selective); no resin at shoot base</li><li><strong>Drought desiccation:</strong> needle tip browning but usually in mid-crown or throughout; no pycnidia; needles may fall</li><li><strong>Pine tip moth (<em>Rhyacionia</em> spp.):</strong> dead shoots with obvious caterpillar bore holes; frass present; no pycnidia</li><li><strong>Western gall rust:</strong> globose galls on shoots; no tip blight pattern</li><li><strong>Dothistroma needle blight:</strong> banding pattern mid-needle; affects older needles, not current-year shoots</li></ul></p><p><strong>Pycnidia identification:</strong> look for tiny black dots (0.3–0.5 mm) at needle bases on dead shoots and on cone scale surfaces. In wet weather, they extrude a tendril of amber-to-black spore paste called a cirrus. A 10× hand lens is enough to see them clearly in the field.</p><p><strong>Cones as inoculum reservoir:</strong> infected cones carry pycnidia on scales for multiple years. Cones on infected trees are a significant spore source — removing infected cones is part of sanitation management.</p><p>The ISA risk assessment relevance: establishing the specific cause of decline guides the management recommendation. “Unknown decline” is not a useful risk assessment outcome.</p><div class="field-note"><div class="field-note-label">&#127794; Field Note</div><p>Carry a hand lens. A 10× loupe costs $15 and lives on your keyring. When you’re on a declining ponderosa and you’re not sure if the dead tips are Diplodia or drought or frost — the lens will tell you. Pull off a dead shoot with needles, hold the base up to the lens. Black pinpoint dots = pycnidia = Diplodia. No black dots = look harder at the alternative diagnoses. This is one field observation that actually changes the management conversation and the report.</p></div>'
+  },
+  {
+    q: 'A client with a 15-year-old ponderosa pine asks whether they should “spray the tree for the fungus” every spring as a preventive measure. What is the most accurate and complete response?',
+    options: [
+      'Yes — annual fungicide applications are the standard of care for any ponderosa pine in the Okanagan Interior and should begin as soon as bud break is visible',
+      'Preventive fungicide application at bud break CAN reduce infection when timed correctly, but it is a supplemental tool, not the foundation of management — site conditions, tree vigor (NSC reserves, water access, soil health), and sanitation of infected material are more important; spray only when conditions warrant and tree stress cannot be addressed by other means',
+      'No fungicides should ever be applied to conifers — they disrupt the resin defense system and cause more harm than benefit',
+      'Preventive spray is only effective if applied in fall after leaf drop, not at bud break, because Diplodia overwinters in the bark and must be killed before spring'
+    ],
+    correct: 1,
+    lesson: '<p>The “spray everything” approach to fungal disease reflects a misunderstanding of plant pathology. <strong>Diplodia management is fundamentally about integrated management</strong> — not chemical calendar spraying.</p><p><strong>When preventive fungicide IS warranted:</strong> trees on high-stress sites with a history of severe Diplodia damage AND where site conditions cannot be adequately improved AND tree value justifies the cost. Young landscape pines (5–15 years) with multi-year infections that cannot be controlled by sanitation alone.</p><p><strong>Timing for preventive spray:</strong> early bud swell to \xbd candle extension — a narrow 2–4 week window. Missing this window means the current season’s infection cannot be prevented by spray.</p><p><strong>Registered active ingredients:</strong> thiophanate-methyl, propiconazole (systemic), chlorothalonil (contact). Always verify current PMRA registration for BC. Follow label rates.</p><p>The most important management actions (in order of impact):<ul><li>Improve site conditions (most impactful)</li><li>Remove and destroy infected cones and shoots (reduces inoculum)</li><li>Preventive fungicide at the correct timing (supplemental, conditional)</li></ul></p><p>Fall application of fungicide has no efficacy against Diplodia — the pathogen is dormant in dead tissue and spray cannot reach it.</p><div class="field-note"><div class="field-note-label">&#127794; Field Note</div><p>When a client asks about spraying, I explain it this way: “The fungicide covers the new shoots when they’re vulnerable, before the disease can get in. If we time it right, it works. But if the tree is stressed — too much shade, compacted soil, drought — the spray is just buying time. A stressed tree will get infected again next year. The spray doesn’t fix the underlying problem.” That reframe — from “spray to control disease” to “fix the conditions, use spray as a tool when needed” — is the ISA BMP PHC approach in a sentence.</p></div>'
+  }
+];
+
+var currentQ = 0;
+var score = 0;
+var answered = false;
+var results = [];
+
+function showScreen(id) {
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) {
+    screens[i].classList.remove('active');
+  }
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startQuiz() {
+  currentQ = 0;
+  score = 0;
+  answered = false;
+  results = [];
+  renderQuestion();
+  showScreen('screen-quiz');
+}
+
+function restartLesson() {
+  showScreen('screen-home');
+}
+
+function renderQuestion() {
+  var data = QUESTIONS[currentQ];
+  answered = false;
+
+  var pct = (currentQ / QUESTIONS.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('quiz-counter').textContent = 'Question ' + (currentQ + 1) + ' of ' + QUESTIONS.length;
+  document.getElementById('quiz-question').textContent = data.q;
+
+  var list = document.getElementById('options-list');
+  list.innerHTML = '';
+  var letters = ['A', 'B', 'C', 'D'];
+  for (var i = 0; i < data.options.length; i++) {
+    var li = document.createElement('li');
+    var btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.setAttribute('data-index', i);
+    btn.innerHTML = '<span class="option-letter">' + letters[i] + '</span><span>' + data.options[i] + '</span>';
+    btn.onclick = (function(idx) {
+      return function() { selectAnswer(idx); };
+    })(i);
+    li.appendChild(btn);
+    list.appendChild(li);
+  }
+
+  var verdict = document.getElementById('verdict');
+  verdict.className = 'verdict';
+  verdict.textContent = '';
+
+  document.getElementById('lesson-panel').classList.remove('visible');
+  document.getElementById('lesson-body').innerHTML = '';
+
+  var btnNext = document.getElementById('btn-next');
+  btnNext.classList.remove('visible');
+  btnNext.textContent = (currentQ < QUESTIONS.length - 1) ? 'Next Question →' : 'See My Results →';
+}
+
+function selectAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+
+  var data = QUESTIONS[currentQ];
+  var correct = data.correct;
+  var isRight = (chosen === correct);
+
+  if (isRight) score++;
+  results.push(isRight);
+
+  var btns = document.querySelectorAll('.option-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].disabled = true;
+    var idx = parseInt(btns[i].getAttribute('data-index'));
+    if (idx === correct) {
+      btns[i].classList.add('correct');
+    } else if (idx === chosen && !isRight) {
+      btns[i].classList.add('wrong');
+    } else {
+      btns[i].classList.add('dimmed');
+    }
+  }
+
+  var verdict = document.getElementById('verdict');
+  if (isRight) {
+    verdict.className = 'verdict correct';
+    verdict.textContent = '✓ Correct';
+  } else {
+    verdict.className = 'verdict wrong';
+    verdict.textContent = '✗ Incorrect';
+  }
+
+  document.getElementById('lesson-body').innerHTML = data.lesson;
+  document.getElementById('lesson-panel').classList.add('visible');
+  document.getElementById('btn-next').classList.add('visible');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('score-number').textContent = score;
+  document.getElementById('progress-fill').style.width = '100%';
+
+  var title, msg;
+  if (score === 5) {
+    title = 'Excellent — Full Marks';
+    msg = 'All five questions done on Diplodia tip blight. Key takeaways: pycnidia at needle bases = confirmed diagnosis; infection window = bud break; young stressed trees = highest risk; management is PHC first, fungicide second. Know this disease — it’s the most common needle disease on landscape ponderosa in the Okanagan.';
+  } else if (score >= 4) {
+    title = 'Strong Result';
+    msg = 'One to revisit — go back to the lesson section you missed and re-read it. The detail you missed is probably in the field note. Diplodia is the most common needle disease on Okanagan ponderosa — every question here comes up in practice.';
+  } else if (score >= 3) {
+    title = 'Good Foundation';
+    msg = 'Solid on the core material. Review the lessons you missed — pay particular attention to differential diagnosis using pycnidia (Q4) and the PHC management hierarchy (Q3). These two points drive every Diplodia client conversation.';
+  } else {
+    title = 'Keep Reviewing';
+    msg = 'Go back through each lesson panel, especially pycnidia identification (Q4), the infection timing window (Q2), and the PHC management approach (Q3). This disease is everywhere on Okanagan ponderosa — it’s worth knowing cold before your next site visit.';
+  }
+
+  document.getElementById('score-title').textContent = title;
+  document.getElementById('score-message').textContent = msg;
+
+  var shortQs = [
+    'Symptom pattern & crown reading',
+    'Infection timing & host vulnerability',
+    'Integrated management (PHC first)',
+    'Pycnidia & differential diagnosis',
+    'Preventive fungicide decision-making'
+  ];
+
+  var html = '<div class="score-breakdown-title">Question Breakdown</div>';
+  for (var i = 0; i < results.length; i++) {
+    html += '<div class="breakdown-row"><span class="breakdown-q">Q' + (i + 1) + ': ' + shortQs[i] + '</span><span class="' + (results[i] ? 'breakdown-result-correct' : 'breakdown-result-wrong') + '">' + (results[i] ? '✓' : '✗') + '</span></div>';
+  }
+  document.getElementById('score-breakdown').innerHTML = html;
+
+  showScreen('screen-score');
+}
+</script>
+</body>
+</html>
