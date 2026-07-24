@@ -1,0 +1,1126 @@
+<!--
+SLACK INTRO — post in #microbe-lessons when lesson goes live:
+
+🌳 Tree Profile — Week 9, Bur Oak (Quercus macrocarpa)
+
+Not native to BC, but built for it. This is the oak that evolved on the Great Plains — hot dry summers, cold winters, fire, alkaline soil — which is exactly the Okanagan. This lesson covers why bur oak outperforms most "native" choices on valley-floor urban sites, how to identify it (those fringed acorn cups are unmistakable), and why the first five years of care are the most important five years of its life.
+
+→ Open the lesson and work through it. Field note at the end of each section is where the good stuff lives.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bur Oak — Week 9, Wednesday | Microbe Tree Inc.</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --sidebar-bg: #2c4a1e;
+      --sidebar-hover: #3a6228;
+      --sidebar-active: #4a7a2e;
+      --accent: #4a7a2e;
+      --accent-light: #5d9438;
+      --bg: #f4f0eb;
+      --card-bg: #ffffff;
+      --text-dark: #1a1a1a;
+      --text-mid: #3d3d3d;
+      --text-light: #6b6b6b;
+      --border: #d9d3c8;
+      --note-bg: #f0f5ec;
+      --note-border: #4a7a2e;
+      --warn-bg: #fdf6ec;
+      --warn-border: #c87f2a;
+      --danger-bg: #fdf0ef;
+      --danger-border: #c0392b;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background-color: var(--bg);
+      color: var(--text-dark);
+      display: flex;
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    /* SIDEBAR */
+    #sidebar {
+      width: 240px;
+      min-width: 240px;
+      background-color: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 28px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .sidebar-org {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 8px;
+    }
+
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .sidebar-subtitle {
+      font-family: 'Arial', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .day-badge {
+      display: inline-block;
+      background-color: var(--accent);
+      color: #ffffff;
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .sidebar-nav {
+      padding: 16px 0;
+      flex: 1;
+    }
+
+    .sidebar-nav-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      padding: 0 20px 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background-color: var(--sidebar-hover);
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.08);
+      border-left-color: #7dbf5a;
+    }
+
+    .nav-icon {
+      font-size: 15px;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .nav-text {
+      font-family: 'Arial', sans-serif;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 500;
+    }
+
+    .nav-item.active .nav-text {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .sidebar-footer-text {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.5;
+    }
+
+    /* MAIN CONTENT */
+    #main {
+      flex: 1;
+      overflow-y: auto;
+      max-width: 900px;
+    }
+
+    .page-header {
+      background-color: var(--sidebar-bg);
+      padding: 36px 48px 32px;
+      color: #ffffff;
+    }
+
+    .page-header-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 10px;
+    }
+
+    .page-header h1 {
+      font-size: 32px;
+      font-weight: bold;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .page-header .scientific {
+      font-size: 17px;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 14px;
+    }
+
+    .header-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .header-tag {
+      background-color: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.85);
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+
+    .content-body {
+      padding: 40px 48px 60px;
+    }
+
+    /* SECTIONS */
+    .section {
+      margin-bottom: 52px;
+      scroll-margin-top: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-icon {
+      font-size: 22px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--sidebar-bg);
+    }
+
+    /* CARDS */
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-family: 'Arial', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    /* ID GRID */
+    .id-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .id-cell {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+
+    .id-cell-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .id-cell-value {
+      font-size: 14px;
+      color: var(--text-dark);
+      line-height: 1.55;
+    }
+
+    /* TABLES */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      background-color: #e8ede4;
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--sidebar-bg);
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .data-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #ece8e2;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table tr:hover td {
+      background-color: #faf8f5;
+    }
+
+    .data-table .label-col {
+      font-weight: bold;
+      color: var(--text-mid);
+      width: 28%;
+    }
+
+    /* PEST / DISEASE CARDS */
+    .pest-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--warn-border);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+    }
+
+    .pest-card.low    { border-left-color: #5d9438; }
+    .pest-card.moderate { border-left-color: #c87f2a; }
+    .pest-card.high   { border-left-color: #c0392b; }
+    .pest-card.absent { border-left-color: #2980b9; }
+
+    .pest-name {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .pest-risk {
+      display: inline-block;
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .pest-risk.low      { background-color: #e8f5e2; color: #2c6b1a; }
+    .pest-risk.moderate { background-color: #fdf0e0; color: #8a5b1a; }
+    .pest-risk.high     { background-color: #fde8e6; color: #8b2217; }
+    .pest-risk.absent   { background-color: #e0eef8; color: #1a5a8a; }
+
+    .pest-detail-list {
+      list-style: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .pest-detail-list li {
+      padding: 5px 0 5px 18px;
+      position: relative;
+      line-height: 1.5;
+      color: var(--text-mid);
+    }
+
+    .pest-detail-list li::before {
+      content: '\203A';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .pest-detail-list li strong {
+      color: var(--text-dark);
+    }
+
+    /* CALLOUT BOXES */
+    .callout {
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .callout-field-note {
+      background-color: var(--note-bg);
+      border: 1px solid #b8d9a0;
+      border-left: 4px solid var(--note-border);
+    }
+
+    .callout-caution {
+      background-color: var(--warn-bg);
+      border: 1px solid #e8c490;
+      border-left: 4px solid var(--warn-border);
+    }
+
+    .callout-critical {
+      background-color: var(--danger-bg);
+      border: 1px solid #e8b0ac;
+      border-left: 4px solid var(--danger-border);
+    }
+
+    .callout-info {
+      background-color: #eef5fd;
+      border: 1px solid #a8c8e8;
+      border-left: 4px solid #2980b9;
+    }
+
+    .callout-title {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .callout-field-note .callout-title { color: #2c6b1a; }
+    .callout-caution .callout-title    { color: #8a5b1a; }
+    .callout-critical .callout-title   { color: #8b2217; }
+    .callout-info .callout-title       { color: #1a5a8a; }
+
+    /* ARBORIST BLOCKS */
+    .arb-block {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .arb-block-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--sidebar-bg);
+      margin-bottom: 10px;
+    }
+
+    .arb-block p {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.65;
+      margin-bottom: 8px;
+    }
+
+    .arb-block p:last-child { margin-bottom: 0; }
+
+    /* CLIENT QUOTES */
+    .client-quote-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .client-quote-list li {
+      background-color: #f7faf4;
+      border: 1px solid #c8dfc0;
+      border-radius: 8px;
+      padding: 14px 18px 14px 36px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-dark);
+      position: relative;
+    }
+
+    .client-quote-list li::before {
+      content: '\201C';
+      position: absolute;
+      left: 14px;
+      top: 10px;
+      font-size: 28px;
+      color: var(--accent);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    /* REQ GRID */
+    .req-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .req-cell {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .req-cell-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .req-cell-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .req-cell-value {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.4;
+    }
+
+    /* ISA FOOTER */
+    .isa-footer {
+      background-color: #e8ede4;
+      border: 1px solid #c4d4bc;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-top: 48px;
+      font-family: 'Arial', sans-serif;
+      font-size: 11.5px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    .isa-footer strong { color: var(--sidebar-bg); }
+
+    /* PROSE */
+    p {
+      font-size: 15px;
+      color: var(--text-mid);
+      margin-bottom: 12px;
+    }
+
+    ul.prose-list {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    ul.prose-list li {
+      font-size: 14px;
+      color: var(--text-mid);
+  2   line-height: 1.65;
+      margin-bottom: 6px;
+    }
+
+    ul.prose-list li strong { color: var(--text-dark); }
+
+    /* RESPONSIVE */
+    @media (max-width: 780px) {
+      body { flex-direction: column; }
+
+      #sidebar {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        position: static;
+      }
+
+      .sidebar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 8px;
+        gap: 4px;
+      }
+
+      .sidebar-nav-label { display: none; }
+
+      .nav-item {
+        border-left: none;
+        border-radius: 6px;
+        padding: 7px 12px;
+        border-bottom: 2px solid transparent;
+      }
+
+      .nav-item.active {
+        background-color: rgba(255,255,255,0.15);
+        border-bottom-color: #7dbf5a;
+      }
+
+      .id-grid { grid-template-columns: 1fr; }
+      .req-grid { grid-template-columns: 1fr 1fr; }
+
+      .page-header,
+      .content-body {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar" role="navigation" aria-label="Lesson sections">
+    <div class="sidebar-header">
+      <div class="sidebar-org">Microbe Tree Inc.</div>
+      <div class="sidebar-title">Species Field Guide</div>
+      <div class="sidebar-subtitle">West Kelowna, BC</div>
+      <div class="day-badge">Wednesday &middot; Week 9</div>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="sidebar-nav-label">Sections</div>
+
+      <a class="nav-item active" href="#identity" onclick="setActive(this)">
+        <span class="nav-icon">&#128269;</span>
+        <span class="nav-text">Identity</span>
+      </a>
+      <a class="nav-item" href="#origin" onclick="setActive(this)">
+        <span class="nav-icon">&#127757;</span>
+        <span class="nav-text">Origin &amp; Ecology</span>
+      </a>
+      <a class="nav-item" href="#needs" onclick="setActive(this)">
+        <span class="nav-icon">&#128167;</span>
+        <span class="nav-text">What It Wants</span>
+      </a>
+      <a class="nav-item" href="#pests" onclick="setActive(this)">
+        <span class="nav-icon">&#129410;</span>
+        <span class="nav-text">Pest Pressures</span>
+      </a>
+      <a class="nav-item" href="#disease" onclick="setActive(this)">
+  2    <span class="nav-icon">&#129440;</span>
+        <span class="nav-text">Disease Pressures</span>
+      </a>
+      <a class="nav-item" href="#arborist" onclick="setActive(this)">
+        <span class="nav-icon">&#129495;</span>
+        <span class="nav-text">Arborist Notes</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-textt">
+        ISA Domains: Tree Biology &middot; Selection &amp; Establishment &middot; Risk Assessment
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main id="main">
+
+    <header class="page-header">
+      <div class="page-header-label">Tree Profile &middot; Week 9 &middot; Wednesday</div>
+      <h1>Bur Oak</h1>
+      <div class="scientific">Quercus macrocarpa Michx.</div>
+      <div class="header-tags">
+        <span class="header-tag">Fagaceae</span>
+        <span class="header-tag">Deciduous</span>
+        <span class="header-tag">Zone 2&ndash;3</span>
+        <span class="header-tag">Drought Tolerant</span>
+        <span class="header-tag">Long-Lived</span>
+        <span class="header-tag">Fire-Adapted</span>
+        <span class="header-tag">Okanagan &#10003;</span>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <!-- SECTION 1: IDENTITY -->
+      <section class="section" id="identity">
+        <div class="section-header">
+          <span class="section-icon">&#128269;</span>
+          <h2 class="section-title">Identity</h2>
+        </div>
+
+        <table class="data-table">
+          <tr>
+            <td class="label-col">Family</td>
+            <td>Fagaceae</td>
+          </tr>
+          <tr>
+            <td class="label-col">Genus</td>
+            <td><em>Quercus</em></td>
+          </tr>
+          <tr>
+            <td class="label-col">Species</td>
+            <td><em>macrocarpa</em> Michx.</td>
+          </tr>
+          <tr>
+          2 <td class="label-col">Common names</td>
+            <td>Bur Oak, Mossycup Oak, Prairie Oak, Scrub Oak (informal)</td>
+          </tr>
+        </table>
+
+        <div class="card">
+          <div class="card-title">Key Identification Features</div>
+          <div class="id-grid">
+            <div class="id-cell">
+              <div class="id-cell-label">Leaves</div>
+      2       <div class="id-cell-value">Deeply lobed with a distinctive <strong>cross-shaped lobe arrangement</strong> &mdash; the leaf widens above a narrow &ldquo;waist&rdquo; in the middle, creating a broad upper lobe cluster and narrower lower lobes. 10&ndash;15&nbsp;cm long, dark green above, pale and slightly hairy below.</div>
+            </div>
+            <div class="id-cell">
+              <div class="id-cell-label">Acorns</div>
+              <div class="id-cell-value">Diagnostic: large (2&ndash;4&nbsp;cm), <strong>half-enclosed in a deep fringed (bur/mossy) cup</strong> that can cover 50%+ of the nut. The fringed scales on the cup edge are the definitive ID feature.</div>
+            </div>
+            <div class="id-cell">
+          2   <div class="id-cell-label">Bark</div>
+              <div class="id-cell-value">Thick, deeply furrowed, grey-brown to dark brown. On mature trees, develops a <strong>distinctive corky, ridged texture</strong>. Very thick bark relative to other oaks &mdash; functionally fire-resistant at maturity.</div>
+            </div>
+            <div class="id-cell">
+              <div class="id-cell-label">Form</div>
+              <div class="id-cell-value">Short, stout trunk with wide-spreading crown. Urban specimens form broad, low-crowned trees; forest specimens are taller and more uniform. Spread often equal to or greater than height.</div>
+            </div>
+            <div class="id-cell">
+              <div class="id-cell-label">Size</div>
+ 2            <div class="id-cell-value">Typically 15&ndash;25&nbsp;m; can reach 30&nbsp;m on good sites. Spread often equals or exceeds height.</div>
+            </div>
+            <div class="id-cell">
+              <div class="id-cell-label">Fall / Winter</div>
+              <div class="id-cell-value">Leaves turn <strong>russet-brown</strong> in autumn. Often hold brown leaves into winter (<em>marcescence</em>) &mdash; normal for this species.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-field-note">
+          <div class="callout-title">&#127807; Field Note &mdash; Quick ID</div>
+          The <strong>fringed acorn cup</strong> and the <strong>cross-shaped leaf waist</strong> together are unmistakable &mdash; no other Okanagan oak combines both. If you see mossy-fringed acorns on the ground, you&rsquo;re under a bur oak. When in doubt: find the acorn.
+        </div>
+      </section>
+
+      <!-- SECTION 2: ORIGIN & ECOLOGY -->
+      <section class="section" id="origin">
+        <div class="section-header">
+          <span class="section-icon">&#127757;</span>
+          <h2 class="section-title">Origin &amp; Ecology</h2>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Native Range</div>
+          <p>One of the most widely distributed North American oaks &mdash; ranges from Nova Scotia west to southern Alberta and Montana, south to Texas and the Great Plains. The <strong>most cold-hardy and drought-tolerant oak in the genus</strong>.</p>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">&#128205; BC Status &mdash; Not Native, But At Home</div>
+          The native range of bur oak reaches eastern Alberta but does <strong>not naturally extend into BC</strong>. However, it is widely planted as an ornamental in BC&rsquo;s Interior and Lower Mainland, where it <strong>outperforms most native-range oak species on dry sites</strong>. The ecological match with the Okanagan is exceptional.
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ecological Factor</th>
+              <th>Bur Oak Adaptation</th>
+            </tr>
+          </thead>
+      2   <tbody>
+            <tr>
+              <td class="label-col">Fire ecology</td>
+              <td>Survived frequent prairie fires through <strong>extraordinarily thick bark</strong> (thickest of any eastern North American oak) and extensive deep root system. Mature trees are effectively fire-resistant for surface fires.</td>
+            </tr>
+            <tr>
+          2   <td class="label-col">Savanna niche</td>
+              <td>Signature tree of the <strong>prairie-forest transition zone</strong> (&ldquo;oak savanna&rdquo;) &mdash; adapted to the same semi-arid, fire-maintained ecosystems that resemble the Okanagan BGxh zone.</td>
+            </tr>
+            <tr>
+              <td class="label-col">Why it thrives here</td>
+         2    <td>The Okanagan&rsquo;s hot-dry summers, cold winters, alkaline soils, and fire history are ecologically similar to the bur oak&rsquo;s native range on the Great Plains. It performs better here than most &ldquo;native&rdquo; BC trees on valley-floor urban sites.</td>
+            </tr>
+            <tr>
+              <td class="label-col">BEC compatibility</td>
+       2      <td><strong>BGxh, PPxh, IDFxh</strong> &mdash; the driest, hottest Okanagan zones where most other tree species struggle.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-field-note">
+          <div class="callout-title">&#127807; Field Note &mdash; Ecotype Match</div>
+          When a client asks &ldquo;should I plant a native tree?&rdquo;, bur oak&rsquo;s story is useful. It&rsquo;s not native to BC, but it evolved in an ecosystem nearly identical to the Okanagan valley floor. The ecology fits even when the provincial range doesn&rsquo;t. Sometimes the right tree for the site isn&rsquo;t the tree that happens to naturally grow there.
+        </div>
+      </section>
+
+      <!-- SECTION 3: WHAT IT WANTS -->
+      <section class="section" id="needs">
+        <div class="section-header">
+          <span class="section-icon">&#128167;</span>
+          <h2 class="section-title">What It Wants</h2>
+        </div>
+
+        <div class="req-grid">
+          <div class="req-cell">
+            <div class="req-cell-icon">&#9728;&#65039;</div>
+            <div class="req-cell-label">Light</div>
+            <div class="req-cell-value">Full sun &mdash; very shade-intolerant. Open exposures only.</div>
+          </div>
+          <div class="req-cell">
+            <div class="req-cell-icon">&#128167;</div>
+            <div class="req-cell-label">Water</div>
+            <div class="req-cell-value">Very drought-tolerant once established (3&ndash;5 yrs). Deep taproot accesses sub-soil moisture.</div>
+          </div>
+          <div class="req-cell">
+            <div class="req-cell-icon">&#127777;&#65039;</div>
+            <div class="req-cell-label">Cold Hardiness</div>
+            <div class="req-cell-value">Zone 2&ndash;3. Handles &minus;40&deg;C without damage. No cold concern in the Okanagan.</div>
+      2   </div>
+          <div class="req-cell">
+            <div class="req-cell-icon">&#128293;</div>
+            <div class="req-cell-label">Heat Tolerance</div>
+            <div class="req-cell-value">Excellent &mdash; handles extended periods above 35&deg;C once established. Best large-canopy option for Okanagan heat islands.</div>
+          </div>
+          <div class="req-cell">
+            <div class="req-cell-icon">&#129704;</div>
+            <div class="req-cell-label">Soil</div>
+            <div class="req-cell-value">Highly adaptable. Clay, sandy loam, alkaline pH to 8.0, compacted urban soils. Avoid prolonged waterlogging.</div>
+          </div>
+          <div class="req-cell">
+            <div class="req-cell-icon">&#9878+&#65039;</div>
+            <div class="req-cell-label">pH</div>
+            <div class="req-cell-value">Tolerates alkaline soils to pH 8.0. Minor chlorosis possible above 8.2 &mdash; rarely severe.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Root System</div>
+          <p>Deep taproot in youth transitions to a wide lateral systm at maturity; lateral roots can extend <strong>2&ndash;3&times; the crown radius</strong>. Non-aggressive relative to poplars &mdash; pavement-lifting risk is lower than many fast-growing species, but adequate root zone space is still critical for long-term performance.</p>
+        </div>
+
+        <div class="callout callout-caution">
+          <div class="callout-title">>&#9888;&#65039; Establishment &mdash; The Slow Phase</div>
+          Bur oak&rsquo;s slowest phase is the <strong>first 3&ndash;5 years</strong>, when the tree is investing heavily in root development below ground. Above-ground growth appears minimal during this period. After establishment, growth accelerates to a moderate rate.
+          <br><br>
+          <strong>Plant in a permanent location.</strong> It does not transplant well once established due to taproot development. Specify bur oak from containers or specify root-pruned stock.
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Urban Stressor</th>
+              <th>Tolerance Level</th>
+            </tr>
+          </thead>
+     2    <tbody>
+            <tr>
+              <td class="label-col">Road salt</td>
+              <td>High tolerance</td>
+            </tr>
+            <tr>
+              <td class="label-col">Soil compaction</td>
+              <td>Moderate&ndash;high tolerance</td>
+            </tr>
+            <tr>
+              <td class="label-col">Air pollution</td>
+              <td>High tolerance</td>
+            </tr>
+            <tr>
+              <td class="label-col">Drought (established)</td>
+              <td>High tolerance</td>
+            </tr>
+            <tr>
+              <td class="label-col">Poor aeration + irrigation</td>
+              <td><strong>Low tolerance</strong> &mdash; avoid compacted zones combined with supplemental water</td>
+  2         </tr>
+            <tr>
+              <td class="label-col">Bark / physical damage</td>
+              <td><strong>Primary urban risk</strong> &mdash; thin-barked when young; develops thick protective bark at maturity</td>
+            </tr>
+            <tr>
+              <td class="label-col">Vertical root restriction</td>
+              <td>Low tolerance &mdash; avoid small tree pits</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-field-note">
+          <div class="callout-title">&#127807; Field Note &mdash; Overwatering Risk</div>
+          Once established, <strong>supplemental water should be reduced</strong>. Overwatering is a more common problem than underwatering with established bur oak in the Okanagan. The deep root system is accessing moisture you can&rsquo;t see. Wide mulch rings removing turf competition dramatically improve establishment rates and long-term health.
+        </div>
+      </section>
+
+      <!-- SECTION 4: PEST PRESSURES -->
+      <section class="section" id="pests">
+        <div class="section-header">
+          <span class="section-icon">&#129410;</span>
+          <h2 class="section-title">Pest Pressures</h2>
+        </div>
+
+        <div class="pest-card moderate">
+          <div class="pest-name">Two-lined Chestnut Borer (<em>Agrilus bilineatus</em> Weber)</div>
+          <span class="pest-risk moderate">Moderate &mdash; Stress Associated</span>
+          <ul class="pest-detail-list">
+        2   <li><strong>Signs:</strong> D-shaped exit holes, serpentine galleries under bark, dieback starting from branch tips.</li>
+            <li><strong>Attacks:</strong> Stressed oaks primarily &mdash; drought, construction damage, soil compaction.</li>
+            <li><strong>Predisposing factor:</strong> Any form of stress. Healthy bur oaks with adequate soil volume are rarely attacked.</li>
+            <li><strong>Management:</strong> Maintain tree vigour; remove and destroy severely infested branches. Address the underlying stress cause first.</li>
+          </ul>
+        </div>
+
+        <div class="pest-card low">
+          <div class="pest-name">Oak Leaf Roller (<em>Archips semiferana</em> Walker)</div>
+          <span class="pest-risk low">Low to Moderate &mdash; Episodic</span>
+          <ul class="pest-detail-list">
+            <li><strong>Signs:</strong> Leaves rolled and tied with silk; caterpillars feed on new foliage in spring.</li>
+            <li>Rarely lethal; repeated defoliation can stress trees over multiple seasons.</li>
+            <li>Natural predation usually limits populations; intervention is rarely needed.</li>
+          </ul>
+        </div>
+
+        <div class="pest-card high">
+          <div class="pest-name">Gypsy Moth (<em>Lymantria dispar</em>)</div>
+          <span class="pest-risk high">Moderate to High &mdash; If Present</span>
+          <ul class="pest-detail-list">
+            <li><strong>BC Status:</strong> Established in parts of BC (Lower Mainland); not yet established in the Okanagan &mdash; monitor. BC Ministry of Forests conducts active monitoring programs.</li>
+            <li><strong>Signs:</strong> Egg masses on bark, caterpillar defoliation in spring&ndash;summer.</li>
+            <li>Oaks are preferred hosts. Repeated defoliation weakens trees significantly.</li>
+            <li><strong>Action:</strong> Report suspected infestations to BC Ministry of Forests.</li>
+          </ul>
+        </div>
+
+        <div class="pest-card low">
+          <div class="pest-name">Lecanium Scale (<em>Parthenolecanium</em> spp.)</div>
+          <span class="pest-risk low">Low to Moderate</span>
+          <ul class="pest-detail-list">
+            <li>Soft scale insect attacking twigs and small branches.</li>
+            <li><strong>Signs:</strong> Brown, turtle-shell-shaped scales; sooty mold below; twig dieback.</li>
+            <li><strong>Treatment:</strong> Dormant oil application in spring before bud break; systemic imidacloprid for severe cases.</li>
+          </ul>
+        </div>
+
+        <div class="callout callout-field-note">
+          <div class="callout-title">&#127807; Field Note &mdash; Stress Is the Common Thread</div>
+          Most bur oak pest problems are secondary to stress. The best pest management for bur oak is adequate root zone, appropriate irrigation during establishment, protection from bark damage, and avoidance of compaction during construction. A healthy established bur oak is remarkably resistant to insect attack.
+        </div>
+      </section>
+
+      <!-- SECTION 5: DISEASE PRESSURES -->
+      <section class="section" id="disease">
+        <div class="section-header">
+          <span class="section-icon">&#129440;</span>
+          <h2 class="section-title">Disease Pressures</h2>
+        </div>
+
+        <div class="pest-card absent">
+          <div class="pest-name">Oak Wilt (<em>Bretziella fagacearum</em>)</div>
+          <span class="pest-risk absent">Absent in BC &mdash; Critical Note</span>
+          <ul class="pest-detail-list">
+            <li>A serious wilt disease present in eastern North America and expanding in the US Midwest &mdash; <strong>NOT present in BC</strong>. Monitor, but do not confuse with other decline causes.</li>
+            <li><strong>Note on pruning timing:</strong> In regions where oak wilt is present, pruning timing is critical (avoid April&ndash;July when sap beetles vector the fungus). In BC, <strong>no seasonal pruning restriction applies for this disease specifically</strong>.</li>
+            <li>Any oak showing sudden wilting and leaf scorch should be investigated &mdash; other wilt pathogens can cause similar symptoms.</li>
+          </ul>
+        </div>
+
+        <div class="pest-card moderate">
+          <div class="pest-name">Hypoxylon Canker (<em>Hypoxylon atropunctatum</em>)</div>
+          <span class="pest-risk moderate">Moderate &mdash; On Stressed Trees</span>
+          <ul class="pest-detail-list">
+            <li><strong>Signs:</strong> Sunken, discolored cankers with a grayish powdery surface (conidia).</li>
+            <li>Secondary pathogen &mdash; attacks stressed oaks; healthy trees resist colonization.</li>
+            <li><strong>Management:</strong> Reduce stress, remove dead wood, avoid wounding.</li>
+          </ul>
+        </div>
+
+        <div class="pest-card low">
+          <div class="pest-name">Powdery Mildew (<em>Erysiphe alphitoides</em>)</div>
+          <span class="pest-risk low">Low &mdash; Aesthetic Only</span>
+          <ul class="pest-detail-list">
+            <li><strong>Signs:</strong> White powdery coating on new leaves in late spring/summer.</li>
+            <li>Rarely causes serious damage; improves as weather dries. The Okanagan&rsquo;s dry summers naturally suppress mildew pressure after June.</li>
+            <li>No treatment usually needed &mdash; improve air circulation if chronic.</li>
+          </ul>
+        </div>
+
+        <div class="pest-card moderate">
+          <div class="pest-name">Oak Root Rot (<em>Armillaria ostoyae</em>)</div>
+          <span class="pest-risk moderate">Moderate &mdash; Site-Dependent</span>
+          <ul class="pest-detail-list">
+            <li>Same <em>Armillaria</em> species found in other Okanagan hosts; enters through root wounds.</li>
+            <li><strong>Signs:</strong> White mycelial fans at root collar, crown decline, honey-coloured mushrooms in autumn.</li>
+            <li>Most relevant on bur oak planted where <strong>conifers were recently cleared</strong> &mdash; <em>Armillaria</em> persists in stumps for decades.</li>
+          </ul>
+        </div>
+
+        <div class="callout callout-field-note">
+          <div class="callout-title">&#127807; Field Note &mdash; Know Your Site History</div>
+          Before recommending bur oak on a site where conifers were recently removed, ask about stump removal. <em>Armillaria ostoyae</em> persists in conifer root systems for decades. If stumps are present, root rot risk is elevated and should factor into PHC recommendations for the first 10 years after planting.
+        </div>
+      </section>
+
+      <!-- SECTION 6: ARBORIST NOTES -->
+      <section class="section" id="arborist">
+        <div class="section-header">
+          <span class="section-icon">&#129495;</span>
+          <h2 class="section-title">Arborist Notes</h2>
+        </div>
+
+        <div class="arb-block">
+          <div class="arb-block-title">&#9986;&#65039; Pruning Timing</div>
+          <p>Late winter to early spring (February&ndash;March) before bud break. In BC (no oak wilt concern), summer pruning is acceptable but late winter is preferred for minimizing wound exposure time.</p>
+          <p>Structural pruning in youth is critical &mdash; bur oak can develop codominant stems; address these early before they become large-wound problems.</p>
+        </div>
+
+        <div class="arb-block">
+          <div class="arb-block-title">&#127959;&#65039; Structural Pruning</div>
+ 2        <p>Invest heavily in structural pruning during the <strong>first 15&ndash;20 years</strong>. Like all oaks, bur oak benefits from early selection of a dominant central leader or well-spaced scaffold limbs.</p>
+          <p>Remove codominant stems, water sprouts, and crossing branches before they become large-wound problems. The long-lived nature of this species makes early structural investment exceptionally high-value.</p>
+        </div>
+
+        <div class="arb-block">
+          <div class="arb-block-title">&#127807; PHC Approach</div>
+          <p>The best PHC for established bur oak is <strong>benign neglect plus deep infrequent irrigation</strong> during the first 3 drought seasons. Once established, supplemental water should be reduced &mdash; overwatering is a more common problem than underwatering.</p>
+          <p>Wide mulch rings (removing turf competition) dramatically improve establishment rate and long-term vigour. Target mulch radius equal to the drip line; avoid volcano mulching at the root collar.</p>
+        </div>
+
+        <div class="callout callout-caution">
+          <div class="callout-title">&#9888;&#65039; Transplanting Caution</div>
+          Large bur oaks (DBH &gt; 5 cm) do not transplant successfully without root pruning preparation <strong>1&ndash;2 years in advance</strong>. The taproot does not survive standard ball-and-burlap treatment. Specify bur oak from containers or specify root-pruned stock. Communicate this to clients and landscape designers early in the project.
+        </div>
+
+        <div class="arb-block">
+          <div class="arb-block-title">&#127968; Strata / Boulevard Suitability</div>
+          <p><strong>EXCELLENT</strong> for large residential lots, parks, acreages, and wide boulevards where there is adequate root space and no root zone conflict with pavement within 2&ndash;3 metres of the trunk.</p>
+          <p><strong>NOT appropriate</strong> for narrow tree wells, small lots, or anywhere that will require aggressive root zone restriction. The long-term value of an established bur oak in an Okanagan landscape is extremely high &mdash; <strong>200+ year potential lifespan</strong>.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Client Conversation Points</div>
+          <ul class="client-quote-list">
+            <li>This tree will outlive your house. The investment is in the first 5 years of care.</li>
+            <li>Those things that look like caterpillar fuzz on the acorns are actually the burs &mdash; they&rsquo;re how you know it&rsquo;s a bur oak.</li>
+            <li>The slow growth in the first few years is normal &mdash; it&rsquo;s putting down a deep root system. It will take off once it&rsquo;s established.</li>
+            <li>Vou&rsquo;ll see the leaves turn brown in fall and stay on the tree through winter &mdash; that&rsquo;s called marcescence, it&rsquo;s normal for this species.</li>
+            <li>This is probably the best long-term large shade tree for a hot Okanagan yard. Drought, cold, alkaline soil &mdash; it handles all of it.</li>
+          </ul>
+        </div>
+
+        <div class="callout callout-field-note">
+          <div class="callout-title">&#127807; Field Note &mdash; The Long Game</div>
+          Bur oak is a commitment, not a quick fix. It will test a client&rsquo;s patience for 5 years and reward them for 200. The arborist&rsquo;s job is to give it the right start &mdash; adequate soil volume, structural pruning in youth, protection from bark damage &mdash; and then get out of the way. The tree will do the rest.
+        </div>
+
+        <div class="isa-footer">
+          <strong>ISA Exam Relevance</strong> &mdash; &#128218; ISA Exam Domains: Tree Biology (11%), Tree Selection &amp; Establishment (7%), Tree Risk Assessment (11%)
+          <br>
+          <strong>Sources:</strong> ISA Certification Study Guide, 4th Ed.; Little (1971) <em>Atlas of United States Trees</em>; Sibley <em>Field Guide to North American Trees</em>; BC Ministry of Forests; ANSI A300 Part 1.
+        </div>
+      </section>
+
+    </div><!-- /content-body -->
+  </main>
+
+  <script>
+    function setActive(el) {
+      document.querySelectorAll('.nav-item').forEach(function(item) {
+        item.classList.remove('active');
+      });
+      el.classList.add('active');
+    }
+
+    (function () {
+      var sections = document.querySelectorAll('.section');
+      var navItems = document.querySelectorAll('.nav-item');
+      var main = document.getElementById('main');
+
+      function onScroll() {
+        var scrollTop = main.scrollTop;
+        var threshold = 80;
+        var current = null;
+
+        sections.forEach(function (section) {
+          var offsetTop = section.offsetTop - threshold;
+          if (scrollTop >= offsetTop) {
+            current = section.id;
+          }
+        });
+
+        if (current) {
+          navItems.forEach(function (item) {
+            item.classList.remove('active');
+            var href = item.getAttribute('href');
+            if (href === '#' + current) {
+              item.classList.add('active');
+            }
+          });
+        }
+      }
+
+      main.addEventListener('scroll', onScroll);
+    })();
+  </script>
+
+</body>
+</html>
