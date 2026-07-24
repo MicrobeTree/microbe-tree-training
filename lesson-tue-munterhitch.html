@@ -1,0 +1,753 @@
+<!--
+SLACK INTRO — post in #microbe-lessons when lesson goes live:
+
+🪚 Equipment & Knots — Week 9, Munter Hitch
+
+It's the emergency friction device that works on any rope with only one carabiner. Every climber should know how to rig a Munter before they need it — not while they need it. This lesson covers the setup, the correct carabiner (it matters), how to lock it off with a Mule hitch, and the failure modes to never ignore.
+
+→ Open the lesson and work through it. Tab 5 quick-check is the one to run before you ever use this on a live load.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Munter Hitch — Week 9, Tuesday | Microbe Tree Inc.</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #fdf6ee;
+    color: #2c1a06;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: #3a2a0e;
+    color: #fdf6ee;
+    padding: 0 24px;
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px 0 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-logo {
+    font-size: 2.2rem;
+    line-height: 1;
+  }
+  .header-titles { display: flex; flex-direction: column; gap: 2px; }
+  .company-name {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c8a06a;
+    margin-bottom: 2px;
+  }
+  .lesson-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fdf6ee;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .lesson-subtitle {
+    font-size: 0.82rem;
+    color: #c8a06a;
+    margin-top: 3px;
+  }
+  .day-badge {
+    background: #8b5c1e;
+    color: #fdf6ee;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  /* DOMAIN BAR */
+  .domain-bar {
+    background: #2a1d08;
+    border-top: 1px solid #4e3618;
+    color: #c8a06a;
+    font-size: 0.74rem;
+    padding: 7px 24px;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .domain-bar strong { color: #e8c57a; }
+
+  /* MAIN */
+  .main-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  /* TAB NAV */
+  .tab-nav {
+  2 display: flex;
+    gap: 0;
+    border-bottom: 2px solid #8b5c1e;
+    margin-bottom: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: #8b5c1e;
+    padding: 11px 18px;
+    border-radius: 6px 6px 0 0;
+    border: 2px solid transparent;
+    border-bottom: none;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+    position: relative;
+    bottom: -2px;
+    letter-spacing: 0.02em;
+  }
+  .tab-btn:hover { background: #f0e2cc; color: #5a3810; }
+  .tab-btn.active {
+    background: #fdf6ee;
+    color: #3a2a0e;
+    border-color: #8b5c1e;
+    border-bottom-color: #fdf6ee;
+  }
+
+  /* TAB PANELS */
+  .tab-panel {
+    display: none;
+    background: #fff;
+    border: 2px solid #8b5c1e;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 30px 32px;
+  }
+  .tab-panel.active { display: block; }
+
+  /* TYPOGRAPHY */
+  .panel-heading {
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: #3a2a0e;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e8d4b8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #5a3810;
+    margin: 22px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  h3:first-of-type { margin-top: 8px; }
+
+  p { font-size: 0.92rem; color: #3a2a0e; margin-bottom: 10px; }
+
+  ol, ul { padding-left: 22px; margin-bottom: 12px; }
+  li { font-size: 0.92rem; color: #3a2a0e; margin-bottom: 6px; }
+  li strong { color: #5a3810; }
+
+  /* CALLOUT BOXES */
+  .callout {
+    border-left: 4px solid #8b5c1e;
+    background: #fdf0e0;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: 0.9rem;
+  }
+  .callout.critical { border-left-color: #c0392b; background: #fff0ee; }
+  .callout.critical .callout-label { color: #c0392b; }
+  .callout-label {
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8b5c1e;
+    margin-bottom: 4px;
+  }
+
+  /* ALIAS PILLS */
+  .alias-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; }
+  .alias-pill {
+    background: #8b5c1e;
+    color: #fdf6ee;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  /* STEP LIST */
+  .step-list { list-style: none; padding: 0; counter-reset: step-counter; }
+  .step-list li {
+    counter-increment: step-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    background: #fdf6ee;
+    border-radius: 6px;
+    border: 1px solid #e8d4b8;
+  }
+  .step-list li::before {
+    content: counter(step-counter);
+    background: #8b5c1e;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.78rem;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* KEY FEATURE */
+  .key-feature {
+    background: #3a2a0e;
+    color: #fdf6ee;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 18px 0;
+    font-size: 0.9rem;
+  }
+  .key-feature .kf-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c8a06a;
+    margin-bottom: 5px;
+  }
+
+  /* DIAGRAM */
+  .diagram-wrap {
+    background: #f4ede0;
+    border: 2px solid #c8a06a;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .diagram-wrap svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  .diagram-caption {
+    font-size: 0.78rem;
+    color: #8b5c1e;
+    margin-top: 10px;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
+  /* TWO-COL GRID */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 16px; }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .tab-btn { font-size: 0.76rem; padding: 9px 10px; }
+    .tab-panel { padding: 20px 16px; }
+    .header-inner { flex-direction: column; gap: 10px; }
+  }
+
+  /* INFO CARD */
+  .info-card {
+    background: #fdf6ee;
+    border: 1px solid #e8d4b8;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .info-card .ic-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8b5c1e;
+    margin-bottom: 6px;
+  }
+  .info-card p { font-size: 0.88rem; margin: 0; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 14px;
+    background: #fdf6ee;
+    border: 1px solid #e8d4b8;
+    border-radius: 6px;
+    margin-bottom: 7px;
+    font-size: 0.91rem;
+  }
+  .checklist li::before {
+    content: "\2610";
+    font-size: 1.1rem;
+    color: #8b5c1e;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+
+  /* RED FLAGS */
+  .red-flag-list { list-style: none; padding: 0; }
+  .red-flag-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 14px;
+    background: #fff5f5;
+    border: 1px solid #f5c6c6;
+    border-radius: 6px;
+    margin-bottom: 7px;
+    font-size: 0.91rem;
+    color: #7a2020;
+  }
+  .red-flag-list li::before {
+    content: "\2691";
+    font-size: 1rem;
+    color: #c0392b;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+
+  /* NOT LIST */
+  .not-list { list-style: none; padding: 0; }
+  .not-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #fff5f5;
+    border-left: 4px solid #c0392b;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 8px;
+    font-size: 0.91rem;
+    color: #3a2a0e;
+  }
+  .not-list li .no-icon {
+    font-weight: 800;
+    color: #c0392b;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+  }
+
+  /* ISA FOOTER */
+  .isa-footer {
+    margin-top: 28px;
+    background: #3a2a0e;
+    color: #c8a06a;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+  .isa-footer strong { color: #fdf6ee; }
+  .isa-footer .isa-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e8c57a;
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-logo">&#x1f9f2;</div>
+      <div class="header-titles">
+        <div class="company-name">Microbe Tree Inc. &middot; West Kelowna, BC</div>
+        <div class="lesson-title">Munter Hitch</div>
+        <div class="lesson-subtitle">Half Moon Hitch &middot; HMS Hitch &middot; Italian Hitch &mdash; Equipment, Tools &amp; Knots</div>
+      </div>
+    </div>
+    <div class="day-badge">Tuesday &middot; Week 9</div>
+  </div>
+</header>
+<div class="domain-bar">
+  <strong>ISA Exam Domain:</strong> Safe Work Practices (28%)
+  &nbsp;&middot;&nbsp;
+  ANSI Z133 &middot; ISA BMP for Rigging &middot; IRATA Rope Access Work at Height
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- TAB NAV -->
+  <nav class="tab-nav" role="tablist" aria-label="Lesson sections">
+    <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-knot"    id="btn-knot">    1 &middot; The Knot</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-arb"     id="btn-arb">     2 &middot; Arb Uses</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-load"    id="btn-load">    3 &middot; Load &amp; Safety</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-notwhen" id="btn-notwhen"> 4 &middot; When NOT to Use</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-check"   id="btn-check">   5 &middot; Quick-Check</button>
+  </nav>
+
+  <!-- TAB 1: THE KNOT -->
+  <section class="tab-panel active" id="tab-knot" role="tabpanel" aria-labelledby="btn-knot">
+    <div class="panel-heading">&#x1f517; The Munter Hitch &mdash; How It Works</div>
+
+    <div class="alias-row">
+      <span class="alias-pill">Italian Hitch</span>
+      <span class="alias-pill">HMS Hitch</span>
+      <span class="alias-pill">Half Moon Hitch</span>
+      <span class="alias-pill">Mezzo Barcaiolo</span>
+    </div>
+
+    <h3>How to Tie</h3>
+    <p>The Munter Hitch is tied <em>on a carabiner</em> &mdash; not on a fixed anchor point. It requires a pear-shaped HMS carabiner to function correctly.</p>
+
+    <ol class="step-list">
+      <li>Form a loop in the rope (standing part on one side, working end on the other).</li>
+      <li>Fold the loop to create two strands running parallel &mdash; one toward the load, one toward the brake hand.</li>
+      <li>Clip <strong>both strands</strong> through an HMS (pear-shaped) carabiner with the gate facing up and away from the rope.</li>
+      <li>Close and lock the gate. The hitch is dressed: pulling the brake strand causes the rope to reverse direction through the carabiner, creating controlled friction.</li>
+    </ol>
+
+    <div class="key-feature">
+      <div class="kf-label">Defining Characteristic</div>
+      The Munter Hitch is <strong>bidirectional</strong>. Whichever side is loaded, the other side becomes the brake. This is what makes it reversible as both a lowering and a raising assist device.
+    </div>
+
+    <!-- SVG DIAGRAM -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg" aria-label="Munter Hitch on HMS Carabiner diagram">
+        <defs>
+          <marker id="arr-brown" markerWidth="9" markerHeight="9" refX="5" refY="4.5" orient="auto">
+            <path d="M0,1 L9,4.5 L0,8 Z" fill="#5a3810"/>
+          </marker>
+          <marker id="arr-blue" markerWidth="9" markerHeight="9" refX="5" refY="4.5" orient="auto">
+            <path d="M0,1 L9,4.5 L0,8 Z" fill="#1a4a6e"/>
+          </marker>
+          <marker id="arr-red" markerWidth="9" markerHeight="9" refX="5" refY="4.5" orient="auto">
+            <path d="M0,1 L9,4.5 L0,8 Z" fill="#922b21"/>
+          </marker>
+        </defs>
+
+        <!-- Background -->
+        <rect width="500" height="250" fill="#f4ede0" rx="6"/>
+
+        <!-- HMS Carabiner: spine (left side, thick) -->
+        <path d="M 228,35 Q 215,80 215,125 Q 215,170 228,200"
+              stroke="#4a3418" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <!-- HMS Carabiner: gate side (right, thinner, pear widens at bottom) -->
+        <path d="M 228,35 Q 295,28 300,75 Q 305,120 300,155 Q 292,185 228,200"
+              stroke="#6a4828" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- Gate pin visual (hinge at top) -->
+        <circle cx="228" cy="35" r="5" fill="#4a3418"/>
+        <!-- Screw lock sleeve at gate nose -->
+        <rect x="285" y="105" width="22" height="30" rx="4" fill="#7a5832" opacity="0.85"/>
+        <line x1="296" y1="105" x2="296" y2="135" stroke="#4a3418" stroke-width="1.5"/>
+        <text x="312" y="124" font-family="Arial,sans-serif" font-size="9" fill="#4a3418" font-weight="bold">LOCK</text>
+
+        <!-- Rope load strand: enters from lower-left into wide basket -->
+        <!-- Enters carabiner at bottom-left area -->
+        <path d="M 55,220 Q 100,215 145,200 Q 180,190 213,178"
+              stroke="#922b21" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+
+        <!-- S-curve inside carabiner (the hitch) -->
+        <!-- Goes in at bottom-left, curves over the spine, reverses -->
+        <path d="M 213,178 Q 222,170 232,160 Q 248,142 252,120 Q 256,100 244,88 Q 234,78 224,84 Q 214,92 216,110 Q 218,128 228,140 Q 238,150 242,165 Q 246,180 245,200"
+              stroke="#922b21" stroke-width="7.5" fill="none" stroke-linecap="round"/>
+
+        <!-- Brake strand exits lower-right toward right -->
+        <path d="M 245,200 Q 270,218 320,228 Q 380,238 450,232"
+              stroke="#1a4a6e" stroke-width="7.5" fill="none" stroke-linecap="round"
+              marker-end="url(#arr-blue)"/>
+
+        <!-- Direction indicator arrow (inside, small curved) -->
+        <path d="M 244,128 Q 252,118 248,108" stroke="#8b5c1e" stroke-width="2" fill="none"
+              stroke-dasharray="3,2" marker-end="url(#arr-brown)"/>
+
+        <!-- LABELS -->
+        <!-- Load strand label (lower-left) -->
+        <rect x="8" y="200" width="118" height="40" rx="5" fill="#922b21" opacity="0.12"/>
+        <text x="14" y="215" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#6a1a14">Load strand</text>
+        <text x="14" y="230" font-family="Arial,sans-serif" font-size="9.5" fill="#6a1a14">(from climber / load)</text>
+        <!-- arrow from label to rope -->
+        <line x1="120" y1="215" x2="148" y2="210" stroke="#922b21" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+        <!-- Brake strand label (lower-right) -->
+        <rect x="348" y="206" width="130" height="38" rx="5" fill="#1a4a6e" opacity="0.1"/>
+        <text x="355" y="221" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#1a4a6e">Brake strand</text>
+        <text x="355" y="236" font-family="Arial,sans-serif" font-size="9.5" fill="#1a4a6e">(hold at all times)</text>
+
+        <!-- HMS carabiner label (upper-right) -->
+        <rect x="330" y="40" width="162" height="44" rx="5" fill="#3a2a0e" opacity="0.08"/>
+        <text x="338" y="58" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#3a2a0e">HMS carabiner</text>
+        <text x="338" y="74" font-family="Arial,sans-serif" font-size="9.5" fill="#5a3810">(pear-shaped — required)</text>
+        <!-- pointer to biner -->
+        <line x1="330" y1="62" x2="310" y2="72" stroke="#5a3810" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+        <!-- Direction reverses label (center) -->
+        <text x="138" y="105" font-family="Arial,sans-serif" font-size="9" fill="#8b5c1e" font-style="italic">Direction reverses</text>
+        <text x="138" y="118" font-family="Arial,sans-serif" font-size="9" fill="#8b5c1e" font-style="italic">on load change</text>
+        <path d="M 210,111 Q 200,104 206,96" stroke="#8b5c1e" stroke-width="1.5" fill="none"
+              stroke-dasharray="3,2" marker-end="url(#arr-brown)"/>
+      </svg>
+      <div class="diagram-caption">
+        Munter Hitch on an HMS (pear-shaped) carabiner. The rope forms an S-curve inside the basket.
+        Load strand (red) and brake strand (blue) reverse roles when loading direction changes.
+      </div>
+    </div>
+
+    <h3>Critical Equipment Requirement</h3>
+    <div class="callout critical">
+      <div class="callout-label">Critical</div>
+      The Munter Hitch <strong>requires an HMS (pear-shaped) carabiner</strong>. The wide basket allows the hitch to self-orient as the load direction changes. A D-shaped or oval carabiner does not provide this geometry and may allow the hitch to roll off or bind incorrectly under load.
+    </div>
+  </section>
+
+  <!-- TAB 2: ARB USES -->
+  <section class="tab-panel" id="tab-arb" role="tabpanel" aria-labelledby="btn-arb">
+    <div class="panel-heading">&#x1f333; Arboricultural Uses</div>
+
+    <div class="two-col">
+      <div class="info-card">
+        <div class="ic-label">Primary Use</div>
+        <p>Emergency friction device for lowering a climber or load when a dedicated descender is unavailable in the field.</p>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Belay Device</div>
+        <p>Can be used to belay a second climber &mdash; borrowed from recreational climbing practice, adapted for arboricultural aerial work.</p>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Aerial Rescue</div>
+        <p>Used to lower an incapacitated climber from their position using the rescuer's anchor point and a locking carabiner. ANSI Z133 aerial rescue procedures reference friction devices; the Munter is an approved method.</p>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Rappelling</div>
+        <p>Can be used to descend with controlled friction. Rate of descent is regulated by brake strand angle and grip &mdash; requires deliberate control at all times.</p>
+      </div>
+    </div>
+
+    <h3>Load Transfer &amp; Rigging Assist</h3>
+    <p>The Munter can assist with tension management in rigging setups when hardware is limited. It is not a substitute for proper rigging hardware but provides functional friction when needed in the field.</p>
+
+    <div class="callout">
+      <div class="callout-label">ANSI Z133 Reference</div>
+      Any friction device used in aerial operations must be used with appropriate PPE and a secondary backup system. The Munter Hitch qualifies as an approved friction device when used correctly on an HMS carabiner by trained personnel.
+    </div>
+
+    <h3>Why Every Climber Should Know This</h3>
+    <p>A Munter Hitch can be rigged with a single locking carabiner and the rope already in use &mdash; no additional hardware required. In an aerial rescue scenario, seconds matter. A climber who can rig a Munter from memory can initiate a controlled lowering operation without waiting for additional equipment from the ground.</p>
+
+    <div class="callout">
+      <div class="callout-label">ISA BMP for Rigging</div>
+      All friction devices must be appropriate for the anticipated load and must be operated by trained personnel. The Munter Hitch should be practiced under supervision before use in any live aerial scenario.
+    </div>
+  </section>
+
+  <!-- TAB 3: LOAD & SAFETY -->
+  <section class="tab-panel" id="tab-load" role="tabpanel" aria-labelledby="btn-load">
+    <div class="panel-heading">&#x26a0;&#xfe0f; Load Ratings &amp; Safety Considerations</div>
+
+    <div class="callout critical">
+      <div class="callout-label">Critical &mdash; Carabiner Requirement</div>
+      <strong>HMS carabiners only.</strong> The pear-shaped geometry (wide top, narrow bottom) allows the Munter to self-orient as load direction changes. A D-carabiner or oval carabiner does not allow the hitch to function correctly and may allow it to roll off under load.
+    </div>
+
+    <h3>How Friction Is Generated</h3>
+    <p>The Munter generates friction through the rope wrapping around itself and the carabiner spine. As the rope is loaded, the two strands pinch against each other inside the carabiner basket, increasing friction proportionally. The more rope-to-rope contact, the greater the braking force.</p>
+
+    <h3>Locking Off &mdash; The Munter Mule Combination</h3>
+    <p>For heavier loads, extended holds, or self-rescue scenarios, tie a <strong>Mule Hitch</strong> on the brake strand against the carabiner. This combination &mdash; the <em>Munter Mule</em> &mdash; is the standard technique for locking off hands-free during a controlled lower or when transitioning between systems.</p>
+    <ol>
+      <li>Lower to the desired position with the Munter.</li>
+      <li>With the brake strand, tie a Mule Hitch (slipped overhand) against the carabiner body.</li>
+      <li>The load is now locked off &mdash; hands can be freed for rigging or rescue operations.</li>
+    </ol>
+
+    <h3>Working Load Limits</h3>
+    <p>The Munter Hitch itself is a friction device &mdash; the WLL of the system is governed by:</p>
+    <ul>
+      <li>The rope's rated breaking strength and working load limit</li>
+      <li>The HMS carabiner's rated major-axis strength</li>
+      <li>The anchor system's rated capacity</li>
+    </ul>
+    <p>The hitch does not reduce these ratings inherently, but rope-on-rope friction can cause heat and wear during extended use.</p>
+
+    <div class="two-col">
+      <div class="info-card">
+        <div class="ic-label">Rope Twist</div>
+        <p>The Munter twists the rope with each pass through the system. Plan for twist accumulation in multi-pitch or extended lowering scenarios. Untwist the rope before reuse.</p>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Rope Wear</div>
+        <p>Extended use causes rope wear at the contact point with the carabiner spine. Inspect rope sheath after each use. Not suitable for high-frequency rope access applications.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">ISA BMP for Rigging</div>
+      All friction devices must be appropriate for the anticipated load and must be operated by trained personnel. Inspect all components before and after each use.
+    </div>
+  </section>
+
+  <!-- TAB 4: WHEN NOT TO USE -->
+  <section class="tab-panel" id="tab-notwhen" role="tabpanel" aria-labelledby="btn-notwhen">
+    <div class="panel-heading">&#x1f6ab; When NOT to Use the Munter Hitch</div>
+
+    <p>The Munter Hitch is a valuable emergency tool &mdash; but it has specific limitations that make it inappropriate in certain arboricultural and rope access contexts.</p>
+
+    <ul class="not-list">
+      <li>
+        <span class="no-icon">NO</span>
+        <div><strong>Not for primary rigging attachment to logs or cut pieces.</strong> It is a friction and belay device, not a load-bearing attachment knot. Use appropriate rigging hardware (blocks, slings, friction hitches) for piece rigging operations.</div>
+      </li>
+      <li>
+        <span class="no-icon">NO</span>
+        <div><strong>Not on D-shaped or oval carabiners.</strong> The hitch geometry will not function correctly. The hitch can roll off or bind, creating an uncontrolled load release. HMS carabiner required without exception.</div>
+      </li>
+      <li>
+        <span class="no-icon">NO</span>
+        <div><strong>Not as a routine substitute for a dedicated descender</strong> (GriGri, Petzl I'D, Petzl Stop) in high-frequency rope access work. It causes rope twist and wear at a higher rate and lacks any auto-lock capability.</div>
+      </li>
+      <li>
+        <span class="no-icon">NO</span>
+        <div><strong>Not when a lockable descender is required by site procedure.</strong> If the site SOP specifies an assisted-braking or auto-blocking device, the Munter alone does not meet that requirement.</div>
+      </li>
+      <li>
+        <span class="no-icon">NO</span>
+        <div><strong>Not for one-handed operation.</strong> The brake strand must be held in a firm grip at all times. Unlike an assisted-braking device, there is no auto-lock mechanism to catch a released strand.</div>
+      </li>
+    </ul>
+
+    <div class="callout critical">
+      <div class="callout-label">Life-Safety Critical</div>
+      If the brake strand is released completely under load, the rope will run freely through the carabiner. The Munter Hitch has <strong>no auto-lock</strong>. This is not a limitation to work around &mdash; it is a fundamental characteristic that determines whether this device is appropriate for any given task.
+    </div>
+
+    <h3>Decision Framework Before Rigging a Munter</h3>
+    <ol>
+      <li>Is this an <strong>emergency or equipment-limited</strong> situation, or is dedicated hardware available? If hardware is available, use it.</li>
+      <li>Do I have an <strong>HMS carabiner</strong> that is screw-gate or twist-lock, in good condition?</li>
+      <li>Can I maintain <strong>two-handed brake control</strong> for the full duration of the operation?</li>
+      <li>If I need to lock off hands-free, am I prepared to tie a <strong>Mule Hitch</strong> on the brake strand immediately?</li>
+      <li>Is there a <strong>secondary backup system</strong> in place for the person on rope?</li>
+    </ol>
+    <p>If the answer to any of questions 2&ndash;5 is no, do not proceed with the Munter Hitch in that configuration.</p>
+  </section>
+
+  <!-- TAB 5: QUICK-CHECK -->
+  <section class="tab-panel" id="tab-check" role="tabpanel" aria-labelledby="btn-check">
+    <div class="panel-heading">&#x2705; Crew Quick-Check &mdash; Pre-Use Checklist</div>
+
+    <p>Run through this checklist before weighting the system. Each item is a go/no-go condition.</p>
+
+    <h3>Pre-Use Verification</h3>
+    <ul class="checklist">
+      <li>HMS carabiner confirmed &mdash; pear shape, <em>not</em> D or oval</li>
+      <li>Carabiner gate is <strong>LOCKED</strong> &mdash; screw gate fully closed, or twist-lock fully engaged</li>
+      <li>Hitch dressed correctly &mdash; load strand and brake strand oriented before weighting; not twisted or inside-out</li>
+      <li>Brake strand held in dominant hand at all times &mdash; never released under load</li>
+      <li>If locking off: Mule Hitch tied on brake strand against carabiner body (Munter Mule combination)</li>
+      <li>Backup belay or secondary system in place for the person on rope</li>
+      <li>Friction tested with minimal load before committing full body weight</li>
+    </ul>
+
+    <h3>Red Flags &mdash; Stop and Correct</h3>
+    <ul class="red-flag-list">
+      <li>Non-HMS carabiner in use (D or oval shape visible)</li>
+      <li>Gate unlocked, unscrewed, or open under any load</li>
+      <li>Hitch twisted or inside-out before loading</li>
+      <li>Brake strand unattended or not under manual control</li>
+      <li>Rope twist accumulation not being monitored or managed during extended use</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">Training Reminder</div>
+      The Munter Hitch should be practiced to fluency under <strong>non-emergency conditions</strong> before it is needed in the field. Tie it repeatedly until the dressed configuration is recognizable by feel, not only by sight. Run this checklist each time until it is automatic.
+    </div>
+
+    <div class="two-col" style="margin-top:18px;">
+      <div class="info-card">
+        <div class="ic-label">If it doesn't look right</div>
+        <p>If the hitch does not look correct after dressing, untie it completely and start from step one. A mis-dressed Munter can run backwards or release unpredictably under load.</p>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">After use</div>
+        <p>Inspect the rope at the friction contact point. Note any heat discoloration, sheath damage, or glazing. Log any extended Munter use in the rope's service record.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ISA FOOTER -->
+  <div class="isa-footer">
+    <div class="isa-label">ISA Exam Alignment &amp; Sources</div>
+    <strong>ISA Exam Domain:</strong> Safe Work Practices (28%)
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <strong>Sources:</strong> ANSI Z133 Safe Work Practices for Arborists; ISA Best Management Practices for Rigging; IRATA International Code of Practice for Work at Height; Petzl Technical Documentation &mdash; Munter Hitch and HMS Carabiners
+  </div>
+
+</div><!-- /main-wrap -->
+
+<script>
+  (function () {
+    var tabs   = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.tab-panel');
+
+    function activate(index) {
+      tabs.forEach(function (t, i) {
+        t.classList.toggle('active', i === index);
+        t.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      });
+      panels.forEach(function (p, i) {
+        p.classList.toggle('active', i === index);
+      });
+      panels[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    tabs.forEach(function (btn, i) {
+      btn.addEventListener('click', function () { activate(i); });
+      btn.addEventListener('keydown', function (e) {
+        var next = (i + 1) % tabs.length;
+        var prev = (i + tabs.length - 1) % tabs.length;
+        if (e.key === 'ArrowRight') { activate(next); tabs[next].focus(); e.preventDefault(); }
+        if (e.key === 'ArrowLeft')  { activate(prev); tabs[prev].focus(); e.preventDefault(); }
+        if (e.key === 'Home') { activate(0); tabs[0].focus(); e.preventDefault(); }
+        if (e.key === 'End')  { activate(tabs.length - 1); tabs[tabs.length - 1].focus(); e.preventDefault(); }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
