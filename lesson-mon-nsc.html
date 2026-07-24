@@ -1,0 +1,436 @@
+<!--
+SLACK INTRO — post in #microbe-lessons when lesson goes live:
+
+🌿 Tree Biology — Week 9, NSC Reserves & Carbon Storage
+
+Every defense a tree mounts — resin, CODIT walls, woundwood — is paid for with carbohydrates from storage. This lesson is about where that energy comes from, where it's kept, and what happens when the account runs dry. It's the missing piece that explains why a drought year and a beetle year are basically the same year.
+
+→ Open the lesson and work through it. Field note at the end of each section is where the good stuff lives.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSC Reserves — Week 9, Monday · Tree Biology</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f4f7f4;
+    color: #1a2e1a;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #1e4d2b;
+    color: #fff;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  header .logo { font-size: 2rem; line-height: 1; }
+  header .title-block h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.01em; }
+  header .title-block p { font-size: 0.82rem; opacity: 0.78; margin-top: 2px; }
+  .badge {
+    margin-left: auto;
+    background: #2d7a4a;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .screen { display: none; padding: 24px 20px; max-width: 760px; margin: 0 auto; }
+  .screen.active { display: block; }
+
+  /* HOME */
+  .welcome-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    border-left: 5px solid #2d7a4a;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .welcome-card h2 { font-size: 1.1rem; color: #1e4d2b; margin-bottom: 6px; }
+  .welcome-card p { font-size: 0.92rem; color: #3a4a3a; line-height: 1.55; }
+
+  .qr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .qr-card h3 { font-size: 1rem; color: #1e4d2b; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e8f0e8; }
+  .qr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .qr-item { background: #f4f9f4; border-radius: 8px; padding: 13px 14px; border: 1px solid #d4e8d4; }
+  .qr-item strong { display: block; font-size: 0.82rem; color: #1e4d2b; margin-bottom: 5px; font-weight: 700; }
+  .qr-item span { font-size: 0.84rem; color: #3a4a3a; line-height: 1.45; }
+
+  .btn-start {
+    display: block; width: 100%; background: #2d7a4a; color: #fff;
+    border: none; border-radius: 8px; padding: 15px; font-size: 1rem;
+    font-weight: 700; cursor: pointer; letter-spacing: 0.02em; transition: background 0.18s;
+  }
+  .btn-start:hover { background: #245f3a; }
+
+  /* QUESTION */
+  .progress-bar-track { height: 6px; background: #d4e8d4; border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: #2d7a4a; border-radius: 3px; transition: width 0.4s ease; }
+
+  .q-counter { font-size: 0.8rem; color: #5a7a5a; margin-bottom: 8px; font-weight: 600; }
+  .q-stem {
+    background: #fff; border-radius: 10px; padding: 20px 22px;
+    font-size: 0.96rem; line-height: 1.6; color: #1a2e1a;
+    margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border-left: 4px solid #2d7a4a;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .option-btn {
+    background: #fff; border: 2px solid #c8dec8; border-radius: 8px; padding: 13px 16px;
+    font-size: 0.9rem; color: #1a2e1a; text-align: left; cursor: pointer;
+    line-height: 1.45; transition: border-color 0.15s, background 0.15s;
+  }
+  .option-btn:hover:not(:disabled) { border-color: #2d7a4a; background: #f0f8f0; }
+  .option-btn.correct { border-color: #2d7a4a; background: #e6f4ea; color: #1a3a1a; font-weight: 600; }
+  .option-btn.wrong { border-color: #c0392b; background: #fdecea; color: #6a1010; }
+  .option-btn:disabled { cursor: default; }
+
+  .lesson-reveal {
+    display: none; background: #fff; border-radius: 10px; padding: 20px 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 14px;
+  }
+  .lesson-reveal.show { display: block; }
+  .lesson-reveal h4 { font-size: 1rem; color: #1e4d2b; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e0ede0; }
+  .lesson-reveal ul { padding-left: 18px; }
+  .lesson-reveal ul li { font-size: 0.88rem; line-height: 1.55; color: #2a3a2a; margin-bottom: 7px; }
+
+  .field-note {
+    display: none; background: #f0f9f0; border: 1px solid #b8d8b8;
+    border-left: 4px solid #2d7a4a; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;
+  }
+  .field-note.show { display: block; }
+  .field-note .fn-label { font-size: 0.75rem; font-weight: 700; color: #2d7a4a; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .field-note p { font-size: 0.86rem; line-height: 1.55; color: #2a3a2a; }
+
+  .btn-next {
+    display: none; background: #2d7a4a; color: #fff; border: none; border-radius: 8px;
+    padding: 13px 28px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.18s;
+  }
+  .btn-next.show { display: inline-block; }
+  .btn-next:hover { background: #245f3a; }
+
+  /* COMPLETE */
+  .complete-card {
+    background: #fff; border-radius: 10px; padding: 28px 26px;
+    margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); text-align: center;
+  }
+  .complete-card .trophy { font-size: 3rem; margin-bottom: 12px; }
+  .complete-card h2 { font-size: 1.3rem; color: #1e4d2b; margin-bottom: 10px; }
+  .complete-card .score-display { font-size: 2.2rem; font-weight: 800; color: #2d7a4a; margin: 14px 0 8px; }
+  .complete-card p { font-size: 0.92rem; color: #3a4a3a; line-height: 1.6; }
+
+  .takeaway-card {
+    background: #1e4d2b; color: #e8f5e8; border-radius: 10px;
+    padding: 22px 24px; margin-bottom: 20px; font-size: 0.92rem; line-height: 1.65;
+  }
+  .takeaway-card strong { color: #7fd99a; }
+
+  .isa-tag {
+    background: #fff; border-radius: 8px; padding: 14px 18px;
+    font-size: 0.82rem; color: #4a6a4a; line-height: 1.5;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px;
+  }
+
+  .btn-restart {
+    background: #2d7a4a; color: #fff; border: none; border-radius: 8px;
+    padding: 13px 32px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.18s;
+  }
+  .btn-restart:hover { background: #245f3a; }
+
+  @media (max-width: 520px) {
+    .qr-grid { grid-template-columns: 1fr; }
+    header .badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🌿</span>
+  <div class="title-block">
+    <h1>Non-Structural Carbohydrate Reserves</h1>
+    <p>Microbe Tree Inc. · Tree Biology</p>
+  </div>
+  <span class="badge">Monday · Week 9</span>
+</header>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="welcome-card">
+    <h2>Week 9 — NSC Reserves &amp; Carbon Storage</h2>
+    <p>Where trees store energy, why it matters for drought survival, wound response, and recovery from pruning — and what "carbohydrate depletion" means when you're standing in front of a declining tree.</p>
+  </div>
+
+  <div class="qr-card">
+    <h3>📋 Quick Reference — NSC Reserves</h3>
+    <div class="qr-grid">
+      <div class="qr-item">
+        <strong>What are NSCs?</strong>
+        <span>Soluble sugars (sucrose, glucose, fructose) + starch. NOT cell wall material. The tree's "energy bank account."</span>
+      </div>
+      <div class="qr-item">
+        <strong>Where stored?</strong>
+        <span>Ray parenchyma, axial parenchyma, root cortex, living bark. NOT in heartwood — dead tissue, zero storage capacity.</span>
+      </div>
+      <div class="qr-item">
+        <strong>Role in wound response</strong>
+        <span>CODIT walls, woundwood, resin synthesis, and antifungal compounds all require NSC. Low NSC = poor wound response.</span>
+      </div>
+      <div class="qr-item">
+        <strong>Role in spring growth</strong>
+        <span>Trees draw on stored NSC to fund leaf-out before new leaves are photosynthetically active. Starch → sugar for bud break and shoot elongation.</span>
+      </div>
+      <div class="qr-item">
+        <strong>Drought &amp; NSC</strong>
+        <span>Drought reduces photosynthesis → NSC accumulates more slowly. Prolonged drought depletes reserves while respiration continues. "Carbon starvation" theory.</span>
+      </div>
+      <div class="qr-item">
+        <strong>Pruning implication</strong>
+        <span>Removing &gt;25% live crown reduces source tissue → slower NSC recovery. Heavy pruning during drought = double stress. ISA BMP: 25% max per cycle.</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-start" onclick="startQuiz()">Start Quiz — 5 Questions →</button>
+</div>
+
+<!-- QUESTION SCREEN -->
+<div id="screen-question" class="screen">
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div class="q-counter" id="q-counter">Question 1 of 5</div>
+  <div class="q-stem" id="q-stem"></div>
+  <div class="options" id="options"></div>
+  <div class="lesson-reveal" id="lesson-reveal">
+    <h4 id="lesson-title"></h4>
+    <ul id="lesson-body"></ul>
+  </div>
+  <div class="field-note" id="field-note">
+    <div class="fn-label">🌲 Field Note — Okanagan Context</div>
+    <p id="field-note-text"></p>
+  </div>
+  <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<!-- COMPLETE SCREEN -->
+<div id="screen-complete" class="screen">
+  <div class="complete-card">
+    <div class="trophy">🏆</div>
+    <h2>Lesson Complete — NSC Reserves</h2>
+    <div class="score-display" id="final-score"></div>
+    <p>Week 9, Monday · Tree Biology</p>
+  </div>
+  <div class="takeaway-card">
+    <p>You've worked through all five questions on NSC reserves. The mental model to keep: <strong>a tree's NSC is its energy account, and every stress, wound, and growth demand is a withdrawal.</strong> Healthy trees run a surplus; stressed trees run a deficit. When a stressed tree finally collapses, it's often not the last stressor that killed it — it's that the account hit zero.</p>
+  </div>
+  <div class="isa-tag">
+    📚 <strong>ISA Exam Domain: Tree Biology (11%)</strong> · Sources: ISA Certification Study Guide, 4th Ed.; Sala et al. (2012) "Hydraulic failure and carbon starvation cause tree mortality"; BC Ministry of Forests MPB technical publications; ISA BMP for Pruning
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">← Review from Start</button>
+</div>
+
+<script>
+const questions = [
+  {
+    stem: "A tree that has been under severe multi-year drought stress begins to show canopy dieback and finally dies, even though soil moisture becomes available again. Which mechanism best explains this \"carbon starvation\" death?",
+    options: [
+      "A. The tree's xylem vessels collapsed under drought tension and cannot recover structural integrity even when water is available.",
+      "B. Prolonged drought reduced photosynthesis while respiration continued to consume NSC reserves; once NSC fell below a critical threshold, the tree lacked the carbohydrate energy to maintain cell membranes, mount defenses, or respond to wounding.",
+      "C. Drought caused complete desiccation of all living tissue; when water returned, there was nothing alive to recover.",
+      "D. Stomatal closure during drought permanently damaged guard cell proteins, making stomata unable to reopen when conditions improved."
+    ],
+    correct: 1,
+    lessonTitle: "Carbon Starvation — The Other Way Drought Kills",
+    lessonBody: [
+      "Trees can die from drought in two ways: hydraulic failure (xylem embolism, loss of water conductance) and carbon starvation (NSC depletion). These often interact.",
+      "Carbon starvation: when photosynthesis is severely reduced (stomata close to prevent water loss), NSC accumulation slows or stops. But cellular respiration continues consuming existing NSC. Eventually reserves fall below levels needed for maintenance.",
+      "Critical functions requiring NSC: membrane maintenance, ion transport, antifungal compound synthesis (phenolics, terpenes), wound response, xylem repair, root growth to reach deeper water.",
+      "Bark beetle vulnerability: resin production (the primary beetle defense) requires massive NSC investment. A tree in carbon starvation cannot produce adequate resin. The connection between drought, NSC depletion, and beetle outbreak is direct.",
+      "ISA Certification Study Guide: carbohydrate reserves are identified as a key factor in tree vigor and defense capacity. The concept \"a tree cannot defend itself against what it cannot pay for\" is a useful mental model.",
+      "Recovery: trees that survive the drought and have some remaining reserves can recover if conditions improve — but this takes multiple growing seasons."
+    ],
+    fieldNote: "When you see an Okanagan ponderosa that survived the drought of 2021–2022 but is \"still not right\" — sparse crown, slow new growth, making pitch tubes but barely — what you're watching is a tree working back up from low NSC reserves. It fought off the beetles, barely, but it spent most of its energy bank doing it. Give it supplemental water and don't prune it this season. It can't afford the wound response."
+  },
+  {
+    stem: "Where in a tree's anatomy are non-structural carbohydrate reserves primarily stored, and what tissue type performs this function?",
+    options: [
+      "A. In heartwood tracheids, where starch granules are embedded in the secondary cell wall.",
+      "B. In ray parenchyma cells and axial parenchyma of the sapwood and phloem, which remain metabolically active and can convert between starch and sugar as needed.",
+      "C. In the cambium layer, where thin-walled undifferentiated cells are packed with sugar to fuel cell division.",
+      "D. In leaf mesophyll cells, where NSC is manufactured during photosynthesis and stored permanently until transported."
+    ],
+    correct: 1,
+    lessonTitle: "Where Trees Bank Their Energy",
+    lessonBody: [
+      "Parenchyma cells are the only living cells in the mature xylem and phloem — everything else (tracheids, vessel elements, fibres) is dead at functional maturity. Parenchyma IS the NSC storage tissue.",
+      "Ray parenchyma: runs radially through the wood and bark, forming the \"rays\" visible as lines in cross-section. These cells are metabolically active throughout the tree's life.",
+      "Axial parenchyma: runs vertically in strands parallel to the axis. More common in some species than others.",
+      "Storage form: summer = starch (insoluble, packed into amyloplasts visible as tiny grains in ray cells). Winter = converted to sugars (which lower the cell's freezing point — this is partly how trees cold-harden).",
+      "Heartwood has NO living parenchyma — it's chemically transformed dead tissue. Zero NSC storage there.",
+      "This is why the ratio of sapwood width to heartwood diameter matters: more sapwood = more living storage tissue."
+    ],
+    fieldNote: "When you drill into a ponderosa and the wood comes out white, dry, and powdery (heartwood), that's dead material with no storage capacity. When the drill goes through orange-brown sapwood and you smell the resin, you're drilling through the living storage zone. A tree with very thin sapwood (old tree, lots of heartwood, stressed site) has correspondingly less storage capacity — which is one reason old-growth trees on harsh sites are so vulnerable to stressors that younger trees shrug off."
+  },
+  {
+    stem: "In spring, a tree's leaves are still expanding and not yet fully photosynthetically active. What provides the energy for early bud break, shoot elongation, and leaf construction during this period?",
+    options: [
+      "A. Xylem water pressure (root pressure) provides enough energy to mechanically push shoots upward.",
+      "B. Reserves of non-structural carbohydrates stored in ray parenchyma and bark tissue over the previous growing season, converted from starch back to soluble sugars and transported to growing points.",
+      "C. Mycorrhizal fungi supply carbohydrates to the tree during spring dormancy-break in exchange for early access to root exudates.",
+      "D. Soil temperature drives a chemical reaction in roots that generates sugar from water and soil minerals without sunlight."
+    ],
+    correct: 1,
+    lessonTitle: "Spring is a Withdrawal — The NSC Account Pays for Bud Break",
+    lessonBody: [
+      "Spring growth is financed entirely by stored reserves. New leaves are sinks, not sources, until they're fully expanded and the chloroplasts are mature enough for net photosynthesis — this can take 2–4 weeks after bud break.",
+      "During this window, the tree is cash-flow negative: spending NSC on new growth without earning any back from photosynthesis. If reserves are low going into spring, leaf-out will be delayed, sparse, or incomplete.",
+      "In deciduous trees, this pattern is especially dramatic: every spring, the tree reconstructs its entire photosynthetic machinery using stored reserves from the previous fall.",
+      "Conifers carry their needles over multiple years — the carbon \"startup cost\" of spring is lower, which is one reason conifers can colonize harsher sites than deciduous trees.",
+      "ANSI A300 Part 6 (Transplanting): notes that transplanting stress significantly reduces NSC accumulation in the first 1–2 seasons, which is why transplanted trees need supplemental water and should NOT be heavily pruned for 1–2 years after planting."
+    ],
+    fieldNote: "This is why late winter / early spring is a risky time for significant interventions on trees that had a hard previous year. A drought-stressed ponderosa that barely made it through summer is going into spring with depleted reserves. Heavy pruning at bud break takes away source leaves (already slow to develop) while the tree needs every bit of stored carbohydrate for the spring flush. The ISA BMP doesn't just say \"limit crown removal to 25%\" as an arbitrary rule — that number comes from understanding how much photosynthetic capacity removal reduces NSC recovery."
+  },
+  {
+    stem: "An arborist makes a large pruning wound on a silver maple in late summer (late August). Which of the following best describes what happens to NSC reserves in relation to this wound?",
+    options: [
+      "A. NSC is drawn from storage tissue near the wound to fund CODIT wall formation, woundwood production, and antifungal compound synthesis — but late August timing is problematic because trees are in NSC accumulation mode for winter and the demand competes with storage.",
+      "B. Late summer wounds have no impact on NSC because the leaves are still fully photosynthetic and can supply unlimited carbohydrate to any wound site.",
+      "C. The wound automatically triggers dormancy, stopping all carbohydrate demand so reserves are preserved for wound response.",
+      "D. NSC is irrelevant to wound response — CODIT walls form from structural carbohydrates (cellulose) already present in adjacent cell walls."
+    ],
+    correct: 0,
+    lessonTitle: "Wound Response Has a Carbon Cost",
+    lessonBody: [
+      "CODIT responses are metabolically expensive: Wall 1 (tyloses, resin synthesis) requires carbohydrate substrates. Wall 4 (barrier zone formation) requires cambial cell division and biosynthesis of new secondary wall material. Phenolic wound-zone compounds (suberized barriers, antifungal compounds) all require NSC.",
+      "Timing matters: trees are building NSC reserves through fall for winter storage. A large wound in late summer creates a competing demand — the tree must fund both storage AND wound response from its photosynthate budget.",
+      "For well-resourced trees, this is manageable. For trees already stressed (drought, pest damage, previous heavy pruning), late summer wounds can significantly compromise both storage and wound response.",
+      "Woundwood (callus) formation is particularly NSC-intensive — it requires sustained cambial cell division. A tree with low NSC will form thin, slow-rolling woundwood. This is visible on stressed trees: the callus edges are thin and irregular rather than thick and robust.",
+      "The ISA study guide emphasizes that tree vigor (closely related to NSC reserves) is one of the most important factors in wound compartmentalization success."
+    ],
+    fieldNote: "When a client's ornamental maple gets a major wound in late August from a vehicle collision or construction, the question isn't just \"will it survive the wound\" — it's \"what is this tree's NSC budget going into winter?\" A healthy, well-watered, full-canopy tree in year 2 of no heavy pruning has the reserves to mount a good response. The same wound on a drought-stressed tree that was pruned 35% in spring is a much more serious prognosis. Take the site history seriously when you're assessing wound response potential."
+  },
+  {
+    stem: "Which of the following best describes the relationship between NSC reserves and bark beetle resistance in ponderosa pine?",
+    options: [
+      "A. Higher NSC reserves have no relationship to beetle resistance — resin is a structural product synthesized from xylem water, not carbohydrates.",
+      "B. Resin production requires terpene biosynthesis from carbon skeletons derived from NSC; trees with adequate NSC reserves can produce sustained resin flow to physically pitch out beetles and toxic compounds to kill larvae; trees with low NSC cannot mount this defense.",
+      "C. Trees with high NSC reserves are actually more attractive to bark beetles because elevated sugar concentrations in the phloem make them better hosts for beetle larvae.",
+      "D. Only water availability affects resin production; NSC levels in the xylem parenchyma have no influence on the quantity or quality of resin produced."
+    ],
+    correct: 1,
+    lessonTitle: "Resin Is Paid For With Carbon",
+    lessonBody: [
+      "Resin (a mixture of terpenes and resin acids) is synthesized by epithelial cells surrounding resin ducts in pine sapwood. The biosynthetic pathway requires: carbon skeletons from photosynthate/NSC, ATP (energy), and enzyme activity — all of which are reduced in stressed, low-NSC trees.",
+      "The \"pitch-out response\": when a beetle bores into pine bark, the tree mobilizes resin from existing ducts and can synthesize new traumatic resin ducts in response. This requires a rapid, sustained NSC draw.",
+      "A water-stressed ponderosa with low NSC cannot: (1) maintain resin pressure (requires turgor from adequate water AND terpene synthesis from NSC), or (2) mount a traumatic resin duct induction response.",
+      "This is the molecular foundation for the drought-beetle-outbreak connection: not just \"less water = less resin pressure\" but \"less photosynthesis under drought = less NSC = less resin biosynthetic capacity.\"",
+      "Per BC Ministry of Forests research on MPB: trees that successfully pitch out beetles show elevated NSC concentrations in bark tissue at the pitch tube site. Failed pitch-out trees show lower NSC."
+    ],
+    fieldNote: "This is the complete picture of why the well-watered, mulched, unpruned ponderosa in the irrigated front yard survives the beetle year while the same species 100m away on the overcrowded south-facing slope dies. It's not just water — it's that the irrigated tree is running a positive NSC budget all summer, which means it can pay for the resin response. The stressed slope tree is barely breaking even carbon-wise before the beetles ever show up. PHC for beetle-prone ponderosa is fundamentally NSC management."
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function startQuiz() {
+  currentQ = 0;
+  score = 0;
+  showQuestion();
+  document.getElementById('screen-home').classList.remove('active');
+  document.getElementById('screen-question').classList.add('active');
+}
+
+function showQuestion() {
+  answered = false;
+  const q = questions[currentQ];
+  document.getElementById('q-counter').textContent = 'Question ' + (currentQ + 1) + ' of ' + questions.length;
+  document.getElementById('progress-fill').style.width = (currentQ / questions.length * 100) + '%';
+  document.getElementById('q-stem').textContent = q.stem;
+
+  const optionsEl = document.getElementById('options');
+  optionsEl.innerHTML = '';
+  q.options.forEach(function(opt, i) {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = function() { selectAnswer(i); };
+    optionsEl.appendChild(btn);
+  });
+
+  document.getElementById('lesson-reveal').classList.remove('show');
+  document.getElementById('field-note').classList.remove('show');
+  document.getElementById('btn-next').classList.remove('show');
+  document.getElementById('btn-next').textContent = currentQ < questions.length - 1 ? 'Next Question →' : 'See Results →+;
+}
+
+function selectAnswer(index) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const btns = document.querySelectorAll('.option-btn');
+
+  btns.forEach(function(btn, i) {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === index && index !== q.correct) btn.classList.add('wrong');
+  });
+
+  if (index === q.correct) score++;
+
+  document.getElementById('lesson-title').textContent = q.lessonTitle;
+  const ul = document.getElementById('lesson-body');
+  ul.innerHTML = '';
+  q.lessonBody.forEach(function(point) {
+    const li = document.createElement('li');
+    li.textContent = point;
+    ul.appendChild(li);
+  });
+  document.getElementById('lesson-reveal').classList.add('show');
+  document.getElementById('field-note-text').textContent = q.fieldNote;
+  document.getElementById('field-note').classList.add('show');
+  document.getElementById('btn-next').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showComplete();
+  } else {
+    showQuestion();
+  }
+}
+
+function showComplete() {
+  document.getElementById('screen-question').classList.remove('active');
+  document.getElementById('screen-complete').classList.add('active');
+  document.getElementById('final-score').textContent = score + ' / ' + questions.length + ' Correct';
+  document.getElementById('progress-fill').style.width = '100%';
+}
+
+function restartQuiz() {
+  document.getElementById('screen-complete').classList.remove('active');
+  document.getElementById('screen-home').classList.add('active');
+}
+</script>
+</body>
+</html>
