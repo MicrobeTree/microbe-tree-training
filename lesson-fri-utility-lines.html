@@ -1,0 +1,932 @@
+<!--
+SLACK INTRO — post in #microbe-lessons when lesson goes live:
+
+🧗 Worksite Techniques — Week 9, Working Near Utility Lines
+
+Three metres. That's the minimum approach distance to a live distribution line in BC, and it's smaller than most people think. This lesson covers the WorkSafeBC requirements, the FortisBC contact protocol, what to do when equipment contacts a line, and the difference between deenergized and safe. This is the topic that 28% of the ISA exam is built around. Know it cold.
+
+→ Open the lesson and work through it. Tab 5 quick-reference is the one to have in your truck.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 9 · Friday — Working Near Utility Lines | Microbe Tree Inc.</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f5f8;
+      color: #1a2e3a;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .site-header { background: #1e3a4a; color: #fff; padding: 0; }
+    .header-inner {
+      max-width: 960px; margin: 0 auto; padding: 24px 24px 20px;
+      display: flex; align-items: flex-start; gap: 18px;
+    }
+    .header-logo { font-size: 2.4rem; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+    .header-text { flex: 1; }
+    .org-name {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #7ec8d8; margin-bottom: 4px;
+    }
+    .lesson-title { font-size: 1.65rem; font-weight: 700; line-height: 1.2; color: #ffffff; }
+    .lesson-subtitle { margin-top: 6px; font-size: 0.88rem; color: #a8cdd8; }
+    .header-badge-row {
+      display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em;
+    }
+    .badge-day { background: #2a5e7a; color: #d0eaf3; }
+    .badge-domain { background: rgba(255,255,255,0.12); color: #c5dfe8; border: 1px solid rgba(255,255,255,0.18); }
+    .badge-exam { background: #1d5c3a; color: #9edfc0; }
+
+    /* ── TAB NAV ── */
+    .tab-nav-wrapper { background: #16303e; border-bottom: 3px solid #2a6e8a; }
+    .tab-nav { max-width: 960px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; }
+    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0; padding: 13px 20px 11px; font-size: 0.83rem; font-weight: 600;
+      color: #88b8c8; background: none; border: none; border-bottom: 3px solid transparent;
+      cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s;
+      letter-spacing: 0.02em; margin-bottom: -3px; line-height: 1.3; text-align: left;
+    }
+    .tab-btn:hover { color: #c8e8f0; }
+    .tab-btn.active { color: #7ed4e8; border-bottom-color: #2a9fc0; }
+    .tab-number {
+      display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #4a8aa0; margin-bottom: 2px;
+    }
+    .tab-btn.active .tab-number { color: #5bbdd0; }
+
+    /* ── MAIN CONTENT ── */
+    .main-wrap { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── HEADINGS ── */
+    .section-heading {
+      font-size: 1.25rem; font-weight: 700; color: #1e3a4a;
+      margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-heading .icon { font-size: 1.3rem; }
+    .section-intro { font-size: 0.92rem; color: #3a5f72; margin-bottom: 22px; max-width: 780px; }
+
+    /* ── CARD GRID ── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .card {
+      background: #fff; border-radius: 10px; padding: 18px 18px 16px;
+      box-shadow: 0 1px 4px rgba(30,58,74,0.08); border-top: 4px solid #2a6e8a;
+    }
+    .card.danger  { border-top-color: #c0392b; background: #fff8f7; }
+    .card.warning { border-top-color: #e67e22; background: #fffaf5; }
+    .card.caution { border-top-color: #d4a017; background: #fffef5; }
+    .card.safe    { border-top-color: #27ae60; background: #f5fff8; }
+    .card.info    { border-top-color: #2a6e8a; }
+    .card.dark    { border-top-color: #1e3a4a; background: #f5f9fb; }
+    .card-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+    .card.danger  .card-label { color: #c0392b; }
+    .card.warning .card-label { color: #c05a10; }
+    .card.caution .card-label { color: #8a6800; }
+    .card.safe    .card-label { color: #1a7a40; }
+    .card.info    .card-label { color: #2a6e8a; }
+    .card.dark    .card-label { color: #1e3a4a; }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: #1a2e3a; }
+    .card p, .card li { font-size: 0.86rem; color: #2e4a58; line-height: 1.55; }
+    .card ul { padding-left: 18px; }
+    .card ul li { margin-bottom: 4px; }
+    .distance-pill {
+      display: inline-block; font-size: 1.6rem; font-weight: 800; line-height: 1;
+      color: #fff; background: #2a6e8a; padding: 6px 14px; border-radius: 8px;
+      margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .card.danger  .distance-pill { background: #c0392b; }
+    .card.warning .distance-pill { background: #c05a10; }
+    .card.caution .distance-pill { background: #8a6800; }
+    .card.safe    .distance-pill { background: #27ae60; }
+
+    /* ── CRITICAL BOX ── */
+    .critical-box {
+      background: #1e3a4a; color: #e8f4f8; border-radius: 10px;
+      padding: 18px 22px; margin-bottom: 24px;
+    }
+    .critical-box-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #7ecce0; margin-bottom: 10px;
+    }
+    .critical-box p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+    .critical-box p:last-child { margin-bottom: 0; }
+    .critical-box strong { color: #a0dce8; }
+
+    /* ── WARNING / DANGER BOXES ── */
+    .warning-box {
+      background: #fff3e0; border-left: 5px solid #e67e22;
+      border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 24px;
+    }
+    .warning-box-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #c05a10; margin-bottom: 6px;
+    }
+    .warning-box p, .warning-box li { font-size: 0.88rem; color: #4a2e10; line-height: 1.55; }
+    .warning-box ul { padding-left: 18px; }
+    .warning-box ul li { margin-bottom: 4px; }
+
+    .danger-box {
+      background: #fff0ee; border-left: 5px solid #c0392b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 24px;
+    }
+    .danger-box-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #c0392b; margin-bottom: 6px;
+    }
+    .danger-box p, .danger-box li { font-size: 0.88rem; color: #4a1a14; line-height: 1.55; }
+    .danger-box ul { padding-left: 18px; }
+    .danger-box ul li { margin-bottom: 4px; }
+
+    /* ── ZONE DIAGRAM ── */
+    .zone-diagram {
+      background: #fff; border-radius: 12px; padding: 24px;
+      margin-bottom: 24px; box-shadow: 0 1px 4px rgba(30,58,74,0.08); overflow-x: auto;
+    }
+    .zone-diagram-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #2a6e8a; margin-bottom: 16px;
+    }
+    .zone-track {
+      display: flex; align-items: stretch; min-width: 600px;
+      border-radius: 8px; overflow: hidden; margin-bottom: 14px;
+    }
+    .zone-seg {
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; padding: 14px 10px; text-align: center; position: relative;
+    }
+    .zone-conductor { flex: 0 0 64px; background: #1a1a2e; color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; gap: 4px; }
+    .zone-conductor .wire-icon { font-size: 1.2rem; }
+    .zone-1 { flex: 0 0 110px; background: #c0392b; color: #fff; }
+    .zone-2 { flex: 0 0 110px; background: #e67e22; color: #fff; }
+    .zone-3 { flex: 1; background: #d4a017; color: #fff; }
+    .zone-clear { flex: 1; background: #27ae60; color: #fff; }
+    .zone-name { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 3px; }
+    .zone-dist { font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
+    .zone-desc { font-size: 0.65rem; line-height: 1.35; opacity: 0.9; }
+    .zone-legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 4px; }
+    .zone-legend-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.82rem; }
+    .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── REG TABLE ── */
+    .reg-table-wrap {
+      background: #fff; border-radius: 10px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(30,58,74,0.08); margin-bottom: 24px;
+    }
+    .reg-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+    .reg-table thead th {
+      background: #1e3a4a; color: #d0eaf3; padding: 11px 14px; text-align: left;
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .reg-table tbody tr:nth-child(even) { background: #f5f9fb; }
+    .reg-table tbody tr:hover { background: #e8f4f8; }
+    .reg-table tbody td { padding: 11px 14px; border-bottom: 1px solid #dce8ee; color: #1a2e3a; vertical-align: top; }
+    .reg-table tbody tr:last-child td { border-bottom: none; }
+    .pill { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
+    .pill-danger  { background: #fde8e5; color: #c0392b; }
+    .pill-warning { background: #fdeedd; color: #a04810; }
+    .pill-ok      { background: #e2f5ea; color: #1a7040; }
+    .pill-info    { background: #e0f0f8; color: #1a5a78; }
+
+    /* ── PROCESS STEPS ── */
+    .steps-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+    .step-item {
+      display: flex; gap: 16px; background: #fff; border-radius: 10px;
+      padding: 16px 18px; box-shadow: 0 1px 4px rgba(30,58,74,0.08);
+      border-left: 4px solid #2a6e8a;
+    }
+    .step-number {
+      flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+      background: #2a6e8a; color: #fff; display: flex; align-items: center;
+      justify-content: center; font-size: 0.9rem; font-weight: 800;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-size: 0.95rem; font-weight: 700; color: #1e3a4a; margin-bottom: 4px; }
+    .step-body p, .step-body li { font-size: 0.86rem; color: #2e4a58; line-height: 1.55; }
+    .step-body ul { padding-left: 18px; margin-top: 4px; }
+    .step-body ul li { margin-bottom: 3px; }
+    .step-item.emergency { border-left-color: #c0392b; }
+    .step-item.emergency .step-number { background: #c0392b; }
+
+    /* ── QUICK REF TABLE ── */
+    .qr-table-wrap {
+      background: #fff; border-radius: 10px; overflow: hidden;
+      box-shadow: 0 1px 6px rgba(30,58,74,0.12); margin-bottom: 24px;
+    }
+    .qr-table-header {
+      background: #2a6e8a; color: #fff; padding: 12px 18px;
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .qr-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .qr-table thead th {
+      background: #1e3a4a; color: #c0dce8; padding: 10px 14px; text-align: left;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .qr-table tbody tr:nth-child(even) { background: #f5f9fb; }
+    .qr-table tbody td { padding: 11px 14px; border-bottom: 1px solid #dce8ee; vertical-align: middle; }
+    .qr-table tbody tr:last-child td { border-bottom: none; }
+    .qr-table .voltage-col { font-weight: 700; color: #1e3a4a; }
+    .qr-table .mad-bc   { font-weight: 800; font-size: 1rem; color: #c0392b; }
+    .qr-table .mad-ansi { font-weight: 600; color: #2a6e8a; }
+    .qr-table .note-col { font-size: 0.78rem; color: #4a6070; font-style: italic; }
+
+    /* ── CONTACTS ── */
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .contact-card {
+      background: #fff; border-radius: 10px; padding: 16px;
+      box-shadow: 0 1px 4px rgba(30,58,74,0.08); border-top: 4px solid #2a6e8a;
+    }
+    .contact-card.emergency-contact { border-top-color: #c0392b; }
+    .contact-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #2a6e8a; margin-bottom: 4px; }
+    .contact-card.emergency-contact .contact-label { color: #c0392b; }
+    .contact-org { font-size: 0.96rem; font-weight: 700; color: #1e3a4a; margin-bottom: 6px; }
+    .contact-number { font-size: 1.1rem; font-weight: 800; color: #2a6e8a; letter-spacing: 0.02em; font-family: 'Courier New', monospace; }
+    .contact-card.emergency-contact .contact-number { color: #c0392b; }
+    .contact-note { font-size: 0.76rem; color: #4a6870; margin-top: 5px; line-height: 1.4; }
+
+    /* ── ISA BOX ── */
+    .isa-box { background: #f0f8e8; border: 1.5px solid #5aaa70; border-radius: 10px; padding: 16px 20px; margin-top: 28px; }
+    .isa-box-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .isa-icon { font-size: 1.2rem; }
+    .isa-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #1a6030; }
+    .isa-box p, .isa-box li { font-size: 0.86rem; color: #1a3020; line-height: 1.55; }
+    .isa-box ul { padding-left: 20px; margin-top: 6px; }
+    .isa-box ul li { margin-bottom: 4px; }
+
+    /* ── SOURCE FOOTER ── */
+    .source-footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid #c0d8e4; }
+    .source-footer-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4a7888; margin-bottom: 6px; }
+    .source-footer p { font-size: 0.78rem; color: #4a6870; line-height: 1.55; }
+
+    /* ── RULE THUMB ── */
+    .rule-thumb {
+      background: #1e3a4a; border-radius: 10px; padding: 18px 22px;
+      margin-bottom: 24px; display: flex; align-items: flex-start; gap: 14px;
+    }
+    .rule-thumb-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .rule-thumb-text { font-size: 1rem; color: #d0eaf3; line-height: 1.55; font-style: italic; }
+    .rule-thumb-text strong { color: #7ed4e8; font-style: normal; }
+
+    /* ── DEENERGIZED COMPARISON ── */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .compare-card { border-radius: 10px; padding: 18px; }
+    .compare-card.not-safe { background: #fff0ee; border: 2px solid #c0392b; }
+    .compare-card.safe-ok  { background: #f0fff4; border: 2px solid #27ae60; }
+    .compare-card-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .compare-card.not-safe .compare-card-title { color: #c0392b; }
+    .compare-card.safe-ok  .compare-card-title { color: #1a7040; }
+    .compare-status { font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; }
+    .compare-card.not-safe .compare-status { color: #c0392b; }
+    .compare-card.safe-ok  .compare-status { color: #27ae60; }
+    .compare-card p { font-size: 0.86rem; line-height: 1.55; }
+    .compare-card.not-safe p { color: #4a1a14; }
+    .compare-card.safe-ok  p { color: #1a3a20; }
+    .compare-card ul { padding-left: 18px; margin-top: 6px; }
+    .compare-card li { font-size: 0.84rem; line-height: 1.5; margin-bottom: 4px; }
+    .compare-card.not-safe li { color: #4a1a14; }
+    .compare-card.safe-ok  li { color: #1a3a20; }
+
+    /* ── INLINE HIGHLIGHTS ── */
+    .hl       { background: #d0f0dc; border-radius: 3px; padding: 0 3px; color: #1a5030; font-weight: 600; }
+    .hl-warn  { background: #fdeedd; border-radius: 3px; padding: 0 3px; color: #7a3010; font-weight: 600; }
+    .hl-danger{ background: #fde8e5; border-radius: 3px; padding: 0 3px; color: #8a1a10; font-weight: 600; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header-inner { padding: 18px 16px; }
+      .lesson-title { font-size: 1.35rem; }
+      .main-wrap { padding: 20px 14px 48px; }
+      .tab-btn { padding: 11px 14px 9px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-logo">🧗</div>
+    <div class="header-text">
+      <div class="org-name">Microbe Tree Inc. · West Kelowna, BC</div>
+      <h1 class="lesson-title">Working Near Utility Lines</h1>
+      <p class="lesson-subtitle">Electrical hazard zones · Minimum approach distances · BC regulations · Emergency response</p>
+      <div class="header-badge-row">
+        <span class="badge badge-day">Friday · Week 9</span>
+        <span class="badge badge-domain">Worksite Techniques</span>
+        <span class="badge badge-exam">ISA Exam: Safe Work Practices 28%</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── TAB NAV ── -->
+<nav class="tab-nav-wrapper" role="tablist" aria-label="Lesson sections">
+  <div class="tab-nav">
+    <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-1" id="btn-1" onclick="switchTab(1)"><span class="tab-number">Tab 1</span>Electrical Hazard Basics</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-2" id="btn-2" onclick="switchTab(2)"><span class="tab-number">Tab 2</span>BC Requirements</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-3" id="btn-3" onclick="switchTab(3)"><span class="tab-number">Tab 3</span>Equipment Near Lines</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-4" id="btn-4" onclick="switchTab(4)"><span class="tab-number">Tab 4</span>Work Planning</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-5" id="btn-5" onclick="switchTab(5)"><span class="tab-number">Tab 5</span>Quick Reference</button>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main class="main-wrap">
+
+  <!-- ════════ TAB 1 — ELECTRICAL HAZARD BASICS ════════ -->
+  <section class="tab-panel active" id="tab-1" role="tabpanel" aria-labelledby="btn-1">
+
+    <h2 class="section-heading"><span class="icon">⚡</span> Electrical Hazard Zones</h2>
+    <p class="section-intro">ANSI Z133 and WorkSafeBC OHS Regulation Part 19 divide the space around energized overhead conductors into zones. Understanding these zones is not optional — entering the wrong zone without the right controls can be fatal.</p>
+
+    <!-- Zone Diagram -->
+    <div class="zone-diagram">
+      <div class="zone-diagram-title">Approach Zone Diagram — Overhead Distribution Line (4–35 kV)</div>
+      <div style="overflow-x:auto;">
+        <div class="zone-track">
+          <div class="zone-seg zone-conductor"><span class="wire-icon">〰</span><span style="font-size:0.65rem;margin-top:4px;line-height:1.3;">LIVE<br>CONDUCTOR</span></div>
+          <div class="zone-seg zone-1"><div class="zone-name">Zone 1</div><div class="zone-dist">0 – 3.0 m</div><div class="zone-desc">Limit of Approach<br>DO NOT ENTER</div></div>
+          <div class="zone-seg zone-2"><div class="zone-name">Zone 2</div><div class="zone-dist">Restricted</div><div class="zone-desc">Qualified Electrical<br>Workers Only</div></div>
+          <div class="zone-seg zone-3"><div class="zone-name">Zone 3</div><div class="zone-dist">3.0 – 6.1 m</div><div class="zone-desc">Caution Zone<br>Controls Required</div></div>
+          <div class="zone-seg zone-clear"><div class="zone-name">Clear</div><div class="zone-dist">&gt; 6.1 m</div><div class="zone-desc">No special controls<br>up to 750 V</div></div>
+        </div>
+      </div>
+      <div class="zone-legend">
+        <div class="zone-legend-item"><div class="legend-dot" style="background:#c0392b;"></div><span><strong>Zone 1:</strong> Utility authorization + deenergized/guarded required. No arborist entry.</span></div>
+        <div class="zone-legend-item"><div class="legend-dot" style="background:#e67e22;"></div><span><strong>Zone 2:</strong> Qualified electrical workers only. Irrelevant to arborists.</span></div>
+        <div class="zone-legend-item"><div class="legend-dot" style="background:#c8a000;"></div><span><strong>Zone 3:</strong> Arborists may work with controls: insulated tools, supervision, written SWP.</span></div>
+        <div class="zone-legend-item"><div class="legend-dot" style="background:#27ae60;"></div><span><strong>Clear:</strong> No special controls required for voltages up to 750 V.</span></div>
+      </div>
+    </div>
+
+    <!-- Zone Cards -->
+    <div class="card-grid">
+
+      <div class="card danger">
+        <div class="card-label">Zone 1 — Limit of Approach</div>
+        <div class="distance-pill">0 – 3.0 m</div>
+        <div class="card-title">DO NOT ENTER</div>
+        <ul>
+          <li>Applies to distribution voltages (4–35 kV) — typical residential and commercial poles in the Okanagan</li>
+          <li>No arborist enters without <strong>FortisBC/electrical authority authorization</strong></li>
+          <li>Line must be <strong>deenergized AND grounded</strong> (not just switched off)</li>
+          <li>Transmission voltages (&gt;35 kV): Zone 1 distance increases — check WorkSafeBC Part 19 and project-specific utility clearance</li>
+        </ul>
+      </div>
+
+      <div class="card warning">
+        <div class="card-label">Zone 2 — Restricted Approach</div>
+        <div class="distance-pill" style="background:#c05a10;">Qualified EW</div>
+        <div class="card-title">Electrical Workers Only</div>
+        <ul>
+          <li>For trained and certified electrical workers operating within their authorized clearance</li>
+          <li>Not a zone arborists will work in — included here so you know where the line is</li>
+          <li>Attempting to work in Zone 2 without electrical certification is a serious WorkSafeBC violation</li>
+        </ul>
+      </div>
+
+      <div class="card caution">
+        <div class="card-label">Zone 3 — Caution Zone</div>
+        <div class="distance-pill">3.0 – 6.1 m</div>
+        <div class="card-title">Arborists: Controls Required</div>
+        <ul>
+          <li>Arborists <em>may</em> work in this zone — with specific controls in place</li>
+          <li><strong>Controls required:</strong> Non-conductive (insulated) tools; qualified supervision; written safe work procedure; no wet ropes toward conductors</li>
+          <li>Zone 3 is approximately 10–20 ft from the conductor</li>
+        </ul>
+      </div>
+
+      <div class="card safe">
+        <div class="card-label">Clear Zone</div>
+        <div class="distance-pill">&gt; 6.1 m</div>
+        <div class="card-title">No Special Controls (≤750 V)</div>
+        <ul>
+          <li>Beyond 6.1 m from conductors at voltages up to 750 V: no special electrical controls required</li>
+          <li>For higher voltages, approach distances increase — always check Part 19 Table and voltage confirmation from utility</li>
+          <li>Standard fall protection, PPE, and cutting hazard controls still apply</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Critical Distinction -->
+    <div class="critical-box">
+      <div class="critical-box-title">⚠ Critical Distinction — Deenergized vs. Deenergized AND Grounded</div>
+      <p>A line that is <strong>"deenergized"</strong> (power switched off at the substation or switch) is <strong>NOT safe to approach without maintained distances.</strong></p>
+      <p>Reasons a "switched-off" line remains dangerous: it can be re-energized accidentally by a remote switch or auto-recloser; it may carry induced voltage from adjacent energized conductors; stored charge may remain.</p>
+      <p><strong>ONLY a deenergized AND grounded line, confirmed in writing by a qualified electrical worker, is safe to work adjacent to without maintaining approach distances.</strong> Until you have that written confirmation, treat every line as energized.</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="warning-box-title">WorkSafeBC Requirement — OHS Regulation s. 19.3–19.5</div>
+      <p>Before working within <strong>3 metres</strong> of any overhead electrical line, the employer <strong>MUST</strong>:</p>
+      <ul>
+        <li>Contact the utility to determine the line voltage</li>
+        <li>Obtain the required minimum approach distances for that voltage</li>
+        <li>Follow the utility's <strong>written instructions</strong> before work begins</li>
+      </ul>
+      <p style="margin-top:8px;">This obligation applies to <em>all</em> workers and equipment — not only those performing electrical work.</p>
+    </div>
+
+    <div class="iso-box">
+      <div class="isa-box-header"><span class="isa-icon">📚</span><span class="isa-title">ISA Exam — Electrical Hazards</span></div>
+      <p>ANSI Z133 Table 1 defines minimum approach distances by voltage class. The ISA exam may ask you to identify a distance from a specific voltage or to define the difference between Zone 1 and Zone 3. Know that <span class="hl">Zone 1 is the absolute exclusion zone</span> and that <span class="hl">a "deenergized" line is NOT safe</span> until grounded and confirmed by a qualified electrical worker. Safe Work Practices is 28% of the ISA exam.</p>
+    </div>
+
+    <div class="source-footer">
+      <div class="source-footer-title">Sources</div>
+      <p>ANSI Z133 Safe Work Practices for Arborists (current edition) · WorkSafeBC OHS Regulation Part 19 (Electrical Safety) Sections 19.3–19.5 · FortisBC Distribution Line Clearance guidelines</p>
+    </div>
+  </section>
+
+  <!-- ════════ TAB 2 — BC-SPECIFIC REQUIREMENTS ════════ -->
+  <section class="tab-panel" id="tab-2" role="tabpanel" aria-labelledby="btn-2">
+
+    <h2 class="section-heading"><span class="icon">🇨🇦</span> BC-Specific Requirements</h2>
+    <p class="section-intro">WorkSafeBC OHS Regulation Part 19 is BC law. ANSI Z133 is an industry standard. Where the two differ, apply the more conservative (larger) distance. For Okanagan arborists, FortisBC is the primary distribution utility — know how to contact them.</p>
+
+    <h3 style="font-size:1rem;font-weight:700;color:#1e3a4a;margin-bottom:12px;">WorkSafeBC OHS Regulation Part 19 — Key Sections for Arborists</h3>
+    <div class="reg-table-wrap">
+      <table class="reg-table">
+        <thead>
+          <tr>
+            <th style="width:120px;">Section</th>
+            <th>Requirement</th>
+            <th style="width:130px;">Impact on Crew</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>19.3</strong></td>
+            <td>Minimum approach distances for overhead power lines apply to <em>all</em> workers and equipment — not only electrical workers. The distances are mandatory regardless of task.</td>
+            <td><span class="pill pill-danger">Applies to you</span></td>
+          </tr>
+          <tr>
+            <td><strong>19.4</strong></td>
+            <td>Employer must ensure no worker or equipment part comes within the minimum approach distance of an energized conductor unless the conductor is deenergized and grounded or guarded.</td>
+            <td><span class="pill pill-danger">Employer duty</span></td>
+          </tr>
+          <tr>
+            <td><strong>19.5</strong></td>
+            <td>Before work begins within the approach distance, employer must contact the utility owner to determine voltage and receive written instructions. Work cannot start until instructions are received.</td>
+            <td><span class="pill pill-warning">Written required</span></td>
+          </tr>
+          <tr>
+            <td><strong>19.22</strong></td>
+            <td>Tree trimming near power lines requires one of: (a) lines deenergized and grounded, (b) a qualified utility arborist or qualified electrical worker present, or (c) a written procedure approved by the utility.</td>
+            <td><span class="pill pill-danger">3 options only</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:1rem;font-weight:700;color:#1e3a4a;margin-bottom:12px;">FortisBC — Okanagan's Distribution Utility</h3>
+    <div class="card-grid">
+
+      <div class="card info">
+        <div class="card-label">Utility Arborist Program</div>
+        <div class="card-title">Certification for Right-of-Way Work</div>
+        <ul>
+          <li>Arborists working on <strong>FortisBC right-of-way vegetation management</strong> must hold Utility Arborist certification</li>
+          <li>Right-of-way work differs from standard residential tree work — these are separate scopes with separate credentials</li>
+          <li>A general ISA credential does not qualify you to work on FortisBC ROW without this additional certification</li>
+        </ul>
+      </div>
+
+      <div class="card info">
+        <div class="card-label">Residential Line Clearance</div>
+        <div class="card-title">What FortisBC Can Do For You</div>
+        <ul>
+          <li>Contact FortisBC for any residential job within the 3-metre zone: <strong>1-866-436-7847</strong></li>
+          <li>They can arrange a <strong>line guard</strong> (insulating sleeve on conductor) or <strong>deenergization</strong></li>
+          <li>For safety-of-life situations, this is available <strong>at no cost to the homeowner</strong></li>
+          <li>Get the arrangement confirmed in writing before beginning work</li>
+        </ul>
+      </div>
+
+      <div class="card dark">
+        <div class="card-label">Hard Rule</div>
+        <div class="card-title">Never Trim Past the 3-Metre Zone</div>
+        <p>Under no circumstances should an arborist trim a tree into or past the 3-metre zone from FortisBC distribution conductors without FortisBC involvement. This applies regardless of what the homeowner says, how quickly the job will be done, or whether the branch "looks far enough away."</p>
+      </div>
+
+    </div>
+
+    <h3 style="font-size:1rem;font-weight:700;color:#1e3a4a;margin-bottom:12px;margin-top:10px;">ANSI Z133 — Section 5 (Electrical Hazards)</h3>
+    <div class="card-grid">
+
+      <div class="card info">
+        <div class="card-label">Line-Clearance Arborist Definition</div>
+        <div class="card-title">Who Can Work in Zone 1?</div>
+        <p>ANSI Z133 states: <em>"No employee shall perform tree work within the minimum approach distance of energized conductors unless the employee is trained and authorized as a qualified line-clearance arborist."</em></p>
+        <p style="margin-top:8px;">A <strong>qualified line-clearance arborist</strong> has additional electrical safety training beyond standard ISA certification. The ISA Certified Arborist credential alone does not qualify a worker for line-clearance work.</p>
+      </div>
+
+      <div class="card info">
+        <div class="card-label">ANSI Z133 Table 1 — Key Distances</div>
+        <div class="card-title">Distribution Voltages (Okanagan Residential)</div>
+        <ul>
+          <li><strong>300 V – 4 kV:</strong> 1.5 m minimum approach distance</li>
+          <li><strong>4 – 35 kV:</strong> 3.0 m (common for Okanagan residential distribution)</li>
+          <li><strong>35 – 46 kV:</strong> 3.0 m (approaching transmission range)</li>
+          <li><strong>&gt;46 kV (transmission):</strong> Higher distances — check ANSI Z133 Table 1</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="danger-box">
+      <div class="danger-box-title">BC vs. ANSI — Which Distance Applies?</div>
+      <p>WorkSafeBC distances are <strong>generally more conservative</strong> than ANSI Z133 in some voltage ranges. BC law (WorkSafeBC OHS Regulation Part 19) takes precedence in British Columbia. Always apply the <strong>more restrictive</strong> (larger distance) of the two standards. When in doubt, use the WorkSafeBC distance.</p>
+    </div>
+
+    <div class="iso-box">
+      <div class="isa-box-header"><span class="isa-icon">📚</span><span class="isa-title">ISA Exam — Regulations</span></div>
+      <p>The ISA exam is written to ANSI Z133. Know Section 5 and Table 1. The exam may distinguish between a <span class="hl">"qualified arborist"</span> and a <span class="hl">"qualified line-clearance arborist"</span> — these are different credentials with different scopes. The exam may also ask which standard governs when two standards conflict — the answer is always the more restrictive.</p>
+    </div>
+
+    <div class="source-footer">
+      <div class="source-footer-title">Sources</div>
+      <p>WorkSafeBC OHS Regulation Part 19 (Electrical Safety) · ANSI Z133 Safe Work Practices for Arborists (current edition), Section 5 · FortisBC Vegetation Management and Utility Arborist program documentation</p>
+    </div>
+  </section>
+
+  <!-- ════════ TAB 3 — EQUIPMENT NEAR LINES ════════ -->
+  <section class="tab-panel" id="tab-3" role="tabpanel" aria-labelledby="btn-3">
+
+    <h2 class="section-heading"><span class="icon">🚛</span> Equipment Near Lines</h2>
+    <p class="section-intro">Minimum approach distances apply to equipment just as they apply to workers. The boom of a bucket truck, the bed of a chipper, the cable of a rigging system — all must stay outside the approach zone. Equipment contacts with power lines cause the majority of electrical fatalities in the arboricultural industry.</p>
+
+    <div class="card-grid">
+
+      <div class="card danger">
+        <div class="card-label">Vehicles &amp; Ground Equipment</div>
+        <div class="card-title">Chippers, Trucks, Cranes</div>
+        <ul>
+          <li>Same minimum approach distances apply to <strong>all equipment</strong> as to workers</li>
+          <li>A chip truck parked under a line, a crane swinging a load, a stump grinder in the root zone of a line-adjacent tree — all must maintain clearance</li>
+          <li>Equipment operator is responsible for knowing line location before moving</li>
+          <li>Pre-work site walk: identify all overhead lines before any equipment is positioned</li>
+        </ul>
+      </div>
+
+      <div class="card warning">
+        <div class="card-label">Aerial Devices — Bucket Trucks</div>
+        <div class="card-title">The Boom, Not Just the Basket</div>
+        <ul>
+          <li>Must be operated by qualified personnel when approaching lines</li>
+          <li>The <strong>boom</strong> must maintain clearance — not just the basket/platform</li>
+          <li>The entire arc of boom travel must be assessed before the lift begins</li>
+          <li>Secondary insulation on the boom provides some protection but does not eliminate the approach distance requirement</li>
+          <li>Insulated aerials (IA bucket trucks) rated for line-clearance work have different distances — only when used by qualified line-clearance arborists</li>
+        </ul>
+      </div>
+
+      <div class="card info">
+        <div class="card-label">Cutting Equipment</div>
+        <div class="card-title">Non-Conductive Tools in Zone 3</div>
+        <ul>
+          <li>When working in Zone 3 (3.0–6.1 m), use <strong>non-conductive pruners, loppers, and pole saws</strong></li>
+          <li>Fibreglass-handled tools preferred over metal</li>
+          <li>Chainsaws: metal guide bars and chains can conduct electricity — do not direct cuts toward conductors</li>
+          <li>Never use a metal pole saw in Zone 3 — a 6-metre metal pole saw handle effectively reaches into Zone 1</li>
+        </ul>
+      </div>
+
+      <div class="card info">
+        <div class="card-label">Rope &amp; Rigging</div>
+        <div class="card-title">Conductivity Hazards</div>
+        <ul>
+          <li><strong>Wet synthetic rope</strong> (polyester, nylon) can conduct electricity over short distances — do not route synthetic rope toward energized conductors</li>
+          <li><strong>Natural fiber rope</strong> (manila) is less conductive than synthetic when dry — but neither is safe against contact with an energized conductor</li>
+          <li>When in Zone 3: use dry rope only, route rigging away from conductors, ensure no failure scenario sends rope into Zone 1</li>
+          <li>Rigging blocks, slings, and hardware are conductive</li>
+        </ul>
+      </div>
+
+      <div class="card caution">
+        <div class="card-label">Ladders</div>
+        <div class="card-title">Metal vs. Non-Conductive</div>
+        <ul>
+          <li><strong>Metal (aluminum) ladders</strong> must maintain 3+ m from energized conductors at all times</li>
+          <li><strong>Fibreglass (non-conductive) ladders</strong> are preferred when working adjacent to lines — but still must maintain approach distances (they reduce risk if accidental contact occurs, but approach distances still apply)</li>
+          <li>Never lean a ladder against a utility pole above the secondary conductor level without line-clearance authorization</li>
+        </ul>
+      </div>
+
+      <div class="card dark">
+        <div class="card-label">Orange-Painted Trees (BC)</div>
+        <div class="card-title">FortisBC Hazard Flag</div>
+        <p>In BC utility corridors, <strong>orange paint on a tree trunk</strong> indicates FortisBC has flagged that tree for hazard assessment or removal. This is a notification — not an authorization to proceed. Do not work on orange-flagged trees without contacting FortisBC and receiving written instructions.</p>
+      </div>
+
+    </div>
+
+    <div class="critical-box">
+      <div class="critical-box-title">What Happens When Equipment Contacts a Line</div>
+      <p>When a piece of equipment contacts an energized conductor, the equipment body becomes energized. Anyone touching the equipment while grounded creates a path for current. Anyone on the ground near the equipment may be exposed to <strong>step potential</strong> — voltage gradient in the soil from the grounding point.</p>
+      <p><strong>Ground crew rule:</strong> If you see equipment in contact with a line, do not approach. Call 911 and FortisBC. Wait for the utility to deenergize and confirm safe. See Tab 4 for the full emergency procedure.</p>
+    </div>
+
+    <div class="isa-box">
+      <div class="isa-box-header"><span class="isa-icon">📚</span><span class="isa-title">ISA Exam — Equipment Hazards</span></div>
+      <p>Equipment approach distances are the same as worker distances under ANSI Z133. The exam may present a scenario involving a bucket truck boom, a rope route, or a pole saw length — ask yourself: does any part of the equipment or tool reach into Zone 1 or Zone 3? Also know that <span class="hl">wet rope can conduct electricity</span> and that <span class="hl">non-conductive tools are required in Zone 3</span>, not just "recommended."</p>
+    </div>
+
+    <div class="source-footer">
+      <div class="source-footer-title">Sources</div>
+      <p>ANSI Z133, Section 5 and Section 7 (Equipment) · WorkSafeBC OHS Regulation Part 19 · TCIA Line Clearance Arboriculture Standards · FortisBC Contractor Safety requirements</p>
+    </div>
+  </section>
+
+  <!-- ════════ TAB 4 — WORK PLANNING ════════ -->
+  <section class="tab-panel" id="tab-4" role="tabpanel" aria-labelledby="btn-4">
+
+    <h2 class="section-heading"><span class="icon">📋</span> Work Planning for Utility-Adjacent Jobs</h2>
+    <p class="section-intro">Every job within 10 metres of overhead lines requires specific pre-work steps before any equipment is unloaded or any climbing gear goes on. The 5-step sequence below is the minimum standard. Steps 1–4 must be complete before starting work. Step 5 is the emergency response — have it memorized before you arrive on site.</p>
+
+    <div class="steps-list">
+
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-body">
+          <div class="step-title">Identify — What Type of Line Is It?</div>
+          <p>Before anything else, identify every overhead line on the property and any that overhang from adjacent properties. Distinguish between:</p>
+          <ul>
+            <li><strong>Distribution lines (4–35 kV):</strong> Typical wooden pole lines in residential and commercial Okanagan neighbourhoods — most common hazard for arborists. Usually 3-wire or 4-wire uninsulated conductors on crossarms.</li>
+            <li><strong>Transmission lines (&gt;35 kV, often &gt;69 kV):</strong> Steel towers or very tall poles, multiple conductors per phase, large insulators. Significantly greater hazard, larger approach distances.</li>
+            <li><strong>Secondary service drops (&lt;600 V):</strong> The wires running from the street pole to the house — often twisted triplex. Lower voltage, but still energized and dangerous.</li>
+            <li><strong>Communication lines (telephone, cable TV, fibre):</strong> Usually the lowest wire on the pole. Lower voltage but can still carry enough current to cause injury.</li>
+          </ul>
+          <p style="margin-top:6px;"><strong>If you cannot identify the voltage: assume the worst and treat as high-voltage distribution.</strong></p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-body">
+          <div class="step-title">Contact — Call the Utility Before Work Starts</div>
+          <p>Get written confirmation of line voltage and required clearances. Don't guess, don't estimate, don't proceed on the homeowner's word.</p>
+          <ul>
+            <li><strong>FortisBC</strong> (distribution, Okanagan): 1-866-436-7847 — request a line hazard assessment and written clearance instructions</li>
+            <li><strong>BC Hydro</strong> (transmission, some distribution): 1-888-BCHYDRO (1-888-224-9376)</li>
+            <li>Request: line voltage, required minimum approach distance, whether a line guard or deenergization can be arranged</li>
+  2         <li>Obtain a <strong>written job clearance or work permit</strong> — verbal confirmation is not sufficient for WorkSafeBC compliance</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-body">
+          <div class="step-title">Plan — Define the Work Envelope</div>
+   2      <p>Map out where all work will occur relative to the lines. Determine:</p>
+          <ul>
+            <li>Can the entire job be completed <strong>outside the 3-metre zone</strong>? If yes, proceed with standard controls and maintain the distance.</li>
+            <li>If any cutting, rigging, or equipment positioning requires entering Zone 3 (3.0–6.1 m): ensure controls are in place (insulated tools, qualified supervision, written SWP).</li>
+            <li>If the job requires work inside Zone 1 (&lt;3 m): <strong>stop and reassign to a qualified utility arborist</strong>, or arrange line deenergization/guarding with the utility.</li>
+            <li>Plan the rigging: where could a piece fall? Where could a rope travel? Does any failure scenario send material or rope into Zone 1?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">4</div>
+        <div class="step-body">
+          <div class="step-title">Brief — Toolbox Talk Before Every Job</div>
+          <p>All crew members must be briefed before work starts. The brief must cover:</p>
+ 2        <ul>
+            <li>Location of all overhead lines, confirmed voltage, and confirmed clearance distances for this job</li>
+            <li>The exclusion zone: physical markers (flagging tape, cones) if needed</li>
+            <li>Which crew members are permitted in Zone 3, and what controls are in place</li>
+            <li>What the plan is if equipment contact occurs (see Step 5)</li>
+            <li>Who is calling 911 and who is calling FortisBC if there is an incident</li>
+          </ul>
+          <p style="margin-top:6px;">Document the toolbox talk: date, location, attendees, topics covered. This is your WorkSafeBC paper trail.</p>
+        </div>
+      </div>
+
+      <div class="step-item emergency">
+        <div class="step-number">5</div>
+        <div class="step-body">
+          <div class="step-title">Emergency Procedure — If Equipment or a Line Contacts a Conductor</div>
+          <p><strong>Memorize this. Post it in the truck cab.</strong></p>
+          <ul>
+            <li><span class="hl-danger">Do NOT touch the equipment or vehicle if it is in contact with an energized line.</span> Even touching a tire can be fatal if current is flowing through the vehicle to ground.</li>
+            <li><strong>Call 911 immediately.</strong> Then call FortisBC (1-866-436-7847) to report the contact and request emergency deenergization.</li>
+            <li><strong>If you are inside the vehicle or equipment that has contacted a line:</strong> STAY INSIDE unless there is fire risk. You are safer inside the cab than stepping out into a step-potential field. The vehicle's rubber tires provide some insulation from ground.</li>
+            <li><strong>If you must exit (fire imminent):</strong> Do not step normally. Jump clear, feet together, without touching the vehicle and the ground simultaneously. Once on the ground, <strong>shuffle or hop away</strong> with feet together or in very small steps — do not stride. Step potential decreases with distance; striding creates a large voltage difference between your feet.</li>
+            <li><strong>Keep all bystanders, homeowners, and crew a minimum of 10 metres</strong> from any downed or contacted energized line. Assume downed lines are energized until the utility confirms otherwise.</li>
+            <li>Never attempt to remove a downed line from equipment, a vehicle, or a person.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rule-thumb">
+      <div class="rule-thumb-icon">👍</div>
+      <div class="rule-thumb-text"><strong>The rule of thumb:</strong> If you have to ask whether you're close enough to worry about it, you're already in the zone where you should stop and contact the utility. Three metres is smaller than most people think — it's about the length of a step ladder or a short rigging pole.</div>
+    </div>
+
+    <div class="isa-box">
+      <div class="isa-box-header"><span class="isa-icon">📚</span><span class="isa-title">ISA Exam — Emergency Procedures</span></div>
+      <p>The ISA exam may present an emergency scenario and ask what the correct action is. Key answers: <span class="hl">stay in the cab if equipment contacts a line</span>; <span class="hl">shuffle/hop rather than stride if you must exit</span> (step potential); <span class="hl">do not touch the vehicle from outside</span>; <span class="hl">keep bystanders 10 m back from downed lines</span>. These are not instinctive responses — knowing them cold before an emergency is the point of training.</p>
+    </div>
+
+    <div class="source-footer">
+      <div class="source-footer-title">Sources</div>
+      <p>ANSI Z133, Section 5 (Electrical Hazards) · WorkSafeBC OHS Regulation Part 19 · FortisBC Contractor Safety Manual · TCIA Best Management Practices for Utility Line Clearance</p>
+    </div>
+  </section>
+
+  <!-- ════════ TAB 5 — QUICK REFERENCE ════════ -->
+  <section class="tab-panel" id="tab-5" role="tabpanel" aria-labelledby="btn-5">
+
+    <h2 class="section-heading"><span class="icon">📐</span> Quick Reference — Distances &amp; Numbers</h2>
+    <p class="section-intro">Keep this tab bookmarked. The distance table and contact numbers are the two things that should be in your truck before any utility-adjacent job. When WorkSafeBC and ANSI differ, use WorkSafeBC (more conservative).</p>
+
+    <!-- Distance Table -->
+    <div class="qr-table-wrap">
+      <div class="qr-table-header">Minimum Approach Distances — Overhead Conductors</div>
+      <table class="qr-table">
+        <thead>
+          <tr>
+            <th>Voltage Class</th>
+            <th>WorkSafeBC MAD<br>(OHS Reg. Part 19)</th>
+            <th>ANSI Z133<br>Table 1</th>
+            <th>Notes / BC Context</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="voltage-col">&lt;750 V<br><span style="font-size:0.76rem;font-weight:400;color:#4a6070;">Service drops to buildings; secondary distribution</span></td>
+            <td class="mad-bc">1.0 m</td>
+            <td class="mad-ansi">0.3 m</td>
+            <td class="note-col">WorkSafeBC is more conservative. Use 1.0 m in BC. Includes most service drops (triplex cable) running from street pole to house.</td>
+ 2        </tr>
+          <tr>
+            <td class="voltage-col">750 V – 46 kV<br><span style="font-size:0.76rem;font-weight:400;color:#4a6070;">Distribution — typical Okanagan residential poles</span></td>
+            <td class="mad-bc">3.0 m</td>
+            <td class="mad-ansi">1.5–3.0 m<br><span style="font-size:0.76rem;">(1.5 m at ~4 kV;<br>3.0 m at 35–46 kV)</span></td>
+            <td class="note-col">The 3.0 m distance is most commonly applicable for FortisBC distribution in residential West Kelowna. Always use 3.0 m unless utility confirms lower voltage in writing.</td>
+          </tr>
+          <tr>
+            <td class="voltage-col">46 kV – 115 kV<br><span style="font-size:0.76rem;font-weight:400;color:#4a6070;">Subtransmission; tall poles or small H-frame towers</span></td>
+            <td class="mad-bc">4.0 m</td>
+            <td class="mad-ansi">3.7 m</td>
+            <td class="note-col">Use 4.0 m in BC. These lines may appear on large wooden poles or small H-frame structures. Contact BC Hydro for clearance.</td>
+          </tr>
+          <tr>
+            <td class="voltage-col">&gt;115 kV<br><span style="font-size:0.76rem;font-weight:400;color:#4a6070;">High-voltage transmission; steel towers</span></td>
+            <td class="mad-bc" style="font-size:0.85rem;">Check OHS Reg.<br>Part 19 Table</td>
+            <td class="mad-ansi" style="font-size:0.85rem;">Check ANSI Z133<br>Table 1</td>
+            <td class="note-col">Distances increase significantly above 115 kV. These are BC Hydro transmission lines. Arborists should not work near these without a BC Hydro ROW work permit and qualified supervision.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Deenergized comparison -->
+    <h3 style="font-size:1rem;font-weight:700;color:#1e3a4a;margin-bottom:12px;">Deenergized — Safe or Not Safe?</h3>
+    <div class="compare-grid">
+      <div class="compare-card not-safe">
+        <div class="compare-card-title">Not Safe</div>
+        <div class="compare-status">⚠ Deenergized Only</div>
+        <p>Power has been switched off but the line has <strong>not been grounded</strong> by a qualified electrical worker. The line:</p>
+        <ul>
+          <li>Can be re-energized by remote switch or auto-recloser</li>
+          <li>May carry induced voltage from adjacent energized conductors</li>
+          <li>May retain stored charge</li>
+        </ul>
+        <p style="margin-top:8px;font-weight:700;">Maintain full approach distances. Treat as energized.</p>
+      </div>
+      <div class="compare-card safe-ok">
+        <div class="compare-card-title">Safe to Approach</div>
+        <div class="compare-status">✓ Deenergized AND Grounded</div>
+        <p>Line has been deenergized, <strong>visibly grounded</strong> at both sides of the work zone by a qualified electrical worker, and written confirmation has been provided.</p>
+        <ul>
+          <li>Ground clamps visible on the conductor</li>
+          <li>Confirmation received in writing from the utility</li>
+          <li>Qualified electrical worker on-site or on call for the duration</li>
+        </ul>
+        <p style="margin-top:8px;font-weight:700;">Approach distances can be reduced — per written instructions only.</p>
+      </div>
+    </div>
+
+    <!-- Key Contacts -->
+    <h3 style="font-size:1rem;font-weight:700;color:#1e3a4a;margin-bottom:12px;">Key Contacts — BC</h3>
+    <div class="contact-grid">
+
+      <div class="contact-card">
+        <div class="contact-label">Distribution Utility — Okanagan</div>
+        <div class="contact-org">FortisBC</div>
+        <div class="contact-number">1-866-436-7847</div>
+        <div class="contact-note">24/7 line hazards and emergency. Also for line clearance requests, Utility Arborist program, and line guard/deenergization scheduling.</div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-label">Transmission Utility — BC</div>
+        <div class="contact-org">BC Hydro</div>
+        <div class="contact-number">1-888-224-9376</div>
+        <div class="contact-note">1-888-BCHYDRO. For transmission lines, high-voltage corridors, and BC Hydro ROW vegetation management.</div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-label">Occupational Safety — BC</div>
+        <div class="contact-org">WorkSafeBC</div>
+        <div class="contact-number">1-888-621-7233</div>
+        <div class="contact-note">Reporting workplace incidents, regulatory questions, OHS Regulation interpretation. Part 19 governs electrical hazards.</div>
+      </div>
+
+      <div class="contact-card emergency-contact">
+        <div class="contact-label">Emergency</div>
+        <div class="contact-org">911 First</div>
+        <div class="contact-number">9-1-1</div>
+        <div class="contact-note">Call 911 first for any contact incident, downed line, or injury. Then call FortisBC or BC Hydro. Do not attempt rescue near a contacted line.</div>
+      </div>
+
+    </div>
+
+    <!-- Zone Summary -->
+    <h3 style="font-size:1rem;font-weight:700;color:#1e3a4a;margin-bottom:12px;">Zone Summary — At a Glance</h3>
+    <div class="card-grid">
+      <div class="card danger">
+        <div class="card-label">Zone 1 — Limit of Approach</div>
+        <div class="distance-pill">0 – 3.0 m</div>
+        <p><strong>Arborists: STOP.</strong> No entry without utility authorization, deenergization, and grounding. Call FortisBC.</p>
+      </div>
+      <div class="card caution">
+        <div class="card-label">Zone 3 — Caution</div>
+        <div class="distance-pill">3.0 – 6.1 m</div>
+        <p>Entry with controls: insulated tools, qualified supervision, written SWP. No wet rope toward conductors.</p>
+      </div>
+      <div class="card safe">
+        <div class="card-label">Clear Zone</div>
+        <div class="distance-pill">&gt; 6.1 m</div>
+        <p>No special electrical controls required for voltages up to 750 V. Standard PPE and work practices apply.</p>
+      </div>
+    </div>
+
+    <div class="rule-thumb">
+      <div class="rule-thumb-icon">📏</div>
+      <div class="rule-thumb-text"><strong>3.0 metres is your default number.</strong> Unless the utility has confirmed in writing that the voltage is lower and a smaller distance applies, every overhead line in a BC residential neighbourhood gets a 3-metre exclusion zone. A step ladder is 1.8–2.4 m. Three metres is shorter than most people picture.</div>
+    </div>
+
+    <div class="isa-box">
+      <div class="isa-box-header"><span class="isa-icon">📚</span><span class="isa-title">ISA Exam Domain: Safe Work Practices — 28%</span></div>
+      <p><strong>Sources tested:</strong> ANSI Z133 Safe Work Practices for Arborists (current edition); WorkSafeBC OHS Regulation Part 19; TCIA line clearance arboriculture standards.</p>
+      <ul>
+        <li>Know ANSI Z133 Table 1 distances by voltage class</li>
+        <li>Know the definition of "qualified line-clearance arborist" vs. "arborist"</li>
+        <li>Know when a line is considered safe to approach (deenergized AND grounded, confirmed in writing)</li>
+        <li>Know the emergency response if equipment contacts an energized conductor</li>
+        <li>Know which standard governs when two standards conflict (apply the more restrictive)</li>
+        <li>Know what controls are required in the caution zone (Zone 3)</li>
+      </ul>
+      <p style="margin-top:8px;"><strong>Electrical hazard questions appear consistently on the ISA exam.</strong> Safe Work Practices at 28% is the largest single domain. Treat it accordingly.</p>
+    </div>
+
+    <div class="source-footer">
+      <div class="source-footer-title">Sources</div>
+      <p>ANSI Z133 Safe Work Practices for Arborists (current edition) · WorkSafeBC OHS Regulation Part 19 Electrical Safety · FortisBC Utility Arborist and Vegetation Management guidelines · TCIA Line Clearance Arboriculture Best Management Practices · ISA Certified Arborist Exam Study Guide (Safe Work Practices domain)</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function switchTab(n) {
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(function(panel) {
+      panel.classList.remove('active');
+    });
+    var btn = document.getElementById('btn-' + n);
+    var panel = document.getElementById('tab-' + n);
+    if (btn) { btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); }
+    if (panel) { panel.classList.add('active'); }
+    if (btn) { btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+  }
+</script>
+
+</body>
+</html>
