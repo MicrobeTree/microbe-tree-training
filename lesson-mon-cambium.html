@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vascular Cambium & Secondary Growth | Microbe Tree Training</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --green: #3fb950;
+    --green-dim: #1a4a22;
+    --red: #f85149;
+    --red-dim: #3d1a1a;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+    --amber: #d29922;
+    --amber-dim: #3a2a0a;
+    --blue: #58a6ff;
+    --blue-dim: #1a2a4a;
+    --purple: #bc8cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  /* HEADER */
+  .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; }
+  .header-brand { font-weight: 700; font-size: 15px; color: var(--green); letter-spacing: 0.5px; }
+  .header-sub { font-size: 12px; color: var(--text-muted); }
+  .header-badge { margin-left: auto; background: var(--green-dim); border: 1px solid var(--green); color: var(--green); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+
+  /* HERO */
+  .hero { padding: 32px 24px 24px; max-width: 860px; margin: 0 auto; }
+  .day-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 8px; }
+  .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+  .hero-sub { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+  /* REFERENCE CARD */
+  .ref-card { max-width: 860px; margin: 0 auto 32px; padding: 0 24px; }
+  .ref-card-inner { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
+  .ref-card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 16px; }
+  .tree-cross { display: flex; flex-direction: column; gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .layer { display: flex; align-items: center; gap: 12px; padding: 9px 14px; }
+  .layer-label { font-size: 13px; font-weight: 600; min-width: 160px; }
+  .layer-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+  .l-bark { background: #2a1a0a; border-left: 4px solid #8b5e3c; }
+  .l-phloem { background: #1e2a1a; border-left: 4px solid var(--green); }
+  .l-cambium { background: #1a2a3a; border-left: 4px solid var(--blue); }
+  .l-sapwood { background: #1a1f2a; border-left: 4px solid #58a6ff; }
+  .l-heartwood { background: #141414; border-left: 4px solid #6e7681; }
+  .ref-notes { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ref-note { background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .ref-note strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+  /* QUESTIONS */
+  .questions { max-width: 860px; margin: 0 auto; padding: 0 24px 40px; display: flex; flex-direction: column; gap: 20px; }
+  .q-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .q-header { padding: 18px 20px 14px; }
+  .q-num { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 8px; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.6; }
+  .options { display: flex; flex-direction: column; gap: 6px; padding: 0 20px 16px; }
+  .opt { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px; }
+  .opt:hover:not(.answered) { border-color: var(--blue); background: var(--blue-dim); }
+  .opt-letter { font-weight: 700; color: var(--text-muted); min-width: 18px; }
+  .opt.correct { background: var(--green-dim); border-color: var(--green); }
+  .opt.correct .opt-letter { color: var(--green); }
+  .opt.wrong { background: var(--red-dim); border-color: var(--red); }
+  .opt.wrong .opt-letter { color: var(--red); }
+  .opt.answered { cursor: default; }
+  .opt.dimmed { opacity: 0.45; cursor: default; }
+
+  /* LESSON REVEAL */
+  .lesson { display: none; border-top: 1px solid var(--border); padding: 20px; background: #0d1117; }
+  .lesson.show { display: block; }
+  .lesson h3 { font-size: 15px; font-weight: 700; color: var(--blue); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .lesson p { font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 12px; }
+  .lesson ul { margin: 0 0 12px 0; padding-left: 20px; }
+  .lesson li { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 4px; }
+  .lesson li strong { color: var(--green); }
+  .field-note { background: var(--green-dim); border: 1px solid var(--green); border-radius: 8px; padding: 14px 16px; margin-top: 14px; }
+  .field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 6px; }
+  .field-note p { color: #c3e6c3; margin-bottom: 0; font-size: 13px; }
+
+  /* FOOTER */
+  .isa-tag { max-width: 860px; margin: 0 auto; padding: 0 24px 48px; }
+  .isa-tag-inner { border-top: 1px solid var(--border); padding-top: 16px; font-size: 12px; color: var(--text-dim); }
+  .isa-tag-inner strong { color: var(--text-muted); }
+
+  @media (max-width: 600px) {
+    .ref-notes { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header-logo">🌿</span>
+  <div>
+    <div class="header-brand">MICROBE TREE TRAINING</div>
+    <div class="header-sub">West Kelowna, BC · Okanagan Interior</div>
+  </div>
+  <span class="header-badge">WEEK 10 · MONDAY</span>
+</header>
+
+<section class="hero">
+  <div class="day-label">🌿 Tree Biology — Week 10</div>
+  <h1>Vascular Cambium & Secondary Growth</h1>
+  <p class="hero-sub">Every ring of wood your chainsaw passes through was built by one thin layer of cells. Understanding the vascular cambium is understanding how trees grow — and why wounds heal, why bark holds together, and why a drought year shows up in the wood forever.</p>
+</section>
+
+<div class="ref-card">
+  <div class="ref-card-inner">
+    <div class="ref-card-title">📋 Quick Reference — Stem Cross-Section, Inside Out</div>
+    <div class="tree-cross">
+      <div class="layer l-bark">
+        <span class="layer-label" style="color:#c09060;">🪵 Outer Bark (Rhytidome)</span>
+        <span class="layer-desc">Dead periderm layers — insulation, protection, water barrier. Includes cork (phellem) produced by the cork cambium (phellogen).</span>
+      </div>
+      <div class="layer l-phloem">
+        <span class="layer-label" style="color:#3fb950;">🌿 Inner Bark (Secondary Phloem)</span>
+        <span class="layer-desc">Living conducting tissue — transports sugars (photosynthate) from leaves to roots. Produced outward by the vascular cambium. Thin zone just inside bark.</span>
+      </div>
+      <div class="layer l-cambium">
+        <span class="layer-label" style="color:#58a6ff;">💧 Vascular Cambium</span>
+        <span class="layer-desc">One cell layer thick. The engine of secondary growth — produces secondary phloem outward and secondary xylem inward. Fusiform initials + ray initials.</span>
+      </div>
+      <div class="layer l-sapwood">
+        <span class="layer-label" style="color:#a0c4ff;">🌊 Sapwood (Secondary Xylem)</span>
+        <span class="layer-desc">Functional wood — conducts water and minerals upward. Living ray parenchyma stores starch. Contains the most recent growth rings.</span>
+      </div>
+      <div class="layer l-heartwood">
+        <span class="layer-label" style="color:#6e7681;">🪨 Heartwood</span>
+        <span class="layer-desc">Non-conducting, dead xylem. Older sapwood converted by deposition of extractives (tannins, resins, phenolics). Provides structural support only.</span>
+      </div>
+    </div>
+    <div class="ref-notes">
+      <div class="ref-note"><strong>Earlywood vs. Latewood</strong>Earlywood (spring wood): large-diameter cells, thin walls, produced when growth is fast. Latewood (summer wood): small-diameter cells, thick walls, produced as growth slows. Together they form one annual ring.</div>
+      <div class="ref-note"><strong>Two Types of Cambial Initials</strong>Fusiform initials → produce elongated conducting cells (vessels, tracheids, sieve tubes, fibres). Ray initials → produce ray cells that run radially, storing food and enabling lateral transport.</div>
+      <div class="ref-note"><strong>Callus</strong>When cambium is exposed by wounding, it produces callus — undifferentiated parenchyma cells at the wound margin. Callus is not the same as wound wood; wound wood forms as cambium rolls over the callus.</div>
+      <div class="ref-note"><strong>Two Cambia</strong>Vascular cambium (wood + phloem) and cork cambium / phellogen (bark). They are completely separate. Wounding that destroys only phellogen regenerates bark; wounding into cambium impairs future wood production at that site.</div>
+    </div>
+  </div>
+</div>
+
+<div class="questions">
+
+  <!-- Q1 -->
+  <div class="q-card" id="q1">
+    <div class="q-header">
+      <div class="q-num">Question 1 of 5</div>
+      <div class="q-text">Which of the following correctly describes the vascular cambium?</div>
+    </div>
+    <div class="options" id="opts1">
+      <div class="opt" onclick="answer(1,'A')"><span class="opt-letter">A</span><span>A multi-layered zone of cork-producing cells located just inside the bark</span></div>
+      <div class="opt" onclick="answer(1,'B')"><span class="opt-letter">B</span><span>A single layer of meristematic cells that produces secondary xylem inward and secondary phloem outward</span></div>
+      <div class="opt" onclick="answer(1,'C')"><span class="opt-letter">C</span><span>The apical meristem responsible for primary elongation growth in the stem</span></div>
+      <div class="opt" onclick="answer(1,'D')"><span class="opt-letter">D</span><span>The outermost living layer of the trunk, composed of sieve tubes and companion cells</span></div>
+    </div>
+    <div class="lesson" id="lesson1">
+      <h3>The Vascular Cambium — One Layer, Two Outputs</h3>
+      <p>The vascular cambium is a <strong>lateral meristem</strong> — meaning it drives growth in girth (secondary growth), as opposed to apical meristems, which drive elongation (primary growth). It exists as a continuous cylinder of meristematic cells wrapped around the entire trunk, branches, and roots of a woody plant.</p>
+      <p>Despite its enormous influence on tree structure, the vascular cambium is only <strong>one cell layer thick</strong>. It contains two types of cells:</p>
+      <ul>
+        <li><strong>Fusiform initials</strong> — elongated cells that produce the axial system: vessels, tracheids, phloem sieve tubes, fibres, and parenchyma running longitudinally up and down the stem.</li>
+        <li><strong>Ray initials</strong> — smaller, roughly isodiametric cells that produce ray parenchyma — the radial "spokes" running from pith to bark. Rays are critical for lateral transport of water, sugars, and minerals, and for starch storage.</li>
+      </ul>
+      <p>Every division of the cambium produces one cell inward (toward the xylem — secondary xylem) and one outward (toward the bark — secondary phloem). Over years, this builds up the growth rings we see in cross-section and the bark we work around daily.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>When you're felling a ponderosa in Westbank or peeling bark on a freshly dropped log, the cambium shows as a thin, bright green or cream layer between the wood surface and the inner bark. In spring (April–May), the cambium is actively dividing — the cells are barely differentiated and the bark "slips" easily. This is the same reason root injections are most effective in spring: the phloem is wide open and actively moving photosynthate. It's also why you can remove a bark "plug" cleanly in spring for a wick injection, but the same operation is much harder in August when the cambium has shut down for the season.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q2">
+    <div class="q-header">
+      <div class="q-num">Question 2 of 5</div>
+      <div class="q-text">When examining a tree ring in cross-section, the earlywood (spring wood) cells can be identified because they have:</div>
+    </div>
+    <div class="options" id="opts2">
+      <div class="opt" onclick="answer(2,'A')"><span class="opt-letter">A</span><span>Smaller lumen diameter and thicker cell walls than latewood</span></div>
+      <div class="opt" onclick="answer(2,'B')"><span class="opt-letter">B</span><span>Larger lumen diameter and thinner cell walls than latewood</span></div>
+      <div class="opt" onclick="answer(2,'C')"><span class="opt-letter">C</span><span>No cell walls — they are hollow vessels only</span></div>
+      <div class="opt" onclick="answer(2,'D')"><span class="opt-letter">D</span><span>Identical cell dimensions to latewood, but darker in colour</span></div>
+    </div>
+    <div class="lesson" id="lesson2">
+      <h3>Earlywood and Latewood — Reading the Ring</h3>
+      <p>Each annual growth ring is composed of two distinct zones, reflecting the seasonal pattern of cambial activity:</p>
+      <ul>
+        <li><strong>Earlywood (Spring wood)</strong> — formed when temperatures warm and water is available (typically April–June in the Okanagan). The cambium divides rapidly, producing cells with <strong>large lumens (wide internal diameter) and thin walls</strong>. These large vessels or tracheids are optimized for water conduction. In ponderosa pine, earlywood tracheids may be 3–4× the diameter of latewood tracheids. Earlywood appears lighter in colour.</li>
+        <li><strong>Latewood (Summer wood)</strong> — formed as growth slows through summer, especially under drought. Cells have <strong>smaller lumens and thicker cell walls</strong>, which increases wood density and mechanical strength. Latewood appears darker and denser in cross-section.</li>
+      </ul>
+      <p>The abrupt transition from one year's latewood to the next year's earlywood is what defines the visible growth ring boundary. In most temperate species, one ring equals one year of growth — the basis of <strong>dendrochronology</strong> (the science of dating events from tree rings).</p>
+      <p>Ring width tells you about growing conditions. Wide rings = good year (water, warmth, light). Narrow rings = stress year (drought, defoliation, root damage, shading). Checking ring width near the cambium is one way to assess a tree's recent health history — something you can do on a stump right after felling.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The Okanagan is semi-arid — drought stress is the default. In ponderosa pines especially, you'll often see dramatic variation in ring width year to year. A wet spring like 2021–2022 followed by an exceptional drought summer can show up as a visibly wide ring followed by a narrow one. When you're assessing risk on a mature ponderosa at a client's property and you notice narrow rings near the bark, that's a signal the tree has been under stress in recent years — and combined with crown symptoms, it changes your risk conversation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q3">
+    <div class="q-header">
+      <div class="q-num">Question 3 of 5</div>
+      <div class="q-text">A tree sustains a long, narrow wound that destroys the vascular cambium down to the wood on one side of the trunk. Which of the following best predicts the wound closure response?</div>
+    </div>
+    <div class="options" id="opts3">
+      <div class="opt" onclick="answer(3,'A')"><span class="opt-letter">A</span><span>The wound will remain permanently open because wood-producing cells cannot regenerate</span></div>
+      <div class="opt" onclick="answer(3,'B')"><span class="opt-letter">B</span><span>Callus tissue will form at wound margins where the cambium is intact, and wound wood (woundwood) will gradually roll inward over the wound</span></div>
+      <div class="opt" onclick="answer(3,'C')"><span class="opt-letter">C</span><span>The existing sapwood will regenerate the cambium from parenchyma cells within the wood rays</span></div>
+      <div class="opt" onclick="answer(3,'D')"><span class="opt-letter">D</span><span>The wound will be sealed by the cork cambium (phellogen) producing a continuous layer of bark over the exposed wood</span></div>
+    </div>
+    <div class="lesson" id="lesson3">
+      <h3>Wound Closure — Cambium, Callus, and Woundwood</h3>
+      <p>Wound closure in trees is often misunderstood. Trees do <strong>not heal</strong> — they do not repair damaged tissue. Instead, they <strong>seal</strong> wounds by growing new tissue over them. This distinction, articulated by Dr. Alex Shigo in his foundational research on tree anatomy and CODIT, is central to how we think about tree wounds professionally.</p>
+      <p>Here's what actually happens after a wound that destroys the cambium:</p>
+      <ul>
+        <li><strong>Cambial dieback and response</strong>: Immediately after wounding, cells at the wound margin die back a short distance. Surviving cambium at the wound edges begins to respond.</li>
+        <li><strong>Callus formation</strong>: The living cambium at wound margins produces callus — a mass of undifferentiated parenchyma cells. Callus is not wound wood; it's a temporary proliferative tissue that fills the wound margins.</li>
+        <li><strong>Woundwood (Wound Wood) formation</strong>: Over subsequent growing seasons, the cambium rolls over the callus as organized xylem and phloem, producing recognizable rings of wood that grow inward over the wound. This woundwood is structurally different from normal wood — it often has irregular grain and may be more prone to decay. Per Shigo's CODIT model, <strong>Wall 4</strong> — the barrier zone — is laid down by the cambium at the time of wounding, forming the most important compartmentalization boundary.</li>
+        <li><strong>Rate of closure</strong>: Depends on species, wound size, tree health, and season. Well-watered, actively growing trees in the Okanagan close wounds faster than stressed drought-year trees. Large wounds may take decades to close, if ever.</li>
+      </ul>
+      <p>The cork cambium (phellogen) does produce bark over the wound margins, but it cannot bridge across exposed wood — it can only follow where the vascular cambium has laid down new wood first.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>On ponderosa pine, you'll often see old fire scars or mechanical wounds with distinct "cat-face" shapes — the classic woundwood callus rolls in from the sides while the top and bottom often have different closure rates. Next time you're looking at an old ponderosa, look for those lobe patterns on the bark — you're looking at decades of cambial effort to close a wound. Understanding this is also why we never treat a fresh pruning cut with wound paint: it doesn't help callus formation (per ISA Best Management Practices for Pruning) and can actually delay woundwood formation by interfering with the cambial response. Make your cut, move on.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q4">
+    <div class="q-header">
+      <div class="q-num">Question 4 of 5</div>
+      <div class="q-text">The conversion of sapwood to heartwood in a tree involves:</div>
+    </div>
+    <div class="options" id="opts4">
+      <div class="opt" onclick="answer(4,'A')"><span class="opt-letter">A</span><span>Active transport of photosynthate into older xylem cells, causing them to resume metabolic activity</span></div>
+      <div class="opt" onclick="answer(4,'B')"><span class="opt-letter">B</span><span>Death of ray parenchyma and axial parenchyma, accompanied by deposition of extractives (tannins, resins, phenolics) into older xylem cells</span></div>
+      <div class="opt" onclick="answer(4,'C')"><span class="opt-letter">C</span><span>Compression of older xylem vessels by new woundwood growing inward from the cambium</span></div>
+      <div class="opt" onclick="answer(4,'D')"><span class="opt-letter">D</span><span>Deposition of tyloses that fill vessel lumens, making older xylem conductive again</span></div>
+    </div>
+    <div class="lesson" id="lesson4">
+      <h3>Sapwood to Heartwood — The Long Goodbye</h3>
+      <p>As a tree grows, its inner sapwood is gradually converted to heartwood. This is a <strong>natural, programmed process</strong> — not decay, not damage. Understanding it helps you distinguish between a tree with heartwood decay (a structural concern) and a healthy tree with natural heartwood formation (normal).</p>
+      <p>Here's the process:</p>
+      <ul>
+        <li><strong>Sapwood</strong> contains living ray and axial parenchyma cells mixed among the dead conducting vessels and tracheids. These living cells store starch (as NSC — non-structural carbohydrates) and support the conducting function of the xylem around them.</li>
+        <li><strong>Heartwood conversion</strong>: As the tree adds new rings, older sapwood rings are progressively converted. Ray parenchyma and axial parenchyma cells die, releasing their contents. <strong>Extractives</strong> — tannins, resins, phenolic compounds, and other secondary metabolites — are deposited into vessel lumens and cell walls. These extractives give heartwood its characteristic colour (red in cedar, dark brown in black walnut, yellow in ponderosa) and its natural decay resistance.</li>
+        <li><strong>Tyloses</strong>: In some species (notably ring-porous hardwoods like oak), parenchyma cells adjacent to vessel elements balloon into the vessel lumen through pit pairs, forming tyloses. This blocks water conduction and is part of heartwood formation — it's not a disease response. (Tyloses also form in response to wilt pathogens like DED and Verticillium — but that's a different context.)</li>
+      </ul>
+      <p>The number of sapwood rings varies by species: ponderosa pine typically maintains 20–30+ rings of sapwood; paper birch may have only 5–10. Sapwood depth has direct implications for tree injection treatments — injections must reach the sapwood to move upward in the transpiration stream.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>When you drop a large ponderosa and look at the stump cross-section, the heartwood shows as the distinctly yellowish-orange core. In a healthy tree, this is a clean, sharply defined zone. When heartwood decay is present, the boundary blurs, the heartwood is soft, discoloured (often brown or white depending on decay type), and may have a distinct odour. Learning to read that stump — ring width, sapwood depth, heartwood integrity — is an underrated skill for the ISA exam and for your risk assessment work. The ISA Study Guide Chapter on Tree Biology covers this in detail.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q5">
+    <div class="q-header">
+      <div class="q-num">Question 5 of 5</div>
+      <div class="q-text">An arborist cores a mature ponderosa pine and finds three consecutive very narrow growth rings near the bark, followed by wider rings before that. This most likely indicates:</div>
+    </div>
+    <div class="options" id="opts5">
+      <div class="opt" onclick="answer(5,'A')"><span class="opt-letter">A</span><span>The tree is diseased and its cambium is failing</span></div>
+      <div class="opt" onclick="answer(5,'B')"><span class="opt-letter">B</span><span>The most recent three growing seasons were stressful, likely involving drought, defoliation, or root disturbance</span></div>
+      <div class="opt" onclick="answer(5,'C')"><span class="opt-letter">C</span><span>The tree's heartwood is expanding rapidly, compressing the sapwood zone</span></div>
+      <div class="opt" onclick="answer(5,'D')"><span class="opt-letter">D</span><span>The increment core was taken from the wrong direction relative to prevailing wind</span></div>
+    </div>
+    <div class="lesson" id="lesson5">
+      <h3>Reading Growth History from an Increment Core</h3>
+      <p>An increment borer (or increment core taken from a felled stump) is one of the most powerful diagnostic tools an arborist can use. Ring width is a direct record of the tree's growing conditions year by year — a proxy for stress history that no other field assessment can match.</p>
+      <p>Narrow rings near the bark (most recent years) indicate that the cambium has been producing less wood per season. Common causes in the Okanagan Interior:</p>
+      <ul>
+        <li><strong>Drought stress</strong> — the single most common cause of narrow rings in the Okanagan. Reduced water availability limits cambial activity directly. Even a single severe drought year (e.g., 2021 heat dome) can produce a visibly narrow ring.</li>
+        <li><strong>Root zone disturbance</strong> — construction damage, soil compaction, grade changes. Roots can't provide adequate water or nutrient uptake; cambium suffers.</li>
+        <li><strong>Defoliation</strong> — from insects (western spruce budworm, tent caterpillar) or disease. Fewer leaves = less photosynthate = less energy available for cambial growth.</li>
+        <li><strong>Shading increase</strong> — adjacent taller trees have overtopped the subject tree, reducing photosynthetically active radiation (PAR).</li>
+        <li><strong>Systemic disease</strong> — Armillaria root disease, Verticillium, or Phytophthora reducing vascular function.</li>
+      </ul>
+      <p>The pattern matters. Three consecutive narrow rings suggests a sustained multi-year stress, not a single event. Wide rings before that show the tree was healthy and growing well prior. This is actionable: the stress is recent, the cause may be identifiable and addressable.</p>
+      <p>Per the <em>ISA Arborists' Certification Study Guide</em>, growth ring analysis (dendrochronology) is considered a valid tool for evaluating tree health history and establishing baseline growth rates for monitoring programs.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Kelowna and the surrounding municipalities have been under persistent drought conditions. Many mature ponderosas and interior Douglas-firs in interface zones show exactly this pattern — healthy broad rings from the 2000s and 2010s, then progressively narrower rings starting around 2017–2021 as drought years stacked up. If you're assessing a tree for risk and the client says "it's been looking rough for the last couple years," coring it and showing them the actual ring pattern is a powerful diagnostic tool that backs up your professional judgment with physical evidence. The ISA recommends increment coring as part of advanced tree risk assessment (TRAQ methodology).</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="isa-tag">
+  <div class="isa-tag-inner">
+    <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) &nbsp;·&nbsp; <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.) Ch. 2–3 · Shigo, A.L. <em>A New Tree Biology</em> · ISA BMP: Pruning · ISA BMP: Tree Risk Assessment
+  </div>
+</div>
+
+<script>
+const answers = { 1:'B', 2:'B', 3:'B', 4:'B', 5:'B' };
+
+function answer(qNum, chosen) {
+  const opts = document.querySelectorAll(`#opts${qNum} .opt`);
+  const correct = answers[qNum];
+  opts.forEach(opt => {
+    opt.classList.add('answered');
+    const letter = opt.querySelector('.opt-letter').textContent;
+    if (letter === correct) opt.classList.add('correct');
+    else if (letter === chosen && chosen !== correct) opt.classList.add('wrong');
+    else if (letter !== correct) opt.classList.add('dimmed');
+  });
+  document.getElementById(`lesson${qNum}`).classList.add('show');
+  // Scroll to lesson
+  setTimeout(() => {
+    document.getElementById(`lesson${qNum}`).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+</script>
+</body>
+</html>
