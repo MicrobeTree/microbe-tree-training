@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Figure-8 Family | Microbe Tree Training</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --green: #3fb950; --green-dim: #1a4a22;
+    --red: #f85149; --red-dim: #3d1a1a;
+    --text: #e6edf3; --text-muted: #8b949e; --text-dim: #6e7681;
+    --amber: #d29922; --amber-dim: #3a2a0a;
+    --blue: #58a6ff; --blue-dim: #1a2a4a;
+    --orange: #f0883e; --orange-dim: #3a1f0a;
+    --purple: #bc8cff; --purple-dim: #2a1a4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; }
+  .header-brand { font-weight: 700; font-size: 15px; color: var(--amber); letter-spacing: 0.5px; }
+  .header-sub { font-size: 12px; color: var(--text-muted); }
+  .header-badge { margin-left: auto; background: var(--amber-dim); border: 1px solid var(--amber); color: var(--amber); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+
+  .hero { padding: 32px 24px 24px; max-width: 920px; margin: 0 auto; }
+  .day-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--amber); margin-bottom: 8px; }
+  .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+  .hero-sub { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+  .content { max-width: 920px; margin: 0 auto; padding: 0 24px 48px; }
+
+  /* KNOT CARDS */
+  .knot-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  .knot-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .knot-card-header { padding: 14px 16px 8px; }
+  .knot-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .knot-aka { font-size: 11px; color: var(--text-muted); }
+  .knot-svg-wrap { padding: 8px 16px 4px; display: flex; justify-content: center; }
+  .knot-use { background: #0d1117; border-top: 1px solid var(--border); padding: 12px 14px; }
+  .knot-use-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 4px; }
+  .knot-use p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* SECTION DIVIDERS */
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 16px; }
+  .section h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section p { font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 10px; }
+  .section ul { padding-left: 18px; margin-bottom: 10px; }
+  .section li { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 5px; }
+  .section li strong { color: var(--amber); }
+
+  /* STEPS */
+  .steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .step-block { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .step-block-title { background: var(--amber-dim); border-bottom: 1px solid var(--border); padding: 10px 14px; font-size: 13px; font-weight: 700; color: var(--amber); }
+  .step-list { padding: 12px 14px; }
+  .step-item { display: flex; gap: 10px; margin-bottom: 8px; font-size: 13px; line-height: 1.5; }
+  .step-num { background: var(--amber); color: #000; font-weight: 700; font-size: 11px; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-text { color: var(--text-muted); }
+
+  /* WARNING / DO NOT */
+  .warn-box { background: var(--red-dim); border: 1px solid var(--red); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+  .warn-box-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin-bottom: 6px; }
+  .warn-box p { font-size: 13px; color: #f5c0bc; line-height: 1.6; margin-bottom: 0; }
+
+  /* COMPARISON TABLE */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
+  .comp-table th { background: #0d1117; padding: 9px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); border-bottom: 1px solid var(--border); }
+  .comp-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table td:first-child { font-weight: 600; color: var(--text); }
+  .good { color: var(--green) !important; }
+  .bad { color: var(--red) !important; }
+
+  /* FIELD NOTE */
+  .field-note { background: var(--amber-dim); border: 1px solid var(--amber); border-radius: 8px; padding: 14px 16px; margin-top: 14px; }
+  .field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--amber); margin-bottom: 6px; }
+  .field-note p { color: #e6c98a; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  /* ISA TAG */
+  .isa-tag { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 4px; font-size: 12px; color: var(--text-dim); }
+  .isa-tag strong { color: var(--text-muted); }
+
+  @media (max-width: 700px) {
+    .knot-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header-logo">🪚</span>
+  <div>
+    <div class="header-brand">MICROBE TREE TRAINING</div>
+    <div class="header-sub">West Kelowna, BC · Okanagan Interior</div>
+  </div>
+  <span class="header-badge">WEEK 10 · TUESDAY</span>
+</header>
+
+<section class="hero">
+  <div class="day-label">🪚 Equipment, Tools & Knots — Week 10</div>
+  <h1>The Figure-8 Family</h1>
+  <p class="hero-sub">The figure-8 isn't one knot — it's a family. The stopper, the bight, the follow-through. They share a shape and a principle: the double loop creates a stable, load-resistant structure that's easy to inspect and won't jamb like an overhand after a hard load. Know all three. Know when each one is right.</p>
+</section>
+
+<div class="content">
+
+  <!-- KNOT CARDS -->
+  <div class="knot-grid">
+
+    <!-- Figure-8 Stopper -->
+    <div class="knot-card">
+      <div class="knot-card-header">
+        <div class="knot-name" style="color:var(--blue);">Figure-8 Stopper</div>
+        <div class="knot-aka">Also: Flemish knot · Savoy knot</div>
+      </div>
+      <div class="knot-svg-wrap">
+        <svg viewBox="0 0 160 130" width="160" height="130" xmlns="http://www.w3.org/2000/svg">
+          <!-- Rope tail coming in from bottom -->
+          <line x1="80" y1="125" x2="80" y2="100" stroke="#d29922" stroke-width="6" stroke-linecap="round"/>
+          <!-- Figure-8 shape: top loop -->
+          <path d="M 80 100 C 80 85, 110 85, 110 70 C 110 55, 80 55, 80 45 C 80 30, 50 30, 50 45 C 50 60, 80 60, 80 70 C 80 85, 50 85, 50 70"
+                stroke="#d29922" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Cross-over region highlight -->
+          <ellipse cx="80" cy="72" rx="8" ry="5" fill="var(--bg)" stroke="none"/>
+          <path d="M 72 68 C 75 72, 85 72, 88 68" stroke="#d29922" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <!-- rope end at top -->
+          <circle cx="80" cy="38" r="4" fill="#d29922"/>
+          <line x1="80" y1="38" x2="80" y2="25" stroke="#d29922" stroke-width="3" stroke-dasharray="4,3"/>
+        </svg>
+      </div>
+      <div class="knot-use">
+        <div class="knot-use-label">Primary Use</div>
+        <p>Tail-end stopper — prevents rope from running through a device (friction hitch, pulley, ring). Replaces the overhand stopper where security and inspectability matter.</p>
+      </div>
+    </div>
+
+    <!-- Figure-8 on a Bight -->
+    <div class="knot-card">
+      <div class="knot-card-header">
+        <div class="knot-name" style="color:var(--green);">Figure-8 on a Bight</div>
+        <div class="knot-aka">Also: Figure-8 loop · Flemish loop</div>
+      </div>
+      <div class="knot-svg-wrap">
+        <svg viewBox="0 0 160 140" width="160" height="140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Two tail strands at bottom -->
+          <line x1="65" y1="135" x2="65" y2="108" stroke="#3fb950" stroke-width="6" stroke-linecap="round"/>
+          <line x1="95" y1="135" x2="95" y2="108" stroke="#3fb950" stroke-width="6" stroke-linecap="round"/>
+          <!-- Loop at top -->
+          <path d="M 65 108 C 65 90, 80 80, 80 65 C 80 52, 95 48, 100 58 C 105 68, 95 78, 80 78 C 65 78, 55 88, 55 100 C 55 112, 65 118, 80 115 C 95 112, 95 108, 95 108"
+                stroke="#3fb950" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- The loop at top -->
+          <ellipse cx="80" cy="42" rx="18" ry="12" fill="none" stroke="#3fb950" stroke-width="6"/>
+          <!-- cross hint -->
+          <circle cx="80" cy="78" r="5" fill="var(--bg)"/>
+          <line x1="75" y1="76" x2="85" y2="80" stroke="#3fb950" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="knot-use">
+        <div class="knot-use-label">Primary Use</div>
+        <p>Fixed loop tied in the end or middle of a rope — for clipping into a carabiner, attaching a block, or creating an anchor point. Can be tied anywhere in the rope length.</p>
+      </div>
+    </div>
+
+    <!-- Figure-8 Follow-Through -->
+    <div class="knot-card">
+      <div class="knot-card-header">
+        <div class="knot-name" style="color:var(--orange);">Figure-8 Follow-Through</div>
+        <div class="knot-aka">Also: Retrace · Threaded figure-8</div>
+      </div>
+      <div class="knot-svg-wrap">
+        <svg viewBox="0 0 160 145" width="160" height="145" xmlns="http://www.w3.org/2000/svg">
+          <!-- The base figure-8 (traced) -->
+          <path d="M 80 130 C 80 115, 110 108, 110 95 C 110 80, 80 78, 80 65 C 80 50, 50 48, 50 62 C 50 76, 80 78, 80 92 C 80 108, 50 115, 50 130"
+                stroke="#f0883e" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="none" opacity="0.4"></path>
+          <!-- The follow-through trace (parallel, slightly offset) -->
+          <path d="M 80 130 C 80 118, 104 110, 104 95 C 104 82, 74 78, 74 65 C 74 52, 44 50, 44 62 C 44 74, 74 78, 74 92 C 74 108, 44 118, 44 130"
+                stroke="#f0883e" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+          <!-- anchor at top indicated by bar -->
+          <rect x="55" y="18" width="50" height="8" rx="4" fill="#f0883e" opacity="0.6"/>
+          <line x1="80" y1="26" x2="80" y2="50" stroke="#f0883e" stroke-width="3" stroke-dasharray="4,3"/>
+          <text x="80" y="14" text-anchor="middle" font-size="9" fill="#f0883e" font-family="sans-serif">ANCHOR</text>
+        </svg>
+      </div>
+      <div class="knot-use">
+        <div class="knot-use-label">Primary Use</div>
+        <p>Ties a figure-8 loop directly around an anchor, harness tie-in point, or object where a carabiner cannot be used. The trace follows the original knot exactly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYING STEPS -->
+  <div class="section">
+    <h2><span>📐</span> How to Tie Each Knot</h2>
+    <div class="steps-grid">
+      <div class="step-block">
+        <div class="step-block-title" style="color:var(--blue); background: var(--blue-dim);">Figure-8 Stopper</div>
+        <div class="step-list">     <div class="step-item"><div class="step-num" style="background:var(--blue);">1</div><div class="step-text">Hold the working end of the rope. Make a loop by crossing the working end over the standing part — the tail goes under and behind.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--blue);">2</div><div class="step-text">Pass the working end back through the loop from underneath — same direction as you'd tie an overhand, but keep going.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--blue);">3</div><div class="step-text">Route the working end over the standing part and back down through the original loop — you'll see the figure-8 shape forming.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--blue);">4</div><div class="step-text">Dress the knot: tighten both loops symmetrically. Working end should exit the knot in the same direction as the standing part. Leave a tail of at least 10× the rope diameter.</div></div>
+        </div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title" style="color:var(--green); background: var(--green-dim);">Figure-8 on a Bight</div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num" style="background:var(--green);">1</div><div class="step-text">Double back approximately 60cm of rope to create a bight (U-fold). Hold the bight at the fold — you're now working with a doubled strand.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--green);">2</div><div class="step-text">With the doubled strand as your "working end," tie a figure-8 stopper knot: loop over, under, then through.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--green);">3</div><div class="step-text">The folded end (bight) of the rope forms the finished loop. Dress symmetrically — both strands of the loop should run parallel with no crossover.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--green);">4</div><div class="step-text">Verify: the knot has the correct figure-8 shape on both sides. The loop should be the right size for your carabiner or application. Adjust before loading.</div></div>
+        </div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title" style="color:var(--orange); background: var(--orange-dim);">Figure-8 Follow-Through</div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num" style="background:var(--orange);">1</div><div class="step-text">Tie a single-strand figure-8 stopper knot loosely in the working end, leaving enough tail to complete the retrace (at least 50cm for a harness tie-in).</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--orange);">2</div><div class="step-text">Thread the working end through or around your anchor point (harness tie-in loop, ring, or object). The end comes back toward the knot.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--orange);">3</div><div class="step-text">Retrace: follow the original knot's path exactly in reverse, threading the working end alongside — gever crossing — the original strands. Your tail exits parallel to the standing part.</div></div>
+          <div class="step-item"><div class="step-num" style="background:var(--orange);">4</div><div class="step-text">Dress and set: both loop strands should be parallel and snug, no crossing. Tail minimum 10× rope diameter. Inspect — you should see a perfect doubled figure-8 shape.</div></div>
+        </div>
+      </div>
+      <div class="step-block">
+        <div class="step-block-title">🔍 Visual Inspection Check</div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num">✓</div><div class="step-text">The finished knot shows two distinct loops forming the figure-8 shape on both sides. No twisted or crossed strands inside the knot.</div></div>
+          <div class="step-item"><div class="step-num">✓</div><div class="step-text">All strands are parallel throughout — especially critical in the follow-through. Crossed strands reduce knot strength significantly.</div></div>
+          <div class="step-item"><div class="step-num">✓</div><div class="step-text">Working tail exits in the correct direction with adequate length. A short tail that's just past the knot can slip through under load.</div></div>
+          <div class="step-item"><div class="step-num">✓</div><div class="step-text">Knot is fully dressed and set — got just loosely formed. All slack removed before loading. "Dress before you stress" is a simple rule worth keeping.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOAD CHARACTERISTICS & COMPARISON -->
+  <div class="section">
+    <h2><span>⚖️</span> Load Characteristics & Comparison</h2>
+    <p>All knots reduce the working strength of a rope. The mechanism is <strong>stress concentration</strong> at the bend points inside the knot. Tighter radii = more stress concentration = greater strength reduction. The figure-8 family outperforms the overhand family because the figure-8 geometry distributes load across more material with gentler bends.</p>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Knot</th>
+          <th>Approximate Strength Retention</th>
+          <th>Re-tying After Load</th>
+          <th>Inspectability</th>
+          <th>ISA / ANSI Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Overhand (thumb knot)</td>
+          <td class="bad">~55–65%</td>
+          <td class="bad">Jams hard after loading — often untieable</td>
+          <td class="bad">Simple but small; difficult to verify orientation</td>
+          <td>Not recommended as primary connector in arborist systems</td>
+        </tr>
+        <tr>
+          <td>Figure-8 Stopper</td>
+          <td class="good">~75–80%</td>
+          <td class="good">Usually removable after moderate loads</td>
+          <td class="good">Distinctive shape easy to verify at a glance</td>
+          <td>Preferred stopper knot in arboricultural rigging systems</td>
+        </tr>
+        <tr>
+          <td>Figure-8 on a Bight</td>
+          <td class="good">~75–80%</td>
+          <td style="color:var(--amber);">May be stiff after heavy loads; usually openable</td>
+          <td class="good">Excellent — doubled strands easy to inspect</td>
+          <td>Acceptable for rigging attachment points per ISA BMP Rigging</td>
+        </tr>
+        <tr>
+          <td>Figure-8 Follow-Through</td>
+          <td class="good">~75–80%</td>
+          <td style="color:var(--amber);">Moderately difficult after high loads; loosen by hand</td>
+          <td class="good">Best inspectability — doubled parallel strands clearly visible</td>
+          <td>Widely used as harness tie-in; acceptable per ANSI Z133</td>
+        </tr>
+        <tr>
+          <td>Bowline (reference)</td>
+          <td style="color:var(--amber);">~70–75%</td>
+          <td class="good">Generally easy to untie</td>
+          <td style="color:var(--amber);">Requires verification of "rabbit" orientation; can capsize</td>
+          <td>Common in climbing systems; requires backup hitch</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box">
+      <div class="warn-box-label">⚠ Critical Safety Note — ANSI Z133</div>
+      <p>Per <em>ANSI Z133 §7.4.1</em>: "All knots, hitches, and other connections used in tree care operations shall be appropriate for the intended use, shall be properly dressed, and shall be inspected before each use." A figure-8 that has not been properly dressed — parallel strands, correct shape, adequate tail — does not meet this standard regardless of what knot it was intended to be. Dress before you stress, inspect before you climb.</p>
+    </div>
+  </div>
+
+  <!-- WHEN NOT TO USE -->
+  <div class="section">
+    <h2><span>🚫</span> When NOT to Use a Figure-8</h2>
+    <ul>
+      <li><strong>Dynamic shock loading:</strong> The figure-8 is a static knot family. It's not designed to absorb shock loads (sudden falls). In a dynamic fall arrest system, purpose-built connectors and rated arrest lanyards are required per <em>ANSI Z133 §7</em> and <em>WorkSafeBC Part 11</em>. The figure-8 has no energy-absorbing properties.</li>
+      <li><strong>Mid-rope position where load comes from both sides:</strong> The figure-8 on a bight can be loaded from both legs symmetrically, but if one leg takes dramatically more load than the other (e.g. during directional rigging), the knot can shift. Prefer a rated sewn sling or anchor strap in such applications.</li>
+      <li><strong>As the sole attachment in a multi-point rigging system:</strong> Any single knot connection should be backed up with a secondary attachment where possible, per the general safe work practice of redundancy in life-safety systems.</li>
+      <li><strong>On severely worn or damaged rope:</strong> No knot — including a figure-8 — compensates for rope degradation. Inspect your rope end-to-end before tying. A figure-8 on a section of rope with internal core damage is not a safe connection.</li>
+      <li><strong>In place of a rated mechanical connector when one is required:</strong> Certain applications per ANSI Z133 and manufacturer specifications require rated mechanical hardware (carabiners, rings, shackles). A knot does not substitute for a rated connector in those contexts.</li>
+    </ul>
+
+    <div class="field-note">
+      <div class="field-note-label">📋 Field Note — Okanagan</div>
+      <p>On a tight strata site in Kelowna — say a co-dominant Siberian elm between two houses — you might set a rigging point with a figure-8 on a bight to attach your block, then use a figure-8 follow-through on your climbing line to harness if your system requires it. When your lead asks you to show your connection before going up, they want to see the whole figure-8 shape visible, strands parallel, and a decent tail. If it looks like a blob, re-tie it. This is one of the most common informal checks a good crew leader runs — and it's worth doing to each other, not just expecting the new person to get it right on their own. Per <em>ANSI Z133 §4.4</em>: supervisors are responsible for verifying that workers are using proper equipment and techniques.</p>
+    </div>
+  </div>
+
+  <div class="isa-tag">
+    <strong>📚 ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;·&nbsp; <strong>Sources:</strong> ANSI Z133 (2017) §7.4 · ISA BMP: Rigging · ISA Arborists' Certification Study Guide (4th Ed.) Ch. 11 · WorkSafeBC OHS Regulation Part 11
+  </div>
+
+</div>
+
+</body>
+</html>
