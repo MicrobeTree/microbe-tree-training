@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siberian Elm — Tree Profile | Microbe Tree Training</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --green: #3fb950; --green-dim: #1a4a22;
+    --red: #f85149; --red-dim: #3d1a1a;
+    --text: #e6edf3; --text-muted: #8b949e; --text-dim: #6e7681;
+    --amber: #d29922; --amber-dim: #3a2a0a;
+    --blue: #58a6ff; --blue-dim: #1a2a4a;
+    --teal: #39d353; --teal-dim: #0a2a1a;
+    --purple: #bc8cff; --purple-dim: #2a1a4a;
+    --sidebar-w: 220px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; }
+  .header-brand { font-weight: 700; font-size: 15px; color: #39d353; letter-spacing: 0.5px; }
+  .header-sub { font-size: 12px; color: var(--text-muted); }
+  .header-badge { margin-left: auto; background: var(--teal-dim); border: 1px solid #39d353; color: #39d353; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: calc(100vh - 53px); }
+
+  /* SIDEBAR */
+  .sidebar { width: var(--sidebar-w); background: var(--card); border-right: 1px solid var(--border); padding: 24px 0; flex-shrink: 0; position: sticky; top: 0; height: calc(100vh - 53px); overflow-y: auto; }
+  .sidebar-species { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .sidebar-species-icon { font-size: 32px; margin-bottom: 8px; }
+  .sidebar-species-name { font-size: 15px; font-weight: 700; color: #39d353; line-height: 1.2; margin-bottom: 4px; }
+  .sidebar-species-latin { font-size: 12px; color: var(--text-muted); font-style: italic; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 10px; }
+  .nav-item { padding: 9px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; color: var(--text-muted); transition: all 0.15s; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; }
+  .nav-item:hover { background: #0d1117; color: var(--text); }
+  .nav-item.active { background: var(--teal-dim); border-color: #39d353; color: #39d353; font-weight: 600; }
+  .nav-icon { font-size: 15px; }
+
+  /* MAIN CONTENT */
+  .main { flex: 1; overflow-y: auto; }
+  .section-page { display: none; padding: 32px 32px 48px; max-width: 740px; }
+  .section-page.active { display: block; }
+
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 8px; }
+  .section-title { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  .section-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+
+  h3 { font-size: 15px; font-weight: 700; color: #39d353; margin: 20px 0 10px; }
+  p { font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 12px; }
+  ul { padding-left: 18px; margin-bottom: 12px; }
+  li { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 5px; }
+  li strong { color: #39d353; }
+
+  .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+  .spec-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .spec-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); margin-bottom: 4px; }
+  .spec-value { font-size: 14px; color: var(--text); font-weight: 500; }
+
+  .pest-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
+  .pest-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .pest-name { font-size: 14px; font-weight: 700; }
+  .pest-severity { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+  .sev-high { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+  .sev-med { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
+  .sev-low { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+  .pest-card p { font-size: 13px; margin-bottom: 0; color: var(--text-muted); }
+
+  .warn-box { background: var(--red-dim); border: 1px solid var(--red); border-radius: 8px; padding: 14px 16px; margin: 14px 0; }
+  .warn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin-bottom: 6px; }
+  .warn-box p { color: #f5c0bc; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  .info-box { background: var(--blue-dim); border: 1px solid var(--blue); border-radius: 8px; padding: 14px 16px; margin: 14px 0; }
+  .info-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 6px; }
+  .info-box p { color: #b0d4ff; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  .field-note { background: var(--teal-dim); border: 1px solid #39d353; border-radius: 8px; padding: 14px 16px; margin: 14px 0; }
+  .field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #39d353; margin-bottom: 6px; }
+  .field-note p { color: #c3f0c3; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  .isa-tag { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 24px; font-size: 12px; color: var(--text-dim); }
+  .isa-tag strong { color: var(--text-muted); }
+
+  @media (max-width: 680px) {
+    .sidebar { display: none; }
+    .spec-grid { grid-template-columns: 1fr; }
+    .section-page { padding: 20px 16px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header-logo">🌳</span>
+  <div>
+    <div class="header-brand">MICROBE TREE TRAINING</div>
+    <div class="header-sub">West Kelowna, BC · Okanagan Interior</div>
+  </div>
+  <span class="header-badge">WEEK 10 · WEDNESDAY</span>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-species">
+      <div class="sidebar-species-icon">🌳</div>
+      <div class="sidebar-species-name">Siberian Elm</div>
+      <div class="sidebar-species-latin">Ulmus pumila L.</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-item active" onclick="show('identity')"><span class="nav-icon">🔍</span>Identity</div>
+      <div class="nav-item" onclick="show('origin')"><span class="nav-icon">🌍</span>Origin & History</div>
+      <div class="nav-item" onclick="show('biology')"><span class="nav-icon">🌱</span>Biology & Site</div>
+      <div class="nav-item" onclick="show('pests')"><span class="nav-icon">🐛</span>Pest Pressures</div>
+      <div class="nav-item" onclick="show('disease')"><span class="nav-icon">🦠</span>Disease Pressures</div>
+      <div class="nav-item" onclick="show('arborist')"><span class="nav-icon">🧗</span>Arborist Notes</div>
+    </div>
+  </nav>
+
+  <div class="main">
+
+    <!-- IDENTITY -->
+    <div class="section-page active" id="identity">
+      <div class="section-label">🌳 Tree Profile — Week 10</div>
+      <div class="section-title">Siberian Elm</div>
+      <div class="section-sub">The tree that volunteered everywhere, grew fast, and outlasted its welcome. Understanding Siberian elm means understanding one of the most common difficult-client trees in the Okanagan.</div>
+
+      <div class="spec-grid">
+        <div class="spec-item"><div class="spec-label">Scientific Name</div><div class="spec-value"><em>Ulmus pumila</em> L.</div></div>
+        <div class="spec-item"><div class="spec-label">Family</div><div class="spec-value">Ulmaceae (Elm family)</div></div>
+        <div class="spec-item"><div class="spec-label">Common Names</div><div class="spec-value">Siberian elm, Asiatic elm, Chinese elm (often confused with U. parvifolia)</div></div>
+        <div class="spec-item"><div class="spec-label">Hardiness Zone</div><div class="spec-value">Zone 2 — extremely cold tolerant</div></div>
+        <div class="spec-item"><div class="spec-label">Typical Height</div><div class="spec-value">15–25 m (50–80 ft) at maturity</div></div>
+        <div class="spec-item"><div class="spec-label">Typical Spread</div><div class="spec-value">10–18 m; often irregular crown</div></div>
+        <div class="spec-item"><div class="spec-label">Lifespan</div><div class="spec-value">50–80 years (short-lived for a tree)</div></div>
+        <div class="spec-item"><div class="spec-label">Growth Rate</div><div class="spec-value">Fast — 60–90 cm/year in good conditions</div></div>
+      </div>
+
+      <h3>How to Identify It</h3>
+      <p><strong>Leaves:</strong> Simple, alternate, 2–7 cm long. Narrowly ovate to elliptical. Margins doubly serrate (two sizes of teeth). Base slightly asymmetric but less so than most other elms. Surface glabrous (smooth, not rough like Scotch/English elm). Dark green above, paler below. Key: if the leaf feels rough and sandpapery, it's not Siberian elm.</p>
+      <p><strong>Bark:</strong> Grey to grey-brown. On young stems, corky ridges or wings develop (similar to winged elm). On mature trees, bark becomes deeply furrowed with interlacing ridges — rougher and more complex than paper birch but less plated than ponderosa pine. Inner bark (slash test) shows no distinctive colour.</p>
+      <p><strong>Fruit (samara):</strong> Nearly circular winged nutlet, notched at apex, approximately 10–13 mm diameter. Produced in enormous quantities each spring — often before leaves emerge fully. Seed viability is high; germinates in 7–14 days under moist conditions. This is why you find volunteer seedlings everywhere.</p>
+      <p><strong>Twigs:</strong> Grey-brown, slender, glabrous. Buds dark brown to blackish, small (2–3 mm), ovoid, appressed to twig. Alternate arrangement confirmed by the characteristic zigzag pattern of the twig.</p>
+      <p><strong>Form:</strong> Crown often irregular, vase-shaped to broadly spreading. Branching tends to be upright with many co-dominant stems. In stressful sites (parking lots, alleys), crown may be asymmetric and sparse.</p>
+
+      <div class="info-box">
+        <div class="info-label">⚠ Common Misidentification</div>
+        <p><strong>Ulmus pumila vs. Ulmus parvifolia (Chinese elm / lacebark elm):</strong> These species are constantly confused, even in nursery trade. U. parvifolia has distinctive mottled, exfoliating bark (like a sycamore) and is far more ornamentally valuable. It is also semi-evergreen in mild climates. U. pumila has consistently furrowed, non-exfoliating bark and fully deciduous leaves. If the bark looks beautiful and patchy, it's lacebark. If it looks like a standard grey-furrowed street tree, it's Siberian.</p>
+      </div>
+
+      <div class="isa-tag"><strong>📚 ISA Exam Domain:</strong> Tree Biology + Tree Selection & Establishment &nbsp;·&nbsp; Navigate sections using the sidebar</div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section-page" id="origin">
+      <div class="section-label">🌍 Origin & History</div>
+      <div class="section-title">Where It Came From</div>
+      <div class="section-sub">A tree that thrived where others died — and that's exactly why it spread everywhere.</div>
+
+      <h3>Native Range</h3>
+      <p>Ulmus pumila is native to a vast swath of northern and eastern Asia: northern China, Manchuria, Mongolia, Siberia, Kazakhstan, and Turkestan eastward into Korea. Its native habitat spans some of the harshest temperate climates on earth — extreme cold, fierce continental winds, alkaline steppes, and periodic drought. This is a tree purpose-built by evolution for adversity.</p>
+      <p>In its native range, Siberian elm is a pioneer species — one of the first trees to colonize disturbed sites, riverbanks, and eroded slopes. It's not a forest canopy tree in the traditional sense; it's an opportunist that fills gaps. This ecological role explains much of its behaviour in North America.</p>
+
+      <h3>Introduction to North America</h3>
+      <p>Siberian elm arrived in North America in the late 1800s and was heavily promoted through the first half of the 20th century. The primary appeal: it was extremely tough, grew fast, and tolerated conditions that killed other trees. During the Dust Bowl era of the 1930s, the USDA actively promoted Siberian elm for prairie shelterbelts and windbreaks. It fulfilled that role well — and then kept going.</p>
+      <p>By mid-century, it had naturalized across much of the central and western United States and spread into Canada. It is now listed as invasive in British Columbia and several other Canadian provinces. The same qualities that made it useful — rapid growth, prolific seeding, drought tolerance, cold hardiness — make it a competitive invader in disturbed sites, riparian corridors, and fence lines.</p>
+
+      <h3>Okanagan Introduction</h3>
+      <p>In the Okanagan, Siberian elm arrived as a planted tree in the early-to-mid 20th century. Municipal plantings along boulevards, residential plantings for quick shade, agricultural shelterbelts on orchard perimeters — all contributed to establishing a substantial population. Natural spread from those planted trees has produced a second and third generation of volunteers throughout urban and peri-urban areas from Vernon to Osoyoos.</p>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Drive any back alley in Kelowna, Penticton, or Vernon and you'll see Siberian elm volunteers coming up in fence lines, under overhead wires, in neglected corners of properties, and along irrigation ditches. That's 70+ years of prolific seed production doing its work. Understanding the history helps you explain to clients why this tree "just keeps showing up" — and why removal of mature trees should include a follow-up plan to deal with germinating volunteers for the next few springs.</p>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section-page" id="biology">
+      <div class="section-label">🌱 Biology & Site Requirements</div>
+      <div class="section-title">What It Wants (and Doesn't)</div>
+      <div class="section-sub">Fast-growing, hard to kill, and highly adaptable. That's the biology of Siberian elm — but fast growth comes with structural trade-offs that every arborist needs to understand.</div>
+
+      <h3>Climate & Cold Hardiness</h3>
+      <p>Zone 2 cold hardiness means Siberian elm can withstand winter temperatures to approximately –40°C. In the Okanagan, winter temperatures rarely approach these extremes, making cold stress a non-issue. The tree does experience occasional winter sunscald on the southwest aspect — bark that warms rapidly on sunny winter days and then refreezes — but this is minor compared to species with less cold-hardened bark.</p>
+
+      <h3>Drought Tolerance</h3>
+      <p>High drought tolerance once established. Siberian elm accesses deep soil moisture through a spreading root system that can extend well beyond the canopy drip line. In Okanagan summers with weeks of 35°C+ heat and no precipitation, established trees rarely show wilting. This is one reason they persist on neglected properties where other trees have failed.</p>
+      <p>That said, severe prolonged drought (multi-year moisture deficit) does stress Siberian elm — you'll see crown thinning, dieback of smaller branches, and premature leaf drop in extreme drought years. Stressed trees are also more susceptible to the bark beetle vectors of Dutch elm disease.</p>
+
+      <h3>Soil Tolerances</h3>
+      <p>Extremely adaptable. Tolerates alkaline soils (pH 7.5–8.5) common in the Okanagan, compacted urban soils, clay, loam, and sandy loam. Does not do well in prolonged wet conditions or seasonally flooded soils. Roots are shallow and aggressive — they will infiltrate weeping tile systems, crack concrete, and heave sidewalks, particularly in compacted urban sites where they seek surface moisture.</p>
+
+      <h3>Growth Rate and Wood Quality</h3>
+      <p>This is the critical structural trade-off. Siberian elm's fast growth rate — 60–90 cm per year — produces wood with wide growth rings and relatively low density compared to slower-growing species. Lower-density wood is mechanically weaker. Combined with the species' tendency toward multiple co-dominant stems with included bark in tight forks, the result is a tree that develops structural defects quickly. A 30-year-old Siberian elm at a residential property may have major included bark unions in the main scaffold branches that are already failing risk.</p>
+
+      <h3>Root Architecture</h3>
+      <p>Root system is wide-spreading, primarily in the top 45–90 cm of soil. In compacted urban sites, roots may be restricted to the top 30 cm and will run along sidewalks and pavement edges seeking moisture and oxygen. Root grafts between adjacent Siberian elms are common — this is ecologically important because it provides a pathway for Dutch elm disease to move between trees without beetle involvement.</p>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>On almost every Siberian elm job in a residential setting, the first thing to check is the main scaffold branch unions. Look for tight forks with bark inclusions — the bark visible in the union instead of a collar. These are failure points. A 15-year-old Siberian elm might already have three or four unions that qualify as significant structural defects by ISA TRAQ standards. Fast growth + multiple co-dominant stems = defects that accumulate fast. This is a conversation you need to have with clients early, and it's why many municipalities no longer specify Siberian elm for boulevard plantings.</p>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section-page" id="pests">
+      <div class="section-label">🐛 Pest Pressures</div>
+      <div class="section-title">What's After It</div>
+      <div class="section-sub">Siberian elm is tougher than American elm against some pests, but it's far from immune. The elm bark beetle is the one that keeps arborists up at night.</div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🔴 European Elm Bark Beetle (<em>Scolytus multistriatus</em>)</div>
+          <div class="pest-severity sev-high">HIGH — DED Vector</div>
+        </div>
+        <p>This is the one that matters most. The smaller European elm bark beetle is the primary vector of Dutch elm disease in North America. Adults emerge in spring (April–June), feeding in branch crotches of healthy elms before breeding in stressed or dying elm wood. This twig-crotch feeding is where fungal spores — carried from infected wood where the beetle bred — are introduced into the tree's vascular system. Siberian elm is a host for both the beetle and the fungus. Look for tiny D-shaped emergence holes in the bark (1–2 mm), frass (fine sawdust-like boring dust) at the base, and visible egg galleries running across the grain of the wood (2–3 mm wide). See Thursday's lesson for full DED coverage.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🟡 Elm Leaf Beetle (<em>Xanthogaleruca luteola</em>)</div>
+          <div class="pest-severity sev-med">MODERATE</div>
+        </div>
+        <p>Adult beetles skeletonize leaves (feeding between veins from the underside) in spring. Larvae feed in summer, leaving leaves looking scorched. Severe infestations cause complete defoliation. One or two defoliation events is stressful but rarely fatal for an established tree; repeated annual defoliation weakens trees significantly and makes them more susceptible to bark beetle attack. Populations in the Okanagan fluctuate year to year. Management: systemic soil injection of imidacloprid (Bayer Tree & Shrub) or emamectin benzoate (TREE-äge) in spring. Note: insecticide applications affecting pollinators require caution regarding timing relative to bloom.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🟡 European Elm Scale (<em>Gossyparia spuria</em>)</div>
+          <div class="pest-severity sev-med">MODERATE</div>
+        </div>
+        <p>Soft scale that feeds on phloem sap in the trunk and main branches. Heavy infestations cause branch dieback, production of sooty mould (from honeydew), and general crown decline. Look for brownish, oval scales 4–6 mm long with a white waxy fringe on smaller branches. Management: horticultural oil applications when crawlers are active (late spring); systemic insecticides for severe infestations. Check for parasitoid wasp presence before treating — natural controls can be effective.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🟢 Woolly Elm Aphid (<em>Eriosoma americanum</em>)</div>
+          <div class="pest-severity sev-low">LOW–MODERATE</div>
+        </div>
+        <p>Causes distinctive leaf curling (leaf roll galls) on young spring growth. The rolled leaves contain white woolly aphid colonies. Damage looks alarming but is rarely significant to overall tree health. Natural enemies (parasitoid wasps, lady beetles) usually bring populations under control. Monitoring rather than treatment is appropriate in most Okanagan situations unless galling is severe and tree is already stressed.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>When pruning a Siberian elm in the approved window (late summer, or winter when temperatures are consistently below 10°C), always take fresh pruning cuts seriously from a DED beetle standpoint. Even non-DED bark beetles are attracted to the fresh volatiles from elm cuts. If you're working on a tree that already shows signs of stress (crown thinning, dieback), chip the prunings immediately on site or bury them — don't leave bundles of elm brush for days attracting beetles. This is standard PHC practice and aligns with BC's elm management objectives.</p>
+      </div>
+    </div>
+
+    <!-- DISEASE -->
+    <div class="section-page" id="disease">
+      <div class="section-label">🦠 Disease Pressures</div>
+      <div class="section-title">What's Going Wrong</div>
+      <div class="section-sub">Dutch elm disease is the headline, but it's not the only pathogen at work on Siberian elm in the Okanagan.</div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🔴 Dutch Elm Disease (<em>Ophiostoma novo-ulmi</em>)</div>
+          <div class="pest-severity sev-high">HIGH — See Thursday</div>
+        </div>
+        <p>Siberian elm has moderate resistance to DED compared to American elm (Ulmus americana), but it is NOT immune. In BC, DED has not established in the Interior — keeping it that way depends on rigorous pruning bylaws, prompt removal of symptomatic trees, and arborists who take the protocol seriously. Siberian elm's abundance in Okanagan communities means it represents both a major susceptible host population and a potential inoculum reservoir if DED arrives. See Thursday's full lesson for pathogen biology, symptomology, and management.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🟡 Wetwood / Bacterial Slime Flux</div>
+          <div class="pest-severity sev-med">MODERATE: Cosmetiosmetic + Structural Concern</div>
+        </div>
+        <p>Very common on Siberian elm. Caused by various anaerobic bacteria that ferment in the wet heartwood and produce gases, leading to internal pressure that forces sap/liquid through cracks, wounds, or branch unions. The resulting liquid is toxic to cambium and supports growth of sooty mould. Signs: dark wet streaks down the bark, foul odour, dead patches of bark below weeping wounds. Not directly treatable; management involves improving tree health through adequate water and appropriate fertilization. Old "drain tube" treatments are no longer recommended by ISA BMP standards — they don't address the cause and can worsen the condition.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🟡 Elm Anthracnose (<em>Gnomonia ulmea</em>)</div>
+          <div class="pest-severity sev-med">LOW–MODERATE</div>
+        </div>
+        <p>Fungal leaf spot disease most severe in cool, wet spring conditions. Causes brown irregular blotches on leaves, sometimes with concentric rings. Severe infections can cause early defoliation. In the semi-arid Okanagan, anthracnose is generally less prevalent than in wetter coastal climates, but wet springs can trigger outbreaks. Management: rake and remove infected leaf litter; improve air circulation through pruning; fungicide applications (copper-based or sterol inhibitors) at bud break if needed for high-value trees.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="pest-card-header">
+          <div class="pest-name">🔴 Wood Decay Fungi (Various)</div>
+          <div class="pest-severity sev-high">HIGH — Structural Risk</div>
+        </div>
+        <p>Fast-growing, lower-density wood makes Siberian elm highly susceptible to a range of wood decay fungi once the bark is breached. Common decay fungi on Okanagan Siberian elms include <em>Ganoderma applanatum</em> (bracket/conk at base = butt rot), <em>Phellinus</em> spp. (heartwood decay, often without visible fruiting body), and various white rot fungi in the upper crown. Any Siberian elm with fruiting bodies (brackets, conks) at the base or on the trunk should be considered a priority for formal risk assessment using TRAQ protocol. The combination of weak wood, structural defects (included bark), and decay can escalate risk rapidly.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>When you see a large Siberian elm at a client's property with a conk at the base, don't minimize it. Explain that wood decay is not cosmetic — it's structural. The ISA TRAQ assessment protocol exists precisely to quantify this risk in a defensible, professional way. Many clients will balk at the cost of a full risk assessment, but framing it as "let's understand what we're dealing with before it becomes an emergency removal after a failure" usually lands. Proactive assessment is always cheaper than reactive emergency work — for the client and the crew.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section-page" id="arborist">
+      <div class="section-label">🧗 Arborist Notes</div>
+      <div class="section-title">Field & PHC Guidance</div>
+      <div class="section-sub">How to work on this tree, what to watch for, and how to talk about it with clients.</div>
+
+      <h3>🗓 Pruning Window — CRITICAL</h3>
+      <p>In BC, elm pruning during the beetle flight season is regulated to prevent spread of Dutch elm disease. The general provincial guideline prohibits pruning elms from <strong>April 1 to August 31</strong>. Many Okanagan municipalities have their own bylaws that align with or exceed this restriction. Always verify local municipal bylaws before scheduling elm work.</p>
+      <p>The recommended window for elm pruning in the Okanagan Interior is:</p>
+      <ul>
+        <li><strong>Late summer / early fall (September – October)</strong> — after beetle flight activity drops, before freezing; allows some wound response before dormancy</li>
+        <li><strong>Winter (November – March)</strong> when temperatures are consistently below 10°C — beetle flight is essentially zero; preferred window for major structural work</li>
+      </ul>
+
+      <div class="warn-box">
+        <div class="warn-label">⚠ Regulatory / Legal Note</div>
+        <p>Pruning elms during the restricted window is not just poor practice — it may violate municipal bylaws and could expose the company to liability if DED subsequently spreads from a site where work was performed out of compliance. When a client asks for elm pruning in May, the answer is: not yet, here's why, here's when we can. Document this in writing.</p>
+      </div>
+
+      <h3>🏗 Structural Issues to Assess</h3>
+      <ul>
+        <li><strong>Co-dominant stems with included bark</strong> — extremely common, especially in the upper scaffold. Assess the depth of bark inclusion (probe with narrow screwdriver), crown load at the union, and any signs of previous movement or cracking. Cabling may be appropriate; removal may be necessary.</li>
+        <li><strong>Basal decay</strong> — look for soft bark, adventitious sprouts at the base (stress response), bark staining or weeping below soil line. Probe with a mallet for hollow sound. Conks or fruiting bodies = formal risk assessment required.</li>
+        <li><strong>Crown dieback</strong> — dead branches >25mm diameter in the crown should be noted. Distinguish between normal self-pruning of lower/interior branches (acceptable) and progressive dieback of scaffold branches (concern).</li>
+        <li><strong>Root zone conflicts</strong> — check for surface roots damaging hardscaping; assess root zone compaction on urban sites; check for roots at irrigation heads or buried utilities (common).</li>
+      </ul>
+
+      <h3>💊 PHC Approach</h3>
+      <p>If a client wants to retain a mature Siberian elm in good condition:</p>
+      <ul>
+        <li><strong>Adequate deep watering</strong> in summer (Okanagan drought conditions stress even drought-tolerant trees after 3+ weeks without precipitation)</li>
+        <li><strong>Mulch the root zone</strong> to retain soil moisture and moderate soil temperature — 75–100mm of wood chip mulch in a ring starting 15cm from the trunk, extending to or beyond drip line</li>
+        <li><strong>Structural pruning</strong> within the approved window: subordination of co-dominant stems, deadwood removal, weight reduction of over-extended scaffold branches</li>
+        <li><strong>Preventive elm bark beetle management</strong>: trunk spray applications of pyrethroid insecticides in late March / early April (before beetle flight) can reduce beetle activity on high-value trees</li>
+        <li><strong>DED monitoring</strong>: teach the client to report any sudden flagging (yellowing/browning of a branch tip mid-season) immediately</li>
+      </ul>
+
+      <h3>💬 Client Conversations</h3>
+      <p><strong>Strata context:</strong> Siberian elm is generally not recommended for new strata plantings. Many strata corporations are transitioning away from existing Siberian elm trees — the maintenance costs (structural work, municipal pruning restrictions, root damage to hardscaping) typically exceed those of better-suited boulevard species. If asked, recommended alternatives for the Okanagan include: Kentucky coffeetree (<em>Gymnocladus dioicus</em>), honeylocust (<em>Gleditsia triacanthos</em> var. inermis), bur oak (<em>Quercus macrocarpa</em>), or linden (<em>Tilia</em> species) for appropriate sites.</p>
+      <p><strong>When presenting risk:</strong> Avoid framing the conversation as "your tree is dangerous." Instead: "Based on what I'm seeing, there are two or three structural issues that we should address proactively. The good news is we have options that are lower cost now than waiting." Keep the conversation about informed decision-making, not alarm.</p>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>A lot of the Siberian elms we work on in the Okanagan are 40–60 years old and approaching the end of their natural lifespan. They're also often the largest tree on the property — the shade tree that defines the backyard, the tree the kids grew up with. Clients are emotionally attached to them. The most professional thing we can do is give them an accurate, honest picture: here's what's there structurally, here's the timeline of risk, here are your options. Not "cut it down tomorrow" and not "it's fine." The ISA Code of Ethics requires us to provide professional, honest assessments. That's what differentiates a Microbe Tree consultation from a competitor who either alarms or reassures without evidence.</p>
+      </div>
+
+      <div class="isa-tag"><strong>📚 ISA Exam Domain:</strong> Tree Biology + Tree Risk Assessment + Tree Selection & Establishment + PHC &nbsp;·&nbsp; <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.) · ISA BMP: Pruning · BC Ministry of Agriculture Elm Management · City of Kelowna Tree Bylaw</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>
