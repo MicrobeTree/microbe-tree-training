@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dutch Elm Disease | Microbe Tree Training</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --green: #3fb950; --green-dim: #1a4a22;
+    --red: #f85149; --red-dim: #3d1a1a;
+    --text: #e6edf3; --text-muted: #8b949e; --text-dim: #6e7681;
+    --amber: #d29922; --amber-dim: #3a2a0a;
+    --blue: #58a6ff; --blue-dim: #1a2a4a;
+    --purple: #bc8cff; --purple-dim: #2a1a4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; }
+  .header-brand { font-weight: 700; font-size: 15px; color: var(--purple); letter-spacing: 0.5px; }
+  .header-sub { font-size: 12px; color: var(--text-muted); }
+  .header-badge { margin-left: auto; background: var(--purple-dim); border: 1px solid var(--purple); color: var(--purple); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+
+  .hero { padding: 32px 24px 24px; max-width: 860px; margin: 0 auto; }
+  .day-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--purple); margin-bottom: 8px; }
+  .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+  .hero-sub { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+  /* CYCLE DIAGRAM */
+  .cycle-wrap { max-width: 860px; margin: 0 auto 24px; padding: 0 24px; }
+  .cycle-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
+  .cycle-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 16px; }
+  .cycle-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .cycle-step { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 12px 10px; text-align: center; position: relative; }
+  .cycle-step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--purple); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; }
+  .cycle-step-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .cycle-step-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+  .cycle-arrow { display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-size: 18px; padding-top: 20px; }
+
+  /* QUESTIONS */
+  .questions { max-width: 860px; margin: 0 auto; padding: 0 24px 40px; display: flex; flex-direction: column; gap: 20px; }
+  .q-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .q-header { padding: 18px 20px 14px; }
+  .q-num { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 8px; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.6; }
+  .options { display: flex; flex-direction: column; gap: 6px; padding: 0 20px 16px; }
+  .opt { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px; }
+  .opt:hover:not(.answered) { border-color: var(--purple); background: var(--purple-dim); }
+  .opt-letter { font-weight: 700; color: var(--text-muted); min-width: 18px; }
+  .opt.correct { background: var(--green-dim); border-color: var(--green); }
+  .opt.correct .opt-letter { color: var(--green); }
+  .opt.wrong { background: var(--red-dim); border-color: var(--red); }
+  .opt.wrong .opt-letter { color: var(--red); }
+  .opt.answered { cursor: default; }
+  .opt.dimmed { opacity: 0.45; cursor: default; }
+
+  .lesson { display: none; border-top: 1px solid var(--border); padding: 20px; background: #0d1117; }
+  .lesson.show { display: block; }
+  .lesson h3 { font-size: 15px; font-weight: 700; color: var(--purple); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .lesson p { font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 12px; }
+  .lesson ul { margin: 0 0 12px 0; padding-left: 20px; }
+  .lesson li { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 5px; }
+  .lesson li strong { color: var(--purple); }
+
+  .warn-box { background: var(--red-dim); border: 1px solid var(--red); border-radius: 8px; padding: 14px 16px; margin-top: 14px; }
+  .warn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin-bottom: 6px; }
+  .warn-box p { color: #f5c0bc; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  .field-note { background: var(--purple-dim); border: 1px solid var(--purple); border-radius: 8px; padding: 14px 16px; margin-top: 14px; }
+  .field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--purple); margin-bottom: 6px; }
+  .field-note p { color: #d4b8f5; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  .isa-tag { max-width: 860px; margin: 0 auto; padding: 0 24px 48px; }
+  .isa-tag-inner { border-top: 1px solid var(--border); padding-top: 16px; font-size: 12px; color: var(--text-dim); }
+  .isa-tag-inner strong { color: var(--text-muted); }
+
+  @media (max-width: 640px) {
+    .cycle-steps { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header-logo">🦠</span>
+  <div>
+    <div class="header-brand">MICROBE TREE TRAINING</div>
+    <div class="header-sub">West Kelowna, BC · Okanagan Interior</div>
+  </div>
+  <span class="header-badge">WEEK 10 · THURSDAY</span>
+</header>
+
+<section class="hero">
+  <div class="day-label">🦠 Pests & Diseases — Week 10</div>
+  <h1>Dutch Elm Disease</h1>
+  <p class="hero-sub">One of the most destructive tree diseases in North American history — and one that BC has managed to keep out of the Interior. Understanding DED is not optional for arborists in the Okanagan. Our elm pruning bylaws, our professional conduct, and the health of thousands of elm trees depend on the crew knowing exactly what DED is and what it isn't.</p>
+</section>
+
+<div class="cycle-wrap">
+  <div class="cycle-card">
+    <div class="cycle-title">📋 DED Disease Cycle at a Glance</div>
+    <div class="cycle-steps">
+      <div class="cycle-step">
+        <div class="cycle-step-num">1</div>
+        <div class="cycle-step-title">Overwintering</div>
+        <div class="cycle-step-desc">Elm bark beetle larvae overwinter beneath bark of stressed, dying, or dead elm wood. Fungal mycelium persists in infected wood.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-step-num">2</div>
+        <div class="cycle-step-title">Spring Emergence</div>
+        <div class="cycle-step-desc">Adult beetles emerge April–June. Contaminated with <em>Ophiostoma</em> spores (ascospores, conidia) from infected wood.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-step-num">3</div>
+        <div class="cycle-step-title">Twig Crotch Feeding</div>
+        <div class="cycle-step-desc">Beetles feed in branch crotches of healthy elms to mature sexually. Introduce fungal spores into fresh wounds. Infection begins in xylem.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-step-num">4</div>
+        <div class="cycle-step-title">Vascular Colonization</div>
+        <div class="cycle-step-desc">Fungus colonizes xylem vessels. Tree produces tyloses and gums to fight back — but this response also blocks water flow. Wilting (flagging) results.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-step-num">5</div>
+        <div class="cycle-step-title">Beetle Breeding</div>
+        <div class="cycle-step-desc">Infected/stressed/dying trees attract beetles for breeding. Galleries are excavated beneath bark. Fungus sporulates in galleries.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-step-num">6</div>
+        <div class="cycle-step-title">Root Graft Spread</div>
+        <div class="cycle-step-desc">Adjacent elm roots graft together. Fungal mycelium moves through root grafts from infected to healthy trees — no beetle needed.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-step-num">7</div>
+        <div class="cycle-step-title">New Emergence</div>
+        <div class="cycle-step-desc">New adult beetles emerge from breeding wood, carrying fresh fungal inoculum. Cycle repeats and expands if unchecked.</div>
+      </div>
+      <div class="cycle-step" style="border-color: var(--purple);">
+        <div class="cycle-step-num">🛡</div>
+        <div class="cycle-step-title">Prevention Point</div>
+        <div class="cycle-step-desc">Remove dead/dying elm wood promptly. Prune only outside beetle flight season. Disrupt root grafts between adjacent elms.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="questions">
+
+  <!-- Q1 -->
+  <div class="q-card" id="q1">
+    <div class="q-header">
+      <div class="q-num">Question 1 of 5</div>
+      <div class="q-text">What organism causes Dutch elm disease?</div>
+    </div>
+    <div class="options" id="opts1">
+      <div class="opt" onclick="answer(1,'A')"><span class="opt-letter">A</span><span>The elm bark beetle (<em>Scolytus multistriatus</em>), which bores into the xylem and causes vascular collapse</span></div>
+      <div class="opt" onclick="answer(1,'B')"><span class="opt-letter">B</span><span>A phytoplasma transmitted by leafhoppers, causing systemic chlorosis and dieback</span></div>
+      <div class="opt" onclick="answer(1,'C')"><span class="opt-letter">C</span><span>The ascomycete fungus <em>Ophiostoma novo-ulmi</em> (and the less aggressive <em>O. ulmi</em>), which colonizes and occludes the xylem vessels</span></div>
+      <div class="opt" onclick="answer(1,'D')"><span class="opt-letter">D</span><span>A soilborne oomycete (<em>Phytophthora</em>) that destroys the fine root system before moving into the stem</span></div>
+    </div>
+    <div class="lesson" id="lesson1">
+      <h3>The Pathogen — Ophiostoma novo-ulmi</h3>
+      <p>Dutch elm disease is caused by the ascomycete (sac fungus) <em>Ophiostoma novo-ulmi</em> Brasier — the more aggressive of two related species. The older, less virulent species is <em>O. ulmi</em>, which caused the first pandemic of DED in the 20th century. <em>O. novo-ulmi</em> arrived in the 1970s and 1980s and is responsible for the devastation seen in North American elm populations since then.</p>
+      <p>The elm bark beetle is the <strong>vector</strong> — the organism that physically carries and delivers the pathogen to healthy trees — but the beetle is not the disease. The beetle is the delivery mechanism; the fungus is the disease agent. This distinction matters for management: eliminating beetles doesn't eliminate the disease from a community, but eliminating infected wood (breeding habitat for beetles) reduces the vector population and the inoculum source simultaneously.</p>
+      <p>The fungus produces three types of spores:</p>
+      <ul>
+        <li><strong>Ascospores</strong> — sexually produced spores formed in perithecia (flask-shaped fruiting bodies) in beetle galleries; spread primarily by beetles</li>
+        <li><strong>Conidia (yeast phase)</strong> — asexually produced, the form that spreads through the tree's vascular system via transpiration; this is how the fungus colonizes from the point of infection upward and outward</li>
+        <li><strong>Sticky spores (sporodochia)</strong> — produced in the galleries, directly coating emerging adult beetles</li>
+      </ul>
+      <p>Once <em>Ophiostoma</em> conidia enter the xylem, they are carried upward by transpiration flow and germinate in the vessels. The tree's defense response (tylosis formation, gum production, phenolic deposition) occludes the vessels — this response is effective for some localized infections but ultimately restricts water flow to the crown, causing wilt.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>If a client points to a wilting elm branch and says "the beetles got it," gently correct the framing. The beetles carried the disease, but the beetle itself isn't what's killing the tree. This distinction matters because effective management targets both the fungus (through infected wood removal and fungicide) and the beetle vector (through sanitation and insecticide). Understanding the two-organism system helps us explain why elm wood transport, not just beetle activity, is a major pathway for DED spread across regions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q2">
+    <div class="q-header">
+      <div class="q-num">Question 2 of 5</div>
+      <div class="q-text">The hallmark early symptom of Dutch elm disease — the sudden wilting and browning of leaves on one or more branches, often with leaves remaining attached — is called:</div>
+    </div>
+    <div class="options" id="opts2">
+      <div class="opt" onclick="answer(2,'A')"><span class="opt-letter">A</span><span>Chlorosis</span></div>
+      <div class="opt" onclick="answer(2,'B')"><span class="opt-letter">B</span><span>Necrosis</span></div>
+      <div class="opt" onclick="answer(2,'C')"><span class="opt-letter">C</span><span>Flagging</span></div>
+      <div class="opt" onclick="answer(2,'D')"><span class="opt-letter">D</span><span>Dieback</span></div>
+    </div>
+    <div class="lesson" id="lesson2">
+      <h3>Symptomology — Recognizing DED in the Field</h3>
+      <p><strong>Flagging</strong> is the term for the sudden wilting, yellowing, and browning of leaves on one or more branches — often appearing mid-summer, mid-season, with no seasonal explanation. Leaves curl, turn brown, but often remain attached to the branch for an extended period rather than dropping immediately. A branch that was green last week looks dead this week — that's a flag. Literally.</p>
+      <p>The progression of symptoms follows a logical pattern based on how the fungus moves through the tree:</p>
+      <ul>
+        <li><strong>Point of infection</strong>: Twig crotch feeding wound from a beetle carrying fungal spores. Infection enters the current year's xylem in the small branches.</li>
+        <li><strong>Upward movement</strong>: Conidia move with transpiration flow — which means upward and outward, toward the ends of branches. This is why flagging often appears at branch tips first, then progresses back toward the main stem.</li>
+        <li><strong>Downward movement</strong>: Once the fungus reaches the trunk, it can move into the root system, enabling root graft transmission to adjacent trees.</li>
+        <li><strong>Xylem staining</strong>: The most important diagnostic feature after flagging. A cross-section or peeled strip of bark from a flagging branch (2–4 cm diameter, within the current season's growth) will show a brown arc or streaking in the current sapwood ring. This staining is not always continuous; look in multiple places along the branch.</li>
+      </ul>
+      <p><strong>Differential diagnosis</strong> — symptoms to distinguish from DED:</p>
+      <ul>
+        <li><strong>Drought stress</strong>: General wilt across the whole crown or heavily sun-exposed sides; no xylem staining; no flagging pattern starting on individual branches</li>
+        <li><strong>Verticillium wilt</strong>: Also produces xylem staining (usually greenish-brown, not bright brown), but affects a wider range of species and may show streaking in multiple growth rings including older wood; slower progression</li>
+        <li><strong>Construction root damage</strong>: Crown thinning over months or years, not sudden branch death; may be one-sided; no xylem staining; history of soil disturbance near tree</li>
+        <li><strong>Elm bark beetle damage alone</strong> (without DED): Beetles infesting a stressed elm will cause localized dieback, but without the characteristic xylem staining pattern</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>If you're assessing a Siberian elm in late June or July and a scaffold branch has leaves that are curling and browning mid-branch — not just at the very tip — take it seriously. Peel back the bark on a smaller affected branch and look for brown streaking in the wood. If you see it, stop work, document with photos, and contact the municipal arborist. Do not cut anything else until you have direction. The priority is to avoid spreading potential inoculum further. This is the protocol, and following it is part of our professional responsibility as arborists in BC.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q3">
+    <div class="q-header">
+      <div class="q-num">Question 3 of 5</div>
+      <div class="q-text">BC municipalities restrict elm pruning during spring and summer (typically April 1 – August 31). What is the PRIMARY reason for this timing restriction?</div>
+    </div>
+    <div class="options" id="opts3">
+      <div class="opt" onclick="answer(3,'A')"><span class="opt-letter">A</span><span>To protect nesting birds that use elm branches as nest sites during spring breeding season</span></div>
+      <div class="opt" onclick="answer(3,'B')"><span class="opt-letter">B</span><span>Because elms bleed sap excessively if pruned while in active growth, creating an entry point for decay fungi</span></div>
+      <div class="opt" onclick="answer(3,'C')"><span class="opt-letter">C</span><span>Because elm bark beetles are actively flying and foraging during this period; pruning wounds attract beetles, which may carry DED spores from infected wood nearby</span></div>
+      <div class="opt" onclick="answer(3,'D')"><span class="opt-letter">D</span><span>Because elm xylem vessels are maximally dilated in summer and DED fungicide treatments are more effective if applied before this period</span></div>
+    </div>
+    <div class="lesson" id="lesson3">
+      <h3>The Pruning Window — Why It Exists and Why It Matters</h3>
+      <p>The pruning restriction exists because of a specific, well-documented mechanism: elm bark beetles are attracted to the volatile compounds released from fresh pruning wounds in healthy elms. If the beetles visiting that wound are carrying <em>Ophiostoma</em> spores from infected wood where they recently bred, they can introduce the disease in the same visit. Fresh pruning wounds are one of the highest-risk entry points for DED.</p>
+      <p>The beetle flight season in the BC Interior generally runs <strong>mid-April through late August</strong>, peaking in May and June and again in July as a second generation emerges. Some variation occurs year to year based on spring temperatures — a warm early spring accelerates beetle emergence. The general pruning prohibition (April 1 – August 31) in most BC municipalities conservatively brackets this flight period.</p>
+      <p>Approved pruning windows in the Okanagan Interior:</p>
+      <ul>
+        <li><strong>September 1 – March 31</strong> — general window when beetles are not actively flying</li>
+        <li><strong>December – February</strong> — optimal for major structural work; beetle flight effectively zero, freezing temperatures suppress wound volatile release</li>
+      </ul>
+      <p>Municipal bylaws vary. Some municipalities allow September 1 pruning; others extend the restriction to September 30. Always verify with the specific municipality before scheduling elm work. Maintaining a list of local elm bylaw contacts (City of Kelowna, City of Penticton, City of Vernon, District of Peachland, etc.) is good company practice.</p>
+      <p>BC's approach is consistent with the national consensus: <em>CFIA's National Elm Pruning Protocol</em> and provincial guidance from the BC Ministry of Agriculture both emphasize pruning timing as a primary DED prevention tool.</p>
+
+      <div class="warn-box">
+        <div class="warn-label">⚠ Compliance Note</div>
+        <p>Pruning an elm outside the approved window — even for emergency reasons like storm damage — requires notification of and direction from the local municipal arborist in most jurisdictions. Emergency pruning may be permitted with oversight. Never assume it's fine to prune an elm in May without checking. The legal and professional consequences of a DED introduction linked to out-of-window pruning are significant.</p>
+      </div>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>You will absolutely get calls from clients in June who want their elm pruned. Branches rubbing the house, a limb that went over in a windstorm, a view they want to open. The answer is: "We can schedule that for September or later this fall. Here's why" — and then explain DED and our obligation to the wider community of elm trees in the area. Most clients respond well when the reason is explained clearly. If they push back hard, the company's position is firm: we don't prune elms outside the approved window. Document that conversation in writing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q4">
+    <div class="q-header">
+      <div class="q-num">Question 4 of 5</div>
+      <div class="q-text">Dutch elm disease can spread from an infected tree to a healthy adjacent elm without any beetle activity. What is this transmission pathway?</div>
+    </div>
+    <div class="options" id="opts4">
+      <div class="opt" onclick="answer(4,'A')"><span class="opt-letter">A</span><span>Airborne release of conidia from infected leaf surfaces, which land and germinate on adjacent elm leaves</span></div>
+      <div class="opt" onclick="answer(4,'B')"><span class="opt-letter">B</span><span>Soil-borne movement of ascospores through mycorrhizal networks connecting adjacent elms</span></div>
+      <div class="opt" onclick="answer(4,'C')"><span class="opt-letter">C</span><span>Natural root grafting (anastomosis) between adjacent elm root systems, allowing fungal mycelium to pass directly between trees</span></div>
+      <div class="opt" onclick="answer(4,'D')"><span class="opt-letter">D</span><span>Splash dispersal of spore-laden sap from wounds during rainfall events</span></div>
+    </div>
+    <div class="lesson" id="lesson4">
+      <h3>Root Graft Transmission — DED's Second Vector</h3>
+      <p>Root grafting (more precisely, root anastomosis) is the natural fusion of roots from adjacent trees of the same or closely related species. In dense elm plantings — boulevard rows, old shelterbelts, planted windbreaks — roots of adjacent trees overlap and fuse. The xylem and phloem of the grafted roots become continuous across the graft, allowing water, nutrients, and unfortunately, pathogens to move from tree to tree.</p>
+      <p>Once DED has moved into the root system of an infected tree, the fungal mycelium can cross through root grafts and colonize the xylem of a neighbouring tree. The healthy tree may show no symptoms for weeks or months, then begin flagging as the fungus establishes and the tree responds.</p>
+      <p>Root graft spread has several important management implications:</p>
+      <ul>
+        <li><strong>Pattern recognition</strong>: Trees failing via root graft transmission often do so in a "run" along a boulevard or row — sequential trees dying in a line radiating from the first infected tree. This pattern suggests root graft spread and indicates mechanical barrier installation or wider removal zone.</li>
+        <li><strong>Root graft disruption</strong>: Where high-value elms need to be protected from an adjacent infected tree, a mechanical barrier (deep trenching or Vibraline installation, typically 60–90 cm depth) between the trees can disrupt root grafts. This must be done before the adjacent tree is removed if possible.</li>
+        <li><strong>Removal stump management</strong>: Stump grinding or chemical stump treatment (with a systemic herbicide directed at killing root remnants) helps reduce the root graft pathway from a removed infected tree's remaining root system to adjacent healthy trees.</li>
+      </ul>
+      <p>Root graft transmission is one reason why DED can decimate an entire boulevard of American elms in 2–3 years once it establishes — the trees have been root-grafted for decades and the fungus moves through the network faster than symptoms appear.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>In Kelowna, there are some older residential streets where Siberian elms have been planted in a row along the boulevard for 50+ years. Those root systems are almost certainly interconnected through multiple graft points. If DED were to establish in one tree on that block, the entire row could be gone within two seasons. This is the nightmare scenario our provincial DED prevention program is designed to avoid. When you're grinding a Siberian elm stump anywhere near other elms, grind deep — and consider recommending root disruption treatment if the client plans to retain adjacent elm trees.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q5">
+    <div class="q-header">
+      <div class="q-num">Question 5 of 5</div>
+      <div class="q-text">You're on a job in Kelowna in mid-July and notice a Siberian elm with a branch that has suddenly wilted and browned — the leaves are still attached, curled and brown, on about 4 branches in one section of the crown. You peel a strip of bark from one affected branch and see distinct brown streaking in the sapwood. What is the correct sequence of actions?</div>
+    </div>
+    <div class="options" id="opts5">
+      <div class="opt" onclick="answer(5,'A')"><span class="opt-letter">A</span><span>Immediately prune out all affected branches, chip them on-site, and apply propiconazole injection to protect the remaining crown</span></div>
+      <div class="opt" onclick="answer(5,'B')"><span class="opt-letter">B</span><span>Document with photos, stop all pruning on this tree, notify the company's management, and contact the City of Kelowna Urban Forestry department before doing anything further</span></div>
+      <div class="opt" onclick="answer(5,'C')"><span class="opt-letter">C</span><span>Mark the tree as "monitor for 30 days" in your report, continue the scheduled pruning on adjacent trees, and advise the client to water more frequently</span></div>
+      <div class="opt" onclick="answer(5,'D')"><span class="opt-letter">D</span><span>Remove the entire tree immediately to prevent spread, stack the wood for transport to the regional composting facility</span></div>
+    </div>
+    <div class="lesson" id="lesson5">
+      <h3>Protocol: Suspected DED — What To Do</h3>
+      <p>This question tests whether you know the DED response protocol — because a wrong move at this moment can make a potential DED situation significantly worse. Option B is correct, and here's why each other option fails:</p>
+      <ul>
+        <li><strong>Option A (prune affected branches):</strong> Wrong on multiple counts. First, you are likely outside the approved pruning window (mid-July). Second, cutting into potentially infected wood creates fresh wounds that release volatiles attracting more beetles. Third, introducing saw blades and climbers to potentially infected wood risks spreading spores to other elms on the same property or nearby. Do not prune a suspected DED tree without direction from the municipal arborist.</li>
+        <li><strong>Option C (monitor 30 days):</strong> Wrong. DED moves fast. A 30-day delay while continuing normal operations around potentially infected wood allows the disease to spread — both upward in the tree, and potentially via root grafts to adjacent elms. Symptoms consistent with DED require immediate professional notification, not observation.</li>
+        <li><strong>Option D (immediate full removal):</strong> Wrong process, even if the eventual correct outcome is removal. You cannot unilaterally decide to remove a tree on a client's property without client consent, municipal direction, and proper work authorization. Also, stacking elm wood is actively contraindicated — it creates beetle breeding habitat. Any elm removal for DED must involve immediate chipping, burial, or burning of all material, under direction from municipal forestry.</li>
+      </ul>
+      <p><strong>The correct protocol — Option B:</strong></p>
+      <ul>
+        <li><strong>Document</strong>: Photograph the flagging, the xylem staining, and the location. Note date, property address, tree size and location on the lot.</li>
+        <li><strong>Stop all work on this tree</strong>: No further pruning, no climbing, no wound treatment. Put away tools. If you've already used a saw on this tree, don't use the same blade on other elms until it's cleaned.</li>
+        <li><strong>Notify management</strong>: Your company needs to know immediately to pause scheduling of any related work and initiate the reporting process.</li>
+        <li><strong>Contact the municipal arborist</strong>: City of Kelowna Urban Forestry (or the relevant municipality) must be notified of suspected DED. They have the authority and protocols to direct the response — including arranging for laboratory confirmation, directing removal if confirmed, and coordinating root graft disruption in the area. In BC, this is a professional obligation, not just good practice.</li>
+        <li><strong>Advise the client</strong>: Explain what you've found, what you suspect, and why you're not proceeding until the city is involved. Most clients understand when the explanation focuses on community-level elm protection.</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The reason BC Interior still has healthy elm populations in 2026 is because arborists, municipal forestry staff, and clients have collectively followed this protocol for decades. Every professional in this industry is part of the prevention network. The moment we start making shortcuts — pruning an elm in June because the client needs it, or cutting out "just a few branches" on a flagging tree without reporting — we risk introducing a disease that could cost communities millions of dollars and decades of urban tree canopy. This is one of the rare topics where the stakes for the whole community are directly connected to what one arborist does on one job on one day.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="isa-tag">
+  <div class="isa-tag-inner">
+    <strong>📚 ISA Exam Domain:</strong> Tree Biology (11%) + Safe Work Practices (28%) &nbsp;·&nbsp; <strong>Sources:</strong> BC Ministry of Agriculture Dutch Elm Disease Management Guide · CFIA National Elm Pruning Protocol · ISA Arborists' Certification Study Guide (4th Ed.) Ch. 8 · ISA BMP: Plant Health Care · Townsend & Douglass, <em>Dutch Elm Disease</em>, USDA FS
+  </div>
+</div>
+
+<script>
+const answers = { 1:'C', 2:'C', 3:'C', 4:'C', 5:'B' };
+
+function answer(qNum, chosen) {
+  const opts = document.querySelectorAll(`#opts${qNum} .opt`);
+  const correct = answers[qNum];
+  opts.forEach(opt => {
+    opt.classList.add('answered');
+    const letter = opt.querySelector('.opt-letter').textContent;
+    if (letter === correct) opt.classList.add('correct');
+    else if (letter === chosen && chosen !== correct) opt.classList.add('wrong');
+    else if (letter !== correct) opt.classList.add('dimmed');
+  });
+  document.getElementById(`lesson${qNum}`).classList.add('show');
+  setTimeout(() => {
+    document.getElementById(`lesson${qNum}`).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+</script>
+</body>
+</html>
