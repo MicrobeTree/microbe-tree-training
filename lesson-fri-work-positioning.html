@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Positioning — Lanyards & Secondary Attachment | Microbe Tree Training</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --green: #3fb950; --green-dim: #1a4a22;
+    --red: #f85149; --red-dim: #3d1a1a;
+    --text: #e6edf3; --text-muted: #8b949e; --text-dim: #6e7681;
+    --amber: #d29922; --amber-dim: #3a2a0a;
+    --blue: #58a6ff; --blue-dim: #1a2a4a;
+    --orange: #f0883e; --orange-dim: #3a1f0a;
+    --teal: #56d364; --teal-dim: #0a2a10;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
+  .header-logo { font-size: 22px; }
+  .header-brand { font-weight: 700; font-size: 15px; color: var(--orange); letter-spacing: 0.5px; }
+  .header-sub { font-size: 12px; color: var(--text-muted); }
+  .header-badge { margin-left: auto; background: var(--orange-dim); border: 1px solid var(--orange); color: var(--orange); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+
+  .hero { padding: 32px 24px 24px; max-width: 920px; margin: 0 auto; }
+  .day-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); margin-bottom: 8px; }
+  .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+  .hero-sub { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+  .content { max-width: 920px; margin: 0 auto; padding: 0 24px 48px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* RULE BANNER */
+  .rule-banner { background: var(--blue-dim); border: 1px solid var(--blue); border-radius: 10px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px; }
+  .rule-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .rule-text { }
+  .rule-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 5px; }
+  .rule-text p { font-size: 14px; color: #b0d4ff; line-height: 1.6; margin: 0; }
+  .rule-text strong { color: var(--text); }
+
+  /* SECTION CARD */
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+  .section h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section p { font-size: 14px; line-height: 1.75; color: var(--text); margin-bottom: 10px; }
+  .section ul { padding-left: 18px; margin-bottom: 10px; }
+  .section li { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 6px; }
+  .section li strong { color: var(--orange); }
+
+  /* LANYARD TYPES */
+  .lanyard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .lanyard-card { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .lanyard-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .lanyard-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .tag-list { }
+  .tag-list-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); margin-bottom: 5px; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 10px; margin: 2px 2px 0 0; }
+  .tag-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+  .tag-red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+  .tag-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
+
+  /* CHECKLIST */
+  .checklist { display: flex; flex-direction: column; gap: 6px; }
+  .check-item { display: flex; align-items: flex-start; gap: 12px; background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+  .check-box { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .check-box.checked { background: var(--green); border-color: var(--green); }
+  .check-box.checked::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
+  .check-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .check-text strong { color: var(--orange); }
+
+  /* COMPARISON TABLE */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .comp-table th { background: #0d1117; padding: 9px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); border-bottom: 1px solid var(--border); }
+  .comp-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; line-height: 1.5; }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table td:first-child { font-weight: 600; color: var(--text); }
+  .good { color: var(--green) !important; }
+  .bad { color: var(--red) !important; }
+  .warn { color: var(--amber) !important; }
+
+  /* ERRORS */
+  .error-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+  .error-card { background: var(--red-dim); border: 1px solid var(--red); border-radius: 8px; padding: 12px 14px; }
+  .error-title { font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 6px; }
+  .error-card p { font-size: 12px; color: #f5c0bc; margin: 0; line-height: 1.5; }
+  .fix-card { background: var(--green-dim); border: 1px solid var(--green); border-radius: 8px; padding: 12px 14px; }
+  .fix-title { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+  .fix-card p { font-size: 12px; color: #c3e6c3; margin: 0; line-height: 1.5; }
+
+  /* FIELD NOTE */
+  .field-note { background: var(--orange-dim); border: 1px solid var(--orange); border-radius: 8px; padding: 14px 16px; margin-top: 14px; }
+  .field-note-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); margin-bottom: 6px; }
+  .field-note p { color: #f5c09a; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  /* WARN */
+  .warn-box { background: var(--red-dim); border: 1px solid var(--red); border-radius: 8px; padding: 14px 16px; }
+  .warn-box-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin-bottom: 6px; }
+  .warn-box p { color: #f5c0bc; font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+
+  /* ISA TAG */
+  .isa-tag { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 4px; font-size: 12px; color: var(--text-dim); }
+  .isa-tag strong { color: var(--text-muted); }
+
+  @media (max-width: 640px) {
+    .lanyard-grid { grid-template-columns: 1fr; }
+    .lanyard-pros-cons { grid-template-columns: 1fr; }
+    .error-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header-logo">🧗</span>
+  <div>
+    <div class="header-brand">MICROBE TREE TRAINING</div>
+    <div class="header-sub">West Kelowna, BC · Okanagan Interior</div>
+  </div>
+  <span class="header-badge">WEEK 10 · FRIDAY</span>
+</header>
+
+<section class="hero">
+  <div class="day-label">🧗 Worksite Techniques — Week 10</div>
+  <h1>Work Positioning: Lanyards &amp; Secondary Attachment</h1>
+  <p class="hero-sub">Once you're in the tree, your positioning lanyard is what keeps you stable, comfortable, and safe to work. It's the second attachment — the one that lets you free up your climbing system to redirect while you're still connected. Using it right is fundamental. Using it wrong is how climbers get hurt.</p>
+</section>
+
+<div class="content">
+
+  <!-- RULE -->
+  <div class="rule-banner">
+    <div class="rule-icon">📋</div>
+    <div class="rule-text">
+      <div class="rule-label">ANSI Z133 §7.4.2 — Two Points of Attachment</div>
+      <p><strong>"Climbers shall maintain at least one point of attachment to the tree at all times while working aloft."</strong> In practice: you do not disconnect your climbing line until your lanyard is secured. You do not release your lanyard until your climbing line is re-established or you've transferred to a new anchor. Double-up, don't drop first. This isn't a suggestion — it's the standard.</p>
+    </div>
+  </div>
+
+  <!-- WHAT IS WORK POSITIONING -->
+  <div class="section">
+    <h2><span>🎯</span> Work Positioning vs. Fall Arrest — Two Very Different Systems</h2>
+    <p>This distinction is foundational and appears on the ISA exam. The terms sound similar but the engineering and regulatory frameworks are entirely different.</p>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Work Positioning System</th>
+          <th>Fall Arrest System</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Purpose</td>
+          <td>Holds climber against structure for hands-free work; allows positioning adjustment</td>
+          <td>Arrests a free fall; stops a falling worker</td>
+        </tr>
+        <tr>
+          <td>Free fall permitted?</td>
+          <td class="bad">No — must be taut or under light tension at all times. Free fall in a positioning system = shock load to the system and climber = injury risk</td>
+          <td class="good">Yes — designed to arrest falls; energy absorbers reduce peak force</td>
+        </tr>
+        <tr>
+          <td>In arboriculture</td>
+          <td>Fliplines, adjustable positioning lanyards, Prusik on a flipline tail</td>
+          <td>Ground-based fall arrest lanyards, PFAS in aerial lift work</td>
+        </tr>
+        <tr>
+          <td>ANSI standard</td>
+          <td>ANSI Z133 (arborist operations); ANSI Z359.2 (general industry)</td>
+          <td>ANSI Z359.1 (shock-absorbing lanyards); Z359.3 (self-retracting devices)</td>
+        </tr>
+        <tr>
+          <td>Key limitation</td>
+          <td class="bad">NOT a substitute for fall arrest when a free fall of &gt;0.6m can occur without any other attachment. Cannot be the sole means of protection in certain aerial lift applications.</td>
+          <td class="warn">More restrictive to movement; not designed for repositioning during climbing operations</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="field-note">
+      <div class="field-note-label">📋 Field Note — Okanagan</div>
+      <p>When you're in a ponderosa at a Westbank property and you need to work out on a scaffold branch, your positioning lanyard (flipline) goes around the branch or(the trunk, keeping you pressed against the wood while you cut. That's work positioning. If you were in an aerial lift platform instead, the requirements under ANSI Z133 and WorkSafeBC would specify fall arrest equipment connected to the platform anchor point — a different system for a different context. Know which system you're in and what it's designed to do.</p>
+    </div>
+  </div>
+
+  <!-- LANYARD TYPES -->
+  <div class="section">
+    <h2><span>🔗</span> Lanyard Types — What's in Your Gear Bag</h2>
+    <p>Not all lanyards are equal. The application determines the correct lanyard type. Understanding the trade-offs helps you pick the right tool and inspect it correctly.</p>
+
+    <div class="lanyard-grid">
+      <div class="lanyard-card">
+        <div class="lanyard-title" style="color:var(--blue);">🔵 Wire-Core Flipline</div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Steel cable core (typically 7×7 or 7×19 wire rope) covered in rope or polyester cover. Provides cut resistance if chainsaw contacts the lanyard. Standard issue for chainsaw operations aloft.</p>
+        <div class="lanyard-pros-cons">
+          <div class="tag-list">
+            <div class="tag-list-label">Strengths</div>
+            <span class="tag tag-green">Chainsaw cut resistance</span>
+            <span class="tag tag-green">Durable</span>
+            <span class="tag tag-green">Predictable stretch</span>
+          </div>
+          <div class="tag-list">
+            <div class="tag-list-label">Limitations</div>
+            <span class="tag tag-red">Heavy</span>
+            <span class="tag tag-red">Stiffer handling</span>
+            <span class="tag tag-red">Inspect terminations carefully for broken wires</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lanyard-card">
+        <div class="lanyard-title" style="color:var(--green);">🟢 Rope / Dyneema Flipline</div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Arborist rope or HMPE (Dyneema/Spectra) braid. Lighter, more tactile feel, excellent strength-to-weight ratio. Used in non-chainsaw climbing work or where climber weight savings matter.</p>
+        <div class="lanyard-pros-cons">
+          <div class="tag-list">
+            <div class="tag-list-label">Strengths</div>
+            <span class="tag tag-green">Lightweight</span>
+            <span class="tag tag-green">Excellent grip feel</span>
+            <span class="tag tag-green">Flexible</span>
+          </div>
+          <div class="tag-list">
+            <div class="tag-list-label">Limitations</div>
+            <span class="tag tag-red">No chainsaw protection</span>
+            <span class="tag tag-red">HMPE: UV degradation</span>
+            <span class="tag tag-amber">Check cover abrasion regularly</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lanyard-card">
+        <div class="lanyard-title" style="color:var(--amber);">🟡 Adjustable Rope Lanyard</div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">Uses an integrated sliding hitch adjuster (built-in Prusik or cam mechanism) to allow length adjustment without unhooking. Common on adjustable flipline systems.</p>
+        <div class="lanyard-pros-cons">
+          <div class="tag-list">
+            <div class="tag-list-label">Strengths</div>
+            <span class="tag tag-green">Adjustable length</span>
+            <span class="tag tag-green">Versatile</span>
+            <span class="tag tag-green">No separate Prusik needed</span>
+          </div>
+          <div class="tag-list">
+            <div class="tag-list-label">Limitations</div>
+            <span class="tag tag-red">Cam systems can fail if dirty</span>
+            <span class="tag tag-amber">Inspect adjuster mechanism each use</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lanyard-card">
+        <div class="lanyard-title" style="color:var(--purple);">🟣 Prusik Loop on Flipline</div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:8px;">A Prusik hitch tied on the flipline or a separate positioning lanyard tail. Allows hands-free adjustability when weighted and easy movement when unweighted. Classic, reliable, field-replaceable.</p>
+        <div class="lanyard-pros-cons">
+          <div class="tag-list">
+            <div class="tag-list-label">Strengths</div>
+            <span class="tag tag-green">Simple and reliable</span>
+            <span class="tag tag-green">Easy to inspect</span>
+            <span class="tag tag-green">Replace in field</span>
+          </div>
+          <div class="tag-list">
+            <div class="tag-list-label">Limitations</div>
+            <span class="tag tag-amber">Requires correct cord diameter match</span>
+            <span class="tag tag-red">Check for glazing / melting</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SADDLE CONNECTION -->
+  <div class="section">
+    <h2><span>🪢</span> Saddle Connection Points — What Goes Where</h2>
+    <p>Where you connect your positioning lanyard to your saddle matters. Most modern arborist saddles have multiple connection points, and each has a specific purpose and rating.</p>
+    <table class="comp-table">
+      <thead>
+        <tr><th>Connection Point</th><th>Purpose</th><th>Lanyard Connection OK?</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bridge / central D-ring</td>
+          <td>Primary climbing system attachment</td>
+          <td class="warn">Context-dependent — check saddle manual</td>
+          <td>Some saddles spec the bridge for primary climbing only; use side D for lanyard</td>
+        </tr>
+        <tr>
+          <td>Side D-rings (hip)</td>
+          <td>Work positioning lanyards, tool lanyards, secondary attachments</td>
+          <td class="good">Yes — primary lanyard connection point</td>
+          <td>Connecting lanyard to both side D-rings distributes load; single D-ring also acceptable per most saddle specs</td>
+        </tr>
+        <tr>
+          <td>Leg loops</td>
+          <td>Structural comfort; not load-bearing connection points</td>
+          <td class="bad">No — not rated as connection points</td>
+          <td>Never attach load-bearing equipment directly to leg loop buckles or fabric</td>
+        </tr>
+        <tr>
+          <td>Tool loops / rings</td>
+          <td>Tool lanyards, pouches</td>
+          <td class="bad">No — rated for tools only, not body weight</td>
+          <td>Tool rings are typically rated 25kg max — not for climber weight</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Carabiner requirements for lanyard connections:</strong> Per ANSI Z133 and saddle manufacturer specifications, carabiners used in life-safety positioning connections must be:</p>
+    <ul>
+      <li>Rated minimum <strong>23 kN</strong> in the major axis (most NFPA/ANSI-rated oval and D-shape carabiners meet this)</li>
+      <li>Equipped with a locking gate — three-action or screw-lock. Auto-locking gates are preferred for positions where unintentional opening is possible.</li>
+      <li>Inspected before each use: gate action, lock function, no cracks, corrosion, deformation, or gate play</li>
+      <li>Oriented correctly: major axis loaded; gate not resting against any edge or object that could cause unintentional opening</li>
+    </ul>
+  </div>
+
+  <!-- PRE-USE INSPECTION CHECKLIST -->
+  <div class="section">
+    <h2><span>✅</span> Pre-Use Inspection Checklist — Lanyard &amp; Positioning System</h2>
+    <p>Per <em>ANSI Z133 §5.2</em>, all equipment shall be inspected before each use. This checklist covers the lanyard and its connection hardware. Work through it before going up — not after.</p>
+    <div class="checklist" id="checklist">
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Rope / Cover:</strong> No cuts, abrasion flats, glazing, stiffness, or discolouration along full length. Cover is intact — no core visible. Ends are properly whipped or heat-sealed.</div></div>
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Wire core (if wire-core lanyard):</strong> Inspect both end terminations carefully — bend the cover back and look for broken wires at the swage or splice. Any broken wires = retire the lanyard immediately. IWRC wire rope: retire if 3 or more broken wires in one lay, or 6 in one strand per lay.</div></div>
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Hardware ends (snap hooks / shackles):</strong> Gate opens and closes freely. Gate locking mechanism engages fully and does not rattle or stick. No visible cracks, corrosion pitting, or deformation in the body or gate.</div></div>
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Splices / terminations:</strong> If rope ends are spliced (eye splice), the splice is tight, no strands pulling out, no separation at the throat. Thimble (if present) is seated and not cracked.</div></div>
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Prusik / friction hitch (if used):</strong> Hitch cord has no glazing, melting, or core damage. Diameter is appropriate for host rope (Prusik cord should be 60–80% of host rope diameter). Hitch grips immediately when weighted.</div></div>
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Connecting carabiner:</strong> Lock engaged. Gate action smooth. Body and gate: no cracks, pitting, or deformation. Major axis orientation noted — carabiner will be loaded on major axis, not cross-loaded.</div></div>
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Length / adjustment:</strong> Lanyard length appropriate for work planned. Too long = potential for slack and unexpected load; too short = restricted movement. Adjustable systems: adjuster mechanism functions correctly.</div></div>
+      <div class="check-item"><div class="check-box" onclick="toggle(this)"></div><div class="check-text"><strong>Date of last formal inspection:</strong> All life-safety equipment must be formally inspected by a competent person at minimum annually per ANSI Z133. Check company records. Equipment with no inspection history should not be used.</div></div>
+    </div>
+  </div>
+
+  <!-- COMMON ERRORS -->
+  <div class="section">
+    <h2><span>⚠️</span> Common Errors — Don't Make These</h2>
+    <div class="error-grid">
+      <div class="error-card">
+        <div class="error-title">❌ Drop First, Double-Up Second</div>
+        <p>Releasing the climbing line before the lanyard is secured around a new anchor. Results in a moment — sometimes more — with only one or zero points of attachment. This is the most common critical error in positioning transitions.</p>
+      </div>
+      <div class="fix-card">
+        <div class="fix-title">✓ Correct Approach</div>
+        <p>Set the positioning lanyard first — around the trunk, over the limb, wherever it needs to go — and confirm it's loaded before releasing the climbing system. Double-up, then drop. Every time.</p>
+      </div>
+      <div class="error-card">
+        <div class="error-title">❌ Lanyard Routed Beneath Included Bark Union</div>
+        <p>Looping a lanyard through a tight co-dominant fork with included bark. The union is structurally compromised; dynamic loading on the lanyard can initiate or worsen the failure. If that union lets go while you're hanging on it, you're falling.</p>
+      </div>
+      <div class="fix-card">
+        <div class="fix-title">✓ Correct Approach</div>
+        <p>Assess every lanyard anchor point before committing your weight. No included bark, no decay at the union, adequate diameter for the load. If the anchor is questionable, find a better one — even if it means an extra move.</p>
+      </div>
+      <div class="error-card">
+        <div class="error-title">❌ Unlocked Carabiner Gate</div>
+        <p>Running a lanyard on a snap hook or carabiner with the gate unlocked. Gates can open on contact with bark, branch stubs, or knot bodies. An open gate under load can invert and roll out — resulting in a completely failed connection.</p>
+      </div>
+      <div class="fix-card">
+        <div class="fix-title">✓ Correct Approach</div>
+        <p>Lock every gate, every time, before loading. It takes one second. Make it automatic. Consider three-action auto-lock gates for positioning carabiners that are constantly being attached and detached.</p>
+      </div>
+      <div class="error-card">
+        <div class="error-title">❌ Running Saw With Only Lanyard Attached</div>
+        <p>Operating a chainsaw with only the positioning lanyard securing the climber — climbing system not established or previously unclipped. If the saw bucks, the climber reacts, and there is nothing to arrest a fall if the lanyard fails or the anchor breaks.</p>
+      </div>
+      <div class="fix-card">
+        <div class="fix-title">✓ Correct Approach</div>
+        <p>Per ANSI Z133 §7.4.7: climbers operating chainsaws aloft must maintain two points of attachment. One positioning, one climbing system (or two positioning systems in some configurations). No exceptions for "quick cuts."</p>
+      </div>
+    </div>
+
+    <div class="field-note">
+      <div class="field-note-label">📋 Field Note — Okanagan</div>
+      <p>Most serious climbing injuries and fatalities in arboriculture don't happen because of faulty equipment. They happen because of a momentary lapse in attachment protocol — the split-second decision to "just reach over there" without resetting the lanyard first. Building the double-up habit takes deliberate practice. The best crews make it automatic: you don't think about it, you just do it, every transition, every time. New climbers: watch how your lead climber moves through the tree. If they're doing it right, you'll see them set the lanyard before they release anything else. If they're not — that's a conversation worth having before the next job.</p>
+    </div>
+
+    <div class="warn-box" style="margin-top:14px;">
+      <div class="warn-box-label">⚠ WorkSafeBC OHS Regulation Part 26</div>
+      <p>BC WorkSafeBC regulations for tree work require that all fall protection equipment used in arborist operations meet CSA or equivalent standards and be used in accordance with the manufacturer's instructions. Employers are required to provide a written fall protection plan where workers may fall more than 3 metres. The positioning lanyard system and its components must be documented as part of that plan. Per BC OHS Reg §26.2(2), it is the employer's obligation to ensure workers are trained and competent in use of the equipment before they use it.</p>
+    </div>
+
+    <div class="isa-tag" style="margin-top:20px;">
+      <strong>📚 ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;·&nbsp; <strong>Sources:</strong> ANSI Z133 (2017) §7.4, §5.2 · ISA Arborists' Certification Study Guide (4th Ed.) Ch. 11 · WorkSafeBC OHS Regulation Part 26 · ISA BMP: Rigging · TCIA ANSI Z133 Standards Manual
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(box) {
+  box.classList.toggle('checked');
+}
+</script>
+</body>
+</html>
