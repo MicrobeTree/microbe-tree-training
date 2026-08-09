@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪚 Sheet Bend | Microbe Tree Training</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+  header { background: #161b22; border-bottom: 2px solid #58a6ff; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  header .logo { font-size: 1.25rem; font-weight: 700; color: #58a6ff; }
+  header .day-tag { background: #58a6ff22; color: #58a6ff; border: 1px solid #58a6ff44; border-radius: 6px; padding: 3px 10px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px; }
+  header .week-tag { color: #8b949e; font-size: 0.82rem; margin-left: auto; }
+  .container { max-width: 800px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 1.6rem; font-weight: 700; color: #e6edf3; margin-bottom: 6px; }
+  .subtitle { color: #8b949e; font-size: 0.9rem; margin-bottom: 28px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 22px; margin-bottom: 20px; }
+  .card h2 { font-size: 1rem; font-weight: 600; color: #58a6ff; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card h3 { font-size: 0.88rem; font-weight: 700; color: #e6edf3; margin: 14px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { font-size: 0.88rem; line-height: 1.65; color: #c9d1d9; margin-bottom: 10px; }
+  ul { list-style: none; padding: 0; }
+  ul li { font-size: 0.86rem; color: #c9d1d9; padding: 5px 0 5px 18px; border-bottom: 1px solid #21262d; position: relative; }
+  ul li:last-child { border-bottom: none; }
+  ul li::before { content: "→"; color: #58a6ff; position: absolute; left: 0; }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
+  .step-box { background: #0d1117; border: 1px solid #30363d; border-radius: 10px; padding: 14px; }
+  .step-num { background: #58a6ff; color: #0d1117; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 800; margin-bottom: 10px; }
+  .step-text { font-size: 0.84rem; color: #c9d1d9; line-height: 1.55; }
+  .critical { background: #3d1a1a; border: 1px solid #f85149; border-radius: 8px; padding: 12px 16px; margin: 14px 0; font-size: 0.86rem; color: #f85149; }
+  .critical strong { color: #ff7b72; }
+  .safe-note { background: #1c2a1c; border: 1px solid #3fb950; border-radius: 8px; padding: 12px 16px; margin: 14px 0; font-size: 0.86rem; color: #8b949e; }
+  .safe-note strong { color: #3fb950; }
+  .comparison-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.84rem; }
+  .comparison-table th { background: #21262d; color: #8b949e; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; padding: 10px 12px; text-align: left; }
+  .comparison-table td { padding: 10px 12px; border-bottom: 1px solid #21262d; vertical-align: top; }
+  .comparison-table tr:last-child td { border-bottom: none; }
+  .comparison-table tr:nth-child(even) td { background: #0d111788; }
+  .tag { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 0.74rem; font-weight: 600; margin-right: 4px; }
+  .tag-green { background: #3fb95022; color: #3fb950; border: 1px solid #3fb95044; }
+  .tag-red { background: #f8514922; color: #f85149; border: 1px solid #f8514944; }
+  .tag-yellow { background: #d2992222; color: #d29922; border: 1px solid #d2992244; }
+  svg.diagram { display: block; width: 100%; max-width: 700px; margin: 14px auto; }
+  .field-note { background: #0d1117; border-left: 3px solid #58a6ff; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-top: 14px; font-size: 0.84rem; color: #8b949e; line-height: 1.55; }
+  .field-note strong { color: #58a6ff; }
+  .isa-tag { background: #21262d; border: 1px solid #30363d; border-radius: 8px; padding: 12px 16px; margin-top: 28px; font-size: 0.8rem; color: #8b949e; }
+  .isa-tag strong { color: #c9d1d9; }
+  .double-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width: 540px){ .double-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="day-tag">🪚 TUESDAY · EQUIPMENT &amp; KNOTS</div>
+  <div class="week-tag">Week 11</div>
+</header>
+<div class="container">
+  <h1>Sheet Bend</h1>
+  <p class="subtitle">The knot for joining two lines that don't match. Simple geometry, important limitations.</p>
+
+  <!-- Diagram -->
+  <div class="card">
+    <h2>📐 The Knot</h2>
+    <svg class="diagram" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" aria-label="Sheet bend tying diagram in four steps">
+      <!-- Step labels -->
+      <text x="2" y="18" font-size="11" fill="#58a6ff" font-weight="bold">STEP 1</text>
+      <text x="177" y="18" font-size="11" fill="#58a6ff" font-weight="bold">STEP 2</text>
+      <text x="352" y="18" font-size="11" fill="#58a6ff" font-weight="bold">STEP 3</text>
+      <text x="527" y="18" font-size="11" fill="#58a6ff" font-weight="bold">STEP 4 — Set</text>
+
+      <!-- STEP 1: Bight in thick rope -->
+      <text x="2" y="32" font-size="9" fill="#8b949e">Form bight in</text>
+      <text x="2" y="43" font-size="9" fill="#8b949e">thicker rope</text>
+      <!-- Thick rope bight -->
+      <path d="M 20 90 Q 60 55 90 90 Q 120 125 80 140 L 20 140" stroke="#f0883e" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <text x="20" y="160" font-size="9" fill="#f0883e">Thick rope (bight)</text>
+
+      <!-- STEP 2: Thin rope up through bight -->
+      <text x="177" y="32" font-size="9" fill="#8b949e">Thin rope UP</text>
+      <text x="177" y="43" font-size="9" fill="#8b949e">through bight</text>
+      <path d="M 195 90 Q 235 55 265 90 Q 295 125 255 140 L 195 140" stroke="#f0883e" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- Thin rope coming up -->
+      <path d="M 245 155 L 245 110 Q 243 88 252 80" stroke="#58a6ff" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="none"/>
+      <text x="255" y="165" font-size="9" fill="#58a6ff">Thin rope (up)</text>
+
+      <!-- STEP 3: Around back of both strands -->
+      <text x="352" y="32" font-size="9" fill="#8b949e">Behind BOTH</text>
+      <text x="352" y="43" font-size="9" fill="#8b949e">legs of bight</text>
+      <path d="M 370 90 Q 410 55 440 90 Q 470 125 430 140 L 370 140" stroke="#f0883e" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- Thin rope going around -->
+      <path d="M 420 155 L 420 110 Q 418 88 427 80 Q 450 60 460 80 Q 468 100 455 110 L 370 110" stroke="#58a6ff" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M 370 110 L 355 110" stroke="#58a6ff" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+      <!-- STEP 4: Tuck under itself — FINISHED KNOT -->
+      <text x="527" y="32" font-size="9" fill="#8b949e">Tuck under</text>
+      <text x="527" y="43" font-size="9" fill="#8b949e">own strand</text>
+      <!-- Thick bight -->
+      <path d="M 545 90 Q 585 55 615 90 Q 645 125 605 140 L 545 140" stroke="#f0883e" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- Thin rope going around and tucked -->
+      <path d="M 595 155 L 595 112 Q 593 90 602 82 Q 625 62 635 82 Q 643 102 630 112 L 545 112 L 545 120 L 595 120" stroke="#58a6ff" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <!-- Tuck arrow -->
+      <path d="M 590 132 L 583 120" stroke="#3fb950" stroke-width="2" stroke-dasharray="3,2" fill="none"/>
+      <text x="555" y="155" font-size="9" fill="#3fb950">tuck here</text>
+      <!-- Free ends indicator -->
+      <text x="527" y="175" font-size="9" fill="#f85149" font-weight="bold">Both free ends: SAME SIDE ✓</text>
+
+      <!-- Dividers -->
+      <line x1="172" y1="22" x2="172" y2="200" stroke="#30363d" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="347" y1="22" x2="347" y2="200" stroke="#30363d" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="522" y1="22" x2="522" y2="200" stroke="#30363d" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Legend -->
+      <rect x="2" y="215" width="14" height="6" rx="3" fill="#f0883e"/>
+      <text x="20" y="223" font-size="10" fill="#8b949e">Thicker / stiffer rope (bight)</text>
+      <rect x="2" y="233" width="14" height="6" rx="3" fill="#58a6ff"/>
+      <text x="20" y="241" font-size="10" fill="#8b949e">Thinner rope (working end)</text>
+      <text x="250" y="223" font-size="10" fill="#f85149" font-weight="bold">⚠ Critical: both free ends exit same side</text>
+      <text x="250" y="241" font-size="10" fill="#8b949e">Opposite-side exit = knot will capsize under load</text>
+    </svg>
+  </div>
+
+  <!-- Tying Steps -->
+  <div class="card">
+    <h2>🔢 Tying Sequence</h2>
+    <div class="steps-grid">
+      <div class="step-box">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Form a bight</strong> in the <em>thicker or stiffer</em> rope — make a J-shape with the working end alongside the standing part.</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Pass the thinner rope</strong> up through the bight from below — working end comes up through the J opening.</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Route the thinner rope around the back</strong> of both legs of the bight — go behind the thicker rope entirely.</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Tuck the working end under itself</strong> only — not under the bight strands. Tuck on the same side as the bight tail. Dress and set.</div>
+      </div>
+    </div>
+
+    <div class="critical">
+      <strong>⚠ Critical check:</strong> Both free ends (the thicker rope tail and the thinner rope working end) must exit on the <strong>SAME SIDE</strong> of the knot. If they exit on opposite sides, the knot is incorrectly tied and will capsize under load. This is the #1 error with the sheet bend.
+    </div>
+
+    <p><strong>Double Sheet Bend:</strong> For significant diameter differences, take an extra wrap with the thinner rope before tucking under itself. Same rules apply — more holding power, same geometry.</p>
+  </div>
+
+  <!-- Specs and Use -->
+  <div class="double-col">
+    <div class="card">
+      <h2>✅ When to Use It</h2>
+      <ul>
+        <li>Joining two ropes of noticeably different diameters</li>
+        <li>Extending a throwline with different-diameter line</li>
+        <li>Attaching a tagline to a heavier rigging line (non-critical)</li>
+        <li>Field repairs where mismatched cordage is all you have</li>
+        <li>Attaching rope to a fixed loop or sling eye (bight version)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>🚫 When NOT to Use It</h2>
+      <ul>
+        <li>Life-safety rigging — not rated for critical loads</li>
+        <li>Worker or patient attachment at any point</li>
+        <li>Joining ropes of the same diameter (bowline-to-bowline or double fisherman's is stronger)</li>
+        <li>Any application subject to intermittent loading or shock loads</li>
+        <li>Wet rope with significant diameter difference (can slip)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Load and Standards -->
+  <div class="card">
+    <h2>⚖️ Load Characteristics &amp; Standards</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Sheet Bend</th>
+          <th>Double Sheet Bend</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Strength retention (approx.)</td>
+          <td>~45–60% of weaker rope</td>
+          <td>~55–65% of weaker rope</td>
+        </tr>
+        <tr>
+          <td>Slippage risk under cyclic load</td>
+          <td>Moderate — monitor under load</td>
+          <td>Lower — extra wrap adds security</td>
+        </tr>
+        <tr>
+          <td>Ease of untying after heavy load</td>
+          <td>Usually easy</td>
+          <td>Slightly harder</td>
+        </tr>
+        <tr>
+          <td>ANSI Z133 critical-load rating</td>
+          <td colspan="2"><span class="tag tag-red">Not rated</span> — ANSI Z133 does not endorse the sheet bend for life-safety or critical rigging loads</td>
+        </tr>
+        <tr>
+          <td>WorkSafeBC classification</td>
+          <td colspan="2">Not listed as an approved life-safety connection method in OHS Regulation — use rated hardware (carabiners, shackles) for critical connections</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="safe-note">
+      <strong>✓ Per ISA BMP Rigging:</strong> Knot selection should match the application and expected load. For non-critical line connections during rigging operations (e.g. taglines, guiding lines), the sheet bend is acceptable. For any load-bearing connection in a critical rigging system, use appropriately rated hardware with documented WLL.
+    </div>
+  </div>
+
+  <!-- Comparison with related knots -->
+  <div class="card">
+    <h2>🔄 Know the Difference</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Knot</th>
+          <th>Best for</th>
+          <th>Limitation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sheet Bend</strong></td>
+          <td>Joining two ropes of different diameters</td>
+          <td>Not life-rated; can slip if ropes vary greatly in stiffness</td>
+        </tr>
+        <tr>
+          <td><strong>Bowline-to-Bowline</strong></td>
+          <td>Joining two ropes of similar diameter where loops are formed</td>
+          <td>Bulky; ropes must be fairly equal</td>
+        </tr>
+        <tr>
+          <td><strong>Double Fisherman's</strong></td>
+          <td>Joining two ropes of similar material and diameter (Prusik loops, rescue lines)</td>
+          <td>Very difficult to untie after loading; ropes must match well</td>
+        </tr>
+        <tr>
+          <td><strong>Alpine Butterfly</strong></td>
+          <td>Creating a loop in the middle of a rope; multi-directional loading</td>
+          <td>Not for joining two separate ropes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="field-note">
+      <strong>📋 Field Note (Okanagan):</strong> You'll reach for a sheet bend most often when extending a throwline mid-job — your 1.75mm throw line runs out and all you have left is a heavier 3mm polypropylene line. The sheet bend joins them fast and gets the weighted bag into the canopy. That's exactly what this knot is for. Just remember: once you've made the connection and pulled the rigging rope through, untie and re-rig with proper matched cordage or a rated connector before you put any meaningful load on it.
+    </div>
+  </div>
+
+  <div class="isa-tag">
+    📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (28%) · <strong>Sources:</strong> ANSI Z133 Safe Work Practices for Arborists · ISA Best Management Practices: Rigging (2nd Ed.) · TCIA Rigging for Removal
+  </div>
+</div>
+</body>
+</html>
