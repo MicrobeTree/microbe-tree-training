@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Photosynthesis | Microbe Tree Training</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+  header { background: #161b22; border-bottom: 2px solid #3fb950; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  header .logo { font-size: 1.25rem; font-weight: 700; color: #3fb950; letter-spacing: -0.5px; }
+  header .day-tag { background: #3fb95022; color: #3fb950; border: 1px solid #3fb95044; border-radius: 6px; padding: 3px 10px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px; }
+  header .week-tag { color: #8b949e; font-size: 0.82rem; margin-left: auto; }
+  .container { max-width: 760px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 1.6rem; font-weight: 700; color: #e6edf3; margin-bottom: 6px; }
+  .subtitle { color: #8b949e; font-size: 0.9rem; margin-bottom: 28px; }
+
+  /* Reference card */
+  .ref-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 22px; margin-bottom: 28px; }
+  .ref-card h2 { font-size: 1rem; color: #3fb950; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+  .phase-box { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
+  .phase-box h3 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 10px; }
+  .phase-box.light h3 { color: #79c0ff; }
+  .phase-box.dark h3 { color: #56d364; }
+  .phase-box ul { list-style: none; padding: 0; }
+  .phase-box ul li { font-size: 0.83rem; color: #c9d1d9; padding: 3px 0; border-bottom: 1px solid #21262d; display: flex; gap: 8px; }
+  .phase-box ul li:last-child { border-bottom: none; }
+  .phase-box ul li::before { content: "→"; color: #8b949e; flex-shrink: 0; }
+  .pigment-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .pigment-chip { background: #21262d; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; }
+  .pigment-chip span { font-weight: 600; }
+  .okanagan-note { background: #1c2128; border-left: 3px solid #3fb950; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-top: 14px; font-size: 0.83rem; color: #8b949e; }
+  .okanagan-note strong { color: #3fb950; }
+  svg.diagram { width: 100%; max-width: 680px; display: block; margin: 14px auto 0; }
+
+  /* Quiz */
+  .quiz-section { display: none; }
+  .quiz-section.active { display: block; }
+  .home-section { display: block; }
+  .progress-bar { background: #21262d; border-radius: 4px; height: 6px; margin-bottom: 20px; }
+  .progress-fill { background: #3fb950; height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .q-counter { color: #8b949e; font-size: 0.82rem; margin-bottom: 8px; }
+  .question-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .question-text { font-size: 1.0rem; color: #e6edf3; font-weight: 600; line-height: 1.5; margin-bottom: 20px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-label { display: flex; align-items: flex-start; gap: 12px; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: border-color 0.15s; }
+  .option-label:hover:not(.locked) { border-color: #58a6ff; }
+  .option-label input[type="radio"] { display: none; }
+  .option-letter { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #30363d; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #8b949e; flex-shrink: 0; margin-top: 1px; transition: all 0.15s; }
+  .option-label.selected .option-letter { border-color: #58a6ff; color: #58a6ff; background: #58a6ff22; }
+  .option-label.correct { border-color: #3fb950; background: #3fb95010; }
+  .option-label.correct .option-letter { border-color: #3fb950; color: #3fb950; background: #3fb95022; }
+  .option-label.wrong { border-color: #f85149; background: #f8514910; }
+  .option-label.wrong .option-letter { border-color: #f85149; color: #f85149; background: #f8514922; }
+  .option-text { font-size: 0.88rem; color: #c9d1d9; line-height: 1.4; }
+  .btn { border: none; border-radius: 8px; padding: 11px 22px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .btn-green { background: #238636; color: #fff; }
+  .btn-green:hover { background: #2ea043; }
+  .btn-blue { background: #1f6feb; color: #fff; }
+  .btn-blue:hover { background: #388bfd; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+  .explanation { display: none; background: #1c2128; border: 1px solid #30363d; border-radius: 10px; padding: 20px; margin-top: 14px; }
+  .explanation.show { display: block; }
+  .exp-header { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 10px; }
+  .exp-header.correct { color: #3fb950; }
+  .exp-header.wrong { color: #f85149; }
+  .exp-body { font-size: 0.88rem; color: #c9d1d9; line-height: 1.65; }
+  .exp-body strong { color: #e6edf3; }
+  .exp-points { margin: 12px 0; padding-left: 0; list-style: none; }
+  .exp-points li { font-size: 0.86rem; color: #c9d1d9; padding: 4px 0 4px 16px; position: relative; border-bottom: 1px solid #21262d; }
+  .exp-points li:last-child { border-bottom: none; }
+  .exp-points li::before { content: "•"; color: #3fb950; position: absolute; left: 0; }
+  .field-note { background: #0d1117; border-left: 3px solid #3fb950; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-top: 14px; font-size: 0.84rem; color: #8b949e; line-height: 1.55; }
+  .field-note strong { color: #3fb950; }
+  .results-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 32px; text-align: center; }
+  .results-card .score { font-size: 3rem; font-weight: 700; color: #3fb950; }
+  .results-card .score-label { color: #8b949e; font-size: 0.9rem; margin-top: 4px; margin-bottom: 20px; }
+  .isa-tag { background: #21262d; border: 1px solid #30363d; border-radius: 8px; padding: 12px 16px; margin-top: 28px; font-size: 0.8rem; color: #8b949e; }
+  .isa-tag strong { color: #c9d1d9; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="day-tag">🌿 MONDAY · TREE BIOLOGY</div>
+  <div class="week-tag">Week 11</div>
+</header>
+<div class="container">
+
+  <!-- HOME SECTION -->
+  <div id="homeSection" class="home-section">
+    <h1>Photosynthesis</h1>
+    <p class="subtitle">From sunlight to sugar — and why Okanagan summers shut the whole thing down at 2pm.</p>
+
+    <div class="ref-card">
+      <h2>� Quick Reference — The Two Stages</h2>
+      <div class="two-col">
+        <div class="phase-box light">
+          <h3>☀️ Light Reactions</h3>
+          <ul>
+            <li>Location: thylakoid membranes</li>
+            <li>Input: light energy + H₂O</li>
+            <li>H₂O split → O₂ released (photolysis)</li>
+            <li>Produces: ATP + NADPH</li>
+            <li>PS II (P680) absorbs light first</li>
+            <li>PS I (P700) re-energizes electrons</li>
+          </ul>
+        </div>
+        <div class="phase-box dark">
+          <h3>🌿 Calvin Cycle</h3>
+          <ul>
+            <li>Location: stroma (chloroplast fluid)</li>
+            <li>Input: CO₂ + ATP + NADPH</li>
+            <li>RuBisCO fixes CO₂ to RuBP</li>
+            <li>Produces: G3P → glucose</li>
+            <li>3 CO₂ → 1 G3P molecule</li>
+            <li>Does NOT require direct light</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <div style="font-size:0.8rem; color:#8b949e; margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Key Pigments</div>
+        <div class="pigment-row">
+          <div class="pigment-chip"><span style="color:#4caf50;">Chlorophyll a</span> — primary, absorbs red + blue-violet</div>
+          <div class="pigment-chip"><span style="color:#66bb6a;">Chlorophyll b</span> — accessory, broadens light harvesting</div>
+          <div class="pigment-chip"><span style="color:#ffa726;">Carotenoids</span> — photoprotection + accessory</div>
+        </div>
+      </div>
+
+      <!-- Leaf cross-section SVG -->
+      <svg class="diagram" viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg" aria-label="Leaf cross-section diagram">
+        <!-- Epidermis top -->
+        <rect x="10" y="18" width="600" height="20" rx="4" fill="#2d4a2d" stroke="#3fb950" stroke-width="1"/>
+        <text x="618" y="32" font-size="10" fill="#3fb950" text-anchor="end">Upper epidermis (waxy cuticle)</text>
+        <!-- Palisade mesophyll -->
+        <rect x="10" y="40" width="600" height="42" fill="#1c3a1c" stroke="#3fb95033" stroke-width="1"/>
+        <text x="16" y="58" font-size="10" fill="#56d364" font-weight="bold">Palisade mesophyll</text>
+        <text x="16" y="72" font-size="9" fill="#8b949e">Columnar cells packed with chloroplasts — primary photosynthesis zone</text>
+        <!-- Spongy mesophyll -->
+        <rect x="10" y="84" width="600" height="36" fill="#162d16" stroke="#3fb95022" stroke-width="1"/>
+        <text x="16" y="99" font-size="10" fill="#3fb950">Spongy mesophyll</text>
+        <text x="16" y="112" font-size="9" fill="#8b949e">Loose cells + air spaces — gas exchange, some photosynthesis</text>
+        <!-- Epidermis bottom -->
+        <rect x="10" y="122" width="600" height="20" rx="4" fill="#2d4a2d" stroke="#3fb950" stroke-width="1"/>
+        <text x="618" y="136" font-size="10" fill="#3fb950" text-anchor="end">Lower epidermis (stomata here)</text>
+        <!-- CO2 arrow -->
+        <text x="580" y="80" font-size="9" fill="#79c0ff">CO₂ in →</text>
+        <!-- O2 arrow -->
+        <text x="580" y="94" font-size="9" fill="#56d364">← O₂ out</text>
+        <!-- Stomata indicator -->
+        <ellipse cx="540" cy="132" rx="12" ry="6" fill="#0d1117" stroke="#79c0ff" stroke-width="1.5"/>
+        <text x="520" y="150" font-size="9" fill="#79c0ff">Stoma</text>
+        <!-- Chloroplast dots in palisade -->
+        <circle cx="80" cy="58" r="4" fill="#3fb950" opacity="0.7"/>
+        <circle cx="130" cy="62" r="4" fill="#3fb950" opacity="0.7"/>
+        <circle cx="180" cy="55" r="4" fill="#3fb950" opacity="0.7"/>
+        <circle cx="230" cy="61" r="4" fill="#3fb950" opacity="0.7"/>
+        <circle cx="280" cy="57" r="4" fill="#3fb950" opacity="0.7"/>
+        <circle cx="330" cy="63" r="4" fill="#3fb950" opacity="0.7"/>
+      </svg>
+
+      <div class="okanagan-note">
+        <strong>📍 Okanagan context:</strong> At 35–40°C on a south-facing slope in July, stomata begin closing to limit water loss long before heat denatures any enzymes. CO₂ entry drops. Photosynthesis slows or stops entirely during peak afternoon heat. Trees in the Okanagan often have a <em>bimodal photosynthesis pattern</em> — peaks in the cooler morning and late afternoon, with a midday depression during peak VPD (vapour pressure deficit).
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="startQuiz()">Start Quiz — 5 Questions →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ SECTION -->
+  <div id="quizSection" class="quiz-section">
+    <div class="q-counter" id="qCounter">Question 1 of 5</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div id="questionContainer"></div>
+    <div class="btn-row">
+      <button class="btn btn-green" id="submitBtn" onclick="submitAnswer()" disabled>Submit Answer</button>
+      <button class="btn btn-blue" id="nextBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SECTION -->
+  <div id="resultsSection" class="quiz-section">
+    <div class="results-card">
+      <div class="score" id="finalScore"></div>
+      <div class="score-label">Questions correct</div>
+      <p id="resultMsg" style="color:#c9d1d9; font-size:0.9rem; margin-bottom:20px;"></p>
+      <button class="btn btn-green" onclick="restartQuiz()">← Back to Reference Card</button>
+    </div>
+    <div class="isa-tag" style="margin-top:20px;">
+      📚 <strong>ISA Exam Domain:</strong> Tree Biology (11%) · <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.) Ch. 2–3 · Taiz &amp; Zeiger, Plant Physiology (6th Ed.) · ISA BMP Tree Biology
+    </div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "During the light reactions of photosynthesis, oxygen is released as a byproduct. What is the source of this oxygen?",
+    options: [
+      "CO₂ drawn in through the stomata",
+      "Water molecules split apart in the thylakoids",
+      "Glucose broken down in the stroma",
+      "Atmospheric O₂ recycled through the electron transport chain"
+    ],
+    correct: 1,
+    expStatus: "correct",
+    expTitle: "Water splitting (photolysis) produces the O₂",
+    expBody: `The oxygen you breathe from a forest came from <strong>water</strong>, not CO₂. In Photosystem II, light energy (at wavelength ~680nm, absorbed by chlorophyll a / P680) is used to split water molecules — a process called <strong>photolysis</strong>:
+<br><br>
+2H₂O → 4H⁺ + 4e⁻ + <strong>O₂</strong>
+<br><br>
+The electrons replace those lost from chlorophyll. The protons (H⁺) contribute to the proton gradient that drives ATP synthase. The oxygen is released as a waste product. CO₂ plays no part in the light reactions — it enters the picture only in the Calvin cycle.`,
+    points: [
+      "Photolysis occurs in Photosystem II (PS II), located in the thylakoid membrane",
+      "P680 (chlorophyll a in PS II) is the pigment that absorbs the energy to split water",
+      "This is why trees and plants are the primary source of atmospheric O₂ on Earth",
+      "On the ISA exam: if a question asks where O₂ comes from, the answer is always H₂O via photolysis"
+    ],
+    fieldNote: "📋 Field Note (Okanagan): On a smoke day in August — wildfire haze reducing photosynthetically active radiation (PAR) — the trees around Kelowna are still taking in CO₂ and releasing O₂, but at significantly reduced rates. Reduced light = reduced photolysis = less ATP and NADPH available for the Calvin cycle. Smoke events aren't just an air quality issue for crews — they directly suppress tree photosynthesis for weeks."
+  },
+  {
+    q: "In the chloroplast, the light reactions occur in the thylakoid membranes. Where does the Calvin cycle take place?",
+    options: [
+      "The outer membrane of the chloroplast",
+      "The intermembrane space between outer and inner membranes",
+      "The stroma (fluid inside the inner membrane)",
+      "The cytoplasm of the mesophyll cell"
+    ],
+    correct: 2,
+    expTitle: "The Calvin cycle runs in the stroma",
+    expBody: `The chloroplast has two main compartments relevant to photosynthesis:
+<br><br>
+<strong>Thylakoids</strong> — flattened membrane sacs (stacked into grana) where the light reactions happen. Chlorophyll is embedded here. ATP and NADPH are produced here.
+<br><br>
+<strong>Stroma</strong> — the fluid-filled space surrounding the thylakoids, inside the inner membrane. This is where the enzyme RuBisCO lives and where CO₂ fixation (the Calvin cycle) runs. The stroma receives the ATP and NADPH produced by the light reactions and uses them to convert CO₂ into G3P (glyceraldehyde-3-phosphate), the three-carbon building block for glucose.`,
+    points: [
+      "Light reactions → thylakoid membranes → produce ATP + NADPH",
+      "Calvin cycle → stroma → consume ATP + NADPH to fix CO₂",
+      "RuBisCO (ribulose-1,5-bisphosphate carboxylase/oxygenase) is the key enzyme in the stroma — arguably the most abundant protein on Earth",
+      "The Calvin cycle does NOT require light directly — it requires the products of the light reactions"
+    ],
+    fieldNote: "📋 Field Note (Okanagan): When crews refer to a tree as 'photosynthesizing', they mean both stages working together. A tree under prolonged cloud cover or heavy shade runs low on ATP and NADPH from the light reactions, which starves the Calvin cycle even if CO₂ is available. This is why heavy canopy suppression reduces growth in subordinate trees — it's not just shading, it's a carbon deficit at the molecular level."
+  },
+  {
+    q: "A ponderosa pine on a south-facing Okanagan slope is examined at 2:30pm in mid-July. Temperature is 38°C, humidity is 18%, and there has been no rain for 3 weeks. Despite full sun, its photosynthetic rate is near zero. What is the primary reason?",
+    options: [
+      "Chlorophyll denatures above 35°C, permanently disabling the light reactions",
+      "Stomata have closed in response to high vapour pressure deficit (VPD), cutting off CO₂ supply",
+      "Root temperature exceeds 30°C, shutting down mineral uptake and stopping photosynthesis",
+      "The tree has entered summer dormancy and stopped growing"
+    ],
+    correct: 1,
+    expTitle: "Stomatal closure in high VPD — the midday shutdown",
+    expBody: `In the Okanagan Interior, this is one of the most important pieces of physiology to understand. When temperature rises and humidity drops, <strong>vapour pressure deficit (VPD)</strong> increases — meaning the air is much 'drier' than the air inside the leaf. To prevent catastrophic desiccation, guard cells receive signals (primarily abscisic acid / ABA, released by drought-stressed roots) to <strong>close stomata</strong>.
+<br><br>
+Closed stomata = no CO₂ entry = Calvin cycle shuts down even though light energy is still arriving. The tree still captures light energy, but without CO₂ it can't fix carbon. Some of that excess excitation energy generates reactive oxygen species (ROS), causing oxidative stress. Carotenoids and tocopherols serve as photoprotective pigments in this scenario.
+<br><br>
+Chlorophyll does NOT denature at 38°C. Normal membrane function is maintained up to ~42–45°C. Stomatal closure is the primary limiting factor in Okanagan summer conditions — not enzyme denaturation.`,
+    points: [
+      "ABA (abscisic acid) is the primary hormone signal for stomatal closure under water stress",
+      "VPD = the difference between the water vapour pressure inside the leaf vs. the air — high VPD means very fast water loss",
+      "Bimodal photosynthesis pattern: peaks in morning and late afternoon; near-zero at 1–3pm in Okanagan summer",
+      "Irrigation or mulching that reduces soil moisture stress can reduce midday stomatal closure and improve tree carbon gain"
+    ],
+    fieldNote: "📋 Field Note (Okanagan): This is exactly why summer pruning of drought-stressed trees is a bigger deal here than in coastal BC. A tree that has already closed its stomata and halted carbon gain doesn't have surplus NSC to spend on wound response. When you cut a limb off a ponderosa at 2pm in August during a drought year, you're wounding a tree that has essentially nothing in reserve right now. Prune early in the morning, or wait for fall."
+  },
+  {
+    q: "Which pigment serves as the PRIMARY reaction centre in Photosystem II, directly absorbing light energy to initiate the splitting of water?",
+    options: [
+      "Chlorophyll b",
+      "Beta-carotene",
+      "Xanthophyll",
+      "Chlorophyll a (P680)"
+    ],
+    correct: 3,
+    expTitle: "Chlorophyll a (P680) is the PS II reaction centre",
+    expBody: `There are several photosynthetic pigments, each with a specific role:
+<br><br>
+<strong>Chlorophyll a (P680 in PS II, P700 in PS I)</strong> — the primary reaction centre pigment. "P680" means this form of chlorophyll a absorbs maximally at 680nm (red light). It is the only pigment that directly drives the photochemical reactions — all other pigments are accessory, meaning they absorb light and transfer the energy to chlorophyll a.
+<br><br>
+<strong>Chlorophyll b</strong> — absorbs at ~453nm (blue) and ~642nm (red-orange). Accessory pigment; transfers energy to chlorophyll a. Broadens the wavelength range the antenna complex can capture.
+<br><br>
+<strong>Carotenoids (beta-carotene + xanthophylls)</strong> — absorb blue/green light (~400–500nm). Two functions: accessory light harvesting, and <em>photoprotection</em> — they dissipate excess excitation energy as heat, preventing ROS damage. They also give deciduous trees their yellow/orange fall colours as chlorophyll breaks down.`,
+    points: [
+      "Chlorophyll a: primary pigment, absorbs red (660–680nm) and blue-violet (~430nm)",
+      "Chlorophyll b: accessory pigment, passes energy to chlorophyll a",
+      "Carotenoids: accessory + photoprotective; the yellow/orange in fall colour is carotenoids unmasked as chlorophyll disappears",
+      "Anthocyanins are red/purple fall colour pigments — synthesized during senescence, NOT involved in photosynthesis"
+    ],
+    fieldNote: "📋 Field Note (Okanagan): Fall colour in the Okanagan is dominated by aspens (trembling aspen, Populus tremuloides) turning bright gold — that's carotenoids unmasked. The brilliant reds of maples or burning bush involve anthocyanins, which are synthesized fresh during senescence. Carotenoids were there all summer, hidden behind green chlorophyll. Western larch turns brilliant gold in October — pure carotenoid expression in a deciduous conifer. Worth explaining to clients."
+  },
+  {
+    q: "A large green ash on a Kelowna boulevard has been under chronic drought stress for two summers. The client says it's growing almost nothing and wants to know why. Reduced photosynthesis is part of the explanation. What is the direct connection between reduced photosynthesis and reduced shoot growth?",
+    options: [
+      "Drought-stressed trees produce more ethylene, which suppresses shoot elongation",
+      "Reduced photosynthesis limits production of non-structural carbohydrates (NSC), the carbon currency for all growth processes",
+      "Reduced light absorption causes a deficiency of ATP in the roots, stopping cell division",
+      "Fewer stomata open means less water enters the leaf, starving dividing cells of turgor pressure"
+    ],
+    correct: 1,
+    expTitle: "Photosynthesis → NSC → growth (and everything else)",
+    expBody: `This question connects photosynthesis to the bigger picture of tree energy economics. Photosynthesis produces <strong>glucose</strong>, which is converted into <strong>non-structural carbohydrates (NSC)</strong> — primarily sucrose for transport, and starch and soluble sugars for storage.
+<br><br>
+NSC is the carbon currency of the tree. <strong>Every biological process that costs energy draws on NSC:</strong>
+<ul style="margin:10px 0 10px 20px; color:#c9d1d9; font-size:0.86rem; line-height:1.7;">
+  <li>Shoot elongation and leaf production (growth respiration)</li>
+  <li>Root growth and maintenance</li>
+  <li>Wound response and CODIT compartmentalization</li>
+  <li>Mycorrhizal symbiosis support (trees feed fungi with NSC)</li>
+  <li>Defense compound synthesis (terpenes, phenolics)</li>
+  <li>Maintenance respiration at night</li>
+</ul>
+When chronic drought closes stomata and suppresses photosynthesis, NSC production drops. The tree must prioritize. Growth is the first thing deprioritized — it's the most 'optional' expenditure. Maintenance of existing cells comes next. Defense may be last in line, which is why chronically stressed trees are more susceptible to bark beetle attack (reduced resin flow, a NSC-dependent defense).`,
+    points: [
+      "Photosynthesis → glucose → NSC (sucrose, starch, soluble sugars) → powers all growth and defense",
+      "NSC depletion is a primary mechanism linking drought to tree mortality — not just water stress alone",
+      "ISA exam concept: 'carbon starvation' — a tree can die from NSC depletion even if water is available, if shading or disease blocks photosynthesis long enough",
+      "The connection between photosynthesis, NSC, and vulnerability to pests is a core arboricultural diagnostic framework"
+    ],
+    fieldNote: "📋 Field Note (Okanagan): This is the story of nearly every stressed tree we assess on Kelowna boulevards in August. The green ash has been underirritated for two summers. Stomata have been partially or fully closed during peak growing season. NSC reserves are depleted. The tree looks alive but isn't building anything. Trunk injection of fertilizer helps a little — but what it really needs is water, which enables stomata to open, CO₂ to enter, and photosynthesis to resume. Fertilizer without moisture is money wasted."
+  }
+];
+
+let currentQ = 0;
+let score = 0;
+let selectedOption = null;
+let submitted = false;
+
+function startQuiz() {
+  document.getElementById('homeSection').style.display = 'none';
+  document.getElementById('quizSection').classList.add('active');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  submitted = false;
+  selectedOption = null;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('qCounter').textContent = `Question ${currentQ + 1} of ${questions.length}`;
+  document.getElementById('progressFill').style.width = `${(currentQ / questions.length) * 100}%`;
+
+  const letters = ['A','B','C','D'];
+  let optionsHTML = q.options.map((opt, i) => `
+    <label class="option-label" id="opt-${i}" onclick="selectOption(${i})">
+      <input type="radio" name="answer" value="${i}">
+      <div class="option-letter" id="letter-${i}">${letters[i]}</div>
+      <div class="option-text">${opt}</div>
+    </label>
+  `).join('');
+
+  document.getElementById('questionContainer').innerHTML = `
+    <div class="question-card">
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="optionsContainer">${optionsHTML}</div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  if (submitted) return;
+  selectedOption = i;
+  document.querySelectorAll('.option-label').forEach((el, idx) => {
+    el.classList.toggle('selected', idx === i);
+  });
+  document.getElementById('submitBtn').disabled = false;
+}
+
+function submitAnswer() {
+  if (selectedOption === null || submitted) return;
+  submitted = true;
+  const q = questions[currentQ];
+  const isCorrect = selectedOption === q.correct;
+  if (isCorrect) score++;
+
+  document.querySelectorAll('.option-label').forEach((el, idx) => {
+    el.classList.add('locked');
+    if (idx === q.correct) el.classList.add('correct');
+    else if (idx === selectedOption && !isCorrect) el.classList.add('wrong');
+  });
+
+  const exp = document.getElementById('explanation');
+  exp.classList.add('show');
+  exp.innerHTML = `
+    <div class="exp-header ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓ Correct' : '✗ Incorrect — the correct answer is ' + ['A','B','C','D'][q.correct]}</div>
+    <div class="exp-body">
+      <strong>${q.expTitle}</strong><br><br>${q.expBody}
+      <ul class="exp-points">${q.points.map(p => `<li>${p}</li>`).join('')}</ul>
+      <div class="field-note">${q.fieldNote}</div>
+    </div>
+  `;
+
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').textContent = currentQ < questions.length - 1 ? 'Next Question →' : 'See Results →';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ < questions.length) {
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('quizSection').classList.remove('active');
+  document.getElementById('resultsSection').classList.add('active');
+  document.getElementById('finalScore').textContent = `${score}/${questions.length}`;
+  const msgs = [
+    "Review the reference card and try again — this one takes a few passes.",
+    "Decent start. Re-read the explanations for any you missed.",
+    "Solid. You've got the fundamentals — now connect it to what you see in the field.",
+    "Strong. You're thinking like an arborist, not just a botanist.",
+    "Perfect score. Teach this one at tailgate."
+  ];
+  document.getElementById('resultMsg').textContent = msgs[score] || msgs[4];
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0; selectedOption = null; submitted = false;
+  document.getElementById('resultsSection').classList.remove('active');
+  document.getElementById('quizSection').classList.remove('active');
+  document.getElementById('homeSection').style.display = 'block';
+}
+</script>
+</body>
+</html>
