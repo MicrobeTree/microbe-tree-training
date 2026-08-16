@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌳 Western Larch | Microbe Tree Training</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+  header { background: #161b22; border-bottom: 2px solid #d29922; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  header .logo { font-size: 1.25rem; font-weight: 700; color: #d29922; }
+  header .day-tag { background: #d2992222; color: #d29922; border: 1px solid #d2992244; border-radius: 6px; padding: 3px 10px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px; }
+  header .week-tag { color: #8b949e; font-size: 0.82rem; margin-left: auto; }
+  .layout { display: grid; grid-template-columns: 200px 1fr; min-height: calc(100vh - 58px); }
+  @media(max-width: 640px){ .layout { grid-template-columns: 1fr; } }
+  .sidebar { background: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: sticky; top: 0; height: calc(100vh - 58px); overflow-y: auto; }
+  @media(max-width: 640px){ .sidebar { height: auto; position: static; border-right: none; border-bottom: 1px solid #30363d; padding: 12px 0; display: flex; flex-wrap: wrap; gap: 4px; padding: 10px; } }
+  .sidebar a { display: flex; align-items: center; gap: 10px; padding: 10px 18px; font-size: 0.84rem; color: #8b949e; text-decoration: none; border-left: 3px solid transparent; transition: all 0.15s; cursor: pointer; }
+  .sidebar a:hover, .sidebar a.active { color: #d29922; border-left-color: #d29922; background: #d2992211; }
+  @media(max-width: 640px){ .sidebar a { border-left: none; border-radius: 6px; padding: 7px 12px; font-size: 0.8rem; } .sidebar a.active { background: #d2992233; } }
+  .sidebar .section-icon { font-size: 1rem; width: 20px; text-align: center; }
+  .content { padding: 30px 28px 60px; max-width: 680px; }
+  .section { display: none; }
+  .section.active { display: block; }
+  h2 { font-size: 1.4rem; font-weight: 700; color: #e6edf3; margin-bottom: 6px; }
+  h3 { font-size: 0.95rem; font-weight: 700; color: #d29922; margin: 18px 0 8px; }
+  p { font-size: 0.88rem; line-height: 1.68; color: #c9d1d9; margin-bottom: 10px; }
+  .section-subtitle { color: #8b949e; font-size: 0.86rem; margin-bottom: 20px; }
+  .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+  @media(max-width: 420px){ .spec-grid { grid-template-columns: 1fr; } }
+  .spec-box { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; }
+  .spec-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.6px; color: #8b949e; margin-bottom: 4px; font-weight: 600; }
+  .spec-value { font-size: 0.88rem; color: #e6edf3; font-weight: 600; }
+  .spec-detail { font-size: 0.8rem; color: #8b949e; }
+  .info-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; margin: 12px 0; }
+  ul { list-style: none; padding: 0; }
+  ul li { font-size: 0.86rem; color: #c9d1d9; padding: 5px 0 5px 18px; border-bottom: 1px solid #21262d; position: relative; line-height: 1.5; }
+  ul li:last-child { border-bottom: none; }
+  ul li::before { content: "→"; color: #d29922; position: absolute; left: 0; }
+  .pest-row { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .pest-name { font-size: 0.9rem; font-weight: 700; color: #e6edf3; margin-bottom: 4px; }
+  .pest-sci { font-size: 0.78rem; color: #8b949e; font-style: italic; margin-bottom: 8px; }
+  .pest-body { font-size: 0.84rem; color: #c9d1d9; line-height: 1.6; }
+  .severity { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .sev-high { background: #f8514922; color: #f85149; border: 1px solid #f8514944; }
+  .sev-med { background: #d2992222; color: #d29922; border: 1px solid #d2992244; }
+  .sev-low { background: #3fb95022; color: #3fb950; border: 1px solid #3fb95044; }
+  .field-note { background: #0d1117; border-left: 3px solid #d29922; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-top: 14px; font-size: 0.84rem; color: #8b949e; line-height: 1.55; }
+  .field-note strong { color: #d29922; }
+  .highlight-box { background: #1c2128; border: 1px solid #d29922; border-radius: 8px; padding: 14px; margin: 12px 0; }
+  .highlight-box p { margin-bottom: 0; }
+  .nav-btn { margin-top: 24px; background: #21262d; border: 1px solid #30363d; border-radius: 8px; padding: 10px 18px; font-size: 0.86rem; color: #58a6ff; cursor: pointer; }
+  .nav-btn:hover { background: #30363d; }
+  .isa-tag { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px 16px; margin-top: 24px; font-size: 0.8rem; color: #8b949e; }
+  .isa-tag strong { color: #c9d1d9; }
+  .unique-banner { background: linear-gradient(135deg, #d2992211, #3fb95011); border: 1px solid #d29922; border-radius: 10px; padding: 16px; margin-bottom: 18px; }
+  .unique-banner .banner-title { font-size: 1rem; font-weight: 700; color: #d29922; margin-bottom: 6px; }
+  .unique-banner p { margin-bottom: 0; font-size: 0.86rem; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="day-tag">🌳 WEDNESDAY · TREE PROFILE</div>
+  <div class="week-tag">Week 11</div>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a class="active" onclick="showSection('identity')"><span class="section-icon">🔍</span>Identity</a>
+    <a onclick="showSection('origin')"><span class="section-icon">🗺️</span>Origin &amp; Range</a>
+    <a onclick="showSection('biology')"><span class="section-icon">🌱</span>Biology</a>
+    <a onclick="showSection('pests')"><span class="section-icon">🐛</span>Pest Pressures</a>
+    <a onclick="showSection('disease')"><span class="section-icon">🦠</span>Disease Pressures</a>
+    <a onclick="showSection('arborist')"><span class="section-icon">🧗</span>Arborist Notes</a>
+  </nav>
+
+  <div class="content">
+
+    <!-- IDENTITY -->
+    <div id="section-identity" class="section active">
+      <h2>Western Larch</h2>
+      <p class="section-subtitle"><em>Larix occidentalis</em> Nutt. · Pinaceae · Western Tamarack</p>
+
+      <div class="unique-banner">
+        <div class="banner-title">⭐ What makes it unusual</div>
+        <p>Western larch is one of the only deciduous conifers in BC Interior — it grows needles and cones like a pine, but drops every needle every fall in a blaze of gold. Clients who don't know this will panic and call you. Have this one memorized.</p>
+      </div>
+
+      <div class="spec-grid">
+        <div class="spec-box">
+          <div class="spec-label">Max Height</div>
+          <div class="spec-value">50–60 m (165–200 ft)</div>
+          <div class="spec-detail">Tallest native conifer in BC Interior</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">Max DBH</div>
+          <div class="spec-value">Up to 1.5 m (5 ft)</div>
+          <div class="spec-detail">Mature specimens are massive</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">Longevity</div>
+          <div class="spec-value">500–900+ years</div>
+          <div class="spec-detail">Old growth larch in BC Rockies</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">Needles</div>
+          <div class="spec-value">2–5 cm, clusters of 15–30</div>
+          <div class="spec-detail">On spur shoots; turns gold, drops in fall</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">Cones</div>
+          <div class="spec-value">2–4 cm, persistent</div>
+          <div class="spec-detail">Upright, stay on tree for years</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">Bark</div>
+          <div class="spec-value">Thick, reddish-brown, furrowed</div>
+          <div class="spec-detail">Exceptional fire resistance</div>
+        </div>
+      </div>
+
+      <h3>Field Identification Tips</h3>
+      <ul>
+        <li>Deciduous conifer — needles gone by November, on by late April. No other BC Interior tree does this (well, Tamarack/eastern larch in the far north, but that's not Okanagan)</li>
+        <li>Needles in whorls on stubby spur shoots — multiple needles per cluster, not 2–5 like pines</li>
+        <li>Fall colour: brilliant gold/orange — one of the most spectacular fall displays in the BC Interior</li>
+        <li>Bark on mature trees is distinctly orange-red and deeply plated — looks almost like ponderosa pine from a distance</li>
+        <li>Crown: narrow conical when young, becoming more open and irregular with age</li>
+        <li>Cones small, upright with distinctive bracts protruding beyond scales — diagnostic</li>
+      </ul>
+
+      <div class="field-note">
+        <strong>📋 Field Note (Okanagan):</strong> The North Okanagan and Okanagan Highlands (above ~900m elevation) are where you're most likely to encounter western larch — around Lumby, Cherryville, and the drive up towards Vernon from the east. Down in the valley floor and south Okanagan (Kelowna, Penticton), it's too low and too dry. When you do encounter it, the bark and needle clusters are unmistakable once you've seen them. Clients often don't know they have a larch until you explain why it's "dead" in November.
+      </div>
+      <button class="nav-btn" onclick="showSection('origin')">Next: Origin &amp; Range →</button>
+    </div>
+
+    <!-- ORIGIN -->
+    <div id="section-origin" class="section">
+      <h2>Origin &amp; Range</h2>
+      <p class="section-subtitle">A BC Interior native with deep ecological roots</p>
+
+      <p>Western larch (<em>Larix occidentalis</em>) is native to a relatively narrow band of the interior northwestern North America — the Columbia and Rocky Mountain region on both sides of the Canada–US border.</p>
+
+      <h3>Native Range</h3>
+      <ul>
+        <li><strong>BC:</strong> Primarily the Columbia, Selkirk, and Monashee ranges; North Okanagan Highlands; extends into the Rocky Mountain Trench area. Elevations 300–1,800m in BC</li>
+        <li><strong>Alberta:</strong> Restricted to the Rocky Mountain foothills (edge of range)</li>
+        <li><strong>Montana, Idaho, Washington (eastern):</strong> Core of the range; extensive pure stands in the Northern Rockies</li>
+        <li><strong>Oregon (northeast):</strong> Southern limit of range</li>
+      </ul>
+
+      <h3>Ecological Role</h3>
+      <p>In BC Interior forests, western larch grows in mixed stands with <strong>interior Douglas-fir</strong>, <strong>ponderosa pine</strong>, <strong>lodgepole pine</strong>, and <strong>western red cedar</strong> (at higher elevations and on Wetter sites). It is a <strong>seral pioneer species</strong> — it establishes aggressively after fire on mineral soil but requires full sun. It cannot regenerate under a closed canopy, so it depends on disturbance (usually fire) to create openings. This makes it a fire-dependent species in ecological terms.</p>
+
+      <p>Historically, light-frequency surface fires in BC Interior forests maintained larch by killing shade-tolerant competitors (like subalpine fir) without killing the thick-barked larch. Fire suppression since the early 20th century has allowed shade-tolerant species to encroach — a significant ecological shift in these ecosystems.</p>
+
+      <h3>Introduced vs. Native</h3>
+      <p>Western larch is strictly native in BC Interior — no introduced populations. European larch (<em>Larix decidua</em>) and Japanese larch (<em>Larix kaempferi</em>) are sometimes planted ornamentally in BC; if you encounter a larch in an urban landscape in the Okanagan valley floor, it may be one of these rather than the native species. Key diagnostic: European/Japanese larch cones tend to be larger (2–5cm) with reflexed (bent outward) bract tips, vs. the protruding straight bracts of western larch.</p>
+
+      <div class="field-note">
+        <strong>📋 Field Note (Okanagan):</strong> The famous "larch season" draws thousands of hikers to the Okanagan Highlands each October — Fintry Provincial Park and Ellison Provincial Park both have accessible larch populations. For arborists, knowing the ecological backstory matters in client conversations: larch in a second-growth stand often tells you the site burned within the last 80–150 years. That's context that shapes your risk assessment for that whole stand.
+      </div>
+      <button class="nav-btn" onclick="showSection('biology')">Next: Biology →</button>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div id="section-biology" class="section">
+      <h2>Biology</h2>
+      <p class="section-subtitle">What makes this tree tick — and why it drops its needles</p>
+
+      <h3>The Deciduous Conifer Strategy</h3>
+      <p>Dropping needles in winter seems counterintuitive for a conifer — conifers are supposed to hold needles year-round, right? Larch's deciduous strategy is a cold-climate adaptation. Needles are the tree's most vulnerable tissue to freeze damage; by dropping them in fall, the tree eliminates the risk of catastrophic ice crystal formation in photosynthetic tissue. The trade-off is that larch must rebuild its entire needle crop every spring — a massive carbon investment — but it starts fresh each year with no needles carrying over accumulated pollutants, disease, or cuticle damage.</p>
+
+      <div class="highlight-box">
+        <p><strong>The payoff:</strong> Despite the annual rebuild, western larch is one of the most productive conifers in BC Interior forests during the growing season. Its needle clusters maximize light interception during long summer days, and it grows faster than Douglas-fir on comparable sites in its range.</p>
+      </div>
+
+      <h3>Light Requirements</h3>
+      <p>Western larch is <strong>extremely shade intolerant</strong> — one of the most shade-intolerant trees in BC Interior. Seedlings cannot survive under a closed canopy. Even mature trees on suppressed sites decline and eventually die without adequate crown light. This is why larch is a post-disturbance pioneer, not an understory species.</p>
+
+      <h3>Root System</h3>
+      <p>Western larch develops a deep, wide-spreading root system that anchors it effectively on steep slopes. It is relatively <strong>windfirm</strong> compared to shallow-rooted conifers like spruce. Roots extend well into deep mineral soils — valuable on the rocky, shallow soils of BC Interior slopes.</p>
+
+      <h3>Site Tolerances</h3>
+      <ul>
+        <li>Full sun required — aanimum 70% full sun for good growth</li>
+        <li>Deep, well-drained soils preferred — tolerates poor, rocky, or shallow soils</li>
+        <li>Drought tolerant once established (but less so than ponderosa pine)</li>
+        <li>Cold-hardy to approximately −50°C — suited for the full BC Interior temperature range</li>
+        <li>Prefers well-drained or dry sites; does not tolerate prolonged waterlogging</li>
+        <li>pH adaptable — grows on slightly acidic to slightly alkaline soils</li>
+      </ul>
+
+      <h3>Wood Properties</h3>
+      <p>Western larch wood is dense, hard, and strong — one of the strongest softwood timbers in BC. The heartwood is very durable and decay-resistant, historically used for railway ties, mine timbers, and structural lumber. Clients with old larch fence posts on their properties often find them still solid after 40–60 years in the ground. This decay resistance is important context when assessing larch as a structural element in old orchards or farm properties.</p>
+
+      <div class="field-note">
+        <strong>📋 Field Note (Okanagan):</strong> Clients who planted western larch as an ornamental often underestimated the eventual size. A 20-year-old larch can easily be 12–15m tall and still accelerating. Urban plantings in open parks work; strata or smaller residential lots are a problem. It's not a candidate for utility-line corridors — that crown will be into 25kV lines within 25 years. Know this before you endorse it to a client considering planting one.
+      </div>
+      <button class="nav-btn" onclick="showSection('pests')">Next: Pest Pressures →</button>
+    </div>
+
+    <!-- PESTS -->
+    <div id="section-pests" class="section">
+      <h2>Pest Pressures</h2>
+      <p class="section-subtitle">What's coming for the larch — and when it matters</p>
+
+      <div class="pest-row">
+        <div class="pest-name">Larch Casebearer</div>
+        <div class="pest-sci">Coleophora laricella (Zeller) — Coleophoridae</div>
+        <div class="severity sev-high">HIGH — BC Interior impact</div>
+        <div class="pest-body">
+          <p>Introduced from Europe in the 1800s; now present throughout the BC Interior larch range. The larvae are tiny caterpillars that mine individual needles early in spring, then construct a portable case from a hollowed needle fragment. They overwinter as small cases attached to twigs and buds.</p>
+          <p><strong>Signs:</strong> Browning of needles starting in late spring (May–June), particularly at branch tips. Heavy infestations cause near-complete defoliation. Repeated defoliation over multiple seasons stresses and can kill trees, especially in combination with drought. Look for tiny cigar-shaped cases on branches in late summer and fall.</p>
+          <p><strong>Management:</strong> Two introduced parasitic wasps (<em>Agathis pumila</em> and <em>Chrysocharis laricinellae</em>) provide biological control in many areas. Spinosad-based foliar sprays (applied at bud break in spring, timed to early larval instar) can reduce populations. Fertilization and irrigation reduce stress vulnerability.</p>
+        </div>
+      </div>
+
+      <div class="pest-row">
+        <div class="pest-name">Western Larch Sawfly</div>
+        <div class="pest-sci">Pristiphora wesmaeli (Tischbein) — Tenthredinidae</div>
+        <div class="severity sev-med">MODERATE — periodic outbreaks</div>
+        <div class="pest-body">
+          <p>A native sawfly; larvae feed on larch needles in groups, stripping branch sections. Periodic outbreak years can cause significant defoliation but rarely kill otherwise healthy trees. Adults emerge in spring; larvae feed through June–July.</p>
+          <p><strong>Signs:</strong> Defoliated branch sections with small green caterpillar-like larvae present. Sawflies are often confused with moth caterpillars — check for 6+ pairs of prolegs (sawflies have many more than true caterpillars).</p>
+          <p><strong>Management:</strong> Outbreaks typically crash after 1–2 years due to natural enemies. Treatment warranted only in high-value ornamental trees during severe defoliation — Bacillus thuringiensis (Bt) or spinosad, applied early in larval development.</p>
+        </div>
+      </div>
+
+      <div class="pest-row">
+        <div class="pest-name">Bark Beetles (Ips species / Dendroctonus)</div>
+        <div class="pest-sci">Various species — Curculionidae, Scolytinae</div>
+        <div class="severity sev-low">LOW (secondary pest)</div>
+        <div class="pest-body">
+          <p>Bark beetles rarely attack healthy western larch but can colonize trees significantly weakened by casebearer defoliation, drought, lightning strike, or mechanical injury. Larch beetle (<em>Dendroctonus pseudotsugae</em>) and various <em>Ips</em> species are the primary bark beetle threats.</p>
+          <p><strong>Signs:</strong> Pitch tubes or resin flow at bark, boring dust (frass) in bark crevices, crown fade from top down. Woodpecker feeding activity on stems is an indicator of larvae under bark.</p>
+          <p><strong>Management:</strong> Maintain tree vigour through irrigation and corrective pruning. Remove freshly killed trees before adults emerge to reduce local population. Bark beetle attack in western larch almost always indicates predisposing stress — address the root cause.</p>
+        </div>
+      </div>
+
+      <div class="field-note">
+        <strong>📋 Field Note (Okanagan):</strong> In drought years — which are becoming more frequent and severe in the Okanagan — the combination of drought stress + larch casebearer defoliation can be lethal. The larch can't photosynthesize (stomata closed from drought) AND is losing needles to casebearer. NSC reserves crash. That's when bark beetles find a viable host. Recognize the sequence: the bark beetles didn't kill the tree — they finished it. Your report to the client should describe this cascade, not just the bark beetles at the end.
+      </div>
+      <button class="nav-btn" onclick="showSection('disease')">Next: Disease Pressures →</button>
+    </div>
+
+    <!-- DISEASE -->
+    <div id="section-disease" class="section">
+      <h2>Disease Pressures</h2>
+      <p class="section-subtitle">What's growing on the larch — and what matters for risk</p>
+
+      <div class="pest-row">
+        <div class="pest-name">Larch Needle Cast</div>
+        <div class="pest-sci">Meria laricis Vuill. / Hypodermella laricis Tubeuf — various</div>
+        <div class="severity sev-med">MODERATE — cosmetic to moderately damaging</div>
+        <div class="pest-body">
+          <p>Several fungal pathogens cause needle cast in western larch, most commonly active in wet spring conditions. Meria laricis causes a blight of young needles at shoot emergence; Hypodermella laricis infects older needles, causing browning by late summer.</p>
+          <p><strong>Signs:</strong> Browning and premature drop of needles, usually starting on lower branches. Brown bands or fruiting bodies (black lines) may be visible on affected needles with a hand lens. Can be confused with casebearer damage — check for the characteristic case-shaped structures of casebearer vs. fungal signs.</p>
+          <p><strong>Management:</strong> Usually not lethal. Rake and dispose of fallen needles to reduce inoculum. Copper-based or chlorothalonil fungicide sprays at bud break in spring provide protection in high-value ornamental settings. Multiple consecutive wet springs can cause significant cumulative damage in combination with other stressors.</p>
+        </div>
+      </div>
+
+      <div class="pest-row">
+        <div class="pest-name">Red Ring Rot / Stem Decay</div>
+        <div class="pest-sci">Porodaedalea pini (Brot.) Murrill (formerly Phellinus pini)</div>
+        <div class="severity sev-high">HIGH — structural hazard in mature trees</div>
+        <div class="pest-body">
+          <p>Red ring rot is the most important wood decay fungus in mature western larch. It causes columnar decay of the heartwood in the central stem, often present for decades before any external sign. The fungus enters through branch stubs, fire scars, or broken tops.</p>
+          <p><strong>Signs:</strong> Conks (bracket fungi) on stem — rusty-brown upper surface, pore surface below. Internal: characteristic reddish-brown cylinder of decayed wood with white mycelial feltwork between sound and decayed wood. Advanced decay hollows the stem entirely while leaving a thin sound shell — creating a catastrophic failure risk.</p>
+          <p><strong>Management:</strong> There is no treatment for established decay. Risk management: assess extent of decay using resistograph drilling or sonic tomography; evaluate remaining sound wood cross-section; determine failure threshold. Removal or crown reduction if structural integrity is compromised per ISA Tree Risk Assessment guidelines.</p>
+        </div>
+      </div>
+
+      <div class="pest-row">
+        <div class="pest-name">Larch Dwarf Mistletoe</div>
+        <div class="pest-sci">Arceuthobium laricis (Piper) St. John — Santalaceae</div>
+        <div class="severity sev-med">MODERATE to HIGH — cumulative in stands</div>
+        <div class="pest-body">
+          <p>A native parasitic flowering plant that extracts water and nutrients from larch branches. Common in older larch stands throughout the BC Interior range. Shoots are small, yellow-green, 2–8cm tall, on infected branches. Spreads by explosive seed dispersal — seeds ejected at up to 90 km/h, sticking to bark or needles.</p>
+          <p><strong>Signs:</strong> Witches' brooms (dense abnormal branch proliferations) in the canopy are the most visible sign. Heavily infected branches show reduced growth and can be girdled over time. Tree-wide infection reduces growth significantly; very rarely kills trees directly but increases vulnerability to other stressors.</p>
+          <p><strong>Management:</strong> Remove infected branches where practical (before seeds ripen — typically late summer). Heavy infestation may warrant removal if the tree is in decline for other reasons. No chemical control. Pruning 30cm below the last visible infection point is recommended to remove endophytic growth.</p>
+        </div>
+      </div>
+
+      <div class="field-note">
+        <strong>📋 Field Note (Okanagan):</strong> When you're assessing a mature larch, always probe old branch stubs and fire scars for soft wood — that's your entry point for red ring rot. The tree might look perfectly healthy externally and be 60% hollow inside. Resistograph testing is the tool of choice for quantifying it without destructive sampling. On any mature larch (>80 years, >60cm DBH) near a structure or trail, rot assessment should be standard in your report — not optional.
+      </div>
+      <button class="nav-btn" onclick="showSection('arborist')">Next: Arborist Notes →</button>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div id="section-arborist" class="section">
+      <h2>Arborist Notes</h2>
+      <p class="section-subtitle">Practical field guidance for working with western larch</p>
+
+      <h3>Pruning</h3>
+      <ul>
+        <li><strong>Timing:</strong> Prune during dormancy (November–March) or early spring before bud break. Avoid summer pruning — wound response is slower on a tree fully invested in needle production, and pathogen entry risk increases</li>
+        <li><strong>Cuts:</strong> Make clean, standard collar cuts per ANSI A300 Part 1. Larch compartmentalizes wounds adequately but is not as vigorous a compartmentalizer as Douglas-fir</li>
+        <li><strong>Wound dressings:</strong> Not recommended per ISA BMP Pruning — wound dressings do not improve compartmentalization and may delay callus formation</li>
+        <li>Avoid removing more than 25% of live crown in a single year — ANSI A300 guideline</li>
+      </ul>
+
+      <h3>PHC Approach</h3>
+      <ul>
+        <li>Drought stress is the primary vulnerability in Okanagan larch — irrigation during dry periods directly reduces susceptibility to casebearer and bark beetle damage</li>
+        <li>Mulch the root zone (5–10cm depth, keep away from root flare) to reduce soil moisture loss and temperature extremes</li>
+        <li>Soil injection fertilization (per ANSI A300 Part 2) can support vigour in stressed trees, but water availability is the limiting factor, not nutrients, in most Okanagan larch situations</li>
+        <li>For larch casebearer: spinosad foliar treatment timed to bud break (early-mid May in North Okanagan) if defoliation history warrants it</li>
+      </ul>
+
+      <h3>Landscape and Client Conversations</h3>
+      <ul>
+        <li><strong>Autumn "die-off" calls:</strong> You will get calls from clients who think their larch is dying in October. It is not dying — it is a deciduous conifer and this is completely normal. Have a clear, brief explanation ready</li>
+        <li>Western larch is generally too large for strata plantings — recommend only for parks, acreages, and large lots with no overhead utility lines</li>
+        <li>Excellent choice for wildland-urban interface (WUI) properties — the thick, corky bark makes it one of the most fire-resistant species available. Relevant selling point for clients in Kelowna's hill properties</li>
+        <li>A mature western larch is a significant heritage and aesthetic asset — document and photograph any mature specimens in a report</li>
+      </ul>
+
+      <h3>ISA Exam Context</h3>
+      <ul>
+        <li>Western larch is the primary example of a <strong>deciduous conifer</strong> on ISA exams — know that it's not an anomaly but an ecological adaptation</li>
+        <li>Red ring rot / Porodaedalea pini is a classic example of decay entry through old branch stubs — ISA tree risk assessment domain</li>
+        <li>Dwarf mistletoe (Arceuthobium) is a parasite, not a pathogen — important distinction for diagnosis questions on the exam</li>
+        <li>Shade intolerance connects to ISA domain: Tree Selection and Establishment — recommending larch for a shaded urban site is a category error</li>
+      </ul>
+
+      <div class="field-note">
+        <strong>📋 Field Note (Okanagan):</strong> Western larch is underused as a landscape tree in the North Okanagan for no good reason. It's native, fire-resistant, spectacularly beautiful in fall, and long-lived. The only legitimate objections are size and the annual needle drop (some clients find this messy). Compared to the problems you inherit with Norway maples and Siberian elms, a mature larch on a large lot is a joy. If you're doing a tree planting consultation on a property above 900m with full sun and good drainage — put western larch on the list.
+      </div>
+
+      <div class="isa-tag">
+        📚 <strong>ISA Exam Domains:</strong> Tree Biology (11%) · Tree Selection &amp; Establishment (7%) · Tree Risk Assessment (11%) · <strong>Sources:</strong> BC Ministry of Forests — Western Larch Silvics · ISA Arborists' Certification Study Guide (4th Ed.) · Klinka et al., Indicator Plants of Coastal BC · ANSI A300 Parts 1 &amp; 2
+      </div>
+      <button class="nav-btn" onclick="showSection('identity')">← Back to Identity</button>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end layout -->
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  const links = document.querySelectorAll('.sidebar a');
+  const order = ['identity','origin','biology','pests','disease','arborist'];
+  const idx = order.indexOf(id);
+  if(links[idx]) links[idx].classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
