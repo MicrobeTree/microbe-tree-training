@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lodgepole Pine — Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh;display:flex;flex-direction:column}
+  header{background:#161b22;border-bottom:2px solid #7ee787;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+  .logo{font-size:1.3rem;font-weight:700;color:#7ee787;letter-spacing:-0.5px}
+  .week-badge{background:#7ee787;color:#0d1117;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px}
+  .day-label{margin-left:auto;font-size:0.85rem;color:#7d8590;font-weight:600;letter-spacing:0.5px}
+  .layout{display:flex;flex:1;min-height:0}
+
+  /* Sidebar */
+  .sidebar{width:220px;flex-shrink:0;background:#161b22;border-right:1px solid #30363d;padding:20px 0;position:sticky;top:0;height:calc(100vh - 57px);overflow-y:auto}
+  .sidebar-title{font-size:0.72rem;color:#7d8590;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0 18px;margin-bottom:10px}
+  .nav-link{display:block;padding:9px 18px;font-size:0.88rem;color:#c9d1d9;text-decoration:none;cursor:pointer;border-left:3px solid transparent;transition:all 0.15s;line-height:1.3}
+  .nav-link:hover{background:#21262d;color:#e6edf3}
+  .nav-link.active{border-left-color:#7ee787;color:#7ee787;background:#1a2a1a;font-weight:600}
+  .nav-icon{margin-right:6px}
+
+  /* Main content */
+  .main{flex:1;overflow-y:auto;padding:28px 32px;max-width:720px}
+  @media(max-width:700px){.layout{flex-direction:column}.sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid #30363d;padding:12px 0}.main{padding:20px 16px}}
+
+  .section{display:none}
+  .section.active{display:block}
+  h1{font-size:1.6rem;font-weight:700;color:#e6edf3;margin-bottom:4px}
+  .sci-name{font-style:italic;color:#7d8590;font-size:1rem;margin-bottom:20px}
+  h2{font-size:1rem;color:#7ee787;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #21262d}
+  h3{font-size:0.95rem;font-weight:700;color:#e6edf3;margin:16px 0 8px 0}
+  p{font-size:0.91rem;color:#c9d1d9;line-height:1.68;margin-bottom:12px}
+  ul{list-style:none;padding:0;margin-bottom:14px}
+  ul li{font-size:0.91rem;color:#c9d1d9;line-height:1.6;padding:4px 0 4px 18px;position:relative}
+  ul li::before{content:"→";position:absolute;left:0;color:#7ee787;font-weight:700}
+
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+  .info-cell{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px}
+  .info-cell label{font-size:0.72rem;color:#7d8590;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;display:block;margin-bottom:4px}
+  .info-cell span{font-size:0.9rem;color:#e6edf3;font-weight:600}
+
+  .tag{display:inline-block;font-size:0.72rem;padding:2px 8px;border-radius:4px;margin:2px;font-weight:600}
+  .tag-green{background:#1a3a2a;color:#7ee787}
+  .tag-red{background:#3a1a1a;color:#f85149}
+  .tag-yellow{background:#3a2a10;color:#d29922}
+  .tag-blue{background:#1a2a3a;color:#58a6ff}
+
+  .pest-card{background:#1a1a1a;border:1px solid #30363d;border-radius:8px;padding:14px;margin-bottom:12px}
+  .pest-card .severity{font-size:0.72rem;font-weight:700;letter-spacing:0.5px;margin-bottom:6px}
+  .severity.high{color:#f85149}
+  .severity.moderate{color:#d29922}
+  .pest-card h4{font-size:0.92rem;font-weight:700;color:#e6edf3;margin-bottom:6px}
+  .pest-card p{font-size:0.88rem;margin-bottom:0}
+
+  .field-note{background:#1a2a1a;border-left:3px solid #7ee787;padding:12px 16px;border-radius:0 7px 7px 0;margin-top:16px}
+  .field-note strong{color:#7ee787;font-size:0.78rem;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#c9d1d9;margin:0;line-height:1.6}
+
+  .isa-bar{background:#161b22;border-top:1px solid #30363d;padding:14px 24px;font-size:0.82rem;color:#7d8590;text-align:center;flex-shrink:0}
+  .isa-bar span{color:#7ee787}
+
+  table{width:100%;border-collapse:collapse;font-size:0.88rem;margin-bottom:16px}
+  th{background:#21262d;color:#7d8590;text-align:left;padding:8px 12px;font-weight:600;font-size:0.78rem;text-transform:uppercase}
+  td{padding:8px 12px;border-bottom:1px solid #21262d;vertical-align:top;line-height:1.5;color:#c9d1d9}
+  td:first-child{color:#7ee787;font-weight:600}
+  tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="week-badge">WEEK 12</div>
+  <div class="day-label">🌳 WEDNESDAY · TREE PROFILE</div>
+</header>
+
+<div class="layout">
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <div class="sidebar-title">Sections</div>
+    <a class="nav-link active" onclick="show('identity')"><span class="nav-icon">🔍</span>Identity</a>
+    <a class="nav-link" onclick="show('origin')"><span class="nav-icon">🗺️</span>Origin &amp; Range</a>
+    <a class="nav-link" onclick="show('biology')"><span class="nav-icon">🧬</span>Biology &amp; Culture</a>
+    <a class="nav-link" onclick="show('pests')"><span class="nav-icon">🪲</span>Pest Pressures</a>
+    <a class="nav-link" onclick="show('disease')"><span class="nav-icon">🦠</span>Disease Pressures</a>
+    <a class="nav-link" onclick="show('arborist')"><span class="nav-icon">🧗</span>Arborist Notes</a>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- IDENTITY -->
+    <div class="section active" id="section-identity">
+      <h1>Lodgepole Pine</h1>
+      <div class="sci-name">Pinus contorta var. latifolia (Engelm.) Critchf. — Interior Lodgepole Pine</div>
+      <h2>🔍 Identity</h2>
+
+      <div class="info-grid">
+        <div class="info-cell"><label>Family</label><span>Pinaceae</span></div>
+        <div class="info-cell"><label>Varieties in BC</label><span>var. latifolia (interior), var. contorta (shore)</span></div>
+        <div class="info-cell"><label>Needles</label><span>2 per fascicle, 3–7 cm, slightly twisted</span></div>
+        <div class="info-cell"><label>Cones</label><span>2–5 cm, often serotinous; may persist on tree for decades</span></div>
+        <div class="info-cell"><label>Bark</label><span>Thin, scaly on upper bole; plated grey-brown at base</span></div>
+        <div class="info-cell"><label>Max height</label><span>25–40 m; dbh up to 60 cm in stands, larger in open</span></div>
+        <div class="info-cell"><label>Form</label><span>Straight, narrow crown; often self-pruning lower limbs in dense stands</span></div>
+        <div class="info-cell"><label>Lifespan</label><span>Typically 150–200 yrs; can reach 400+ yrs in open settings</span></div>
+      </div>
+
+      <h3>Key Identification Features</h3>
+      <p>Lodgepole pine is one of the most immediately recognizable conifers in interior BC — straight bole, small paired needles, and tightly grouped small cones that often look like they're glued on. In dense stands, trees self-prune aggressively, producing the clean lower trunk the species was named for: Indigenous peoples used these poles for lodge frames across the Interior Plateau.</p>
+      <ul>
+        <li>2 needles per bundle (fascicle) — the only 2-needle pine widely dominant in interior BC; ponderosa is also 3-needle</li>
+        <li>Needles slightly twisted — this is the <em>contorta</em> of the name, though "twisted" is subtle in var. <em>latifolia</em></li>
+        <li>Cones often serotinous (sealed with resin, requiring heat to open) — look for clusters of unopened cones on branches and trunk</li>
+        <li>Bark thin and orange-brown on upper trunk — significantly thinner than ponderosa at the same age; this is the key fire-vulnerability difference</li>
+        <li>Crown: narrow, somewhat irregular; in open grown trees, broader and more rounded</li>
+        <li>Foliage: yellow-green, somewhat dingy compared to ponderosa's blue-green</li>
+      </ul>
+
+      <div class="field-note">
+        <strong>📋 Field Note — Okanagan</strong>
+        <p>In the Okanagan, you'll encounter lodgepole primarily in the highlands — above roughly 1,000 m elevation on the plateau and in the mountains flanking the valley. At middle elevations, it often mixes with Douglas-fir and ponderosa in a mosaic tied closely to fire history. In landscape and residential settings (particularly in the Kelowna and West Kelowna highlands, Big White area, and Okanagan Highlands), lodgepole is planted and naturalized. When assessing lodgepoles on residential sites, the thin bark is your first risk consideration — these trees have almost no fire resistance. On a hot Okanagan slope with ladder fuels, a lodgepole on a residential lot is a significant wildfire interface risk.</p>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section" id="section-origin">
+      <h1>Lodgepole Pine</h1>
+      <div class="sci-name">Pinus contorta var. latifolia</div>
+      <h2>🗺️ Origin &amp; Range</h2>
+
+      <p>Lodgepole pine has the largest range of any pine species in western North America. Interior lodgepole (<em>var. latifolia</em>) runs from the Yukon south through BC, Alberta, Idaho, Montana, and into the Rocky Mountains. In BC, it is the <strong>most abundant tree species by area</strong>, dominating the interior plateau forests from the boreal north to the southern Interior Plateau.</p>
+
+      <h3>BC Interior Range</h3>
+      <ul>
+        <li>Primary range: Interior Plateau (Cariboo, Chilcotin, Omineca, Peace), Columbia Mountains, northern Rockies</li>
+        <li>Okanagan Highlands: significant lodgepole component above 1,000 m; transitions into ponderosa/Douglas-fir zone below</li>
+        <li>Elevation range in BC: approximately 500–2,100 m, though varies by latitude</li>
+        <li>Climate optimum: cool-moist continental; less drought-adapted than ponderosa</li>
+      </ul>
+
+      <h3>Fire Ecology and Post-Disturbance Dominance</h3>
+      <p>Lodgepole is a <strong>disturbance-adapted pioneer species</strong>. Its ecology is inseparable from fire. In areas with periodic stand-replacing fires, lodgepole is the dominant post-fire colonizer across most of interior BC, partly due to serotinous cones:</p>
+      <ul>
+        <li><strong>Serotiny:</strong> Many lodgepole cones are sealed with a resin that melts at temperatures above ~50°C. A crown fire heats the cones, the resin melts, and thousands of seeds are released onto the freshly mineralised seedbed — a mechanism perfectly calibrated to fire-gap colonization</li>
+        <li>In BC, serotiny rates vary by population and fire history — northern and high-elevation populations tend to higher serotiny rates than southern or low-elevation ones</li>
+        <li>Post-fire lodgepole stands regenerate in dense, even-aged cohorts — sometimes 100,000+ seedlings per hectare — then self-thin over decades</li>
+        <li>Dense even-aged stands are the most vulnerable to mountain pine beetle epidemic because they provide continuous food resource without natural breaks</li>
+      </ul>
+
+      <div class="field-note">
+        <strong>📋 Field Note — Okanagan</strong>
+        <p>The 2003 Okanagan Mountain Park Fire and subsequent fires across the BC Interior dramatically demonstrated lodgepole's post-disturbance role — but also revealed how the post-MPB beetle-killed stands changed fire behaviour. The beetle epidemic of 2000–2012 affected approximately 18.1 million ha of BC, killing the majority of mature lodgepole across vast areas. The resulting standing dead and later fallen fuels fundamentally altered fire risk in these landscapes. When you're assessing risk on a residential property backing onto an area with beetle-kill history, you're dealing with decades of accumulated fuel load, not just a normal conifer stand. This context informs how you talk to clients about wildfire interface risk.</p>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section" id="section-biology">
+      <h1>Lodgepole Pine</h1>
+      <div class="sci-name">Pinus contorta var. latifolia</div>
+      <h2>🧬 Biology &amp; What It Wants</h2>
+
+      <table>
+        <tr><th>Factor</th><th>Lodgepole Preference / Tolerance</th></tr>
+        <tr><td>Soil texture</td><td>Highly adaptable — glacial till, sandy loam, silt, volcanic soils; more tolerant of heavy clay than ponderosa</td></tr>
+        <tr><td>Soil pH</td><td>5.5–7.0 (prefers slightly acidic; less tolerant of Okanagan's alkaline soils than ponderosa)</td></tr>
+        <tr><td>Moisture</td><td>Moderately mesic to moist; drought-tolerant but less so than ponderosa; stressed by prolonged Okanagan summer drought at lower elevations</td></tr>
+        <tr><td>Shade tolerance</td><td>Intolerant — requires full sun; cannot regenerate under its own canopy</td></tr>
+        <tr><td>Temperature</td><td>Cold-hardy to -45°C; but thin bark increases vulnerability to surface fire even at low intensity</td></tr>
+        <tr><td>Mycorrhizae</td><td>Ectomycorrhizal (ECM); common associates include Suillus, Rhizopogon, Inocybe, Cortinarius</td></tr>
+        <tr><td>Root system</td><td>Moderately deep on well-drained soils; shallow and wide on heavy or wet soils; windthrow risk increases with root depth restriction</td></tr>
+        <tr><td>Growth rate</td><td>Fast in youth (1–2 m/yr on good sites); slows markedly after canopy closure</td></tr>
+      </table>
+
+      <h3>Self-Thinning and Stand Dynamics</h3>
+      <p>In dense even-aged stands, lodgepole is one of the most dramatic examples of <em>density-dependent self-thinning</em> in North American forestry. Over-dense regeneration cohorts progressively suppress subordinate stems — competition for light is the primary mechanism. Trees in suppressed positions allocate most available carbohydrate to vertical growth at the expense of defence chemistry (resin production, phloem thickness), making them the first MPB casualties when beetle populations surge.</p>
+      <ul>
+        <li>Spacing after thinning: BC Ministry of Forests recommends 2.0–2.4 m spacing in managed lodgepole stands for fibre production; landscape specimens benefit from much wider spacing</li>
+        <li>Live crown ratio: a healthy lodgepole should retain at least 40% live crown ratio; values below 30% indicate significant stress</li>
+        <li>Dominant/co-dominant trees in well-thinned stands can reach 25–35 cm dbh in 60 years on good sites</li>
+      </ul>
+
+      <div class="field-note">
+        <strong>📋 Field Note — Okanagan</strong>
+        <p>Lodgepole on residential lots in the Okanagan Highlands often struggle at lower elevations — they want more moisture and slightly acidic soil than the valley provides. Signs of elevation-stress include sparse, yellow-green foliage, reduced shoot growth (&lt;15 cm/yr in mature trees), and early susceptibility to bark beetle attack. When a client asks about keeping naturalized lodgepole on a site, assess the site's elevation and soil pH first. Below 800 m on dry south-facing slopes with pH &gt;7.5, lodgepole is a stress-susceptible tree — not the right species for the site long-term, regardless of current appearance.</p>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section" id="section-pests">
+      <h1>Lodgepole Pine</h1>
+      <div class="sci-name">Pinus contorta var. latifolia</div>
+      <h2>🪲 Pest Pressures</h2>
+
+      <div class="pest-card">
+        <div class="severity high">⚠ SEVERITY: HIGH — Landscape and Forest Threatening</div>
+        <h4>Mountain Pine Beetle (Dendroctonus ponderosae)</h4>
+        <p>The defining pest of lodgepole pine in BC. The 2000–2012 epidemic was the largest forest insect outbreak in recorded North American history, killing lodgepole across &gt;18.1 million ha of BC — an area larger than England. MPB females colonize stressed or large-diameter trees first, boring through the bark and introducing blue-stain fungus (<em>Grosmannia clavigera</em> and <em>Ophiostoma montium</em>). The fungus disrupts xylem water transport, and the mass-attack (pheromone aggregation) overcomes the tree's resin defence. Dead trees show characteristic pitch tubes, red/dead foliage (crown fade) the following season, and blue-stained sapwood.</p>
+        <p><strong>Okanagan status:</strong> Active; elevated risk during drought years. Monitor large-diameter (dbh &gt;15 cm) lodgepoles for pitch tubes during flight period (July–August). Per BC Ministry of Forests, individual tree treatments are limited — the primary tool is removing infested trees before emergence the following July to break the cycle.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="severity moderate">▲ SEVERITY: MODERATE — Locally Significant</div>
+        <h4>Pine Engraver Beetles (Ips spp.)</h4>
+        <p><em>Ips pini</em> and related species colonize weakened, downed, or recently cut lodgepole. Unlike MPB, Ips typically attacks stressed trees, tops, and slash piles rather than healthy-dominant trees. Their galleries run parallel to the grain in the inner bark with a central gallery and lateral egg galleries radiating from it — the characteristic "Y" or "H" pattern. Infested slash and downed wood on residential lots is a significant Ips reservoir. Per ISA BMP for PHC, removing fresh-cut pine slash within 2–4 weeks of cutting (before beetle emergence) is a key preventive measure in pine areas.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="severity moderate">▲ SEVERITY: MODERATE — Episodic</div>
+        <h4>Western Pine Beetle (Dendroctonus brevicomis)</h4>
+        <p>Primarily a ponderosa pine pest, but overlaps onto lodgepole in mixed stands during epidemic conditions. Galleries meandering (sinuous) in inner bark versus MPB's more vertical egg galleries. Less concern in pure lodgepole stands but worth noting in mixed ponderosa/lodgepole residential zones in the Okanagan.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="severity moderate">▲ SEVERITY: MODERATE — Periodic</div>
+        <h4>Spruce Budworm Adjacent Risk / Pine Butterfly (Neophasia menapia)</h4>
+        <p>Pine butterfly defoliates ponderosa and lodgepole pine in the southern interior — episodic outbreaks can cause significant defoliation. Symptoms: skeletonized or fully defoliated current-year needles. Single-season defoliation rarely lethal; repeated defoliation over 3+ years can kill weakened trees. Not currently at outbreak levels in the Okanagan as of 2024–2025, but historical outbreaks occurred in 1970s–80s.</p>
+      </div>
+
+      <div class="field-note">
+        <strong>📋 Field Note — Okanagan</strong>
+        <p>The most actionable pest thing for crew to know: if you're cutting lodgepole on a residential property between May and August, that slash needs to move fast. Fresh pine slash in the Okanagan is a beetle incubation risk. Chip it, remove it, or debark it. Don't let it sit through the flight season. This applies to any pine — but lodgepole is the primary MPB host and you'll encounter it in residential work in the highlands around Kelowna, West Kelowna, and throughout the valley rim.</p>
+      </div>
+    </div>
+
+    <!-- DISEASE -->
+    <div class="section" id="section-disease">
+      <h1>Lodgepole Pine</h1>
+      <div class="sci-name">Pinus contorta var. latifolia</div>
+      <h2>🦠 Disease Pressures</h2>
+
+      <div class="pest-card">
+        <div class="severity high">⚠ SEVERITY: HIGH — Significant on BC Lodgepole</div>
+        <h4>Dothistroma Needle Blight (Dothistroma septosporum)</h4>
+        <p>A major needle disease of lodgepole and ponderosa pine across BC. Characterized by red-brown banding on needles — brown from the tip, with a distinct red-orange band at the junction of live and dead tissue. Infected needles drop prematurely, causing progressive defoliation. Repeated annual infection reduces carbohydrate reserves, weakens trees, and creates entry points for secondary bark beetle attack. See Thursday's lesson for complete coverage.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="severity high">⚠ SEVERITY: HIGH — Root and Butt Rot</div>
+        <h4>Armillaria Root Disease (Armillaria ostoyae)</h4>
+        <p>Honey mushroom root rot, previously covered (Week 6 Thursday). Relevant here because lodgepole stands — especially stressed post-MPB stands — show elevated Armillaria incidence. The fungus spreads via rhizomorphs and root contact. On residential sites with previous conifer roots (stumps, old root systems), Armillaria inoculum is often already present. Signs: white mycelial fans under bark at root crown; mushroom fruiting bodies in fall; basal resinosis. Affected trees are structurally compromised — do not retain as specimen trees.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="severity moderate">▲ SEVERITY: MODERATE — Stem and Canker Diseases</div>
+        <h4>Atropellis Canker (Atropellis piniphila)</h4>
+        <p>Causes elongated, resinous cankers on lodgepole branches and stem. Blue-black discolouration in wood beneath canker. Common in BC interior lodgepole; rarely causes significant mortality in otherwise healthy trees but indicates chronic stress or wound history. Prune out infected branches to reduce inoculum; per ISA BMP for Pruning, make cuts into clean wood proximal to the canker margin.</p>
+      </div>
+
+      <div class="pest-card">
+        <div class="severity moderate">▲ SEVERITY: MODERATE — Dwarf Mistletoe</div>
+        <h4>Lodgepole Pine Dwarf Mistletoe (Arceuthobium americanum)</h4>
+        <p>A parasitic plant (not a fungus) that reduces growth, causes witches' brooms, and weakens structural integrity over time. Dwarf mistletoe is endemic in BC interior lodgepole — commonly found in older stands. Infected branches show swelling, abnormal branching, broom formation. Seeds are ejected ballistically up to 15 m. No curative treatment — prune out infected material per ISA BMP for Tree Selection and Establishment; severe infestations warrant removal.</p>
+      </div>
+
+      <div class="field-note">
+        <strong>📋 Field Note — Okanagan</strong>
+        <p>In Okanagan residential settings, the most commonly missed disease issue on lodgepole is Armillaria at the base of trees that were established near old stumps or in formerly forested lots. Probe the root crown area — if you find white mycelial fans between bark and wood at the base, you have Armillaria. Combine that with any beetle entry or Dothistroma needle defoliation and the tree is almost certainly in accelerated decline. Document it clearly in the written report — "structural root disease present, TRAQ-compliant risk assessment recommended" — and let the data drive the conversation with the client.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section" id="section-arborist">
+      <h1>Lodgepole Pine</h1>
+      <div class="sci-name">Pinus contorta var. latifolia</div>
+      <h2>🧗 Arborist Notes</h2>
+
+      <h3>Pruning — Timing and Approach</h3>
+      <ul>
+        <li><strong>Pruning timing:</strong> Avoid July–August during MPB flight season — fresh pruning wounds release attractive monoterpenes. Prune in late fall through winter or early spring when beetles are not flying</li>
+        <li><strong>Live crown ratio:</strong> Maintain minimum 40% live crown. Elevating beyond 50% of total height compromises structural integrity and stress resilience in lodgepole</li>
+        <li><strong>Branch collar:</strong> Same principles as all conifers — cut outside the branch collar ridge; never flush cut</li>
+        <li><strong>Deadwooding:</strong> Remove dead wood that could become beetle-attractant material. Chip or remove from site rather than leaving as habitat unless explicitly managed for that purpose</li>
+        <li>Per ANSI A300 Part 1, avoid removing more than 25% of live crown in a single cycle</li>
+      </ul>
+
+      <h3>PHC Assessment Approach</h3>
+      <ul>
+        <li>Assess site elevation, soil pH, and moisture availability — lodgepole below its optimal elevation zone will show chronic stress symptoms regardless of other interventions</li>
+        <li>Inspect for pitch tubes (MPB), dwarf mistletoe brooms, and basal Armillaria indicators annually</li>
+        <li>Needle colour and density are reliable stress indicators — yellow-green sparse foliage in a lodgepole is diagnostic of stress, not normal appearance</li>
+        <li>Live crown ratio below 30%: flag for monitored decline or removal discussion with client</li>
+        <li>Lean, basal flare abnormality, or crown dieback asymmetry: escalate to TRAQ-compliant structural assessment</li>
+      </ul>
+
+      <h3>Wildfire Interface — Client Communication</h3>
+      <ul>
+        <li>Lodgepole is a <strong>thin-barked, fire-susceptible species</strong> — unlike ponderosa, which can survive moderate surface fires, lodgepole typically dies in any surface fire that reaches the lower bole</li>
+        <li>FireSmart BC guidance: remove or set back lodgepole within 10 m of structures in the Okanagan interface zone</li>
+        <li>Ladder fuel removal (dead lower branches, brush below crown line) is the priority if the tree is to be retained</li>
+        <li>Client-facing framing: "Ponderosa pine evolved with fire and can resist it. Lodgepole did not — it relies on fire killing it and releasing its seeds. Those are different survival strategies, and in a wildfire interface zone, that difference matters for your property."</li>
+      </ul>
+
+      <h3>Site Suitability — Planting and Retention</h3>
+      <span class="tag tag-green">Good fit: Okanagan Highlands &gt;900 m</span>
+      <span class="tag tag-green">Good fit: Cool north-facing slopes</span>
+      <span class="tag tag-yellow">Marginal: Mid-elevation mixed zones, 700–900 m</span>
+      <span class="tag tag-red">Poor fit: Valley floor, south-facing slopes &lt;700 m</span>
+      <span class="tag tag-red">Poor fit: High pH soils (&gt;7.5)</span>
+      <span class="tag tag-red">Poor fit: Wildfire interface zone near structures</span>
+
+      <div class="field-note">
+        <strong>📋 Field Note — Okanagan</strong>
+        <p>The single most useful clinical skill with lodgepole in the Okanagan is being able to read the stress story quickly. Thin bark, dense stand or isolated specimen, elevation and aspect, needle colour, crown density, pitch tubes, basal flare — run through these in 90 seconds and you know what you're dealing with. A vigorous lodgepole on a cool north-facing highland slope with no beetle sign is a different conversation than a yellowing one on a south-facing lot backing onto beetle-killed crown. Get the site story right first, then write the prescription. For ISA exam purposes: lodgepole is in the same ISA Risk Assessment and Tree Biology domain material as ponderosa — know the contrast between the two (bark thickness, fire tolerance, site requirement, serotiny) because exam scenarios often test exactly that.</p>
+      </div>
+    </div>
+
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="isa-bar">
+  <span>📚 ISA Exam Domains:</span> Tree Biology (11%) · Tree Risk Assessment (11%) &nbsp;|&nbsp;
+  <span>Sources:</span> BC Ministry of Forests — Lodgepole Pine Management Guide · ISA Certification Study Guide 4th Ed. · Klinka et al. <em>Indicator Plants of Coastal BC</em> · USDA FS GTR-INT-280 — Lodgepole Pine in Western North America · FireSmart BC Homeowner's Manual
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+  document.querySelector('.main').scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>
