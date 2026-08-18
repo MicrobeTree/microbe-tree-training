@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pruning Cuts — Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+  header{background:#161b22;border-bottom:2px solid #a371f7;padding:14px 24px;display:flex;align-items:center;gap:14px}
+  .logo{font-size:1.3rem;font-weight:700;color:#a371f7;letter-spacing:-0.5px}
+  .week-badge{background:#a371f7;color:#fff;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px}
+  .day-label{margin-left:auto;font-size:0.85rem;color:#7d8590;font-weight:600;letter-spacing:0.5px}
+  .container{max-width:920px;margin:0 auto;padding:28px 20px}
+  h1{font-size:1.65rem;font-weight:700;color:#e6edf3;margin-bottom:6px}
+  .subtitle{color:#7d8590;font-size:1rem;margin-bottom:28px}
+
+  .section-title{font-size:0.85rem;color:#a371f7;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin:28px 0 16px 0;padding-bottom:8px;border-bottom:1px solid #30363d}
+
+  .card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:22px;margin-bottom:18px}
+  .card h2{font-size:0.85rem;color:#a371f7;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:12px}
+  .card h3{font-size:0.95rem;font-weight:700;color:#e6edf3;margin-bottom:8px}
+  .card p{font-size:0.9rem;color:#c9d1d9;line-height:1.65;margin-bottom:10px}
+  .card ul{list-style:none;padding:0;margin-bottom:10px}
+  .card ul li{font-size:0.9rem;color:#c9d1d9;line-height:1.6;padding:4px 0 4px 18px;position:relative}
+  .card ul li::before{content:"→";position:absolute;left:0;color:#a371f7;font-weight:700}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px}
+  .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
+  @media(max-width:700px){.two-col,.three-col{grid-template-columns:1fr}}
+
+  /* SVG diagram cards */
+  .diagram-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:22px;margin-bottom:22px}
+  .diagram-card h2{font-size:0.85rem;color:#a371f7;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:14px}
+  svg{width:100%;height:auto;display:block;margin:0 auto}
+
+  /* Standard callout */
+  .standard-box{background:#1a1a2a;border-left:3px solid #a371f7;padding:14px 16px;border-radius:0 7px 7px 0;margin-bottom:16px}
+  .standard-box strong{color:#a371f7;font-size:0.78rem;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:6px}
+  .standard-box p{font-size:0.88rem;color:#c9d1d9;margin:0;line-height:1.6}
+
+  .do-box{background:#1a2a1a;border-left:3px solid #3fb870;padding:12px 16px;border-radius:0 7px 7px 0;margin-bottom:10px}
+  .do-box strong{color:#3fb870;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:5px}
+  .dont-box{background:#2a1a1a;border-left:3px solid #f85149;padding:12px 16px;border-radius:0 7px 7px 0;margin-bottom:10px}
+  .dont-box strong{color:#f85149;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:5px}
+  .box-text{font-size:0.88rem;color:#c9d1d9;line-height:1.6}
+
+  .field-note{background:#1a1a2a;border-left:3px solid #a371f7;padding:12px 16px;border-radius:0 7px 7px 0;margin-top:16px}
+  .field-note strong{color:#a371f7;font-size:0.78rem;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#c9d1d9;margin:0;line-height:1.6}
+
+  /* Step sequence */
+  .steps{display:flex;flex-direction:column;gap:12px}
+  .step{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start}
+  .step-num{background:#a371f7;color:#fff;font-weight:700;font-size:0.9rem;min-width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step-content h3{font-size:0.92rem;font-weight:700;color:#e6edf3;margin-bottom:5px}
+  .step-content p{font-size:0.87rem;color:#c9d1d9;line-height:1.6}
+  .step-content em{color:#d29922;font-style:normal;font-weight:600}
+
+  .isa-footer{background:#161b22;border-top:1px solid #30363d;padding:16px 24px;margin-top:40px;font-size:0.82rem;color:#7d8590;text-align:center}
+  .isa-footer span{color:#a371f7}
+
+  table{width:100%;border-collapse:collapse;font-size:0.87rem;margin-bottom:16px}
+  th{background:#21262d;color:#7d8590;text-align:left;padding:8px 12px;font-weight:600;font-size:0.77rem;text-transform:uppercase}
+  td{padding:8px 12px;border-bottom:1px solid #21262d;vertical-align:top;line-height:1.5;color:#c9d1d9;font-size:0.87rem}
+  td:first-child{color:#a371f7;font-weight:600}
+  tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="week-badge">WEEK 12</div>
+  <div class="day-label">🧗 FRIDAY · WORKSITE TECHNIQUES</div>
+</header>
+
+<div class="container">
+  <h1>Pruning Cuts</h1>
+  <p class="subtitle">Branch collar, branch bark ridge, the 3-cut method, drop crotch — getting every cut right the first time</p>
+
+  <div class="standard-box">
+    <strong>📋 ANSI A300 Part 1 (2017) — The Standard</strong>
+    <p><em>"Pruning cuts shall be made outside the branch bark ridge and branch collar without leaving a stub or making a flush cut."</em> This is the governing standard for every pruning cut on every job. Know it cold.</p>
+  </div>
+
+  <!-- Anatomy Diagram -->
+  <div class="section-title">🔍 Branch Attachment Anatomy</div>
+  <div class="diagram-card">
+    <h2>Diagram — Branch Collar and Branch Bark Ridge</h2>
+    <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background -->
+      <rect width="760" height="340" fill="#0d1117"/>
+
+      <!-- TRUNK — main vertical mass -->
+      <path d="M180,10 Q200,170 195,330" stroke="#5a3a1a" stroke-width="70" fill="none" stroke-linecap="round"/>
+      <!-- Trunk surface lines (bark texture) -->
+      <path d="M150,10 Q170,170 165,330" stroke="#3a2210" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M210,10 Q230,170 225,330" stroke="#3a2210" stroke-width="2" fill="none" opacity="0.5"/>
+
+      <!-- BRANCH — extending right from mid-trunk -->
+      <path d="M190,165 Q380,150 560,140" stroke="#5a3a1a" stroke-width="44" fill="none" stroke-linecap="round"/>
+      <!-- Branch surface lines -->
+      <path d="M190,147 Q380,132 560,122" stroke="#3a2210" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M190,183 Q380,168 560,158" stroke="#3a2210" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+      <!-- BRANCH BARK RIDGE — the raised ridge in the crotch -->
+      <path d="M195,140 Q215,125 235,118" stroke="#d29922" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <!-- BBR label -->
+      <line x1="220" y1="112" x2="220" y2="70" stroke="#d29922" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <rect x="120" y="50" width="200" height="30" rx="5" fill="#3a2a10" stroke="#d29922" stroke-width="1.5"/>
+      <text x="220" y="70" text-anchor="middle" fill="#d29922" font-size="12" font-family="system-ui" font-weight="700">Branch Bark Ridge (BBR)</text>
+
+      <!-- BRANCH COLLAR — the swelling at the base of the branch -->
+      <!-- Collar is a subtle swelling of trunk tissue wrapping around the branch base -->
+      <ellipse cx="228" cy="165" rx="28" ry="20" fill="none" stroke="#3fb870" stroke-width="3" opacity="0.9"/>
+      <!-- Collar label -->
+      <line x1="228" y1="185" x2="228" y2="260" stroke="#3fb870" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <rect x="128" y="258" width="200" height="30" rx="5" fill="#1a3a1a" stroke="#3fb870" stroke-width="1.5"/>
+      <text x="228" y="278" text-anchor="middle" fill="#3fb870" font-size="12" font-family="system-ui" font-weight="700">Branch Collar</text>
+
+      <!-- CORRECT CUT LINE — outside BBR and collar -->
+      <line x1="265" y1="130" x2="255" y2="200" stroke="#3fb870" stroke-width="3.5" stroke-dasharray="none"/>
+      <text x="290" y="145" fill="#3fb870" font-size="11" font-family="system-ui" font-weight="700">✓ CORRECT CUT</text>
+      <text x="290" y="160" fill="#8b949e" font-size="10" font-family="system-ui">Outside BBR &amp; collar</text>
+      <text x="290" y="172" fill="#8b949e" font-size="10" font-family="system-ui">Angle matches BBR</text>
+
+      <!-- FLUSH CUT LINE — into collar (wrong) -->
+      <line x1="192" y1="128" x2="192" y2="202" stroke="#f85149" stroke-width="3.5" stroke-dasharray="8,4"/>
+      <text x="40" y="100" fill="#f85149" font-size="11" font-family="system-ui" font-weight="700">✗ FLUSH CUT</text>
+      <text x="40" y="115" fill="#8b949e" font-size="10" font-family="system-ui">(removes collar)</text>
+      <line x1="100" y1="110" x2="185" y2="140" stroke="#f85149" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- STUB CUT LINE (too far out) -->
+      <line x1="380" y1="117" x2="370" y2="183" stroke="#d29922" stroke-width="3.5" stroke-dasharray="8,4"/>
+      <text x="400" y="100" fill="#d29922" font-size="11" font-family="system-ui" font-weight="700">✗ STUB CUT</text>
+      <text x="400" y="115" fill="#8b949e" font-size="10" font-family="system-ui">(too far from collar)</text>
+
+      <!-- Cut angle indicator -->
+      <text x="430" y="220" fill="#c9d1d9" font-size="11" font-family="system-ui">Cut angle: parallel to BBR</text>
+      <text x="430" y="235" fill="#c9d1d9" font-size="11" font-family="system-ui">on the upper side →</text>
+
+      <!-- Legend -->
+      <rect x="10" y="295" width="740" height="35" rx="5" fill="#161b22"/>
+      <text x="30" y="316" fill="#3fb870" font-size="11" font-family="system-ui" font-weight="700">Green = Correct</text>
+      <text x="150" y="316" fill="#f85149" font-size="11" font-family="system-ui" font-weight="700">Red = Flush Cut Error</text>
+      <text x="310" y="316" fill="#d29922" font-size="11" font-family="system-ui" font-weight="700">Yellow = Stub Cut Error</text>
+      <text x="480" y="316" fill="#8b949e" font-size="11" font-family="system-ui">BBR = Branch Bark Ridge | Collar = Protected zone at branch base</text>
+    </svg>
+  </div>
+
+  <!-- What is the Branch Collar -->
+  <div class="two-col">
+    <div class="card">
+      <h2>The Branch Collar</h2>
+      <h3>What it is</h3>
+      <p>The branch collar is a zone of <strong>trunk tissue</strong> that wraps around the base of every branch. It is NOT branch tissue — it is stem tissue, chemically and anatomically distinct from the branch wood itself. Alex Shigo's CODIT research established that the collar contains the primary compartmentalization boundary (Wall 4) for the stem.</p>
+      <ul>
+        <li>Contains highly reactive wound-response tissue</li>
+        <li>When a branch dies naturally, the collar grows over the base and seals the wound from the stem side</li>
+        <li>If you cut through the collar (flush cut), you destroy this response capacity entirely — the stem is now directly exposed</li>
+        <li>On large branches, the collar may be quite pronounced and visible as a distinct swelling ring at the branch base</li>
+        <li>On small branches with narrow angles, the collar is less distinct but still present</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>The Branch Bark Ridge (BBR)</h2>
+      <h3>Your cut angle guide</h3>
+      <p>The BBR is a ridge of bark in the upper crotch angle where the branch meets the stem. It is your <strong>angle reference</strong> for making the correct cut.</p>
+      <ul>
+        <li>Mirror the angle of the BBR on the upper side of the branch when setting your saw angle</li>
+        <li>This gives you a cut that is outside the collar on the bottom and at the right angle on the top</li>
+        <li>On branches with tight crotch angles, the BBR is steep — cut angle is steeper</li>
+        <li>On wide-angled branches, the BBR is nearly flat — cut angle is more horizontal</li>
+        <li>When the BBR is indistinct (decay, previous damage), look for the collar swelling at the base to guide cut placement</li>
+        <li>Never make the cut angle steeper than necessary — excessive angle increases wound surface area</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Why Flush Cuts Fail -->
+  <div class="section-title">⚠️ Why Flush Cuts Kill Trees (Or Kill the Stem)</div>
+  <div class="card">
+    <h3>The Flush Cut Problem — Shigo's CODIT in Action</h3>
+    <p>Before Shigo's research in the 1970s–80s, the prevailing wisdom was to cut flush with the stem and then apply wound dressing — get it smooth, seal it, let it "heal over." This was wrong on every count, and Shigo proved it with dissection of thousands of trees.</p>
+    <ul>
+      <li><strong>Flush cut removes the collar:</strong> The collar tissue is where Walls 3 and 4 of CODIT originate in relation to the branch wound. Remove it and you've eliminated the primary barrier between the branch stub decay and the stem interior</li>
+      <li><strong>Massively increases wound size:</strong> A flush cut exposes a wound that spans the full diameter of the branch plus the collar tissue. A correctly placed cut outside the collar exposes only the branch cross-section, which is smaller</li>
+      <li><strong>Decay enters the stem:</strong> Without a collar, decay organisms that colonize the stub wound have direct access to the stem wood. This creates stem decay that can extend longitudinally — up and down the trunk — far beyond the original wound</li>
+      <li><strong>Wound closure is impaired:</strong> The collar is what drives wound closure (callus formation). Remove it and closure is dramatically slower — sometimes never complete on large wounds</li>
+      <li><strong>Wound dressings don't help:</strong> Shigo's research definitively showed wound dressings (tar, paint, petroleum products) do not improve wound closure rates, do not prevent decay, and may actually impede closure by trapping moisture</li>
+    </ul>
+    <div class="field-note">
+      <strong>📋 Field Note — Okanagan</strong>
+      <p>You will encounter flush-cut trees on virtually every residential property job. Decades of bad arborist practice — and worse, homeowner pruning — left a legacy of flush cuts on fruit trees, maples, and ornamentals throughout the Okanagan. When you see a large depression in a trunk where a branch was obviously removed flush, probe it with a screwdriver. If you find soft, punky wood, that's stem decay originating from a flush cut. Document it in the assessment: "Evidence of previous flush cuts resulting in stem decay — recommend formal risk assessment per TRAQ methodology before determining retention." You can't fix past flush cuts, but you can quantify the damage and communicate the risk clearly.</p>
+    </div>
+  </div>
+
+  <!-- 3-Cut Method -->
+  <div class="section-title">🪚 The 3-Cut Method — Heavy Limb Removal</div>
+  <div class="diagram-card">
+    <h2>Diagram — 3-Cut Sequence for Branch Over 5 cm Diameter</h2>
+    <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+      <rect width="760" height="280" fill="#0d1117"/>
+
+      <!-- Trunk -->
+      <rect x="60" y="10" width="80" height="260" rx="10" fill="#5a3a1a"/>
+      <text x="100" y="155" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="system-ui" font-weight="700">TRUNK</text>
+
+      <!-- Branch extending right -->
+      <rect x="140" y="115" width="560" height="50" rx="8" fill="#5a3a1a"/>
+      <!-- Branch collar -->
+      <ellipse cx="165" cy="140" rx="28" ry="28" fill="#3a2010" stroke="#3fb870" stroke-width="2.5"/>
+
+      <!-- CUT 1 — undercut ~30 cm from trunk -->
+      <line x1="295" y1="165" x2="295" y2="145" stroke="#58a6ff" stroke-width="3.5"/>
+      <text x="295" y="195" text-anchor="middle" fill="#58a6ff" font-size="12" font-family="system-ui" font-weight="700">CUT 1</text>
+      <text x="295" y="210" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">Undercut</text>
+      <text x="295" y="222" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">⅓ through from below</text>
+      <text x="295" y="234" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">~30 cm from trunk</text>
+      <!-- Undercut indicator -->
+      <path d="M285,165 Q295,158 305,165" fill="#58a6ff" opacity="0.4"/>
+
+      <!-- CUT 2 — top cut 2-3 cm further out -->
+      <line x1="330" y1="115" x2="330" y2="140" stroke="#d29922" stroke-width="3.5"/>
+      <text x="380" y="80" text-anchor="middle" fill="#d29922" font-size="12" font-family="system-ui" font-weight="700">CUT 2</text>
+      <text x="380" y="95" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">Top cut 2–3 cm further out</text>
+      <text x="380" y="107" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">Limb falls; tear stops at undercut</text>
+      <line x1="330" y1="88" x2="330" y2="115" stroke="#d29922" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- Arrow showing limb falling -->
+      <text x="450" y="155" fill="#8b949e" font-size="22" font-family="system-ui">↓</text>
+      <text x="500" y="155" fill="#8b949e" font-size="11" font-family="system-ui">limb falls cleanly</text>
+      <text x="500" y="168" fill="#8b949e" font-size="11" font-family="system-ui">bark protected</text>
+
+      <!-- CUT 3 — final cut outside collar -->
+      <line x1="207" y1="112" x2="194" y2="168" stroke="#3fb870" stroke-width="4"/>
+      <text x="207" y="245" text-anchor="middle" fill="#3fb870" font-size="12" font-family="system-ui" font-weight="700">CUT 3</text>
+      <text x="207" y="260" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">Final cut outside collar + BBR</text>
+
+      <!-- Remaining stub between cut 1 and cut 3 -->
+      <rect x="195" y="115" width="100" height="50" rx="0" fill="#3a2010" opacity="0.5"/>
+      <text x="245" y="148" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">Stub (removed with Cut 3)</text>
+
+      <!-- Why undercut label -->
+      <text x="295" y="50" text-anchor="middle" fill="#58a6ff" font-size="11" font-family="system-ui">WHY UNDERCUT FIRST?</text>
+      <text x="295" y="63" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">Without it, bark strips from cut point to trunk as limb falls</text>
+
+    </svg>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Cut 1 — The Undercut</h3>
+        <p>Start approximately <em>25–40 cm from the final cut position</em>, on the underside of the branch. Cut upward through roughly one-third of the branch diameter. Do not cut more than half through — the saw can bind and the branch can pinch the bar.</p>
+        <p><strong>Purpose:</strong> Creates a bark crack-stopper. When the limb's weight causes it to drop during Cut 2, the tear in the bark travels down and arrests at the undercut rather than stripping back to the trunk.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Cut 2 — The Top Cut</h3>
+        <p>Move <em>2–3 cm further from the trunk</em> than your undercut. Cut downward from the top until the branch falls free. The bark strip, if any, runs from Cut 2 downward and stops cleanly at the undercut notch.</p>
+        <p><strong>Escape route:</strong> Know where the limb is going before you start Cut 2. Position yourself on the safe side. Per ANSI Z133 Section 9.1, establish your escape route before beginning any felling or limb-dropping operation — this principle applies to lowering ops too.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Cut 3 — The Final Cut</h3>
+        <p>With the limb's weight removed, make the final cut <em>outside the branch bark ridge and branch collar</em> per ANSI A300 Part 1. Set your saw angle to mirror the BBR. On the bottom side, clear the collar. No stub remaining.</p>
+        <p><strong>Check your work:</strong> The finished cut should be clean, slightly oval on large branches, with no stub and no crushing of collar tissue. The BBR should be intact and undamaged.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drop Crotch -->
+  <div class="section-title">✂️ Drop Crotch Reduction Cuts</div>
+  <div class="diagram-card">
+    <h2>Diagram — Drop Crotch vs Heading Cut</h2>
+    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg">
+      <rect width="760" height="260" fill="#0d1117"/>
+
+      <!-- LEFT: DROP CROTCH (correct) -->
+      <!-- Main branch going up-right -->
+      <path d="M100,240 L180,60" stroke="#5a3a1a" stroke-width="40" stroke-linecap="round" fill="none"/>
+      <!-- Lateral at 2/3 up — the target lateral -->
+      <path d="M155,130 L280,90" stroke="#5a3a1a" stroke-width="25" stroke-linecap="round" fill="none"/>
+      <!-- Continuation above the lateral (to be removed) -->
+      <path d="M163,108 L200,30" stroke="#5a3a1a" stroke-width="22" stroke-linecap="round" fill="none" opacity="0.3"/>
+      <!-- Drop crotch cut line -->
+      <line x1="163" y1="128" x2="155" y2="90" stroke="#3fb870" stroke-width="3.5"/>
+      <text x="120" y="20" fill="#3fb870" font-size="13" font-family="system-ui" font-weight="700">✓ DROP CROTCH</text>
+      <text x="120" y="36" fill="#8b949e" font-size="10" font-family="system-ui">Cut to lateral ≥⅓ diameter</text>
+      <text x="120" y="48" fill="#8b949e" font-size="10" font-family="system-ui">of limb being removed</text>
+      <!-- Lateral diameter indicator -->
+      <line x1="160" y1="100" x2="185" y2="90" stroke="#d29922" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="195" y="88" fill="#d29922" font-size="10" font-family="system-ui">Lateral ≥⅓ dia.</text>
+      <!-- Removed section hatch -->
+      <path d="M163,108 L200,30" stroke="#f85149" stroke-width="22" stroke-linecap="round" fill="none" opacity="0.15"/>
+      <text x="185" y="65" fill="#f85149" font-size="10" font-family="system-ui" opacity="0.7">Removed</text>
+
+      <!-- RIGHT: HEADING CUT (wrong) -->
+      <!-- Main branch going up-right -->
+      <path d="M450,240 L530,60" stroke="#5a3a1a" stroke-width="40" stroke-linecap="round" fill="none"/>
+      <!-- Heading cut line — just cuts across with no lateral nearby -->
+      <line x1="515" y1="90" x2="505" y2="130" stroke="#f85149" stroke-width="3.5"/>
+      <!-- Stub result -->
+      <text x="540" y="115" fill="#f85149" font-size="11" font-family="system-ui">Stub →</text>
+      <text x="540" y="130" fill="#8b949e" font-size="10" font-family="system-ui">No lateral</text>
+      <text x="540" y="143" fill="#8b949e" font-size="10" font-family="system-ui">to terminate</text>
+      <!-- Small laterals -->
+      <path d="M510,108 L600,100" stroke="#5a3a1a" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.3"/>
+      <text x="450" y="20" fill="#f85149" font-size="13" font-family="system-ui" font-weight="700">✗ HEADING CUT</text>
+      <text x="450" y="36" fill="#8b949e" font-size="10" font-family="system-ui">Cutting to no lateral,</text>
+      <text x="450" y="48" fill="#8b949e" font-size="10" font-family="system-ui">or lateral &lt;⅓ dia.</text>
+      <!-- Epicormic growth symbol -->
+      <text x="490" y="75" fill="#d29922" font-size="10" font-family="system-ui">→ Epicormic sprouts</text>
+      <text x="490" y="88" fill="#d29922" font-size="10" font-family="system-ui">→ Stub decay</text>
+      <text x="490" y="101" fill="#d29922" font-size="10" font-family="system-ui">→ Weakly attached regrowth</text>
+
+      <!-- Divider -->
+      <line x1="380" y1="20" x2="380" y2="240" stroke="#30363d" stroke-width="1" stroke-dasharray="6,4"/>
+    </svg>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <h2>Drop Crotch — The Rule</h2>
+      <p>Per ANSI A300 Part 1, a reduction cut must be made to a <strong>lateral branch that is at least one-third (1/3) the diameter of the limb being removed</strong> at the point of the cut. This ensures the remaining lateral has enough capacity to assume the water-conducting and structural role of the removed portion.</p>
+      <ul>
+        <li>The lateral must be growing in a direction that maintains the intended crown form</li>
+        <li>Cut is made just outside the collar/bark ridge of the lateral, just as a standard removal cut</li>
+        <li>Result: the crown is reduced while maintaining a living growing tip — no stub, no stump</li>
+        <li>A lateral less than 1/3 the diameter may not be able to sustain the flow of water and nutrients previously moving through the main limb — it may die back</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Heading Cuts — What Goes Wrong</h2>
+      <p>A heading cut removes a branch or leader back to a stub with no adequate lateral to take over. Even when small laterals are present below the cut, if they are too small, the stub dies back and becomes an entry point for decay.</p>
+      <ul>
+        <li>Creates flush or near-flush stubs that cannot callus over quickly — decay organisms enter</li>
+        <li>Triggers vigorous epicormic sprouting below the cut — watersprouts are structurally weak, poorly attached, and increase re-pruning frequency</li>
+        <li>Over time: topping (the worst form of heading cut) creates multiple entry points, massive crown dieback, and structurally compromised resprout growth</li>
+        <li>ISA strongly opposes topping as contrary to ANSI A300 Part 1 and ISA BMP for Pruning</li>
+        <li>Topping also significantly reduces the tree's aesthetic and monetary value — a relevant client conversation point</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Do and Don't Summary -->
+  <div class="section-title">✅ The Non-Negotiables</div>
+  <div class="do-box">
+    <strong>✓ Always</strong>
+    <p class="box-text">Use the 3-cut method for any branch where weight could cause bark stripping. Make all final cuts outside the BBR and collar per ANSI A300 Part 1. Size up the collar before cutting — an some species (fruit trees, apples, older maples) the collar is very pronounced. Angle the cut to mirror the BBR on the upper side. Keep saw chains sharp — a dull chain tears, crushes, and damages the collar tissue you're trying to protect.</p>
+  </div>
+  <div class="dont-box">
+    <strong>✗ Never</strong>
+    <p class="box-text">Never make a flush cut — even if the client requests it. "Flush cuts kill trees" is a conversation worth having before the work, not after. Never apply wound paint or tree seal to a properly made cut — it offers no benefit and can trap moisture. Never make a reduction cut to a lateral less than 1/3 the diameter of the limb being removed. Never leave a stub — a stub is a future decay entry point and a future hazard limb. If you can't make a proper collar cut, get a different angle or a different saw position — get a compromise cut.</p>
+  </div>
+
+  <div class="field-note">
+    <strong>📋 Field Note — Okanagan</strong>
+    <p>The ISA CA exam will test pruning cut knowledge directly — it is in the Pruning domain (15% of the exam, the second-largest domain). But more importantly, you will be evaluated on your pruning cuts by every client who watches you work and every arborist who inspects the trees afterward. A correctly made collar cut on a 15 cm branch heals within 3–7 years on a healthy tree in the Okanagan climate. A flush cut on the same branch may leave a permanently exposed wound that decays into the stem over decades. The difference is about 5 seconds of correct positioning before you pull the trigger. Get it right every time.</p>
+  </div>
+
+  <!-- Reference Table -->
+  <div class="section-title">📊 Cut Type Quick Reference</div>
+  <div class="card">
+    <h2>Summary Table</h2>
+    <table>
+      <tr>
+        <th>Cut Type</th>
+        <th>Definition</th>
+        <th>ANSI A300 Compliant?</th>
+        <th>Common Error</th>
+      </tr>
+      <tr>
+        <td>Collar cut</td>
+        <td>Removal cut outside BBR and branch collar</td>
+        <td style="color:#3fb870;font-weight:700">✓ YES</td>
+        <td>Cutting too close (removes collar) or too far (leaves stub)</td>
+      </tr>
+      <tr>
+        <td>3-cut method</td>
+        <td>Undercut + top cut at stub, then final collar cut</td>
+        <td style="color:#3fb870;font-weight:700">✓ YES (required for heavy limbs)</td>
+        <td>Skipping the undercut on branches &gt;5 cm</td>
+      </tr>
+      <tr>
+        <td>Drop crotch reduction</td>
+        <td>Reduction to a lateral ≥1/3 diameter of limb removed</td>
+        <td style="color:#3fb870;font-weight:700">✓ YES</td>
+        <td>Cutting to a lateral that is too small; leaving a stub</td>
+      </tr>
+      <tr>
+        <td>Flush cut</td>
+        <td>Cut level with or inside the collar/stem surface</td>
+        <td style="color:#f85149;font-weight:700">✗ NO</td>
+        <td>Historical practice; still taught incorrectly in some contexts</td>
+      </tr>
+      <tr>
+        <td>Stub cut</td>
+        <td>Cut leaving a dead stub beyond the collar</td>
+        <td style="color:#f85149;font-weight:700">✗ NO</td>
+        <td>Cutting too far from trunk, leaving dead wood that cannot seal</td>
+      </tr>
+      <tr>
+        <td>Heading cut / Topping</td>
+        <td>Cut back to no lateral, or to a lateral &lt;1/3 diameter</td>
+        <td style="color:#f85149;font-weight:700">✗ NO</td>
+        <td>Requested by uninformed clients; must be declined with explanation</td>
+      </tr>
+    </table>
+  </div>
+
+</div><!-- end container -->
+
+<div class="isa-footer">
+  <span>📚 ISA Exam Domains:</span> Pruning (15%) · Safe Work Practices (28%) &nbsp;|&nbsp;
+  <span>Sources:</span> ANSI A300 Part 1 (2017) · Pruning · ISA BMP for Pruning (3rd Ed.) · Shigo, A.L. (1991) <em>Modern Arboriculture</em> · ISA Certification Study Guide 4th Ed. Ch. 6 · ANSI Z133 (2017) Section 9
+</div>
+
+</body>
+</html>
