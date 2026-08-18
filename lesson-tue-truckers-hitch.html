@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trucker's Hitch — Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+  header{background:#161b22;border-bottom:2px solid #d29922;padding:14px 24px;display:flex;align-items:center;gap:14px}
+  .logo{font-size:1.3rem;font-weight:700;color:#d29922;letter-spacing:-0.5px}
+  .week-badge{background:#d29922;color:#0d1117;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px}
+  .day-label{margin-left:auto;font-size:0.85rem;color:#7d8590;font-weight:600;letter-spacing:0.5px}
+  .container{max-width:900px;margin:0 auto;padding:28px 20px}
+  h1{font-size:1.65rem;font-weight:700;color:#e6edf3;margin-bottom:6px}
+  .subtitle{color:#7d8590;font-size:1rem;margin-bottom:28px}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+  @media(max-width:680px){.two-col{grid-template-columns:1fr}}
+
+  .card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:22px}
+  .card h2{font-size:0.85rem;color:#d29922;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:14px}
+  .card h3{font-size:1rem;color:#e6edf3;font-weight:700;margin-bottom:10px}
+  .card p{font-size:0.9rem;color:#c9d1d9;line-height:1.65;margin-bottom:10px}
+  .card ul{list-style:none;padding:0}
+  .card ul li{font-size:0.9rem;color:#c9d1d9;line-height:1.6;padding:4px 0 4px 18px;position:relative}
+  .card ul li::before{content:"→";position:absolute;left:0;color:#d29922;font-weight:700}
+
+  /* SVG diagram card */
+  .diagram-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:22px;margin-bottom:28px}
+  .diagram-card h2{font-size:0.85rem;color:#d29922;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:16px}
+  svg{width:100%;height:auto;display:block}
+
+  /* Step cards */
+  .steps{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+  .step{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:18px 22px;display:flex;gap:16px;align-items:flex-start}
+  .step-num{background:#d29922;color:#0d1117;font-weight:700;font-size:0.9rem;min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step-content h3{font-size:0.95rem;font-weight:700;color:#e6edf3;margin-bottom:6px}
+  .step-content p{font-size:0.88rem;color:#c9d1d9;line-height:1.6}
+  .step-content .note{font-size:0.82rem;color:#8b949e;font-style:italic;margin-top:4px}
+
+  /* Comparison table */
+  table{width:100%;border-collapse:collapse;font-size:0.88rem}
+  th{background:#21262d;color:#7d8590;text-align:left;padding:8px 12px;font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px}
+  td{padding:9px 12px;border-bottom:1px solid #21262d;vertical-align:top;line-height:1.5}
+  tr:last-child td{border-bottom:none}
+  td:first-child{color:#d29922;font-weight:600}
+
+  /* Warning/OK boxes */
+  .do-box{background:#1a2a1a;border-left:3px solid #3fb870;padding:14px 16px;border-radius:0 7px 7px 0;margin-bottom:12px}
+  .do-box strong{color:#3fb870;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px}
+  .dont-box{background:#2a1a1a;border-left:3px solid #f85149;padding:14px 16px;border-radius:0 7px 7px 0;margin-bottom:12px}
+  .dont-box strong{color:#f85149;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px}
+  .box-text{font-size:0.88rem;color:#c9d1d9;line-height:1.6}
+
+  .field-note{background:#2a2010;border-left:3px solid #d29922;padding:12px 16px;border-radius:0 7px 7px 0;margin-top:14px}
+  .field-note strong{color:#d29922;font-size:0.78rem;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#c9d1d9;margin:0;line-height:1.6}
+
+  .isa-footer{background:#161b22;border-top:1px solid #30363d;padding:16px 24px;margin-top:40px;font-size:0.82rem;color:#7d8590;text-align:center}
+  .isa-footer span{color:#d29922}
+
+  .section-title{font-size:0.85rem;color:#d29922;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin:24px 0 14px 0;padding-bottom:8px;border-bottom:1px solid #30363d}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="week-badge">WEEK 12</div>
+  <div class="day-label">🪚 TUESDAY · EQUIPMENT &amp; KNOTS</div>
+</header>
+
+<div class="container">
+  <h1>Trucker's Hitch</h1>
+  <p class="subtitle">A compound knot system that creates mechanical advantage — and how to use it correctly in arborist work</p>
+
+  <!-- What It Is -->
+  <div class="two-col">
+    <div class="card">
+      <h2>What It Is</h2>
+      <h3>The Trucker's Hitch</h3>
+      <p>The trucker's hitch is not a single knot — it's a <strong>knot system</strong>: an anchor point, a pulley loop in the standing line, and a securing hitch at the load end. Together, they create a 3:1 mechanical advantage for tensioning a line.</p>
+      <p>Think of it as a field-improvised block-and-tackle using just rope and knowing where to put a loop.</p>
+      <ul>
+        <li>Creates 3:1 mechanical advantage (ideally)</li>
+        <li>Jam-proof release — one pull on the slip loop and it comes apart</li>
+        <li>The securing hitch (two half hitches) holds tension after hauling</li>
+        <li>Common variants use a slip loop, a directional figure-8, or an alpine butterfly as the pulley loop</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Quick Stats</h2>
+      <h3>Load &amp; Efficiency</h3>
+      <p>Mechanical advantage of 3:1 means a 100 kg load requires ~33 kg of pull to lift (ignoring friction). Friction loss is real — actual MA closer to 2.5:1 in practice.</p>
+      <ul>
+        <li><strong>MA (theoretical):</strong> 3:1</li>
+        <li><strong>MA (practical):</strong> ~2.5:1 due to friction</li>
+        <li><strong>Knot efficiency:</strong> Not rated for suspended arborist loads</li>
+        <li><strong>Primary applications:</strong> Load securing, tensioning tag lines, lashing</li>
+        <li><strong>NOT for:</strong> Dynamic loads, primary rigging with workers below</li>
+        <li><strong>Securing hitch:</strong> Two half hitches on the standing line</li>
+        <li><strong>WorkSafeBC:</strong> Load securing requirements under OHSR Part 16</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SVG Diagram -->
+  <div class="diagram-card">
+    <h2>📐 Diagram — Trucker's Hitch Assembly</h2>
+    <svg viewBox="0 0 820 380" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#d29922"/>
+        </marker>
+        <marker id="arr-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#58a6ff"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect width="820" height="380" fill="#0d1117"/>
+
+      <!-- Anchor point (truck rail / branch) -->
+      <rect x="30" y="40" width="120" height="24" rx="4" fill="#21262d" stroke="#30363d" stroke-width="1.5"/>
+      <text x="90" y="57" text-anchor="middle" fill="#8b949e" font-size="12" font-family="system-ui">ANCHOR / TRUCK RAIL</text>
+
+      <!-- Standing line from anchor going right -->
+      <line x1="150" y1="52" x2="420" y2="52" stroke="#d29922" stroke-width="3" stroke-dasharray="none"/>
+
+      <!-- Label: standing line -->
+      <text x="270" y="42" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui">STANDING LINE</text>
+
+      <!-- Pulley loop (slip loop / alpine butterfly) at x=420 -->
+      <ellipse cx="420" cy="52" rx="22" ry="22" fill="none" stroke="#d29922" stroke-width="3"/>
+      <text x="420" y="56" text-anchor="middle" fill="#d29922" font-size="11" font-family="system-ui" font-weight="700">LOOP</text>
+      <text x="420" y="90" text-anchor="middle" fill="#c9d1d9" font-size="11" font-family="system-ui">Slip loop or</text>
+      <text x="420" y="104" text-anchor="middle" fill="#c9d1d9" font-size="11" font-family="system-ui">Alpine Butterfly</text>
+
+      <!-- Hauling part — drops down from loop, goes to load point -->
+      <!-- From loop bottom down to load point -->
+      <path d="M420,74 L420,190 L340,190" stroke="#58a6ff" stroke-width="3" fill="none"/>
+      <!-- Load point — anchor at left (hook or tie-down point) -->
+      <rect x="220" y="175" width="120" height="30" rx="5" fill="#21262d" stroke="#30363d" stroke-width="1.5"/>
+      <text x="280" y="195" text-anchor="middle" fill="#8b949e" font-size="12" font-family="system-ui">LOAD / TIE-DOWN</text>
+
+      <!-- Line returns from load point back up, through loop, then down as hauling end -->
+      <path d="M220,190 L180,190 L180,52" stroke="#3fb870" stroke-width="3" fill="none"/>
+      <!-- Up from load, left side, up to anchor height -->
+      <!-- Then goes through loop ... simplify with label -->
+      <!-- Actually let's draw the return through loop -->
+      <path d="M180,52 L398,52" stroke="#3fb870" stroke-width="3" fill="none" stroke-dasharray="6,3"/>
+
+      <!-- Hauling end continues from loop down/right to two half hitches on standing line -->
+      <path d="M420,30 L420,10 L600,10" stroke="#58a6ff" stroke-width="3" fill="none"/>
+      <!-- Two half hitches symbol at ~x=600, y=52 -->
+      <!-- Standing line continues right from loop -->
+      <line x1="442" y1="52" x2="700" y2="52" stroke="#d29922" stroke-width="3"/>
+
+      <!-- Two half hitches loops around standing line -->
+      <ellipse cx="590" cy="52" rx="16" ry="20" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+      <ellipse cx="630" cy="52" rx="16" ry="20" fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+      <text x="610" y="90" text-anchor="middle" fill="#58a6ff" font-size="11" font-family="system-ui">TWO HALF HITCHES</text>
+      <text x="610" y="103" text-anchor="middle" fill="#8b949e" font-size="10" font-family="system-ui">(securing hitch)</text>
+
+      <!-- Tail end after hitches -->
+      <line x1="646" y1="52" x2="700" y2="52" stroke="#58a6ff" stroke-width="3"/>
+      <text x="700" y="42" fill="#8b949e" font-size="11" font-family="system-ui">TAIL</text>
+
+      <!-- Arrow showing pull direction on hauling end -->
+      <line x1="600" y1="10" x2="680" y2="10" stroke="#58a6ff" stroke-width="2" marker-end="url(#arr-blue)"/>
+      <text x="630" y="7" text-anchor="middle" fill="#58a6ff" font-size="11" font-family="system-ui">HAUL →</text>
+
+      <!-- Arrow at load showing load direction -->
+      <line x1="280" y1="210" x2="280" y2="260" stroke="#f85149" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="280" y="278" text-anchor="middle" fill="#f85149" font-size="11" font-family="system-ui">LOAD / TENSION</text>
+
+      <!-- Labels for the three parts -->
+      <!-- Part 1 label -->
+      <rect x="30" y="200" width="140" height="48" rx="6" fill="#1a2a1a" stroke="#3fb870" stroke-width="1.5"/>
+      <text x="100" y="219" text-anchor="middle" fill="#3fb870" font-size="11" font-family="system-ui" font-weight="700">① ANCHOR LINE</text>
+      <text x="100" y="234" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="system-ui">Return from load</text>
+      <text x="100" y="246" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="system-ui">to anchor</text>
+
+      <rect x="180" y="300" width="160" height="48" rx="6" fill="#1a2230" stroke="#58a6ff" stroke-width="1.5"/>
+      <text x="260" y="319" text-anchor="middle" fill="#58a6ff" font-size="11" font-family="system-ui" font-weight="700">② HAULING PART</text>
+      <text x="260" y="334" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="system-ui">Pulled to create tension;</text>
+      <text x="260" y="346" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="system-ui">secured with half hitches</text>
+
+      <rect x="500" y="120" width="160" height="48" rx="6" fill="#2a1a2a" stroke="#d29922" stroke-width="1.5"/>
+      <text x="580" y="139" text-anchor="middle" fill="#d29922" font-size="11" font-family="system-ui" font-weight="700">③ PULLEY LOOP</text>
+      <text x="580" y="154" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="system-ui">Slip loop, figure-8, or</text>
+      <text x="580" y="166" text-anchor="middle" fill="#c9d1d9" font-size="10" font-family="system-ui">alpine butterfly</text>
+
+      <!-- Connecting lines from labels to diagram elements -->
+      <line x1="100" y1="200" x2="180" y2="170" stroke="#3fb870" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="260" y1="300" x2="420" y2="200" stroke="#58a6ff" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="500" y1="144" x2="442" y2="70" stroke="#d29922" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- 3:1 MA label -->
+      <text x="410" y="340" text-anchor="middle" fill="#d29922" font-size="14" font-family="system-ui" font-weight="700">3:1 MECHANICAL ADVANTAGE</text>
+      <text x="410" y="358" text-anchor="middle" fill="#8b949e" font-size="11" font-family="system-ui">Pull 33 kg to tension a 100 kg load (theoretical; ~2.5:1 practical due to friction)</text>
+    </svg>
+  </div>
+
+  <!-- Step by Step -->
+  <div class="section-title">🪢 How to Tie It — Step by Step</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Secure to the anchor point</h3>
+        <p>Pass the rope around your anchor (truck stake, tree, rigging point). Tie a bowline or two half hitches at the anchor — something that won't slip under load. The running end now extends out toward your load.</p>
+        <p class="note">For load securing on trucks: wrap over and under the stake pocket or rail, then proceed.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Form the pulley loop in the standing line</h3>
+        <p>Roughly midway between anchor and load, form a <strong>slip loop</strong> (a bight pulled through itself), a <strong>directional figure-8</strong> on a bight, or an <strong>alpine butterfly</strong>. The loop must be able to bear a load without closing — an alpine butterfly is the most secure option; a simple slip loop is fastest but can tighten under sustained load.</p>
+        <p class="note">The alpine butterfly is preferred when repeated use or high tension is expected — it doesn't jam and can be untied after loading.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Pass the running end through/around the load and back through the loop</h3>
+        <p>Run the rope to your load point (hook, tie-down, cargo), around it, and return the running end through your pulley loop. Now you have a 2-part line on the load side of the loop — this is where the mechanical advantage comes from.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Haul the running end to tension the system</h3>
+        <p>Pull the running end away from the loop (toward the anchor side of the system). The loop acts as a pulley — your 1-part pull generates tension across a 2-part load side, giving approximately 3:1 advantage (counting the anchor line as part 3). Haul until load is secure and tight.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h3>Lock off with two half hitches on the standing line</h3>
+        <p>While maintaining tension, pass the running end around the standing line and tie <strong>two half hitches</strong> (a clove hitch around the standing line is also acceptable). This holds the tension without you needing to maintain hand pressure. The slip loop means the whole system releases with one pull on the loop tail.</p>
+        <p class="note">Check: the tail of the two half hitches should point away from load direction and be long enough to grip reliably — minimum 15 cm tail per standard load-securing practice.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Uses, Not For, Comparison -->
+  <div class="section-title">⚙️ Applications &amp; Limitations</div>
+  <div class="two-col">
+    <div class="card">
+      <h2>When to Use It</h2>
+      <ul>
+        <li>Securing brush loads, logs, and equipment on trailers and truck beds</li>
+        <li>Tensioning tag lines to control direction of a falling piece (static load)</li>
+        <li>Lashing equipment to anchors (ground stakes, vehicle tie-downs)</li>
+        <li>Tightening a rope guide wire on a small lift where the load is static</li>
+        <li>Anywhere you need tension without mechanical hardware and you have enough rope</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>When NOT to Use It</h2>
+      <ul>
+        <li><strong>NOT</strong> for primary rigging with a climber or a worker below the load — no rated WLL, dynamic load capacity unverified</li>
+        <li><strong>NOT</strong> as a substitute for rated rigging hardware (pulleys, slings, shackles) in critical lift scenarios</li>
+        <li><strong>NOT</strong> for long-duration holds where a slip loop is used — the slip loop can migrate under sustained load; use alpine butterfly instead</li>
+        <li><strong>NOT</strong> for synthetic rope under severe heat or UV exposure — inspect rope condition first</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Do and Don't -->
+  <div class="section-title">✅ Do &amp; Don't</div>
+  <div class="do-box">
+    <strong>✓ Do</strong>
+    <p class="box-text">Use an alpine butterfly or directional figure-8 for the pulley loop in arborist applications — they're load-rated and won't jam. Inspect rope before using as a load-securing system. Pad rope over sharp edges (truck stake corners). Check tension mid-trip on long hauls — rope stretches, wood settles.</p>
+  </div>
+  <div class="dont-box">
+    <strong>✗ Don't</strong>
+    <p class="box-text">Don't use a simple overhand slip loop as the pulley when loads are heavy or sustained — it can tighten and become impossible to release. Don't use a trucker's hitch as a primary life-safety rigging component. Don't confuse the 3:1 MA with a rope's WLL — the two are unrelated. The MA tells you how much easier it is to pull; the WLL tells you how much load the rope can bear.</p>
+  </div>
+
+  <div class="field-note">
+    <strong>📋 Field Note — Okanagan</strong>
+    <p>In the field, you'll use the trucker's hitch most often for securing brush loads on the trailer between dump runs, and for tensioning a control line when you need directional influence on a limb without adding rope-to-rope mechanical friction from a block. It's a foundational competency — fast to tie, fast to release, and it works with whatever rope you have in your hand. Per WorkSafeBC OHSR Part 16.32, all loads transported on a vehicle must be secured so they cannot shift, fall, or be blown from the vehicle. A properly tensioned trucker's hitch meets this requirement when applied correctly. For trailer loads exceeding what rope tension can secure, rated tie-down straps with J-hooks and ratchets are the right tool — the trucker's hitch is supplemental for oddly shaped or loose material that needs additional binding. ISA ANSI Z133 Section 8 covers equipment transport — know the standard.</p>
+  </div>
+
+</div><!-- end container -->
+
+<div class="isa-footer">
+  <span>📚 ISA Exam Domain:</span> Safe Work Practices (28%) &nbsp;|&nbsp;
+  <span>Sources:</span> ANSI Z133 (2017) Section 8 — Equipment Transport · WorkSafeBC OHSR Part 16 (Vehicles, Machinery &amp; Equipment) · Ashley Book of Knots · ISA Climbing Techniques BMP
+</div>
+
+</body>
+</html>
