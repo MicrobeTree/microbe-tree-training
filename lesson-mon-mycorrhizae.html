@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mycorrhizal Associations — Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+  header{background:#161b22;border-bottom:2px solid #2d8a4e;padding:14px 24px;display:flex;align-items:center;gap:14px}
+  .logo{font-size:1.3rem;font-weight:700;color:#3fb870;letter-spacing:-0.5px}
+  .week-badge{background:#2d8a4e;color:#fff;font-size:0.75rem;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:0.5px}
+  .day-label{margin-left:auto;font-size:0.85rem;color:#7d8590;font-weight:600;letter-spacing:0.5px}
+  .container{max-width:860px;margin:0 auto;padding:28px 20px}
+  h1{font-size:1.65rem;font-weight:700;color:#e6edf3;margin-bottom:6px}
+  .subtitle{color:#7d8590;font-size:1rem;margin-bottom:24px}
+
+  /* Quick reference card */
+  .ref-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:22px;margin-bottom:32px}
+  .ref-card h2{font-size:1rem;color:#3fb870;font-weight:700;margin-bottom:14px;letter-spacing:0.5px;text-transform:uppercase}
+  table{width:100%;border-collapse:collapse;font-size:0.88rem}
+  th{background:#21262d;color:#7d8590;text-align:left;padding:8px 12px;font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px}
+  td{padding:9px 12px;border-bottom:1px solid #21262d;vertical-align:top;line-height:1.5}
+  tr:last-child td{border-bottom:none}
+  td:first-child{color:#3fb870;font-weight:600;white-space:nowrap}
+  .tag{display:inline-block;background:#21262d;color:#8b949e;font-size:0.72rem;padding:2px 7px;border-radius:4px;margin:2px 2px 0 0}
+  .tag.ecm{background:#1a3a2a;color:#3fb870}
+  .tag.am{background:#1a2a3a;color:#58a6ff}
+
+  /* Quiz questions */
+  .quiz-section h2{font-size:1rem;color:#3fb870;font-weight:700;margin-bottom:18px;letter-spacing:0.5px;text-transform:uppercase}
+  .question-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:22px;margin-bottom:18px;transition:border-color 0.2s}
+  .question-card.answered{border-color:#2d8a4e}
+  .q-number{font-size:0.75rem;color:#3fb870;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+  .q-text{font-size:1rem;color:#e6edf3;font-weight:600;margin-bottom:16px;line-height:1.5}
+  .options{display:flex;flex-direction:column;gap:8px}
+  .opt-btn{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:10px 14px;border-radius:7px;text-align:left;cursor:pointer;font-size:0.92rem;transition:all 0.15s;display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+  .opt-btn:hover:not(:disabled){background:#2d333b;border-color:#58a6ff}
+  .opt-btn .opt-letter{font-weight:700;color:#58a6ff;min-width:18px}
+  .opt-btn.correct{background:#1a3a2a;border-color:#3fb870;color:#3fb870}
+  .opt-btn.correct .opt-letter{color:#3fb870}
+  .opt-btn.incorrect{background:#3a1a1a;border-color:#f85149;color:#f85149}
+  .opt-btn.incorrect .opt-letter{color:#f85149}
+  .opt-btn:disabled{cursor:default}
+
+  /* Lesson reveal */
+  .lesson-reveal{display:none;margin-top:18px;padding-top:18px;border-top:1px solid #30363d}
+  .lesson-reveal.visible{display:block}
+  .result-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:700;padding:4px 10px;border-radius:5px;margin-bottom:14px}
+  .result-badge.correct{background:#1a3a2a;color:#3fb870}
+  .result-badge.incorrect{background:#3a1a1a;color:#f85149}
+  .lesson-body h3{font-size:1rem;font-weight:700;color:#e6edf3;margin-bottom:10px}
+  .lesson-body p{font-size:0.92rem;color:#c9d1d9;line-height:1.65;margin-bottom:12px}
+  .lesson-body ul{list-style:none;padding:0;margin-bottom:12px}
+  .lesson-body ul li{font-size:0.92rem;color:#c9d1d9;line-height:1.6;padding:4px 0 4px 18px;position:relative}
+  .lesson-body ul li::before{content:"→";position:absolute;left:0;color:#3fb870;font-weight:700}
+  .field-note{background:#1a2a1a;border-left:3px solid #3fb870;padding:12px 16px;border-radius:0 7px 7px 0;margin-top:14px}
+  .field-note strong{color:#3fb870;font-size:0.78rem;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#c9d1d9;margin:0;line-height:1.6}
+  .cite{font-size:0.78rem;color:#58a6ff;font-style:italic}
+
+  /* Footer */
+  .isa-footer{background:#161b22;border-top:1px solid #30363d;padding:16px 24px;margin-top:40px;font-size:0.82rem;color:#7d8590;text-align:center}
+  .isa-footer span{color:#3fb870}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌲 Microbe Tree</div>
+  <div class="week-badge">WEEK 12</div>
+  <div class="day-label">🌿 MONDAY · TREE BIOLOGY</div>
+</header>
+
+<div class="container">
+  <h1>Mycorrhizal Associations</h1>
+  <p class="subtitle">How trees talk to the soil food web — and what that means for PHC and site work</p>
+
+  <!-- Quick Reference Card -->
+  <div class="ref-card">
+    <h2>📊 Quick Reference — Mycorrhizal Types</h2>
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Ectomycorrhizal (ECM)</th>
+        <th>Arbuscular Mycorrhizal (AM)</th>
+      </tr>
+      <tr>
+        <td>Penetration</td>
+        <td>Mantle around root + Hartig net <em>between</em> cortical cells (not inside cells)</td>
+        <td>Penetrates <em>into</em> cortical cells — forms arbuscules and vesicles</td>
+      </tr>
+      <tr>
+        <td>Visible sign</td>
+        <td>Swollen, branched root tips; hyphal mantle visible under hand lens</td>
+        <td>No visible external sign; internal structures only</td>
+      </tr>
+      <tr>
+        <td>Tree hosts</td>
+        <td><span class="tag ecm">Pines</span><span class="tag ecm">Firs</span><span class="tag ecm">Spruces</span><span class="tag ecm">Oaks</span><span class="tag ecm">Birches</span><span class="tag ecm">Alders</span></td>
+        <td><span class="tag am">Maples</span><span class="tag am">Ashes</span><span class="tag am">Willows</span><span class="tag am">Elms</span><span class="tag am">Most ornamentals</span></td>
+      </tr>
+      <tr>
+        <td>Fungal phylum</td>
+        <td>Mostly Basidiomycota (e.g., Suillus, Amanita, Lactarius)</td>
+        <td>Glomeromycota (e.g., Glomus, Rhizophagus)</td>
+      </tr>
+      <tr>
+        <td>Key benefit</td>
+        <td>Extended hyphal network for water + nutrient uptake; P, K, Zn, Cu</td>
+        <td>Phosphorus uptake especially effective; drought and pathogen resistance</td>
+      </tr>
+      <tr>
+        <td>CMN (Simard)</td>
+        <td>Carbon transfer between trees documented via ECM networks</td>
+        <td>Some CMN evidence; less studied than ECM networks</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Quiz Questions -->
+  <div class="quiz-section">
+    <h2>📝 Quiz — Work Through All Five</h2>
+
+    <!-- Q1 -->
+    <div class="question-card" id="q1">
+      <div class="q-number">Question 1 of 5</div>
+      <div class="q-text">At the cellular level, what is the defining structural difference between ectomycorrhizal (ECM) and arbuscular mycorrhizal (AM) fungi?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer('q1','a','d')"><span class="opt-letter">A</span>ECM fungi penetrate cortical cells and form arbuscules; AM fungi wrap a mantle around the outside of the root</button>
+        <button class="opt-btn" onclick="answer('q1','b','d')"><span class="opt-letter">B</span>ECM fungi form a mantle and Hartig net between cortical cells; AM fungi penetrate into cortical cells and form arbuscules</button>
+        <button class="opt-btn" onclick="answer('q1','c','d')"><span class="opt-letter">C</span>ECM fungi colonize only the epidermis; AM fungi colonize only root hair cells</button>
+        <button class="opt-btn" onclick="answer('q1','d','d')"><span class="opt-letter">D</span>There is no structural difference — both form Hartig nets between cortical cells</button>
+      </div>
+      <div class="lesson-reveal" id="q1-lesson">
+        <div class="result-badge" id="q1-badge"></div>
+        <div class="lesson-body">
+          <h3>ECM vs AM — The Structural Distinction</h3>
+          <p>The key difference is how far in the fungus gets. In <strong>ECM associations</strong>, the fungus wraps the root tip in a dense <em>mantle</em> of fungal tissue, then extends inward through the apoplast (the space between cells) to form the <em>Hartig net</em> — an intricate lattice of hyphae threading between cortical cells. The fungus never breaches the cell membrane. It's more like a scaffold built between bricks than drilling through them.</p>
+          <p>In <strong>AM associations</strong>, the fungus actually penetrates through the root epidermis and into cortical cells, where it forms highly branched tree-like structures called <em>arbuscules</em> (and sometimes balloon-like storage structures called <em>vesicles</em>). This intimate contact between fungal membrane and plant cell membrane is where the nutrient and carbon exchange happens.</p>
+          <ul>
+            <li>ECM: mantle + Hartig net; hyphae stay in the apoplast (between cells)</li>
+            <li>AM: no mantle; hyphae enter cells and form arbuscules + vesicles</li>
+            <li>ECM visible externally — bloated, branched root tips with smooth, waxy appearance</li>
+            <li>AM invisible without microscopy — no visible root tip change</li>
+            <li>Both types extend hyphae far beyond the root zone — up to several metres — massively expanding the tree's effective absorptive surface area</li>
+          </ul>
+          <div class="field-note">
+            <strong>📋 Field Note — Okanagan</strong>
+            <p>When you're digging around the base of a ponderosa or lodgepole on site, look for the characteristic stubby, Y-shaped ECM root tips — often yellowish, white, or russet-coloured, and unusually thick compared to fine roots. That's the mantle. Damage those and you're cutting the tree's supply chain. Soil compaction, grade changes, and trenching in the drip zone destroy ECM networks. The ISA Study Guide (Ch. 5) specifically flags mycorrhizal disruption as a primary mechanism of construction-related tree decline. Per the ISA BMP for PHC, preserving existing soil biology is a first-line intervention before any inoculant product is considered.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card" id="q2">
+      <div class="q-number">Question 2 of 5</div>
+      <div class="q-text">A client wants to establish three trees along their new fence line in Westbank: a silver maple, a green ash, and a ponderosa pine. Which of these is most likely to form ectomycorrhizal (ECM) associations?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer('q2','a','c')"><span class="opt-letter">A</span>Silver maple — it forms ECM associations common to all Acer species</button>
+        <button class="opt-btn" onclick="answer('q2','b','c')"><span class="opt-letter">B</span>Green ash — ashes form ECM in alkaline Okanagan soils</button>
+        <button class="opt-btn" onclick="answer('q2','c','c')"><span class="opt-letter">C</span>Ponderosa pine — all Pinus species form ECM associations</button>
+        <button class="opt-btn" onclick="answer('q2','d','c')"><span class="opt-letter">D</span>All three — ECM is universal in landscape trees</button>
+      </div>
+      <div class="lesson-reveal" id="q2-lesson">
+        <div class="result-badge" id="q2-badge"></div>
+        <div class="lesson-body">
+          <h3>Host Range — Knowing Which Tree Needs Which Fungus</h3>
+          <p>This is practically important because mycorrhizal inoculant products are not interchangeable. Applying an ECM inoculant to a maple does nothing — maples form AM associations. Applying an AM inoculant to a pine is equally useless.</p>
+          <ul>
+            <li><strong>ECM hosts in Okanagan:</strong> All Pinus spp. (ponderosa, lodgepole, white pine), all Abies spp. (fir), Picea spp. (spruce), Pseudotsuga menziesii (Douglas-fir), Larix spp. (larch), Betula spp. (birch), Quercus spp. (oak), Alnus spp. (alder), Populus spp. (aspen, cottonwood)</li>
+            <li><strong>AM hosts in Okanagan:</strong> All Acer spp. (maple), Fraxinus spp. (ash), Ulmus spp. (elm), Tilia spp. (linden), Malus spp. (apple/crabapple), Prunus spp. (cherry, plum), most herbaceous plants</li>
+            <li>Some tree genera form both types — willows (<em>Salix</em>) and poplars (<em>Populus</em>) can form ECM primarily, with AM present on some species</li>
+            <li>Soil pH matters: Okanagan's alkaline soils (pH 7.5–8.2) favour different fungal communities than acidic soils</li>
+          </ul>
+          <div class="field-note">
+            <strong>📋 Field Note — Okanagan</strong>
+            <p>Green ash and silver maple — the workhorses of Okanagan boulevards — are AM hosts. When you see one of these trees in declining health following soil disturbance, the mycorrhizal component of that decline is AM disruption, not ECM. The practical takeaway: if a client asks about "mycorrhizal inoculants" for a newly planted ash or maple, they need an AM product containing Glomus/Rhizophagus species, not the ECM ectomycorrhizal products marketed for conifers. Read labels carefully — many products blend both types for this reason.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card" id="q3">
+      <div class="q-number">Question 3 of 5</div>
+      <div class="q-text">A client's white birch has been declining for two seasons. Soil testing reveals severe compaction in the drip zone and pH 8.0. No pathogens are found. Which mechanism best explains how compaction impairs the tree's mycorrhizal function?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer('q3','a','a')"><span class="opt-letter">A</span>Compaction reduces soil pore space and oxygen availability, impairing aerobic fungal hyphal respiration and limiting ECM colonization</button>
+        <button class="opt-btn" onclick="answer('q3','b','a')"><span class="opt-letter">B</span>Compaction increases soil temperature, denaturing the enzymes in ECM Hartig net tissue</button>
+        <button class="opt-btn" onclick="answer('q3','c','a')"><span class="opt-letter">C</span>Compaction pushes AM vesicles through the cortical cell wall, releasing stored lipids into the apoplast</button>
+        <button class="opt-btn" onclick="answer('q3','d','a')"><span class="opt-letter">D</span>Compaction causes the mantle to calcify and block the Hartig net exchange surface</button>
+      </div>
+      <div class="lesson-reveal" id="q3-lesson">
+        <div class="result-badge" id="q3-badge"></div>
+        <div class="lesson-body">
+          <h3>Compaction and Mycorrhizal Collapse — The Oxygen Connection</h3>
+          <p>Mycorrhizal fungi are obligate aerobes. Their hyphae need oxygen to respire and function. Soil compaction — whether from foot traffic, vehicle parking, or grade changes — collapses macropores and eliminates the air spaces soil fungi depend on. The result is hypoxic conditions that are lethal to ECM hyphae even before the tree roots themselves are visibly affected.</p>
+          <ul>
+            <li>Well-structured soil: 50% solid, 25% water, 25% air by volume (general target)</li>
+            <li>Compacted soil: pore space drops toward 10% or less; water-filled pores become anaerobic</li>
+            <li>ECM hyphae extend up to 10–15 cm depth in surface horizons — the exact zone most affected by surface compaction</li>
+            <li>Loss of ECM = loss of phosphorus and micronutrient uptake, loss of drought buffer, loss of pathogen protection</li>
+            <li>Alkaline pH (Okanagan's 7.5–8.2 soils) already limits phosphorus availability — compaction compounds this dramatically</li>
+            <li>Aeration techniques (vertical mulching, radial aeration, air spading) are the primary remediation per ISA BMP for Soil Management</li>
+          </ul>
+          <div class="field-note">
+            <strong>📋 Field Note — Okanagan</strong>
+            <p>This is one of the most common decline scenarios you'll see on Okanagan residential properties — a birch or spruce near a parking pad that's "just not doing well." The soil under that gravel pad is likely dead, biologically speaking. Air spading the root zone, applying organic mulch, and giving the tree a 2–3 year recovery timeline is the correct PHC approach. Document the compaction with a penetrometer reading before and after treatment so you can demonstrate improvement. Per ISA BMP for PHC, avoiding the source of stress (the compaction itself) takes priority over any supplemental treatment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card" id="q4">
+      <div class="q-number">Question 4 of 5</div>
+      <div class="q-text">Suzanne Simard's research in BC interior forests showed that large "mother trees" can transfer carbon to seedlings growing beneath them via common mycorrhizal networks (CMN). What is the most directly applicable implication for an arborist advising on a development project in the Okanagan interior?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer('q4','a','b')"><span class="opt-letter">A</span>Stumps from felled trees should be ground immediately to prevent carbon drain through residual CMN</button>
+        <button class="opt-btn" onclick="answer('q4','b','b')"><span class="opt-letter">B</span>Large legacy trees near the development boundary should be preserved — their removal may disrupt CMN-mediated support for surrounding younger trees</button>
+        <button class="opt-btn" onclick="answer('q4','c','b')"><span class="opt-letter">C</span>Mycorrhizal inoculants eliminate the need to preserve CMN because fungi re-establish from inoculant within one growing season</button>
+        <button class="opt-btn" onclick="answer('q4','d','b')"><span class="opt-letter">D</span>Root barriers must be installed per ANSI A300 Part 8 to prevent CMN from extending under new pavement</button>
+      </div>
+      <div class="lesson-reveal" id="q4-lesson">
+        <div class="result-badge" id="q4-badge"></div>
+        <div class="lesson-body">
+          <h3>The Common Mycorrhizal Network — Practical Arborist Implications</h3>
+          <p>Simard's research — conducted primarily in interior BC Douglas-fir and birch forests — established that trees of different species are connected by shared ECM fungal networks. Carbon, water, and possibly stress signals move through these networks. Large, older trees ("mother trees") act as hubs, and their removal doesn't just take away one tree — it can destabilize the underground infrastructure supporting the entire stand.</p>
+          <ul>
+            <li>CMN = Common Mycorrhizal Network — the connected hyphal web linking multiple trees through shared fungal partners</li>
+            <li>Carbon transfer from mother trees to shaded seedlings is significant enough to improve seedling survival measurably</li>
+            <li>Mycorrhizal inoculants do NOT replicate an established CMN — commercial products introduce fungi but don't restore network connectivity or the species diversity of a functioning forest floor community</li>
+            <li>Development tree preservation recommendations should explicitly note CMN disruption risk — this is ISA Tree Risk Assessment domain content</li>
+            <li>Per ISA BMP for PHC, "biological soil integrity" is identified as a component of site assessment before treatment planning</li>
+          </ul>
+          <div class="field-note">
+            <strong>📋 Field Note — Okanagan</strong>
+            <p>In the Okanagan interior, ponderosa pine stands operate as connected communities through Rhizopogon, Suillus, and other ECM fungi. When you advise a client on a land clearing project near an existing stand, the strongest tree-preservation argument isn't just about the visible canopy — it's about the invisible infrastructure under the soil. A mature ponderosa left at the edge of a development pad may support seedling regeneration and soil biology across the entire cleared zone, IF its root zone and CMN are not destroyed by compaction or trenching. Document this in your report to give it weight. Simard's primary research publications and her book <em>Finding the Mother Tree</em> (2021) are the key references if a client wants to see the science.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card" id="q5">
+      <div class="q-number">Question 5 of 5</div>
+      <div class="q-text">An arborist is proposing a systemic fungicide trunk injection to manage a confirmed Dothistroma needle blight infection on a mature ponderosa pine. What mycorrhizal consideration should be documented in the pre-treatment assessment?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer('q5','a','a')"><span class="opt-letter">A</span>Systemic fungicides may be translocated to feeder roots and can suppress or damage ECM fungal colonization — this risk should be weighed and noted in the treatment plan</button>
+        <button class="opt-btn" onclick="answer('q5','b','a')"><span class="opt-letter">B</span>Ponderosa pine exclusively forms AM associations that are unaffected by compounds targeting filamentous Ascomycete pathogens</button>
+        <button class="opt-btn" onclick="answer('q5','c','a')"><span class="opt-letter">C</span>Trunk injection bypasses the vascular system entirely and fungicide remains localized to the injection wound</button>
+        <button class="opt-btn" onclick="answer('q5','d','a')"><span class="opt-letter">D</span>ANSI Z133 prohibits fungicide application within 5 metres of ECM-colonized root zones</button>
+      </div>
+      <div class="lesson-reveal" id="q5-lesson">
+        <div class="result-badge" id="q5-badge"></div>
+        <div class="lesson-body">
+          <h3>Systemic Fungicides and Mycorrhizal Risk</h3>
+          <p>This is a real clinical tension in PHC. Systemic fungicides — azoxystrobin, propiconazole, phosphonate compounds — move through the xylem and phloem after injection or soil application. They are effective against target pathogens, but many of these molecules are not selective: they can suppress a range of fungal organisms, including the ECM fungi the tree depends on.</p>
+          <ul>
+            <li>The active ECM hyphal network lives in the same feeder root tissue the fungicide reaches via xylem translocation</li>
+            <li>Phosphonate (phosphorous acid) products — widely used for Phytophthora and downy mildew — are documented to impair mycorrhizal colonization in some contexts</li>
+            <li>Propiconazole (DMI fungicide) has ECM suppression potential documented in forest research literature</li>
+            <li>The trade-off is real: treating the pathogen may weaken the mutualist — the net effect on tree health depends on severity of disease vs. degree of mycorrhizal suppression</li>
+            <li>Best practice per ISA BMP for PHC: document the trade-off, consider targeted application (trunk injection over soil drench to minimize root zone exposure), monitor ECM status post-treatment</li>
+            <li>ANSI Z133 sets no specific fungicide–mycorrhizae exclusion zones — option C is invented</li>
+          </ul>
+          <div class="field-note">
+            <strong>📋 Field Note — Okanagan</strong>
+            <p>In practice, if you're treating a Dothistroma-infected ponderosa with a systemic fungicide by trunk injection, the decision is usually justified — severe Dothistroma defoliation is a serious stressor that will reduce the tree's carbohydrate output and actually impair mycorrhizal function anyway. The lesson isn't "don't treat." It's "document the trade-off and choose the most targeted delivery method." Trunk injection concentrates the product in the canopy where Dothistroma lives, which is safer for root zone fungi than a soil drench. This is the kind of nuanced PHC reasoning the ISA CA exam tests in the Soil Management and Tree Biology domains — not just "what's the treatment" but "what are the second-order effects."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end quiz-section -->
+</div><!-- end container -->
+
+<div class="isa-footer">
+  <span>📚 ISA Exam Domains:</span> Tree Biology (11%) · Soil Management (11%) &nbsp;|&nbsp;
+  <span>Sources:</span> ISA Certification Study Guide 4th Ed. Ch. 5 · Simard et al. (2012) <em>Net transfer of carbon between ectomycorrhizal tree species in the field</em> · ISA BMP for Plant Health Care · ISA BMP for Soil Management
+</div>
+
+<script>
+function answer(qId, chosen, correct) {
+  const card = document.getElementById(qId);
+  const buttons = card.querySelectorAll('.opt-btn');
+  const lesson = document.getElementById(qId + '-lesson');
+  const badge = document.getElementById(qId + '-badge');
+  const letters = ['a','b','c','d'];
+
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (letters[i] === correct) btn.classList.add('correct');
+    else if (letters[i] === chosen && chosen !== correct) btn.classList.add('incorrect');
+  });
+
+  if (chosen === correct) {
+    badge.textContent = '✓ Correct';
+    badge.className = 'result-badge correct';
+  } else {
+    badge.textContent = '✗ Incorrect — the correct answer is highlighted';
+    badge.className = 'result-badge incorrect';
+  }
+
+  lesson.classList.add('visible');
+  card.classList.add('answered');
+  setTimeout(() => lesson.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
+}
+</script>
+
+</body>
+</html>
