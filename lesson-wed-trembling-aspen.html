@@ -3,321 +3,280 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trembling Aspen — Microbe Tree Training</title>
+<title>🌳 Trembling Aspen — Microbe Tree Training</title>
 <style>
-:root{--bg:#0d120e;--surface:#131a14;--card:#1a221b;--border:#243027;--accent:#2d7a50;--accent-light:#3dac6e;--text:#deeee3;--text-dim:#7a9a84;--fn-bg:#0f1c12;--fn-border:#2d7a50;--warn-bg:#1c1808;--warn-border:#8a7a20;--warn-text:#c8b840}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh}
-.header{background:linear-gradient(135deg,#0a1e0e,#060f08);border-bottom:2px solid var(--accent);padding:18px 20px;display:flex;align-items:center;gap:12px}
-.header-icon{font-size:26px}
-.header h1{font-size:1.1rem;font-weight:700;color:var(--accent-light);line-height:1.3}
-.header .sub{font-size:0.8rem;color:var(--text-dim);margin-top:3px}
-.badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap}
-.layout{display:flex;min-height:calc(100vh - 72px)}
-aside{width:160px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:14px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
-.nav-item{display:block;padding:9px 14px;font-size:0.8rem;color:var(--text-dim);cursor:pointer;border-left:3px solid transparent;transition:color 0.15s,border-color 0.15s;text-decoration:none;line-height:1.3}
-.nav-item:hover{color:var(--text);background:var(--card)}
-.nav-item.active{color:var(--accent-light);border-left-color:var(--accent-light);background:var(--card);font-weight:600}
-.nav-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);padding:14px 14px 4px;font-weight:600}
-main{flex:1;padding:20px 18px;overflow-y:auto;max-width:700px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#111827;color:#e5e7eb;min-height:100vh;display:flex;flex-direction:column}
+header{background:linear-gradient(135deg,#064e3b,#065f46);padding:16px 24px;display:flex;align-items:center;gap:12px}
+header h1{font-size:1.05rem;font-weight:700;color:#fff}
+.badge{font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase}
+.badge-day{background:#022c22;color:#6ee7b7}
+.badge-week{background:#1e3a5f;color:#93c5fd}
+.week-tag{color:#9ca3af;font-size:0.8rem;margin-left:auto}
+
+.layout{display:flex;flex:1}
+nav{width:200px;min-width:180px;background:#0d1117;border-right:1px solid #1f2937;padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav h3{color:#6b7280;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;padding:0 16px;margin-bottom:10px}
+.nav-link{display:block;padding:10px 16px;color:#9ca3af;font-size:0.85rem;text-decoration:none;border-left:3px solid transparent;transition:all 0.15s;cursor:pointer;background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left}
+.nav-link:hover{color:#e5e7eb;background:#1f2937;border-left-color:#6ee7b7}
+.nav-link.active{color:#6ee7b7;background:#0c1a12;border-left-color:#059669}
+.nav-icon{margin-right:6px}
+
+main{flex:1;padding:28px;overflow-y:auto;max-width:680px}
 .section{display:none}
-.section.show{display:block}
-h2{font-size:0.85rem;font-weight:700;color:var(--accent-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
-.section-intro{font-size:1rem;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-h3{font-size:0.9rem;font-weight:700;color:var(--accent-light);margin:14px 0 6px}
-p{font-size:0.88rem;line-height:1.65;color:var(--text);margin-bottom:9px}
-ul{padding-left:17px;margin-bottom:9px}
-li{font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:4px}
-strong{color:var(--accent-light)}
-em{color:var(--text-dim);font-style:italic}
-.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px 15px;margin-bottom:11px}
-.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
-.id-item{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 11px}
-.id-item .lbl{font-size:0.66rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}
-.id-item .val{font-size:0.85rem;color:var(--text);line-height:1.4}
-.field-note{background:var(--fn-bg);border:1px solid var(--fn-border);border-left:3px solid var(--fn-border);border-radius:6px;padding:11px 13px;margin-top:12px}
-.fn-label{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-light);margin-bottom:5px}
-.field-note p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
-.warn-box{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:6px;padding:11px 13px;margin-bottom:10px}
-.warn-box .wlbl{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warn-text);margin-bottom:5px}
-.warn-box p{font-size:0.85rem;line-height:1.6;color:var(--text);margin:0}
-.pest-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:9px}
-.pest-name{font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:2px}
-.pest-sci{font-size:0.75rem;color:var(--text-dim);font-style:italic;margin-bottom:7px}
-.severity{display:inline-block;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:2px 8px;border-radius:12px;margin-bottom:7px}
-.sev-high{background:#3d1515;color:#d47f7f;border:1px solid #7d3a3a}
-.sev-med{background:#2a2010;color:#c8a850;border:1px solid #7a6020}
-.sev-low{background:#0f2014;color:#6ab87a;border:1px solid #2d6a3a}
-.isa-tag{background:var(--surface);border-top:1px solid var(--border);padding:12px 18px;font-size:0.78rem;color:var(--text-dim);text-align:center;line-height:1.5}
-.isa-tag span{color:var(--accent-light);font-weight:600}
-@media(max-width:480px){aside{width:120px}.nav-item{padding:8px 10px;font-size:0.75rem}}
+.section.active{display:block}
+.section-title{font-size:1.3rem;font-weight:700;color:#6ee7b7;margin-bottom:6px}
+.section-subtitle{color:#6b7280;font-size:0.85rem;margin-bottom:22px;font-style:italic}
+p{color:#d1d5db;font-size:0.92rem;line-height:1.7;margin-bottom:12px}
+h3{color:#e5e7eb;font-size:0.88rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin:18px 0 8px;color:#a7f3d0}
+ul,ol{color:#d1d5db;font-size:0.92rem;padding-left:20px;line-height:1.7;margin-bottom:12px}
+ul li,ol li{margin-bottom:5px}
+strong{color:#f9fafb}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.spec-box{background:#0d1117;border:1px solid #374151;border-radius:8px;padding:12px}
+.spec-box .label{color:#6b7280;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.spec-box .val{color:#e5e7eb;font-size:0.88rem;font-weight:600}
+.pest-card{background:#1a0f0f;border:1px solid #7f1d1d;border-radius:8px;padding:14px;margin-bottom:10px}
+.pest-card h4{color:#f87171;font-size:0.88rem;font-weight:700;margin-bottom:6px}
+.pest-card p{color:#fca5a5;font-size:0.85rem;margin:0;line-height:1.55}
+.disease-card{background:#1a130a;border:1px solid #92400e;border-radius:8px;padding:14px;margin-bottom:10px}
+.disease-card h4{color:#fbbf24;font-size:0.88rem;font-weight:700;margin-bottom:6px}
+.disease-card p{color:#fde68a;font-size:0.85rem;margin:0;line-height:1.55}
+.field-note{background:#0c1a12;border:1px solid #166534;border-radius:8px;padding:16px;margin-top:16px}
+.field-note-label{color:#6ee7b7;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px}
+.field-note p{color:#bbf7d0;font-size:0.88rem;line-height:1.6;margin:0}
+.highlight{background:#1c2a1c;border-left:3px solid #059669;padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.highlight p{margin:0;color:#d1fae5;font-size:0.88rem}
+footer{background:#0d1117;border-top:1px solid #1f2937;padding:14px 24px;text-align:center;font-size:0.78rem;color:#6b7280}
+
+@media(max-width:600px){
+  nav{display:none}
+  main{padding:16px}
+  .spec-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-icon">🌳</div>
+<header>
+  <span>🌳</span>
   <div>
-    <h1>Trembling Aspen <em style="font-size:0.85rem;color:var(--text-dim)">&nbsp;Populus tremuloides</em></h1>
-    <div class="sub">Week 3 · Wednesday · Tree Profile</div>
+    <h1>Tree Profile — Trembling Aspen &nbsp;·&nbsp; <em>Populus tremuloides</em></h1>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+      <span class="badge badge-day">Wednesday</span>
+      <span class="badge badge-week">Week 4</span>
+      <span class="week-tag">Microbe Tree Inc. · West Kelowna, BC</span>
+    </div>
   </div>
-  <div class="badge">Field Guide</div>
-</div>
+</header>
+
 <div class="layout">
-  <aside>
-    <div class="nav-label">Sections</div>
-    <div class="nav-item active" onclick="go(0)">🔍 Identity</div>
-    <div class="nav-item" onclick="go(1)">🌐 Origin</div>
-    <div class="nav-item" onclick="go(2)">💧 Biology</div>
-    <div class="nav-item" onclick="go(3)">🐛 Pests</div>
-    <div class="nav-item" onclick="go(4)">🦠 Diseases</div>
-    <div class="nav-item" onclick="go(5)">🪚 Arborist Notes</div>
-  </aside>
+  <nav>
+    <h3>Sections</h3>
+    <button class="nav-link active" onclick="show('identity',this)"><span class="nav-icon">🏷️</span> Identity</button>
+    <button class="nav-link" onclick="show('origin',this)"><span class="nav-icon">🌍</span> Origin</button>
+    <button class="nav-link" onclick="show('biology',this)"><span class="nav-icon">🌱</span> Biology</button>
+    <button class="nav-link" onclick="show('pests',this)"><span class="nav-icon">🐛</span> Pest Pressures</button>
+    <button class="nav-link" onclick="show('disease',this)"><span class="nav-icon">🦠</span> Disease Pressures</button>
+    <button class="nav-link" onclick="show('arborist',this)"><span class="nav-icon">🪚</span> Arborist Notes</button>
+  </nav>
+
   <main>
 
-    <!-- 0: Identity -->
-    <div class="section show" id="s0">
-      <h2>Identity</h2>
-      <div class="section-intro">The most widely distributed tree in North America — and one of the most misunderstood. In the Okanagan it's everywhere from the valley bottom to the subalpine. Learn the ID features cold, because this species is on your truck almost every week.</div>
-      <div class="id-grid">
-        <div class="id-item"><div class="lbl">Family</div><div class="val">Salicaceae (Willow family)</div></div>
-        <div class="id-item"><div class="lbl">Genus / Species</div><div class="val"><em>Populus tremuloides</em> Michx.</div></div>
-        <div class="id-item"><div class="lbl">Common names</div><div class="val">Trembling aspen, quaking aspen, golden aspen</div></div>
-        <div class="id-item"><div class="lbl">Typical height</div><div class="val">10–20 m (rarely to 25 m on good sites)</div></div>
-        <div class="id-item"><div class="lbl">Bark — young</div><div class="val">Smooth, white to pale green-grey; dark "eye" scars at branch bases</div></div>
-        <div class="id-item"><div class="lbl">Bark — mature</div><div class="val">Thicker, rougher, dark grey-brown at base; can be confused with birch but lacks peeling</div></div>
+    <!-- IDENTITY -->
+    <div class="section active" id="identity">
+      <div class="section-title">Identity</div>
+      <div class="section-subtitle">Populus tremuloides Michx. — Trembling Aspen · Quaking Aspen · White Poplar (informal)</div>
+
+      <div class="spec-grid">
+        <div class="spec-box"><div class="label">Family</div><div class="val">Salicaceae</div></div>
+        <div class="spec-box"><div class="label">Genus / Species</div><div class="val">Populus tremuloides</div></div>
+        <div class="spec-box"><div class="label">Mature Height</div><div class="val">15–25 m (50–80 ft)</div></div>
+        <div class="spec-box"><div class="label">Mature Spread</div><div class="val">6–12 m via crown; clones unlimited</div></div>
+        <div class="spec-box"><div class="label">Growth Rate</div><div class="val">Fast — 30–60 cm/yr in youth</div></div>
+        <div class="spec-box"><div class="label">Longevity</div><div class="val">Individual stems 80–150 yr; clones centuries+</div></div>
+        <div class="spec-box"><div class="label">USDA Hardiness</div><div class="val">Zones 1–7 (extremely cold-hardy)</div></div>
+        <div class="spec-box"><div class="label">BC Okanagan Status</div><div class="val">Native — widespread</div></div>
       </div>
-      <div class="card">
-        <h3>Key Field ID Features</h3>
-        <ul>
-          <li><strong>Flat (laterally compressed) petiole:</strong> the single best diagnostic feature. The leaf stem is flattened at 90° to the leaf blade — causing leaves to quake in the lightest breeze. Unique among BC Populus.</li>
-          <li><strong>Leaf shape:</strong> round to broadly ovate, finely toothed margin, 3–8 cm across. Nearly circular in outline. Tip is short-pointed.</li>
-          <li><strong>Leaf colour:</strong> fresh green above, paler below; brilliant yellow to orange in fall (Okanagan peak: early October)</li>
-          <li><strong>Winter ID:</strong> smooth, pale bark with prominent dark lenticels; buds narrow, pointed, not gummy (distinguishes from balsam poplar); clustered branch scars on older stems</li>
-          <li><strong>Not birch:</strong> birch has papery, peeling bark and alternate, triangular leaves with a different petiole. Aspen bark does not peel.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Confusion Species</h3>
-        <ul>
-          <li><strong>Black cottonwood (Populus balsamifera ssp. trichocarpa):</strong> much larger; leaves broadly ovate, not circular; petiole round, not flattened; buds large and very sticky-resinous (balsam scent); typically in wetter sites</li>
-          <li><strong>Paper birch (Betula papyrifera):</strong> peeling white bark; triangular leaves with doubly-serrate margins; catkins in pairs; bark does not have the smooth grey-green of young aspen</li>
-          <li><strong>European white poplar (Populus alba):</strong> ornamental; distinctive white, maple-like lobed leaves; suckers aggressively; occasionally escaped in Okanagan</li>
-        </ul>
-      </div>
+
+      <h3>Field Identification</h3>
+      <ul>
+        <li><strong>Bark:</strong> Smooth, pale greenish-white to cream on young stems; becomes rougher, dark, furrowed at base of old trees. The waxy bark photosynthesizes — a secondary carbon source when dormant.</li>
+        <li><strong>Leaves:</strong> Roughly circular, 3–7 cm, finely toothed. Petiole distinctively flattened (laterally compressed), causing leaves to tremble in the slightest breeze — the origin of both common names.</li>
+        <li><strong>Catkins:</strong> Dioecious — separate male and female trees. Catkins emerge before leaves in early spring (late March–April in the Okanagan). Female catkins release cottony seeds in May–June.</li>
+        <li><strong>Winter twigs:</strong> Slender, reddish-brown, with pointed alternate buds. Buds are slightly resinous, not as sticky as balsam poplar.</li>
+        <li><strong>Fall colour:</strong> Brilliant golden-yellow, occasionally orange. One of the most striking fall displays in the BC Interior.</li>
+      </ul>
+
       <div class="field-note">
-        <div class="fn-label">📋 Field Note</div>
-        <p>In the field, the flat petiole test takes 2 seconds. Roll the leaf stem between your thumb and index finger — round petiole (cottonwood, birch) will roll smoothly; flat petiole (aspen) will rock back and forth. If it rocks, it's aspen. Once you've done this once, you won't need to think about it again.</p>
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Trembling aspen is the most widespread tree species in North America by area — and for good reason. In the Okanagan you see it lining the creek drainages above town, on north-facing slopes where ponderosa pine backs off, in the transition zone between grassland and forest on the Westside Road, and as ornamental clonal plantings in newer subdivisions. If a client calls about "those white-barked trees that are suckering everywhere," it's almost always aspen. Know this tree inside out.</p>
       </div>
     </div>
 
-    <!-- 1: Origin -->
-    <div class="section" id="s1">
-      <h2>Origin &amp; Natural History</h2>
-      <div class="section-intro">Trembling aspen is the most widely distributed tree in North America. Understanding its ecology explains almost every management challenge you'll encounter with it.</div>
-      <div class="card">
-        <h3>Native Range</h3>
-        <p>P. tremuloides grows from the mountains of central Mexico north through the Rocky Mountain states and all across Canada to Alaska and the Yukon, east to Newfoundland. It is found in virtually every Canadian province and territory and most US states. Within BC, it ranges from valley floors to the subalpine — you'll find it at 300 m elevation in the South Okanagan and at 1800 m on the plateau above. In the Okanagan, aspen is most common in the <strong>montane zone</strong> (500–1500 m), particularly on north-facing slopes, along streams and drainages, and in any recently disturbed area.</p>
-      </div>
-      <div class="card">
-        <h3>Clonal Biology — The Most Important Thing You Need to Know</h3>
-        <p>Trembling aspen is a <strong>clonal species</strong>. What appears to be a grove of individual trees is often a single genetic individual — one root system, many stems (called <strong>ramets</strong>). The famous Pando clone in Utah covers 43 hectares and contains approximately 47,000 stems connected by a single root system; it's estimated to weigh ~6 million kg, making it the world's largest known organism by mass.</p>
-        <p>Okanagan aspen clones are typically smaller but can extend across multiple properties. The ecological implication: when one stem is damaged or removed, the root system responds with a <strong>sucker flush</strong> — aggressive new stem production from root buds. This is the single most important management fact about aspen in landscape settings.</p>
-        <p>Different clones in a grove are visible as patches with different fall colour timing — one section turns gold while another is still green. Same species, different genetics, different phenology.</p>
-      </div>
-      <div class="card">
-        <h3>Fire Ecology</h3>
-        <p>Aspen is a fire-dependent species at the landscape scale. Individual stems have thin bark and are easily killed by surface fire — but the root system survives. After fire, aspen responds with explosive sucker production; documented densities of 100,000+ suckers per hectare have been recorded in the first year post-fire in BC Interior.</p>
-        <p>In the pre-settlement Okanagan, fire cycles maintained open aspen parkland across much of the valley. Fire suppression over the last century has allowed Douglas-fir and ponderosa pine to encroach into aspen stands. This is actively documented in BC — many "declining" aspen groves aren't diseased, they're being shaded out by conifer in-growth that fire would normally have cleared.</p>
-      </div>
+    <!-- ORIGIN -->
+    <div class="section" id="origin">
+      <div class="section-title">Origin &amp; Ecology</div>
+      <div class="section-subtitle">The most widely distributed tree in North America — and one of the most ecologically complex</div>
+
+      <h3>Native Range</h3>
+      <p><em>Populus tremuloides</em> has the largest natural range of any North American tree species, extending from Alaska and the Yukon south through the Rockies into Mexico, and from the Pacific to the Atlantic. In BC it is native throughout, from sea level to treeline.</p>
+      <p>In the <strong>Okanagan Interior</strong>, trembling aspen occupies the moist forest fringe, riparian zones, north-facing slopes, and burned-over areas recovering from fire. It is a defining component of the Montane Cordilleran ecozone that characterizes much of the BC Interior uplands.</p>
+
+      <h3>Clonal Growth — The Real Story</h3>
+      <p>What appears to be a stand of many individual trees is often a single genetic individual — a <strong>clone</strong> connected by a shared root system that produces new stems (ramets) via vegetative sprouting. Each clone is genetically identical above and below ground.</p>
+      <p>The most famous example: <strong>Pando</strong>, a single aspen clone in Fishlake National Forest, Utah. Spanning 43 hectares and containing approximately 47,000 stems, Pando is estimated to weigh roughly 6 million kilograms — making it the heaviest known living organism on Earth. Its age is estimated at 80,000+ years, though the individual stems replace themselves every 100–150 years.</p>
+      <p>In the Okanagan, you can often identify clone boundaries by the synchronous leaf colour change in fall — one clone turns gold while the adjacent clone stays green for another week.</p>
+
+      <h3>Fire Ecology</h3>
+      <p>Aspen is exquisitely fire-adapted. Above-ground stems are killed by most fire intensities, but the root system survives — often stimulated — by fire. Post-fire suckering can produce tens of thousands of new stems per hectare within a single growing season. Fire suppression over the past century has actually harmed aspen: without periodic fire to reset competition, conifers invade aspen stands and shade them out — a process called <strong>conifer encroachment</strong>. Many BC Interior aspen stands are declining because of it.</p>
+
       <div class="field-note">
-        <div class="fn-label">📋 Field Note — Okanagan Context</div>
-        <p>When a Kelowna homeowner says "my aspen is dying and sending up shoots everywhere," they've usually removed stems but left the root system. The shoots aren't new trees — they're the same individual trying to recover. Removing suckers without addressing the root system just stimulates more suckers. Understanding clonal biology lets you have the right conversation about management options, including whether full root system removal is feasible or whether managing the sucker flush is the long-term reality.</p>
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>When you're working on a site with aspen and a client wants them removed — understand you may be removing the above-ground expression of a root system that covers half an acre. Cutting the stems without treating the stumps will trigger a massive sucker response. What was 10 stems becomes 200 in two seasons. If full removal is the goal, the prescription is stump treatment with appropriate herbicide (imazapyr or triclopyr) applied immediately after cutting, or girdling. Discuss with the client before the first cut — the biology dictates the approach.</p>
       </div>
     </div>
 
-    <!-- 2: Biology -->
-    <div class="section" id="s2">
-      <h2>Biology — What It Wants</h2>
-      <div class="section-intro">Aspen is a pioneer species. It colonises disturbed ground fast, grows fast, and gets replaced by longer-lived species if left alone. Knowing this shapes every management decision.</div>
-      <div class="card">
-        <h3>Light</h3>
-        <p>Trembling aspen is <strong>highly intolerant of shade</strong> — among the least shade-tolerant trees in BC. In the natural succession, it establishes rapidly after disturbance in full sun, grows to canopy quickly, but is progressively overtopped and suppressed by shade-tolerant species (spruce, fir). In urban settings, aspens planted in partial shade perform poorly and decline early.</p>
-        <p>Full sun is the non-negotiable site requirement. Any tree planting recommendation for aspen in less than 6 hours of direct sun per day should be reconsidered.</p>
-      </div>
-      <div class="card">
-        <h3>Water</h3>
-        <p>Aspen tolerates a wide range — from moist riparian edges to dry slopes — but performs best on <strong>mesic sites with consistent moisture</strong>. It does not tolerate waterlogging (anaerobic roots) for extended periods. In the Okanagan, drought stress in mature boulevard aspens is a primary driver of both hypoxylon canker (see Diseases) and poplar borer attack. Supplemental irrigation during dry summers significantly extends boulevard aspen longevity.</p>
-      </div>
-      <div class="card">
-        <h3>Soil</h3>
-        <p>Tolerant of alkaline soils — an advantage in the Okanagan's characteristic calcareous, high-pH substrates. Accepts loamy, sandy loam, and gravelly soils. Not tolerant of salt (road salt, saline soils). Prefers <strong>well-aerated, well-drained soils</strong>; root growth and mycorrhizal function suffer significantly in compacted urban soils.</p>
-      </div>
-      <div class="card">
-        <h3>Growth Rate &amp; Lifespan</h3>
-        <p>Fast growth — 60–100 cm of height per year in optimal conditions when young. Maximum lifespan of individual stems: typically <strong>80–100 years</strong>, occasionally to 150 years in natural settings. In urban boulevard settings, expect useful lifespan of 30–50 years at best; physiological age is compressed by stress. The root system (clone) can persist for millennia even as individual stems turn over.</p>
-        <p>Fall colour in the Okanagan: brilliant yellow to orange, peak usually first to second week of October. Highly variable between clones — adjacent clones may differ by 2–3 weeks in colour timing.</p>
-      </div>
-      <div class="field-note">
-        <div class="fn-label">📋 Field Note — Okanagan Context</div>
-        <p>The Okanagan combination of alkaline soils, high UV, compacted boulevard soils, and summer drought is particularly hard on aspen. Native aspen in the hills above West Kelowna can live 80+ years — the same species planted in a Glenrosa subdivision boulevard in 2010 is going to need assessment by 2035. Set client expectations accordingly. This is a fast-greening, gorgeous tree for the medium term, not a generational shade tree like a bur oak or Douglas-fir.</p>
-      </div>
-    </div>
+    <!-- BIOLOGY -->
+    <div class="section" id="biology">
+      <div class="section-title">Biology — What It Wants</div>
+      <div class="section-subtitle">Cultural requirements, tolerances, and growth behaviour</div>
 
-    <!-- 3: Pests -->
-    <div class="section" id="s3">
-      <h2>Pest Pressures</h2>
-      <div class="section-intro">Aspen faces serious insect pressure in the Okanagan, particularly from wood-borers that exploit drought-stressed stems. Healthy, well-irrigated trees fend off most attacks; stressed trees are vulnerable quickly.</div>
+      <h3>Light</h3>
+      <p>Trembling aspen is strongly <strong>shade-intolerant</strong> — it requires full sun to thrive. It is a pioneer species that colonizes disturbance openings (burns, cuts, slides) ahead of more shade-tolerant competitors. In deep shade, aspen stems die out quickly. This is why conifer encroachment is lethal to aspen stands over time.</p>
 
-      <div class="pest-row">
-        <div class="pest-name">Poplar Borer</div>
-        <div class="pest-sci">Saperda calcarata — Cerambycidae (Longhorn beetle)</div>
-        <div><span class="severity sev-high">High Severity</span></div>
-        <p>One of the most structurally damaging insects on Okanagan aspen. Adults (25–35 mm, striking black and white spotted) emerge July–August and lay eggs in bark. Larvae bore progressively deeper galleries in sapwood and heartwood over 2–3 years, creating characteristic <strong>oval entry/exit holes (12–20 mm) with wet sawdust and frass at the base of the trunk.</strong> Repeated infestation over years compromises structural integrity — heavily attacked stems can snap at borer galleries in wind.</p>
-        <p><strong>PHC approach:</strong> maintain vigour (irrigation, mulch, soil health); no effective spray for established larvae; remove severely infested stems before they become a drop hazard. Flag infested trees for wind risk assessment.</p>
-      </div>
+      <h3>Soil &amp; Moisture</h3>
+      <p>Aspen is adaptable to a wide range of soils — sandy loam to clay, acidic to slightly alkaline — but performs best in moist, well-drained soils with moderate to high organic matter. In the Okanagan's semi-arid climate, aspen naturally positions itself near moisture sources: creek margins, seepage zones, north-facing slopes with longer snowpack retention.</p>
+      <p>In boulevard and urban settings, aspen is often planted well outside its optimal moisture envelope. Under drought stress, it becomes highly susceptible to the secondary pests and diseases detailed in the next two sections.</p>
 
-      <div class="pest-row">
-        <div class="pest-name">Oystershell Scale</div>
-        <div class="pest-sci">Lepidosaphes ulmi — Diaspididae (Armoured scale)</div>
-        <div><span class="severity sev-med">Moderate Severity</span></div>
-        <p>Gray, oyster-shaped scale armour 3–5 mm long, often in dense colonies on bark. First-instar crawlers emerge in May–June (coincides with lilac bloom in the Okanagan). Heavy infestations cause bark discoloration, branch dieback, and in severe cases stem death. Very common on boulevard aspens and ornamental birch.</p>
-        <p><strong>PHC approach:</strong> dormant oil application before crawler emergence (March–April); targeted insecticide at crawler stage (neonicotinoids registered in BC for scale); monitor annually. Keep detailed spray records — resistance can develop in persistent populations.</p>
-      </div>
+      <h3>Dioecious Reproduction</h3>
+      <p>Individual trees are either male or female. Wind-pollinated catkins release pollen in early spring; fertilized female catkins release cottony seeds in late spring. Seed viability is extremely short — seeds must land on bare moist soil within days of release. In practice, <strong>most aspen reproduction is vegetative</strong> (root sprouting), not sexual.</p>
 
-      <div class="pest-row">
-        <div class="pest-name">Forest Tent Caterpillar</div>
-        <div class="pest-sci">Malacosoma disstria — Lasiocampidae</div>
-        <div><span class="severity sev-med">Moderate / Outbreak-High</span></div>
-        <p>Periodic mass defoliator of aspen across the BC Interior. Unlike eastern tent caterpillar, does NOT build a tent — makes silk mats on branches. Outbreak cycles occur every 10–15 years in BC, with 2–4 year peak periods. Single-year defoliation rarely kills healthy aspen; 2–3 consecutive outbreak years combined with drought can cause significant dieback or death. Egg masses overwinter on branches (distinctive bands around twigs).</p>
-        <p><strong>PHC approach:</strong> Monitor egg mass density in winter (bands per twig/branch). Btk (Bacillus thuringiensis var. kurstaki) effective if applied during larval feeding (small larvae); WorkSafeBC requires respiratory protection for Btk application. Outbreak status is tracked by BC Ministry of Forests — check current survey data.</p>
-    0 </div>
+      <h3>Root Architecture</h3>
+      <p>Aspen produces an aggressive <strong>shallow lateral root system</strong> that spreads far beyond the crown and produces suckers readily — especially after disturbance, drought stress, or stem damage. Root depth typically stays within 1 meter; lateral spread is essentially unlimited in established clones. This makes aspen incompatible with hardscaping: root barriers are mandatory in any boulevard or confined planting situation.</p>
 
-      <div class="pest-row">
-        <div class="pest-name">Bronze Poplar Borer</div>
-        <div class="pest-sci">Agrilus liragus — Buprestidae (Jewel beetle)</div>
-        <div><span class="severity sev-med">Moderate (stress secondary)</span></div>
-        <p>Secondary borer; attacks stressed, damaged, or recently transplanted aspen. Flat-headed larvae create winding galleries under bark, disrupting vascular tissue. Associated with drought stress in Okanagan boulevard trees. Entry wounds visible as D-shaped holes (smaller than poplar borer).</p>
-        <p><strong>PHC approach:</strong> same as poplar borer — prevent stress. Bronze borer attack is typically a symptom of a stressed tree, not the primary cause of decline. Address the root stress before attributing mortality to the borer.</p>
+      <div class="highlight">
+        <p><strong>Bark photosynthesis:</strong> Aspen bark contains chlorophyll and can photosynthesize even when the tree is leafless. This provides a small but meaningful carbon contribution in early spring before leaf-out and is why the bark stays green-white — it's alive, not just decorative.</p>
       </div>
 
       <div class="field-note">
-        <div class="fn-label">📋 Field Note — Okanagan Context</div>
-        <p>On a summer inspection of a declining boulevard aspen, look at the base of the trunk first. Poplar borer frass (coarse sawdust, often wet and amber-coloured) packed into gallery openings at the base is one of the most common findings on stressed Okanagan aspens. Check stem taper and any previous wound areas for entry points. If you find it, document how many entry holes, their height distribution, and whether there's fresh frass (active larvae) or dry frass (old exit holes). Both affect your risk assessment, but active infestation combined with existing structural compromise changes the conversation with the client.</p>
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>On Okanagan hillside properties, clients often want to keep the "natural aspen grove" feel at the edge of their yard. That's fine — but educate them early that the root system will enter their lawn, garden beds, and eventually their septic field if not managed. Deep root barriers (minimum 60 cm) along any hardscape boundary, and a lawn maintenance program that cuts suckers before they establish, are standard recommendations. The clone won't be stopped — only managed.</p>
       </div>
     </div>
 
-    <!-- 4: Diseases -->
-    <div class="section" id="s4">
-      <h2>Disease Pressures</h2>
-      <div class="section-intro">Aspen diseases are mostly opportunistic — healthy, unstressed trees resist them well. The exception is Hypoxylon canker, which can kill stressed stems regardless of vigour and persists in the stand.</div>
+    <!-- PESTS -->
+    <div class="section" id="pests">
+      <div class="section-title">Pest Pressures</div>
+      <div class="section-subtitle">Common insect and vertebrate pests on trembling aspen in the Okanagan</div>
 
-      <div class="pest-row">
-        <div class="pest-name">Hypoxylon Canker</div>
-        <div class="pest-sci">Hypoxylon mammatum — Xylariaceae (wood-rotting ascomycete)</div>
-        <div><span class="severity sev-high">High Severity — Primary Disease</span></div>
-        <p>The most serious disease of trembling aspen in western Canada. Infects through wounds and bark injuries; stress-triggered. Early symptoms: pale yellow to bleached patches on bark (bark remains attached), often with slight sunken area. Progresses to darker, sunken, cankered zones. As disease matures, <strong>black stromata (fruiting bodies) develop on dead bark</strong> — hard, rounded, black-dotted surfaces that are diagnostic for Hypoxylon.</p>
-        <p>Cankers can girdle stems entirely, causing whole-stem death above the canker. On a clonal grove, a Hypoxylon outbreak in drought conditions can kill a significant proportion of stems in 2–5 years.</p>
-        <p><strong>PHC approach:</strong> no effective fungicide treatment for established infection. Prevention through vigour maintenance is the only reliable strategy. Remove dead/infected stems promptly to reduce spore source in the stand. On high-value individual trees, address root zone health (mulch, irrigation, aeration) before disease becomes established.</p>
-        <div class="warn-box" style="margin-top:8px">
-          <div class="wlbl">⚠ Pruning Timing Critical</div>
-          <p>Hypoxylon sporulates during wet periods. Avoid making pruning wounds during spring wet periods (April–May in Okanagan) or immediately after heavy rain when spore counts are highest. Prune in summer after full leaf-out or in late fall after leaf drop.</p>
-        </div>
+      <div class="pest-card">
+        <h4>Poplar Borer — Saperda calcarata</h4>
+        <p>A large longhorn beetle (25–35mm) whose larvae bore into the sapwood and heartwood of living aspen stems. Adults lay eggs in bark crevices; larvae tunnel for 2–3 years, creating oval-shaped entry/exit holes 10–20mm wide with sawdust frass packing. Severely affected stems break at wound sites in wind. <strong>Okanagan severity: High.</strong> Common in urban aspen in the valley. No practical control for established infestations — remove and replace heavily affected stems.</p>
       </div>
 
-      <div class="pest-row">
-        <div class="pest-name">Cytospora Canker</div>
-        <div class="pest-sci">Cytospora chrysosperma — opportunistic canker pathogen</div>
-        <div><span class="severity sev-med">Moderate (stress secondary)</span></div>
-        <p>Same pathogen complex affects spruce (Week 1 lesson). On aspen, appears as sunken, discolored bark with orange-pink spore tendrils extruding from pycnidia in wet weather. Branches killed above canker, progressing downward. Stress primary driver — drought, freeze-thaw injury, root damage.</p>
-        <p><strong>PHC approach:</strong> same as for spruce: reduce stress, correct planting conditions, prune affected branches cleanly outside the canker margin, sterilise between cuts. No effective chemical control; address predisposing stress factors.</p>
-    0 </div>
-
-      <div class="pest-row">
-        <div class="pest-name">Marssonina Leaf Blight</div>
-        <div class="pest-sci">Drepanopeziza populorum (syn. Marssonina populi)</div>
-        <div><span class="severity sev-low">Low — Cosmetic</span></div>
-        <p>Brown, irregular spots with dark borders on leaves, often with yellow halos. Can cause significant premature defoliation in wet springs. Rarely fatal — healthy trees recover and releaf. Aesthetically objectionable on ornamental aspens in landscape settings.</p>
-        <p><strong>PHC approach:</strong> improve air circulation through pruning; avoid overhead watering. Fungicide options exist (copper-based) but rarely warranted given low lethality. Client education about the cosmetic vs. serious distinction is valuable.</p>
+      <div class="pest-card">
+        <h4>Western Tent Caterpillar — Malacosoma californicum</h4>
+        <p>Cyclical defoliator that builds silk tents in branch forks, with larvae feeding on leaves in late spring. Populations cycle roughly every 10 years in the BC Interior. Individual defoliation events rarely kill healthy trees but significantly deplete NSC reserves — a tree that defoliates and then faces summer drought is at serious risk. <strong>Okanagan severity: Moderate to High in outbreak years.</strong> Prune out tents when small (before larvae disperse) or use Bt (Bacillus thuringiensis var. kurstaki) as a biological control.</p>
       </div>
 
-      <div class="pest-row">
-        <div class="pest-name">Southwest Canker (Abiotic — Sunscald + Winter Injury)</div>
-        <div class="pest-sci">Freeze-thaw damage, not a pathogen — but often misdiagnosed</div>
-        <div><span class="severity sev-med">Moderate in Okanagan</span></div>
-        <p>In the Okanagan, aspen bark on southwest-facing stem surfaces is exposed to intense afternoon winter sun, which warms and activates bark tissues. When temperature drops sharply at night, ice crystal formation causes bark cell death. The resulting elongated dead zone on the southwest side of the stem is called a sunscald or frost crack. Secondary fungal colonisation often follows.</p>
-        <p><strong>PHC approach:</strong> white latex paint on trunk (not oil-based) in late fall can reduce solar heating. Protect younger trees with trunk wrap in their first 3–5 winters. Address any secondary fungal cankers with clean pruning practices.</p>
+      <div class="pest-card">
+        <h4>Aspen Leaf Miner — Phyllocnistis populiella</h4>
+        <p>Larvae tunnel between leaf surfaces, creating silvery blotch mines visible by mid-summer. Heavy infestations give the whole tree a "silver" appearance by late July. Aesthetic damage rather than lethal, but repeated heavy infestations weaken trees. <strong>Okanagan severity: Moderate.</strong> No chemical control recommended — leaf miners are difficult to reach and natural parasitoid populations usually suppress outbreaks within 2–3 years.</p>
+      </div>
+
+      <div class="pest-card">
+        <h4>Deer &amp; Elk Browsing</h4>
+        <p>Vertebrate pressure on aspen suckers and young stems is one of the primary reasons aspen stands fail to regenerate in the BC Interior. Deer browse suckers to ground level; elk strip bark in winter. In urban edge properties adjacent to the escarpment, deer damage to ornamental aspen is almost universal. <strong>Okanagan severity: High in edge properties.</strong> Individual stem tree guards on new plantings; no practical landscape-scale solution in high deer pressure areas.</p>
       </div>
 
       <div class="field-note">
-        <div class="fn-label">📋 Field Note — Okanagan Context</div>
-        <p>A declining aspen stand in West Kelowna in summer will often show Hypoxylon on stressed stems, poplar borer at the base of those same stems, and oystershell scale in the upper canopy — all at once. This is a classic stress cascade. None of these organisms would be causing significant damage if the trees were healthy. The right answer isn't "spray for scale and borer" — it's a root zone assessment, irrigation review, and honest conversation about stand age and urban site conditions. Sometimes the right recommendation is managed decline and planned replacement, not a treatment program.</p>
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>When you find large oval holes with sawdust frass in an aspen stem and the crown is thinning, think poplar borer first. The adult beetles are striking — grey-mottled with white spots — and fly in July and August. If you see an adult on a trunk, that's a sign of an active population. The structural damage from larval galleries is cumulative and irreversible. Assess stem stability carefully before any climbing operations on borer-affected trees — that's a breakage risk, not just an aesthetic issue.</p>
       </div>
     </div>
 
-    <!-- 5: Arborist Notes -->
-    <div class="section" id="s5">
-      <h2>Arborist Field Notes</h2>
-      <div class="section-intro">Everything above gives you the science. This is what to do with it on a job site.</div>
+    <!-- DISEASES -->
+    <div class="section" id="disease">
+      <div class="section-title">Disease Pressures</div>
+      <div class="section-subtitle">Fungal, bacterial, and abiotic disorders common on aspen in the BC Interior</div>
 
-      <div class="card">
-        <h3>The Sucker Problem — Managing Client Expectations</h3>
-        <p>Suckers from aspen root systems are the most common complaint you'll receive about this species. The biology: root buds are always present in the soil. Removing stems stimulates root bud activation. Cutting suckers stimulates more suckers. Chemical treatment of cut suckers (triclopyr as a stump treatment) can suppress but rarely eliminates them — root system persistence is the issue.</p>
-        <p>In pavement situations: roots grow horizontally near the surface and will eventually lift pavement regardless of how many times suckers are cut. When a client asks why their aspens keep "sending up shoots through the patio," they're asking about a root system that occupies a much larger area than the visible tree canopy. Set expectations at time of work completion: this will continue unless the root system is fully mechanically removed, which is typically not practical.</p>
+      <div class="disease-card">
+        <h4>Cytospora Canker — Cytospora chrysosperma</h4>
+        <p>The most common and damaging disease of Okanagan aspen. This opportunistic fungal pathogen infects through wounds and stressed bark. Symptoms: sunken, discoloured cankers on stems and branches; bark cracking and sloughing; orange-yellow spore tendrils (cirrhi) visible in moist conditions. The fungus is a secondary pathogen — it attacks trees weakened by drought, frost, pest damage, or mechanical injury. <strong>Management:</strong> Prune affected branches well below the canker margin; improve tree vigour through irrigation and soil care; avoid wounds in spring when the fungus is active. Reference: the cytospora lesson (Week 3, Thursday) covers this pathogen in depth.</p>
       </div>
 
-      <div class="card">
-        <h3>Pruning</h3>
-        <ul>
-          <li><strong>Best timing:</strong> after full leaf-out in summer (late June–July) or after leaf drop in fall. Avoids peak sap flow wounds in spring (May) and wet spring Hypoxylon sporulation periods.</li>
-          <li><strong>Dead wood removal:</strong> can be done any time. Aspen branches die frequently from shading and competition — routine dead wood removal is standard annual maintenance.</li>
-          <li><strong>Crown reduction:</strong> use with caution. Aspen has moderate compartmentalization; large wounds on mature stems may not seal effectively. Successive heavy pruning cycles create cumulative wounding stress that predisposes to both Hypoxylon and heart rot entry.</li>
-          <li><strong>Never flush-cut:</strong> standard collar preservation applies. Aspen callus is reasonably active if the tree is healthy; protect the branch collar to allow effective wound wood formation.</li>
-          <li><strong>Tool sterilisation:</strong> standard between trees; Hypoxylon and other canker pathogens can be carried on cutting tools. 70% isopropyl or 10% bleach solution between cuts.</li>
-        </ul>
+      <div class="disease-card">
+        <h4>Marssonina Leaf Spot — Marssonina populi</h4>
+        <p>A fungal leaf spot disease causing brown spots with yellow halos on leaves, often triggering premature defoliation by late summer. Most damaging in wet spring conditions that favour spore dispersal. In the Okanagan's dry climate, severe outbreaks are uncommon but do occur in cool wet years. <strong>Severity: Low to Moderate.</strong> Rarely fatal to established trees; rake and dispose of fallen leaves to reduce inoculum load. No fungicide treatment typically warranted.</p>
       </div>
 
-      <div class="card">
-        <h3>Structural Assessment</h3>
-        <p>Aspen wood is light and relatively weak — <strong>branch and stem failure is a real risk</strong>, particularly in older stems and those with borer galleries. Points to assess on boulevard trees:</p>
-        <ul>
-          <li>Base of trunk: poplar borer entry/exit holes (oval, 12–20 mm), frass accumulation, any callus-covered wounds indicating old borer damage</li>
-          <li>Root flare: any stem girdling roots; restricted root zone in boulevard strips (common issue)</li>
-          <li>Co-dominant stems: V-unions are common in multi-stem aspen; assess for included bark (bark visible in the union indicates weak attachment)</li>
-          <li>Dead branches: Okanagan aspens typically accumulate dead branches quickly from lower canopy shading; assess for hanging wood</li>
-          <li>Trunk lean: combined with known borer damage or root restriction, even moderate lean warrants risk rating</li>
-        </ul>
+      <div class="disease-card">
+        <h4>Ink Spot — Ciborinia whetzelii</h4>
+        <p>A fungal disease causing distinctive black "ink spot" lesions on aspen leaves, often visible from a distance as scattered black dots across the crown. Infections occur in spring during wet conditions. Primarily aesthetic; rarely causes severe defoliation. <strong>Severity: Low.</strong> No treatment needed in most cases.</p>
       </div>
 
-      <div class="card">
-        <h3>Boulevard &amp; Urban Suitability</h3>
-        <p><strong>Generally poor for most boulevard applications.</strong> Aggressive suckering through pavement, relatively short urban lifespan (30–50 years vs. 80+ in natural settings), susceptibility to stress-triggered pest and disease cascade, and weak wood all argue against selecting aspen for confined urban sites.</p>
-        <p>Better applications: naturalistic groupings on large residential lots with adequate root space; screening on acreages; natural area plantings where suckering is acceptable (or desired) and full sun is available. In these contexts, trembling aspen is one of the most spectacular native landscape trees in the Okanagan — brilliant fall color, attractive bark, wildlife value, fast establishment.</p>
+      <div class="disease-card">
+        <h4>Hypoxylon Canker — Hypoxylon mammatum</h4>
+        <p>A serious fungal canker disease of stressed aspen. Unlike Cytospora, Hypoxylon kills bark cambium in large patches, producing distinctive spore-bearing stromata (cushion-like, powdery buff to grey structures) on the dead bark. Entire stems may die within 2–3 years of infection. <strong>Okanagan severity: Moderate to High on drought-stressed trees.</strong> No cure — remove and dispose of infected stems. Do not chip infected wood on site; the spores can spread to adjacent trees.</p>
       </div>
 
-      <div class="card">
-        <h3>PHC Conversation with Clients</h3>
-        <ul>
-          <li><strong>Irrigation:</strong> key to longevity in the Okanagan. Aspens on irrigated turf typically outlast unirrigated aspens by 15–25 years in dry years. If client has boulevard strips on automated systems, advocate for aspen zones to receive supplemental water in July–August.</li>
-          <li><strong>Mulch ring:</strong> 75–100 mm organic mulch out to dripline (keeping mulch off trunk) significantly improves root zone conditions, reduces temperature extremes, conserves moisture, and suppresses turf competition — the single most high-value intervention on a stressed boulevard aspen.</li>
-          <li><strong>Annual inspection:</strong> worth pitching as a service. Poplar borer, oystershell scale, and early Hypoxylon are all manageable if caught early. Boulevard aspens that go uninspected for 5 years are often at end-of-life by year 6.</li>
-        </ul>
-      </div>
+      <h3>Abiotic — Frost Crack &amp; Sunscald</h3>
+      <p>The smooth, thin bark of young aspen is susceptible to <strong>sunscald</strong> (southwest bark injury from winter sun heating/freezing cycles) and <strong>frost crack</strong> (longitudinal bark splitting from rapid temperature drops). Both create wound entry points for Cytospora and Hypoxylon. Tree wraps on new transplants in exposed sites are worthwhile for the first 2–3 winters.</p>
 
-  2   <div class="field-note">
-        <div class="fn-label">📋 Field Note — Okanagan Context</div>
-        <p>The most valuable thing you can tell a client about their aspen is which problem they're actually facing. Sucker flush from removal? Borer from drought stress? Hypoxylon from a wound? Each has a different answer. "It's just declining" isn't a diagnosis — and it's not what ISA-credentialled arborists say. Take the extra 10 minutes at the root flare, check the bark, assess the crown. Your diagnosis is what differentiates you from someone with a saw and a truck.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>On a stressed urban aspen — compacted soil, insufficient irrigation, deer browse damage from last winter — the disease cascade typically runs: drought stress depletes NSC → bark integrity weakens → Cytospora or Hypoxylon enters through wounds → cankers expand → stem dies within 2–5 years. The root system may survive and re-sucker, but the original stem is gone. This is why PHC for aspen means starting with soil health and irrigation, not waiting for symptoms and then asking what disease it is.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section" id="arborist">
+      <div class="section-title">Arborist Notes</div>
+      <div class="section-subtitle">Pruning, PHC, client conversations, and Okanagan-specific guidance</div>
+
+      <h3>Pruning Timing</h3>
+      <p>Prune aspen during <strong>dry weather in late summer or mid-winter dormancy</strong>. Avoid pruning in spring when sap is flowing heavily and Cytospora spores are actively dispersed (typically April–June in the Okanagan). Wet spring conditions during pruning dramatically increase canker infection risk at pruning wounds.</p>
+      <p>Per ANSI A300 Part 1 (Pruning), all cuts should be made to the branch collar without leaving stubs. Aspen compartmentalizes reasonably well (Shigo's CODIT model) but large wounds on stressed trees may not close before pathogen colonization. Keep pruning cuts as small as possible.</p>
+
+      <h3>PHC Approach</h3>
+      <ul>
+        <li><strong>Irrigation:</strong> Deeply and infrequently during drought. Shallow frequent irrigation promotes surface roots and does not recharge the zone where structural roots are drawing water.</li>
+        <li><strong>Soil health:</strong> Mulch to 10 cm depth within the dripline (no volcano mulching). Reduces soil moisture loss, moderates temperature extremes, and improves organic matter over time.</li>
+        <li><strong>Fertilization:</strong> Generally not recommended as a first-line response. If foliage analysis confirms nutrient deficiency (common is Fe and Mn deficiency on high-pH Okanagan soils), slow-release nitrogen or micronutrient injection may be warranted. ISA BMP: Plant Health Care guides the decision process.</li>
+        <li><strong>Sucker management:</strong> Cut suckers in early summer before they woody-up; cutting in spring may stimulate more aggressive suckering. Apply cut-stump herbicide if elimination of suckers is the client goal.</li>
+      </ul>
+
+      <h3>Boulevard &amp; Strata Suitability</h3>
+      <p>Trembling aspen is increasingly used in strata and boulevard plantings in West Kelowna and Kelowna for its native character, fall colour, and fast growth. However, it is a <strong>medium-risk boulevard tree</strong>: the aggressive root system requires deep root barriers along all hardscape edges, and its sensitivity to drought and compaction means it requires more active PHC than a more adaptable species like Garry oak or black cottonwood.</p>
+      <p>For new strata plantings, recommend a minimum 60 cm deep root barrier along paving, quarterly irrigation monitoring in years 1–3, and an annual inspection for early canker or borer activity.</p>
+
+      <h3>Client Conversation Points</h3>
+      <ul>
+        <li>"Those white-barked trees" are almost certainly aspen — a native BC species that supports significant wildlife habitat value (cavity nesters, browse species, pollinators). Removal decisions should weigh ecological value.</li>
+        <li>Suckering is not a disease or failure — it's the tree's normal reproductive strategy. Management, not elimination, is usually the right approach.</li>
+        <li>Fall colour is a major amenity value — clients with aspen grove views are sitting on a significant property asset that is worth investing in maintaining.</li>
+      </ul>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The most underrated conversation we can have with clients who have aspen on their property is about what that root system represents. If there's a 20-stem clone on the property, you're not managing 20 trees — you're managing one organism that has been building root infrastructure, potentially, for decades. That root mass stores carbohydrates, stabilizes slopes, and can re-grow to canopy cover in 10 years after a fire or disturbance. It's one of the most resilient biological structures in the Okanagan landscape. Treat it accordingly.</p>
       </div>
     </div>
 
   </main>
 </div>
-<div class="isa-tag">📚 <span>ISA Exam Domains: Tree Biology (11%) · Tree Risk Assessment (11%) · Tree Selection &amp; Establishment (7%)</span><br>Sources: BC Ministry of Forests Forest Health · ISA Certification Study Guide 4th Ed. · Meidinger &amp; Pojar, Ecosystems of BC (1991) · ISA BMP Plant Health Care</div>
+
+<footer>
+  📚 ISA Exam Domains: <strong>Tree Biology (11%)</strong> · <strong>Tree Selection &amp; Establishment (7%)</strong><br>
+  Sources: ISA Arborists' Certification Study Guide 4th Ed. · BC Ministry of Forests — Aspen Management · ANSI A300 Part 1 Pruning · ISA BMP: Plant Health Care
+</footer>
 
 <script>
-function go(i){
-  document.querySelectorAll('.nav-item').forEach((n,j)=>n.classList.toggle('active',i===j));
-  document.querySelectorAll('.section').forEach((s,j)=>s.classList.toggle('show',i===j));
-  document.querySelector('main').scrollTop=0;
+function show(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
 }
 </script>
 </body>
