@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Root Architecture & Mycorrhizae — Microbe Tree Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#111827;color:#e5e7eb;min-height:100vh}
+header{background:linear-gradient(135deg,#14532d,#166534);padding:16px 24px;display:flex;align-items:center;gap:12px}
+header h1{font-size:1.1rem;font-weight:700;color:#fff}
+header span{font-size:1.5rem}
+.badge{background:#065f46;color:#6ee7b7;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase}
+.week-tag{color:#9ca3af;font-size:0.8rem;margin-left:auto}
+.container{max-width:860px;margin:0 auto;padding:24px 16px}
+
+/* home screen */
+#home{display:block}
+.intro-card{background:#1f2937;border:1px solid #374151;border-radius:12px;padding:24px;margin-bottom:24px}
+.intro-card h2{color:#6ee7b7;font-size:1.2rem;margin-bottom:10px}
+.intro-card p{color:#d1d5db;line-height:1.6;font-size:0.95rem}
+.ref-diagram{background:#111827;border:1px solid #374151;border-radius:10px;padding:20px;margin-top:16px}
+.ref-diagram h3{color:#9ca3af;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px}
+svg text{font-family:'Segoe UI',sans-serif}
+
+/* question grid */
+.q-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:8px}
+.q-btn{background:#1f2937;border:2px solid #374151;border-radius:10px;padding:16px;cursor:pointer;color:#e5e7eb;font-size:0.88rem;text-align:left;transition:all 0.2s}
+.q-btn:hover{border-color:#059669;background:#064e3b20}
+.q-btn.done{border-color:#059669;background:#064e3b}
+.q-btn .q-num{font-size:1.4rem;font-weight:700;color:#059669;display:block;margin-bottom:4px}
+.q-btn .q-label{color:#9ca3af;font-size:0.78rem}
+
+/* quiz screen */
+.quiz-screen{display:none}
+.quiz-screen.active{display:block}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.q-header button{background:#1f2937;border:1px solid #374151;color:#9ca3af;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.82rem}
+.q-header button:hover{color:#e5e7eb;border-color:#6b7280}
+.q-num-badge{background:#065f46;color:#6ee7b7;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:700}
+.question-card{background:#1f2937;border:1px solid #374151;border-radius:12px;padding:24px;margin-bottom:20px}
+.question-card h2{font-size:1.05rem;color:#f3f4f6;line-height:1.5;margin-bottom:20px}
+.options{display:grid;gap:10px}
+.opt{background:#111827;border:2px solid #374151;border-radius:8px;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:all 0.2s;color:#d1d5db;font-size:0.9rem;line-height:1.4}
+.opt:hover{border-color:#059669}
+.opt .letter{font-weight:700;color:#6ee7b7;min-width:18px}
+.opt.correct{border-color:#059669;background:#064e3b}
+.opt.wrong{border-color:#dc2626;background:#450a0a}
+
+/* lesson reveal */
+.lesson{display:none;margin-top:20px}
+.lesson.visible{display:block}
+.lesson-body{background:#1f2937;border-left:4px solid #059669;border-radius:0 10px 10px 0;padding:20px 24px;line-height:1.7}
+.lesson-body h3{color:#6ee7b7;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px}
+.lesson-body p{color:#d1d5db;font-size:0.92rem;margin-bottom:12px}
+.lesson-body ul{color:#d1d5db;font-size:0.92rem;padding-left:20px;margin-bottom:12px}
+.lesson-body ul li{margin-bottom:6px}
+.lesson-body strong{color:#e5e7eb}
+.field-note{background:#0c1a12;border:1px solid #166534;border-radius:8px;padding:16px;margin-top:16px}
+.field-note-label{color:#6ee7b7;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px}
+.field-note p{color:#bbf7d0;font-size:0.88rem;line-height:1.6}
+.next-btn{background:#059669;color:#fff;border:none;padding:10px 22px;border-radius:8px;cursor:pointer;font-size:0.88rem;margin-top:16px;font-weight:600}
+.next-btn:hover{background:#047857}
+
+/* footer */
+footer{background:#0d1117;border-top:1px solid #1f2937;padding:14px 24px;text-align:center;font-size:0.78rem;color:#6b7280;margin-top:40px}
+</style>
+</head>
+<body>
+<header>
+  <span>🌿</span>
+  <div>
+    <h1>Tree Biology — Root Architecture &amp; Mycorrhizal Partnerships</h1>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+      <span class="badge">Monday</span>
+      <span class="badge" style="background:#1e3a5f;color:#93c5fd">Week 4</span>
+      <span class="week-tag">Microbe Tree Inc. · West Kelowna, BC</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- HOME SCREEN -->
+<div id="home">
+  <div class="intro-card">
+    <h2>What's Underground Is Running the Show</h2>
+    <p>Most tree problems — drought stress, decline, failed transplants, compaction damage — originate below the dripline, where nobody looks. A tree's root system can extend 2–3× the crown radius, yet 90% of absorptive roots live in the top 18–24 inches of soil. Understanding root architecture and mycorrhizal partnerships is the foundation of every PHC decision you'll make on site.</p>
+    <p style="margin-top:10px;color:#9ca3af;font-size:0.85rem">Five questions. Work through them in order. The lesson lives behind each answer — that's where the real material is.</p>
+  </div>
+
+  <!-- Quick Reference Diagram -->
+  <div class="ref-diagram">
+    <h3>Root Zone Quick Reference</h3>
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block">
+      <!-- soil layers -->
+      <rect x="0" y="0" width="700" height="260" fill="#111827"/>
+      <!-- soil surface line -->
+      <line x1="0" y1="60" x2="700" y2="60" stroke="#78716c" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <!-- trunk -->
+      <rect x="325" y="0" width="50" height="60" rx="4" fill="#78350f"/>
+      <!-- crown (simplified) -->
+      <ellipse cx="350" cy="30" rx="120" ry="28" fill="#14532d" opacity="0.5"/>
+      <text x="350" y="18" fill="#6ee7b7" font-size="11" text-anchor="middle">Crown spread</text>
+      <text x="350" y="32" fill="#6ee7b7" font-size="10" text-anchor="middle">(dripline)</text>
+      <!-- dripline drops -->
+      <line x1="230" y1="48" x2="230" y2="240" stroke="#374151" stroke-width="1" stroke-dasharray="3 3"/>
+      <line x1="470" y1="48" x2="470" y2="240" stroke="#374151" stroke-width="1" stroke-dasharray="3 3"/>
+      <!-- CRZ marker -->
+      <rect x="170" y="60" width="360" height="130" rx="4" fill="#14532d" opacity="0.15"/>
+      <!-- root lateral lines -->
+      <path d="M350,80 Q270,90 180,100" stroke="#854d0e" stroke-width="2" fill="none"/>
+      <path d="M350,80 Q430,90 520,105" stroke="#854d0e" stroke-width="2" fill="none"/>
+      <path d="M350,80 Q240,110 150,130" stroke="#713f12" stroke-width="1.5" fill="none"/>
+      <path d="M350,80 Q460,115 540,140" stroke="#713f12" stroke-width="1.5" fill="none"/>
+      <!-- fine root clusters -->
+      <circle cx="180" cy="100" r="12" fill="#065f46" opacity="0.7"/>
+      <circle cx="520" cy="105" r="12" fill="#065f46" opacity="0.7"/>
+      <circle cx="150" cy="130" r="8" fill="#065f46" opacity="0.6"/>
+      <circle cx="540" cy="140" r="8" fill="#065f46" opacity="0.6"/>
+      <!-- depth markers -->
+      <line x1="30" y1="60" x2="30" y2="105" stroke="#6b7280" stroke-width="1"/>
+      <line x1="25" y1="60" x2="35" y2="60" stroke="#6b7280" stroke-width="1"/>
+      <line x1="25" y1="105" x2="35" y2="105" stroke="#6b7280" stroke-width="1"/>
+      <text x="36" y="88" fill="#9ca3af" font-size="10">18–24"</text>
+      <text x="36" y="98" fill="#9ca3af" font-size="10">~90% roots</text>
+      <!-- CRZ label -->
+      <text x="350" y="200" fill="#6ee7b7" font-size="11" text-anchor="middle">Critical Root Zone (CRZ)</text>
+      <text x="350" y="214" fill="#9ca3af" font-size="10" text-anchor="middle">1 ft radius per inch DBH · minimum 5 ft radius</text>
+      <!-- dripline labels -->
+      <text x="230" y="250" fill="#6b7280" font-size="10" text-anchor="middle">Dripline</text>
+      <text x="470" y="250" fill="#6b7280" font-size="10" text-anchor="middle">Dripline</text>
+      <!-- surface label -->
+      <text x="640" y="58" fill="#78716c" font-size="10">Soil surface</text>
+      <!-- mycorrhizal label -->
+      <text x="180" y="90" fill="#a7f3d0" font-size="9" text-anchor="middle">Mycorrhizal</text>
+      <text x="180" y="100" fill="#a7f3d0" font-size="9" text-anchor="middle">root tips</text>
+    </svg>
+  </div>
+
+  <h3 style="color:#9ca3af;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;margin:24px 0 12px">Five Questions — Tap to Begin</h3>
+  <div class="q-grid" id="q-grid"></div>
+</div><!-- end home -->
+
+<!-- QUIZ SCREENS -->
+<div class="quiz-screen" id="q1">
+  <div class="q-header">
+    <button onclick="showHome()">← Back</button>
+    <span class="q-num-badge">Q1 of 5</span>
+  </div>
+  <div class="question-card">
+    <h2>What percentage of a mature tree's absorptive fine roots are typically found in the top 18–24 inches of soil?</h2>
+    <div class="options">
+      <div class="opt" onclick="answer(this,'wrong','q1')"><span class="letter">A</span>Approximately 50%, with the remaining roots distributed evenly to depths of 6 feet</div>
+      <div class="opt" onclick="answer(this,'wrong','q1')"><span class="letter">B</span>Approximately 70%, concentrated around the structural root flare</div>
+      <div class="opt" onclick="answer(this,'correct','q1')"><span class="letter">C</span>Approximately 90%, because that zone has the highest oxygen, moisture, and nutrient availability</div>
+      <div class="opt" onclick="answer(this,'wrong','q1')"><span class="letter">D</span>Approximately 40%, with most roots following water tables to deeper horizons</div>
+    </div>
+  </div>
+  <div class="lesson" id="lesson-q1">
+    <div class="lesson-body">
+      <h3>Root Depth — Why Trees Are Shallow-Rooted</h3>
+      <p>Roughly <strong>90% of a tree's absorptive root biomass sits in the top 18–24 inches of soil</strong>. This surprises most people who picture deep taproots anchoring mature trees. The reality: taproots are a seedling structure. In most mature species, the taproot stops growing or becomes a structural anchor, and lateral roots dominate.</p>
+      <p>Why shallow? Three reasons:</p>
+      <ul>
+        <li><strong>Oxygen:</strong> Root respiration requires O₂. Soil gas exchange drops sharply below 12–24 inches, especially in compacted or saturated soils. Fine roots need aerated soil to function.</li>
+        <li><strong>Moisture cycling:</strong> Rain, irrigation, and dew infiltrate from the top. Fine roots position themselves in the zone where water moves.</li>
+        <li><strong>Nutrient stratification:</strong> Organic matter breakdown produces cations (Ca²⁺, Mg²⁺, K⁺) that accumulate in the A horizon. Roots follow nutrients.</li>
+      </ul>
+      <p>The <strong>Critical Root Zone (CRZ)</strong> per ISA Best Management Practices is calculated at 1 foot of radius per inch of trunk DBH, with a minimum 5-foot radius. This is the no-damage perimeter for construction and grade changes — even shallow compaction or fill soil in this zone impairs gas exchange and kills fine roots.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>In the Okanagan, our top 6 inches of soil often turn to concrete by late July — fractured silt loam with low organic content. When you drive a root zone and see compaction from equipment, the damage isn't just surface aesthetics. You've crushed gas exchange channels for roots that are trying to stay alive in the top 24 inches. Boulevard trees in West Kelowna suffer this constantly. Always flag the CRZ before any equipment enters the site — the tree's entire fine root network is right there under your feet.</p>
+      </div>
+      <button class="next-btn" onclick="nextQ('q1','q2')">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-screen" id="q2">
+  <div class="q-header">
+    <button onclick="showHome()">← Back</button>
+    <span class="q-num-badge">Q2 of 5</span>
+  </div>
+  <div class="question-card">
+    <h2>Which mycorrhizal association type forms a sheath (mantle) around root tips and is most common in conifers like ponderosa pine and interior Douglas-fir?</h2>
+    <div class="options">
+      <div class="opt" onclick="answer(this,'wrong','q2')"><span class="letter">A</span>Arbuscular mycorrhizae (VAM) — hyphae penetrate root cells and form branching arbuscules inside</div>
+      <div class="opt" onclick="answer(this,'correct','q2')"><span class="letter">B</span>Ectomycorrhizae — hyphae form a hyphal mantle around the root tip and a Hartig net between cortical cells</div>
+      <div class="opt" onclick="answer(this,'wrong','q2')"><span class="letter">C</span>Ericoid mycorrhizae — specialized for heather family plants in highly acidic soils</div>
+      <div class="opt" onclick="answer(this,'wrong','q2')"><span class="letter">D</span>Orchid mycorrhizae — obligate for seed germination in Orchidaceae only</div>
+    </div>
+  </div>
+  <div class="lesson" id="lesson-q2">
+    <div class="lesson-body">
+      <h3>Ectomycorrhizae vs. Arbuscular Mycorrhizae — The Two You Need to Know</h3>
+      <p><strong>Ectomycorrhizae (ECM)</strong> are the dominant mycorrhizal type for most conifers and some hardwoods (oaks, birches, poplars). The fungal hyphae form a dense mantle (sheath) around the root tip, then grow between cortical cells to form the <strong>Hartig net</strong> — the interface where carbon and mineral exchange actually occurs. ECM do NOT penetrate root cells.</p>
+      <p><strong>Arbuscular mycorrhizae (AM)</strong>, formerly called vesicular-arbuscular mycorrhizae (VAM), are the opposite — hyphae penetrate cortical cell walls and form branching arbuscules inside the cells. This is the most widespread type globally, colonizing roughly 80% of land plant species including most ornamental broadleaves, maples, fruit trees, and grasses.</p>
+      <p><strong>Why it matters for PHC:</strong></p>
+      <ul>
+        <li>ECM fungi extend effective root surface area up to 1,000× — critical for phosphorus uptake in low-P Okanagan soils</li>
+        <li>ECM associations help trees access water in dry soils by extending hyphae into pore spaces roots cannot enter</li>
+        <li>Fertilizer applications (especially high N) can suppress mycorrhizal colonization — high nutrient availability reduces the tree's incentive to feed its fungal partners</li>
+        <li>Fumigants, fungicides, and soil disturbance destroy mycorrhizal networks — transplanted trees without active inoculants struggle</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>When we plant a new ponderosa pine or Douglas-fir on site, that tree is counting on finding ECM fungi in the soil. On disturbed urban soils — new subdivisions, post-construction sites — those fungal communities are gone. Applying a mycorrhizal inoculant at planting is not a premium upsell. It's basic PHC. Look for an inoculant that specifies ectomycorrhizal species (Pisolithus, Rhizopogon, Suillus) for conifers — the AM blends common at garden centres won't help your pines.</p>
+      </div>
+      <button class="next-btn" onclick="nextQ('q2','q3')">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-screen" id="q3">
+  <div class="q-header">
+    <button onclick="showHome()">← Back</button>
+    <span class="q-num-badge">Q3 of 5</span>
+  </div>
+  <div class="question-card">
+    <h2>A tree's root system extends to approximately what horizontal distance relative to the crown spread?</h2>
+    <div class="options">
+      <div class="opt" onclick="answer(this,'wrong','q3')"><span class="letter">A</span>Roots stay within the dripline — they match the crown radius 1:1</div>
+      <div class="opt" onclick="answer(this,'wrong','q3')"><span class="letter">B</span>Roots extend about 1.5× the crown radius in fertile soils, less in compacted soils</div>
+      <div class="opt" onclick="answer(this,'correct','q3')"><span class="letter">C</span>Roots typically extend 2–3× the dripline radius, often much farther in forest settings</div>
+      <div class="opt" onclick="answer(this,'wrong','q3')"><span class="letter">D</span>Roots extend exactly 1 foot per inch of DBH, matching the CRZ formula</div>
+    </div>
+  </div>
+  <div class="lesson" id="lesson-q3">
+    <div class="lesson-body">
+      <h3>Roots Go Where the Crown Says They Don't</h3>
+      <p>The most persistent myth in arboriculture: "roots stay under the canopy." They don't. Research cited in the ISA Certification Study Guide consistently shows mature trees extending lateral roots <strong>2–3× the crown radius</strong> under good conditions. In open sandy or loam soils, some species extend even farther.</p>
+      <p>Root spread is driven by resource seeking, not anatomy. Roots follow:</p>
+      <ul>
+        <li><strong>Water:</strong> Irrigation lines, downspout discharge, creek margins, and lawn zones all attract root growth from far outside the canopy</li>
+        <li><strong>Oxygen:</strong> Roots track aerobic soil corridors — often underneath sidewalks and pavement where traffic hasn't compacted the subgrade</li>
+        <li><strong>Low-resistance pathways:</strong> Utility trenches, abandoned pipes, and construction fill channels become root highways</li>
+      </ul>
+      <p>This is why construction damage 30 meters from a tree canopy still kills the tree. The roots are there — they just aren't visible from the surface. The <strong>CRZ (1 ft/inch DBH)</strong> is a minimum protection zone for worksites, not a description of actual root extent.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>On client consultations where boulevard trees are failing near a driveway extension or new curb, the conversation often goes: "But we didn't touch the tree." Check whether any work happened within 10 meters of the trunk — trenching, grade change, compaction from equipment staging. In Kelowna's dry summer conditions, those trees are already running on thin margins. Cutting off roots 20 feet from the trunk in a drought year can be the last straw. Document what you see and connect the timeline for the client.</p>
+      </div>
+      <button class="next-btn" onclick="nextQ('q3','q4')">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-screen" id="q4">
+  <div class="q-header">
+    <button onclick="showHome()">← Back</button>
+    <span class="q-num-badge">Q4 of 5</span>
+  </div>
+  <div class="question-card">
+    <h2>Which of the following is NOT a primary function of a tree's root system?</h2>
+    <div class="options">
+      <div class="opt" onclick="answer(this,'wrong','q4')"><span class="letter">A</span>Water and mineral nutrient absorption</div>
+      <div class="opt" onclick="answer(this,'wrong','q4')"><span class="letter">B</span>Structural anchorage and mechanical support</div>
+      <div class="opt" onclick="answer(this,'correct','q4')"><span class="letter">C</span>Photosynthesis and carbon fixation</div>
+      <div class="opt" onclick="answer(this,'wrong','q4')"><span class="letter">D</span>Synthesis and storage of carbohydrates, amino acids, and hormones</div>
+    </div>
+  </div>
+  <div class="lesson" id="lesson-q4">
+    <div class="lesson-body">
+      <h3>What Roots Actually Do — Four Core Functions</h3>
+      <p>Photosynthesis requires chlorophyll and light — roots have neither. They are <strong>net consumers</strong> of the carbohydrates fixed by leaves, spending roughly 20–50% of photosynthate on root respiration, growth, and exudation. The four legitimate root functions are:</p>
+      <ul>
+        <li><strong>Absorption:</strong> Water and dissolved mineral ions enter through fine root tips and mycorrhizal hyphae. Root hairs (unicellular extensions of epidermal cells) dramatically increase surface area in non-mycorrhizal roots.</li>
+        <li><strong>Anchorage:</strong> Structural roots — large, woody, lignified — anchor the tree against wind loads. Structural root failures are the primary cause of whole-tree windthrow. Root rot, girdling roots, and grade changes that kill structural roots all increase windthrow risk.</li>
+        <li><strong>Storage:</strong> Roots store non-structural carbohydrates (NSC) — primarily starch — that fuel spring flush before the canopy is producing. A tree with depleted NSC reserves (from repeated defoliation, drought, or over-pruning) cannot flush properly and is at risk.</li>
+        <li><strong>Synthesis:</strong> Roots produce cytokinins (growth-promoting hormones) and certain amino acids. Root health directly affects above-ground vigour. Drought-stressed roots produce less cytokinin → reduced shoot growth → visible decline.</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The storage function is the one that bites us in August. A tree that defoliated in June from western spruce budworm, then baked in a July drought, has burned through most of its NSC reserves. When you're assessing it in late August and the crown looks "okay" — remember what it cost to push a second flush. That tree may look fine now and fail to survive winter or flush next spring. This is why PHC timing matters: biostimulant applications that support root health in spring, before stress events, are far more effective than trying to rescue a depleted tree in fall.</p>
+      </div>
+      <button class="next-btn" onclick="nextQ('q4','q5')">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-screen" id="q5">
+  <div class="q-header">
+    <button onclick="showHome()">← Back</button>
+    <span class="q-num-badge">Q5 of 5</span>
+  </div>
+  <div class="question-card">
+    <h2>A large Norway maple on a client's property is showing dieback in the upper crown and thin foliage, despite adequate irrigation. The soil appears compacted. Which root-related diagnosis is most consistent with these symptoms?</h2>
+    <div class="options">
+      <div class="opt" onclick="answer(this,'wrong','q5')"><span class="letter">A</span>Girdling root — a circling root compressing the trunk and restricting vascular flow at the root collar</div>
+      <div class="opt" onclick="answer(this,'wrong','q5')"><span class="letter">B</span>Root decay from Armillaria — rhizomorphs would be visible under bark at the root collar</div>
+      <div class="opt" onclick="answer(this,'correct','q5')"><span class="letter">C</span>Soil compaction causing anaerobic conditions in the root zone, suppressing fine root function and mycorrhizal activity</div>
+      <div class="opt" onclick="answer(this,'wrong','q5')"><span class="letter">D</span>Drought-induced xylem embolism — the tree has cavitated and cannot move water despite surface moisture</div>
+    </div>
+  </div>
+  <div class="lesson" id="lesson-q5">
+    <div class="lesson-body">
+      <h3>Compaction — The Invisible Root Killer</h3>
+      <p>All four answers describe real conditions, but the scenario — compacted soil + adequate irrigation + crown dieback — most classically points to <strong>soil compaction as the primary driver</strong>. Here's why:</p>
+      <p>Compaction increases soil bulk density, crushing macropores and eliminating the gas exchange that fine roots and mycorrhizal fungi depend on. Oxygen drops; CO₂ and anaerobic metabolites (ethanol, methane) accumulate. Fine roots die. Mycorrhizal colonization collapses. The tree loses its entire absorption surface even though water is present in the soil — it simply cannot uptake it or nutrients efficiently.</p>
+      <p><strong>The paradox:</strong> Adequate irrigation doesn't fix compaction. Water sitting in compacted soil may actually worsen anaerobic conditions. The tree is effectively drowning while technically being "watered."</p>
+      <p><strong>Field diagnosis progression:</strong></p>
+      <ul>
+        <li>Confirm compaction: penetrometer reading &gt;300 psi in root zone = significant restriction</li>
+        <li>Excavate a small root zone sample — look for dark, mushy fine roots (anaerobic decay) vs. white healthy tips</li>
+        <li>Check for girdling root at root collar — always worth clearing any excess mulch and exposing the root flare</li>
+        <li>PHC prescription: vertical mulching, radial trenching filled with compost, air spade decompaction, and mycorrhizal inoculant</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Norway maples are everywhere on Kelowna boulevards, and compaction dieback is probably the most common thing we see on them. The diagnosis is almost never "needs more water." It's soil structure. When you open up the root zone with an air spade on one of these trees, you'll often find roots growing horizontally 2–3 inches below the surface because that's literally the only aerated zone. Everything below is a brick. Organic matter incorporation and decompaction are the treatment — not fertilizer, not irrigation adjustment. Fix the root environment first.</p>
+      </div>
+      <button class="next-btn" onclick="showHome()">← Back to Lessons</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- container -->
+
+<footer>
+  📚 ISA Exam Domains: <strong>Tree Biology (11%)</strong> · <strong>Soil Management (11%)</strong><br>
+  Sources: ISA Arborists' Certification Study Guide 4th Ed. · ISA BMP: Plant Health Care · Dr. Elaine Ingham (Soil Food Web) · BC WorkSafeBC OHS Regulation
+</footer>
+
+<script>
+const completed = new Set();
+
+function buildGrid(){
+  const grid = document.getElementById('q-grid');
+  const labels = ['Root Depth','Mycorrhizae Types','Root Spread','Root Functions','Compaction Diagnosis'];
+  grid.innerHTML = labels.map((l,i)=>`
+    <button class="q-btn${completed.has('q'+(i+1))?' done':''}" id="btn-q${i+1}" onclick="showQ('q${i+1}')">
+      <span class="q-num">${i+1}</span>
+      <span class="q-label">${l}</span>
+    </button>
+  `).join('');
+}
+
+function showQ(id){
+  document.getElementById('home').style.display='none';
+  document.querySelectorAll('.quiz-screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showHome(){
+  document.querySelectorAll('.quiz-screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('home').style.display='block';
+  buildGrid();
+}
+
+function answer(el, result, qid){
+  const opts = el.closest('.options').querySelectorAll('.opt');
+  opts.forEach(o=>{o.style.pointerEvents='none'});
+  el.classList.add(result);
+  if(result==='wrong'){
+    // highlight correct
+    opts.forEach(o=>{if(o.querySelector('.letter').textContent===getCorrectLetter(qid))o.classList.add('correct')});
+  }
+  completed.add(qid);
+  const lesson = document.getElementById('lesson-'+qid);
+  if(lesson) lesson.classList.add('visible');
+}
+
+function getCorrectLetter(qid){
+  const map={q1:'C',q2:'B',q3:'C',q4:'C',q5:'C'};
+  return map[qid]||'A';
+}
+
+function nextQ(current, next){
+  showQ(next);
+}
+
+buildGrid();
+</script>
+</body>
+</html>
