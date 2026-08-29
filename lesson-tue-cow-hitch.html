@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 14 · Equipment &amp; Knots — Cow Hitch &amp; Girth Hitch</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1f24;color:#d4d8dc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+  .header{background:#111518;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #e07b39}
+  .header-left{color:#e07b39;font-weight:700;font-size:1rem;letter-spacing:.04em}
+  .header-right{color:#7a7870;font-size:.85rem;font-weight:600;letter-spacing:.08em}
+  .container{max-width:860px;margin:0 auto;padding:28px 20px}
+  .slack-note{background:#1c2028;border-left:4px solid #e07b39;border-radius:0 8px 8px 0;padding:16px 18px;margin-bottom:28px}
+  .slack-note .sn-label{color:#e07b39;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .slack-note p{color:#b0b8c0;font-size:.9rem;line-height:1.55}
+  .tabs{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+  .tab{background:#242b33;border:1.5px solid #2e3740;border-radius:6px;padding:8px 14px;cursor:pointer;color:#9aa0a8;font-size:.85rem;font-weight:600;transition:all .15s}
+  .tab.active{background:#2a1f14;border-color:#e07b39;color:#e07b39}
+  .tab:hover:not(.active){border-color:#e07b3966;color:#c8cdd2}
+  .section{display:none}.section.active{display:block}
+  .card{background:#242b33;border-radius:10px;padding:20px;margin-bottom:18px}
+  h2{color:#e8e4e0;font-size:1.25rem;margin-bottom:16px}
+  h3{color:#e07b39;font-size:.95rem;text-transform:uppercase;letter-spacing:.07em;margin:18px 0 10px}
+  p{color:#c8cdd2;font-size:.93rem;line-height:1.6;margin-bottom:12px}
+  ul,ol{color:#c8cdd2;font-size:.93rem;line-height:1.6;padding-left:20px;margin-bottom:12px}
+  li{margin-bottom:5px}
+  .field-note{background:#1c1610;border-left:3px solid #f0a030;border-radius:0 6px 6px 0;padding:14px;margin-top:16px}
+  .fn-label{color:#f0a030;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .warn-box{background:#1f1410;border:1px solid #e07b3966;border-radius:8px;padding:16px;margin:12px 0}
+  .warn-label{color:#e07b39;font-size:.8rem;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+  .diagram-box{background:#1a2028;border-radius:10px;padding:20px;text-align:center;margin:16px 0}
+  .diagram-caption{color:#6a8090;font-size:.8rem;margin-top:8px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.88rem}
+  th{background:#1a2028;color:#e07b39;font-weight:700;padding:9px 10px;text-align:left;border-bottom:2px solid #2e3740;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+  td{padding:8px 10px;border-bottom:1px solid #2e3740;color:#c8cdd2;vertical-align:top}
+  .step-list{counter-reset:steps;list-style:none;padding:0}
+  .step-list li{counter-increment:steps;display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+  .step-list li::before{content:counter(steps);background:#e07b39;color:#fff;border-radius:50%;width:26px;height:26px;min-width:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+  .footer-tag{background:#111518;border-top:1px solid #2e3740;padding:12px 24px;font-size:.78rem;color:#554433;text-align:center;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">🪚 MICROBE TREE TRAINING</div>
+  <div class="header-right">WEEK 14 · EQUIPMENT &amp; KNOTS</div>
+</div>
+<div class="container">
+  <div class="slack-note">
+    <div class="sn-label">📗 Slack Intro — #microbe-lessons</div>
+    <p><strong>EQUIPMENT &amp; KNOTS — Week 14, Cow Hitch &amp; Girth Hitch</strong><br><br>
+    The cow hitch is the simplest hitch in the arborist toolkit — and the most frequently misused. It's everywhere: friction savers, eye slings, lanyard terminations, hardware attachment. Get it right and it's solid. Get it wrong (or use it where you shouldn't) and it can roll off a smooth anchor or create an eccentric load that surprises you at height. This lesson covers the geometry, the grip conditions, and when to reach for something else instead.<br><br>
+    → Work through it. Field note at the end of each section.</p>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('overview')">Overview</button>
+    <button class="tab" onclick="showTab('tying')">Tying</button>
+    <button class="tab" onclick="showTab('uses')">Arborist Uses</button>
+    <button class="tab" onclick="showTab('variations')">Girth Hitch</button>
+    <button class="tab" onclick="showTab('nogo')">When NOT To</button>
+  </div>
+
+  <div class="section active" id="tab-overview">
+    <div class="card">
+      <h2>Cow Hitch (Lark's Head)</h2>
+      <p>The cow hitch — also called the <strong>lark's head</strong> or <strong>ring hitch</strong> — is a two-loop hitch formed by passing a bight through a ring or around an anchor, then passing the two ends (or working loops) back through the bight. It grips in two opposite directions simultaneously, making it a symmetrical, bidirectional anchor hitch.</p>
+      <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Type</td><td>Anchor hitch (not a friction hitch or bend)</td></tr>
+        <tr><td>Load direction</td><td>Bidirectional — grips from both sides of the bight equally</td></tr>
+        <tr><td>Slip tendency</td><td>Can roll or slip on smooth, round anchors under unequal loading</td></tr>
+        <tr><td>Primary arborist use</td><td>Attaching eye slings to rings; lanyard-to-hardware; friction savers to limbs</td></tr>
+        <tr><td>Also called</td><td>Lark's head, ring hitch, bale sling hitch</td></tr>
+      </table>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note</div>
+        <p>You'll tie a cow hitch every day without thinking about it — every time you attach a friction saver to a limb, girth-hitch a lanyard through a ring, or mount a rigging sling through a carabiner. Understanding its geometry tells you when it's the right choice and when to think twice.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="tab-tying">
+    <div class="card">
+      <h2>Tying the Cow Hitch</h2>
+      <div class="diagram-box">
+        <svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" width="300">
+          <!-- Anchor ring -->
+          <ellipse cx="170" cy="60" rx="40" ry="16" fill="none" stroke="#6a8090" stroke-width="5"/>
+          <!-- Loop A (left) going over ring -->
+          <path d="M130 60 Q100 80 100 130 Q100 170 140 175" stroke="#e07b39" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- Loop B (right) going over ring -->
+          <path d="M210 60 Q240 80 240 130 Q240 170 200 175" stroke="#e07b39" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- Bight connecting below -->
+          <path d="M140 175 Q170 200 200 175" stroke="#e07b39" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- Load direction arrows -->
+          <line x1="170" y1="210" x2="170" y2="250" stroke="#aaa" stroke-width="2" marker-end="url(#arrow)"/>
+          <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4 z" fill="#aaa"/></marker></defs>
+          <!-- Labels -->
+          <text x="56" y="130" fill="#e07b3999" font-size="11" font-family="sans-serif">loop A</text>
+          <text x="244" y="130" fill="#e07b3999" font-size="11" font-family="sans-serif">loop B</text>
+          <text x="130" y="198" fill="#e07b39" font-size="11" font-family="sans-serif">bight</text>
+          <text x="148" y="262" fill="#aaa" font-size="11" font-family="sans-serif">load</text>
+          <text x="100" y="40" fill="#6a8090" font-size="11" font-family="sans-serif">anchor ring / limb</text>
+        </svg>
+        <div class="diagram-caption">Cow hitch through a ring — both loops over the anchor, load pulls bight</div>
+      </div>
+
+      <h3>Method 1 — Through a Ring (Closed Anchor)</h3>
+      <ol class="step-list">
+        <li><div>Pass the bight of your sling or cord <strong>through</strong> the ring from front to back.</div></li>
+        <li><div>Open the bight and pass it back over the ring so both legs of the bight straddle the ring's circumference.</div></li>
+        <li><div>Pull the bight down — the two loops tighten onto the ring from both sides.</div></li>
+        <li><div>Dress neatly — both loops should lie flat and parallel on the ring; no twisting.</div></li>
+      </ol>
+
+      <h3>Method 2 — Around a Limb or Post (Open Anchor)</h3>
+      <ol class="step-list">
+        <li><div>Cross the two ends (or loops) of your sling behind the anchor point to form an X.</div></li>
+        <li><div>Bring each end around in front of the anchor, passing them through the opposite loop.</div></li>
+        <li><div>Load the bight — the crossing point tightens onto the anchor as tension is applied.</div></li>
+      </ol>
+
+      <div class="warn-box">
+        <div class="warn-label">⚠ Critical Dressing Point</div>
+        <p>Both loops must contact the anchor symmetrically. A twisted or unbalanced cow hitch concentrates load on one side — it can roll off a smooth anchor or cause the attachment point to shift. Dress before loading. Inspect before climbing.</p>
+      </div>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note</div>
+        <p>The friction saver attachment at the top of your climbing system is typically a cow hitch or a girth hitch around the limb. Before every climb, check that it's dressed correctly — particularly after repositioning. A misaligned cow hitch on a friction saver can creep toward the end of the limb under repeated loading, especially on smooth-barked species like beech or younger maple. This is not hypothetical; it's a documented incident cause.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="tab-uses">
+    <div class="card">
+      <h2>Arborist Uses</h2>
+      <table>
+        <tr><th>Application</th><th>How</th><th>Notes</th></tr>
+        <tr><td><strong>Friction saver attachment</strong></td><td>Cow hitch around a crotch or limb; eyes load the climbing system</td><td>Most common daily use; bark-friendly when using a proper friction saver (rope, webbing, or tube)</td></tr>
+        <tr><td><strong>Eye sling to hardware</strong></td><td>Eye of sling girth-hitched through a carabiner gate or rigging ring</td><td>Reduces WLL of sling by ~50% — account for this in rigging calculations</td></tr>
+        <tr><td><strong>Lanyard termination</strong></td><td>Cow hitch connects lanyard eye to saddle D-ring or carabiner</td><td>Verify carabiner is rated for this hitch loading direction</td></tr>
+        <tr><td><strong>Throw line anchor</strong></td><td>Attaching throw bag to throw line loop</td><td>Low consequence application; used for convenience</td></tr>
+        <tr><td><strong>Redirect attachment</strong></td><td>Sling looped around a stem for a redirect point</td><td>Use tree-friendly materials; assess bark damage potential</td></tr>
+      </table>
+      <h3>Working Load Limit Warning — Girth-Hitching</h3>
+      <p>When you girth-hitch (cow hitch) an eye sling through a ring or carabiner, the sling's rated WLL is <strong>significantly reduced</strong>. The sharp bend radius at the hitch concentrates stress on the sling material. ISA BMP for Rigging notes that choker-hitch (similar geometry) can reduce WLL by 50–70%. Always consult the sling manufacturer's data for specific reduction factors — do not assume the rated WLL applies to choked configurations.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Rigging Math</div>
+        <p>If you have a 2:1 rigging system and your eye sling is girth-hitched to the rigging ring, and the sling's straight-pull WLL is 6,000 lbs, your actual safe working capacity at that attachment point might be closer to 3,000 lbs. Then factor in dynamic loads from cutting and you have a narrow margin. This is why rigging assessments — not just 'it looks fine' — are required before large piece removals per ANSI Z133 §9.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="tab-variations">
+    <div class="card">
+      <h2>Girth Hitch — The Cow Hitch's Close Relative</h2>
+      <p>The <strong>girth hitch</strong> (also called a larkshead when formed from a loop) is functionally nearly identical to the cow hitch in many arborist applications — the terms are often used interchangeably in the field. The distinction:</p>
+      <table>
+        <tr><th>Name</th><th>How Formed</th><th>Result</th></tr>
+        <tr><td><strong>Cow Hitch</strong></td><td>Bight passed through anchor, opened over anchor</td><td>Two separate strands straddling the anchor</td></div></tr>
+        <tr><td><strong>Girth Hitch</strong></td><td>One loop of a closed sling passed through itself around an anchor</td><td>Looks same as cow hitch; loop tightens onto anchor</td></tr>
+        <tr><td><strong>Lark's Head</strong></td><td>Same as girth hitch; traditional name</td><td>Same</td></tr>
+      </table>
+      <p>For practical purposes: if you take a sewn eye sling and pass one eye through the other around a post, you've tied a girth hitch. If you take a bight of rope through a ring and open it over the ring, you've tied a cow hitch. The loading geometry and cautions are the same.</p>
+      <h3>Completing the Knot Rotation</h3>
+      <p>This lesson completes the first full cycle of the ISA/arborist core knot rotation — all 12 knots from the SKILL.md rotation have now been covered:</p>
+      <p style="color:#9aa0a8;font-size:.88rem;line-height:1.6">Bowline · Clove Hitch · Timber Hitch · Blake's Hitch · Prusik · VT Hitch · Figure-8 · Alpine Butterfly · Sheet Bend · Trucker's Hitch · Munter Hitch · <strong style="color:#e07b39">Cow Hitch ✓</strong></p>
+      <p>The rotation can now deepen — revisiting earlier hitches with more advanced applications, load calculations, and failure modes, or expanding into rigging hardware mechanics.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — ISA Exam</div>
+        <p>The ISA CA exam tests knot recognition and application — but not just name recall. Know which hitch is appropriate for: ascending (Prusik, Klemheist), descent control (Blake's, VT), fixed anchor (bowline, figure-8 on a bight), load release (munter), hardware attachment (cow hitch/girth hitch). The cow hitch specifically may appear as: "Which hitch is used to attach an eye sling to a rigging ring?" Correct answer: cow hitch / girth hitch.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="tab-nogo">
+    <div class="card">
+      <h2>When NOT to Use the Cow Hitch</h2>
+      <div class="warn-box">
+        <div class="warn-label">⛔Avoid In These Situations</div>
+        <ul>
+          <li><strong>Smooth, round anchors with no lip or cleat:</strong> A cow hitch can roll and slip along a smooth rope or pole under unequal loading. Use a half hitch or additional securing wrap if the anchor is smooth and cylindrical.</li>
+          <li><strong>Unbalanced loading:</strong> If one leg of the cow hitch will be loaded significantly more than the other, the hitch is asymmetrically stressed and may roll. In this case, a bowline or figure-8 on a bight is more appropriate.</li>
+          <li><strong>As a primary life-safety connection without carabiner:</strong> A cow hitch alone around a limb (without carabiner) is not a rated attachment — use with appropriate hardware.</li>
+          <li><strong>On sharp-edged anchors:</strong> The bend radius at the hitch concentrates stress — sharp metal edges or bark corners can damage the sling material. Use edge protection or a different attachment method.</li>
+          <li><strong>When WLL reduction cannot be accommodated:</strong> If your rigging math requires the sling's full straight-pull WLL, do not girth-hitch — use a shackle or proper rigging ring instead.</li>
+        </ul>
+      </div>
+      <p>Per <strong>ANSI Z133 §9.2</strong>: "All rigging equipment shall be inspected before each use and shall not be used if damaged or if there is any doubt about its condition." A cow hitch that has slipped or abraded during a job requires inspection before further use — inspect the sling at the hitch point for heat damage, abrasion, or glazing.</p>
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note</div>
+        <p>In the Okanagan summer, heat from sun-baked slings combined with repeated cow hitch loading can degrade synthetic sling material faster than you'd expect. Polyester degrades more slowly in UV than nylon, but both lose strength with heat and mechanical abrasion. Run your thumb along the sling where it contacts the hitch point after a hot rigging day — rough, stiff, or glazed texture means retire it. A sling that costs $30 is not worth the risk of an attachment failure 20 metres up.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="footer-tag">
+  📚 ISA Exam Domain: Safe Work Practices (28%) &nbsp;·&nbsp; Sources: ANSI Z133 §9 · ISA BMP for Rigging (2nd Ed.) · BC WorkSafeBC OHS Regulation Part 13
+</div>
+<script>
+function showTab(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');event.target.classList.add('active');}
+</script>
+</body>
+</html>
