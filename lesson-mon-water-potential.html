@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 14 · Tree Biology — Water Potential &amp; Osmosis</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1f24;color:#d4d8dc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+  .header{background:#111518;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #4a9e5c}
+  .header-left{color:#4a9e5c;font-weight:700;font-size:1rem;letter-spacing:.04em}
+  .header-right{color:#7a8a7a;font-size:.85rem;font-weight:600;letter-spacing:.08em}
+  .container{max-width:860px;margin:0 auto;padding:28px 20px}
+  h2{color:#e8ede8;font-size:1.35rem;margin-bottom:16px}
+  .ref-card{background:#1e2d22;border:1px solid #4a9e5c55;border-radius:10px;padding:22px;margin-bottom:28px}
+  .ref-card h3{color:#4a9e5c;font-size:1rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+  .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ref-item{background:#16211a;border-radius:6px;padding:10px 12px}
+  .ref-item .label{color:#7ab87a;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .ref-item .val{color:#d4d8dc;font-size:.9rem;line-height:1.4}
+  .btn-start{display:block;width:100%;background:#4a9e5c;color:#fff;border:none;padding:14px 0;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:20px;letter-spacing:.04em;transition:background .2s}
+  .btn-start:hover{background:#3d8a4e}
+  .quiz-screen{display:none}
+  .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .q-progress,.q-score{font-size:.85rem}
+  .q-progress{color:#7a8a7a}
+  .q-score{color:#4a9e5c;font-weight:700}
+  .q-box{background:#242b33;border-radius:10px;padding:24px;margin-bottom:16px}
+  .q-num{color:#4a9e5c;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .q-text{color:#e8ede8;font-size:1.05rem;line-height:1.55;margin-bottom:20px}
+  .options{display:flex;flex-direction:column;gap:10px}
+  .opt{background:#1a2028;border:1.5px solid #2e3740;border-radius:8px;padding:12px 16px;cursor:pointer;text-align:left;color:#c8cdd2;font-size:.95rem;transition:all .15s;width:100%}
+  .opt:hover:not(:disabled){background:#1f2835;border-color:#4a9e5c88}
+  .opt.correct{background:#1a3022;border-color:#4a9e5c;color:#7de89a}
+  .opt.wrong{background:#2d1a1a;border-color:#9e4a4a;color:#e87d7d}
+  .opt.reveal-correct{background:#1a3022;border-color:#4a9e5c55;color:#7de89a88}
+  .opt:disabled{cursor:default}
+  .lesson-reveal{background:#1c2830;border-left:3px solid #4a9e5c;border-radius:0 8px 8px 0;padding:20px;margin-top:16px;display:none;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .lesson-reveal h4{color:#4a9e5c;font-size:.9rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+  .lesson-reveal p,.lesson-reveal li{color:#c8cdd2;font-size:.93rem;line-height:1.6}
+  .lesson-reveal p{margin-bottom:10px}
+  .lesson-reveal ul{padding-left:18px;margin-bottom:10px}
+  .lesson-reveal li{margin-bottom:5px}
+  .field-note{background:#0f1f17;border-left:3px solid #f0a030;border-radius:0 6px 6px 0;padding:14px;margin-top:14px}
+  .fn-label{color:#f0a030;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .field-note p{color:#c8cdd2;font-size:.9rem;line-height:1.55}
+  .next-btn{background:#4a9e5c;color:#fff;border:none;padding:11px 28px;border-radius:6px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:16px;transition:background .2s}
+  .next-btn:hover{background:#3d8a4e}
+  .complete-screen{display:none;text-align:center;padding:40px 20px}
+  .score-circle{width:120px;height:120px;border-radius:50%;background:#1e2d22;border:3px solid #4a9e5c;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px}
+  .score-num{color:#4a9e5c;font-size:2rem;font-weight:700}
+  .score-label{color:#7a9a7a;font-size:.8rem}
+  .complete-screen h3{color:#e8ede8;font-size:1.3rem;margin-bottom:12px}
+  .complete-screen p{color:#9aaa9a;font-size:.95rem;margin-bottom:20px;line-height:1.5}
+  .restart-btn{background:#2e3740;color:#c8cdd2;border:none;padding:11px 24px;border-radius:6px;cursor:pointer;font-size:.9rem}
+  .restart-btn:hover{background:#38424c}
+  .footer-tag{background:#111518;border-top:1px solid #2e3740;padding:12px 24px;font-size:.78rem;color:#556655;text-align:center;margin-top:40px}
+  .eq-box{background:#14211a;border:1px solid #4a9e5c44;border-radius:8px;padding:14px;margin:12px 0;text-align:center;font-family:monospace;font-size:.95rem;color:#a0d4b0;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">🌿 MICROBE TREE TRAINING</div>
+  <div class="header-right">WEEK 14 · TREE BIOLOGY</div>
+</div>
+<div class="container">
+  <div id="home-screen">
+    <h2>Water Potential, Osmosis &amp; Drought Stress</h2>
+    <div class="ref-card">
+      <h3>📋 Water Potential at a Glance</h3>
+      <div class="eq-box">Ψ (water potential) = Ψs (solute) + Ψp (pressure)</div>
+      <div class="ref-grid">
+        <div class="ref-item"><div class="label">Water potential (Ψ)</div><div class="val">Measure of free energy of water; always flows high → low (0 to negative)</div></div>
+        <div class="ref-item"><div class="label">Pure water reference</div><div class="val">Ψ = 0 MPa (megapascals). All plant cells have negative Ψ</div></div>
+        <div class="ref-item"><div class="label">Solute potential (Ψs)</div><div class="val">Always negative; more solutes = more negative Ψs = more water uptake</div></div>
+        <div class="ref-item"><div class="label">Pressure potential (Ψp)</div><div class="val">Turgor pressure in living cells; positive in turgid cells, zero at wilting</div></div>
+        <div class="ref-item"><div class="label">Osmosis</div><div class="val">Water moves across semipermeable membrane from high Ψ to low Ψ</div></div>
+        <div class="ref-item"><div class="label">Cohesion-tension</div><div class="val">Transpiration creates negative Ψ in leaves → water pulled up from roots</div></div>
+        <div class="ref-item"><div class="label">Drought effect</div><div class="val">Soil Ψ becomes more negative → reduces gradient → water uptake slows</div></div>
+        <div class="ref-item"><div class="label">Field relevance</div><div class="val">Explains wilting, embolism, stomatal closure, and irrigation timing</div></div>
+      </div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Start Quiz — 5 Questions</button>
+  </div>
+  <div class="quiz-screen" id="quiz-screen">
+    <div class="q-header">
+      <div class="q-progress" id="q-progress">Question 1 of 5</div>
+      <div class="q-score" id="q-score">Score: 0</div>
+    </div>
+    <div id="q-container"></div>
+  </div>
+  <div class="complete-screen" id="complete-screen">
+    <div class="score-circle"><div class="score-num" id="final-score-num">0/5</div><div class="score-label">correct</div></div>
+    <h3 id="complete-msg">Quiz Complete</h3>
+    <p id="complete-sub"></p>
+    <button class="restart-btn" onclick="restartQuiz()">Review Again</button>
+  </div>
+</div>
+<div class="footer-tag">
+  📚 ISA Exam Domain: Tree Biology (11%) · Soil Management (11%) &nbsp;·&nbsp; Sources: ISA Arborists' Certification Study Guide (4th Ed.) · Taiz &amp; Zeiger Plant Physiology · ISA BMP for Watering
+</div>
+<script>
+const questions = [
+  {
+    num:1,
+    text:"Water in a plant system always moves from areas of _____ water potential to areas of _____ water potential.",
+    options:["Lower; higher","Higher; lower","Equal; unequal","Positive; negative"],
+    correct:1,
+    lesson:{
+      title:"The Direction of Water Flow — Always Down the Gradient",
+      body:`<p>Water potential (Ψ, Greek psi) is a measure of the free energy of water relative to pure water. Pure water at atmospheric pressure has a Ψ of <strong>0 MPa</strong>. Any dissolved substance (solute) or physical restriction makes Ψ negative. Water always moves spontaneously from higher (less negative) to lower (more negative) water potential — this is thermodynamically passive, like water flowing downhill.</p>
+      <p>This gradient drives every water movement in a tree:</p>
+      <ul>
+        <li>Soil → root hair cells → xylem → leaf mesophyll → atmosphere</li>
+        <li>At each step, Ψ is progressively more negative, pulling water along</li>
+        <li>Transpiration in leaves creates the most negative Ψ in the system — the "engine" that pulls water from the soil</li>
+      </ul>
+      <p>The formula: <strong>Ψ = Ψs (solute potential) + Ψp (pressure potential)</strong>. Solute potential is always negative (solutes reduce free energy). Pressure potential (turgor) is positive in living cells and adds free energy back.</p>`,
+      fieldNote:"When an Okanagan ponderosa pine is severely drought-stressed, the soil water potential becomes very negative — sometimes approaching the water potential of the root cells. At that point the gradient disappears and water uptake stops. The tree begins to desiccate from the outside in. This is the physiological explanation for why extended drought kills trees even in 'clay' soils that seem to hold water — the water is there but too tightly bound to the clay particles (low Ψ) for roots to extract it."
+    }
+  },
+  {
+    num:2,
+    text:"Which component of water potential is ALWAYS negative in plant cells?",
+    options:["Pressure potential (Ψp)","Gravity potential (Ψg)","Solute potential (Ψs)","Matric potential (Ψm)"],
+    correct:2,
+    lesson:{
+      title:"Solute Potential — Why Dissolved Stuff Matters",
+      body:`<p>Solute potential (Ψs, also called osmotic potential) is always negative because dissolved substances reduce the free energy of water. More solutes = more negative Ψs = lower water potential = greater ability to pull water in by osmosis.</p>
+      <p>This is why:</p>
+      <ul>
+        <li>Root hairs actively accumulate ions (K⁺, NO₃⁻, etc.) — yaling their Ψs more negative than the surrounding soil solution → water enters by osmosis</li>
+        <li>Plant cells in drought accumulate compatible solutes (proline, sugars, glycine betaine) to lower their Ψs and maintain turgor when soil water is scarce — this is called <strong>osmotic adjustment</strong></li>
+        <li>Wilting occurs when Ψp (turgor) drops to zero — the cell loses turgor but solutes remain; water can re-enter once soil Ψ rises</li>
+      </ul>
+      <p>Pressure potential (Ψp) can be positive (turgid cell) or zero (wilted). It can also be negative in xylem vessels under tension — this is the cohesion-tension mechanism. Matric potential (Ψm) refers to water bound to surfaces (soil particles, cell walls) — also negative, relevant in very dry soils.</p>`,
+      fieldNote:"Osmotic adjustment is part of why some trees tolerate drought better than others. Ponderosa pine can aggressively adjust its cell solute concentration to maintain turgor during drought — it's a major reason it outcompetes Douglas-fir on dry south-facing Okanagan slopes. When assessing drought damage, remember that a tree can appear wilted (low turgor) while its cells are actually loaded with solutes and physiologically still functional — irrigation at that point can restore turgor rapidly. But if solute concentration is disrupted (salt damage, for instance), recovery is much harder."
+    }
+  },
+  {
+    num:3,
+    text:"The cohesion-tension theory explains water movement in xylem as driven primarily by:",
+    options:["Root pressure pushing water upward","Active pumping by xylem vessels using ATP","Transpiration from leaves creating negative pressure (tension) that pulls water up","Diffusion of water molecules through vessel walls"],
+    correct:2,
+    lesson:{
+      title:"Cohesion-Tension — The Physics of Getting Water 30 Metres Up",
+      body:`<p>Water cannot be pushed 30+ metres up a ponderosa pine by root pressure alone — the physics don't work. Instead, water is <strong>pulled</strong>:</p>
+      <ul>
+        <li><strong>Transpiration</strong> evaporates water from mesophyll cell surfaces in the leaf — this creates a very negative Ψ in leaf cells</li>
+        <li>That negative Ψ pulls water from adjacent xylem vessels</li>
+        <li><strong>Cohesion</strong> — water molecules stick to each other via hydrogen bonds, forming an unbroken column through the xylem</li>
+        <li><strong>Adhesion</strong> — water also sticks to xylem vessel walls, resisting gravity</li>
+        <li>The tension (negative pressure) propagates down the xylem column to the roots, where the gradient draws water in from the soil</li>
+      </ul>
+      <p>The xylem is under <em>negative</em> pressure — it's in tension, not compression. This is why embolism (air bubble entry) is so damaging: a bubble breaks the cohesive column, blocking that vessel permanently.</p>`,
+      fieldNote:"Cavitation is xylem embolism in real time. When Okanagan trees experience rapid drought in July (soil Ψ drops faster than the tree can adjust), tension in the xylem exceeds the capillary strength of water in that vessel — the column snaps, air rushes in, and that vessel is permanently non-functional. Trees survive moderate embolism by having redundant vessels. But severe drought kills by embolizing too many xylem pathways simultaneously. This is why slow, deep irrigation (maintaining soil Ψ above the cavitation threshold) is far more effective than frequent shallow watering — you're keeping the water potential gradient manageable, not flooding then drying."
+    }
+  },
+  {
+    num:4,
+    text:"When a tree experiences moderate drought stress, which is typically the FIRST physiological response?",
+    options:["Leaf drop to reduce water demand","Stomatal closure to reduce transpiration","Root death due to desiccation","Xylem embolism in major branches"],
+    correct:1,
+    lesson:{
+      title:"Stomatal Closure — The First Line of Defence",
+      body:`<p>Stomatal closure is the tree's fastest and most reversible drought response. As leaf water potential drops (soil dries, transpiration exceeds uptake), guard cells lose turgor pressure and the stomatal pore narrows or closes. This reduces transpiration — reducing water loss at the cost of also reducing CO₂ uptake for photosynthesis.</p>
+      <p>The trigger is primarily <strong>abscisic acid (ABA)</strong> — a hormone produced in stressed root cells and transported to leaves, where it causes guard cell ion efflux → turgor loss → closure. Guard cells can respond within minutes.</p>
+      <p>Drought response sequence (roughly):</p>
+      <ul>
+        <li>1st: Stomatal closure (ABA-mediated, reversible)</li>
+        <li>2nd: Reduced photosynthesis, carbohydrate depletion</li>
+        <li>3rd: Osmotic adjustment (solute accumulation)</li>
+        <li>4th: Leaf rolling/wilting (mechanical turgor loss)</li>
+        <li>5th: Xylem embolism (if drought continues)</li>
+        <li>6th: Root death, then shoot death</li>
+      </ul>
+      <p>Leaf drop (abscission) can occur with extended drought but is a later, more extreme response than stomatal closure.</p>`,
+      fieldNote:"Mid-summer Okanagan afternoons: stomata on all your boulevard trees are at least partially closed by 2pm on a 35°C day, regardless of irrigation. This is normal and protective. The danger is when stomata close so frequently and for so long that carbohydrate production crashes — trees on inadequate irrigation progressively deplete their carbon reserves, becoming vulnerable to Cytospora, bark beetles, and other opportunists. The ISA BMP for Watering states: 'Drought stress is cumulative — each drought episode reduces the tree's ability to respond to the next.' This is why 'the tree survived last year' is not reassurance."
+    }
+  },
+  {
+    num:5,
+    text:"A tree is irrigated during drought. Despite adequate soil moisture, the tree continues to show wilting symptoms for several days. The most likely explanation is:",
+    options:["The irrigation water had too high a mineral content","Significant xylem embolism has occurred, reducing hydraulic conductivity","The roots have adapted to drought and no longer absorb water efficiently","The stomata have permanently closed and cannot reopen"],
+    correct:1,
+    lesson:{
+      title:"Hydraulic Failure — When Irrigation Comes Too Late",
+      body:`<p>If significant xylem embolism occurred during drought, restoring soil moisture does not restore water flow through those vessels — embolized vessels are permanently blocked. The tree must grow <em>new</em> xylem to replace hydraulic capacity, which takes weeks to months. In severe cases, hydraulic failure is irreversible and the tree dies despite available soil water.</p>
+      <p>This explains a frustrating field scenario: a tree looks drought-stressed, owner finally irrigates, tree doesn't recover. The damage was done at the xylem level before irrigation started.</p>
+      <p>Key points:</p>
+      <ul>
+        <li>Embolism is irreversible in most tree xylem — once air enters, the vessel is gone</li>
+        <li>Trees tolerate moderate embolism through vessel redundancy; severe embolism exceeds the safety margin</li>
+        <li>Species vary in embolism resistance — ponderosa pine and drought-adapted species have narrower vessels that resist embolism better than wide-vessel species (cottonwood, ash)</li>
+        <li>Drought "memory" — repeated drought events over years progressively reduce hydraulic capacity even if trees don't die; this makes them weaker in subsequent droughts</li>
+      </ul>
+      <p>Stomata are not permanently closed by drought — they respond to conditions. Root efficiency generally increases under moderate drought stress (roots grow deeper seeking water). Mineral content of irrigation water is usually not the cause of wilting post-irrigation unless extreme saline conditions exist.</p>`,
+      fieldNote:"When you do a post-drought assessment on a stressed Okanagan boulevard tree and the owner says 'we've been watering it — why isn't it getting better?', xylem embolism is the answer to consider first. A quick diagnostic: check if new growth (if any) is wilting while older wood is firm, or check for vascular streaking. If hydraulic failure is the explanation, honest advice is needed: the tree may not recover regardless of irrigation, and replacement planning should begin. The ISA Arborists' Certification Study Guide covers hydraulic failure as a key mechanism of drought-induced tree death."
+    }
+  }
+];
+let score=0,answered=[];
+function startQuiz(){document.getElementById('home-screen').style.display='none';document.getElementById('quiz-screen').style.display='block';showQuestion(0);}
+function showQuestion(idx){
+  const q=questions[idx];
+  document.getElementById('q-progress').textContent=`Question ${idx+1} of ${questions.length}`;
+  document.getElementById('q-score').textContent=`Score: ${score}`;
+  document.getElementById('q-container').innerHTML<`<div class="q-box"><div class="q-num">Question ${q.num}</div><div class="q-text">${q.text}</div><div class="options" id="opts-${idx}">${q.options.map((o,i)=>`<button class="opt" onclick="sel(${idx},${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="lesson-reveal" id="rev-${idx}"><h4>📖 ${q.lesson.title}</h4>${q.lesson.body}<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>${q.lesson.fieldNote}</p></div><button class="next-btn" onclick="nxt(${idx})">${idx<questions.length-1?'Next Question →':'See Results'}</button></div></div>`;
+}
+function sel(qi,oi){
+  if(answered[qi]!==undefined)return;
+  answered[qi]=oi;
+  const q=questions[qi];
+  document.querySelectorAll(`#opts-${qi} .opt`).forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add(oi===q.correct?'correct':'reveal-correct');else if(i===oi&&oi!==q.correct)b.classList.add('wrong');});
+  if(oi===q.correct)score++;
+  document.getElementById('q-score').textContent=`Score: ${score}`;
+  document.getElementById(`rev-${qi}`).style.display='block';
+}
+function nxt(c){c<questions.length-1?showQuestion(c+1):showComplete();}
+function showComplete(){
+  document.getElementById('quiz-screen').style.display='none';
+  document.getElementById('complete-screen').style.display='block';
+  document.getElementById('final-score-num').textContent=`${score}/${questions.length}`;
+  const msgs=['More reps needed.','More reps needed.','Solid foundation.','Strong work.','Water-tight.'];
+  const subs=['Water potential is one of the most abstract concepts in tree biology — but it explains everything from irrigation timing to drought death. Go back through each reveal.','The cohesion-tension and hydraulic failure questions are the key ones. Review those reveals carefully.','Good across the basics. The hydraulic failure concept (Q5) is the most field-applicable — worth memorising.','Strong. Water potential and the drought response sequence are high-frequency ISA exam topics.','Perfect. The sequence from stomatal closure to hydraulic failure is exactly what the ISA exam tests — and exactly what you need to advise clients correctly during drought.'];
+  document.getElementById('complete-msg').textContent=msgs[score];
+  document.getElementById('complete-sub').textContent=subs[score];
+}
+function restartQuiz(){score=0;answered=[];document.getElementById('complete-screen').style.display='none';document.getElementById('quiz-screen').style.display='block';showQuestion(0);}
+</script>
+</body>
+</html>
