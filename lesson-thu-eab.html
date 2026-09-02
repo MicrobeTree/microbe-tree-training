@@ -1,1 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 14 · Pests &amp; Diseases — Emerald Ash Borer</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1f24;color:#d4d8dc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+  .header{background:#111518;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #7a4a9e}
+  .header-left{color:#9a6abe;font-weight:700;font-size:1rem;letter-spacing:.04em}
+  .header-right{color:#6a6070;font-size:.85rem;font-weight:600;letter-spacing:.08em}
+  .container{max-width:860px;margin:0 auto;padding:28px 20px}
+  h2{color:#e8e0f0;font-size:1.35rem;margin-bottom:16px}
+  .ref-card{background:#1e1c2d;border:1px solid #7a4a9e55;border-radius:10px;padding:22px;margin-bottom:28px}
+  .ref-card h3{color:#9a6abe;font-size:1rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+  .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ref-item{background:#14121e;border-radius:6px;padding:10px 12px}
+  .ref-item .label{color:#7a5a9a;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .ref-item .val{color:#d4d8dc;font-size:.9rem;line-height:1.4}
+  .alert-bar{background:#2d1010;border:1px solid #e07070;border-radius:8px;padding:14px 16px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start}
+  .alert-bar .icon{font-size:1.4rem;flex-shrink:0}
+  .alert-bar p{color:#e8b0b0;font-size:.9rem;line-height:1.5}
+  .btn-start{display:block;width:100%;background:#7a4a9e;color:#fff;border:none;padding:14px 0;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:20px;letter-spacing:.04em;transition:background .2s}
+  .btn-start:hover{background:#6a3a8e}
+  .quiz-screen{display:none}
+  .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .q-progress{color:#7a8a7a;font-size:.85rem}
+  .q-score{color:#9a6abe;font-size:.85rem;font-weight:700}
+  .q-box{background:#242b33;border-radius:10px;padding:24px;margin-bottom:16px}
+  .q-num{color:#9a6abe;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .q-text{color:#e8e0f0;font-size:1.05rem;line-height:1.55;margin-bottom:20px}
+  .options{display:flex;flex-direction:column;gap:10px}
+  .opt{background:#1a2028;border:1.5px solid #2e3740;border-radius:8px;padding:12px 16px;cursor:pointer;text-align:left;color:#c8cdd2;font-size:.95rem;transition:all .15s;width:100%}
+  .opt:hover:not(:disabled){background:#1f1a2e;border-color:#7a4a9e88}
+  .opt.correct{background:#1e1a2e;border-color:#7a4a9e;color:#b89ade}
+  .opt.wrong{background:#2d1a1a;border-color:#9e4a4a;color:#e87d7d}
+  .opt.reveal-correct{background:#1e1a2e;border-color:#7a4a9e55;color:#b89ade88}
+  .opt:disabled{cursor:default}
+  .lesson-reveal{background:#1c1a2c;border-left:3px solid #7a4a9e;border-radius:0 8px 8px 0;padding:20px;margin-top:16px;display:none;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .lesson-reveal h4{color:#9a6abe;font-size:.9rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+  .lesson-reveal p,.lesson-reveal li{color:#c8cdd2;font-size:.93rem;line-height:1.6}
+  .lesson-reveal p{margin-bottom:10px}
+  .lesson-reveal ul{padding-left:18px;margin-bottom:10px}
+  .lesson-reveal li{margin-bottom:5px}
+  .field-note{background:#100f1c;border-left:3px solid #f0a030;border-radius:0 6px 6px 0;padding:14px;margin-top:14px}
+  .fn-label{color:#f0a030;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .field-note p{color:#c8cdd2;font-size:.9rem;line-height:1.55}
+  .next-btn{background:#7a4a9e;color:#fff;border:none;padding:11px 28px;border-radius:6px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:16px;transition:background .2s}
+  .next-btn:hover{background:#6a3a8e}
+  .complete-screen{display:none;text-align:center;padding:40px 20px}
+  .score-circle{width:120px;height:120px;border-radius:50%;background:#1e1c2d;border:3px solid #7a4a9e;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px}
+  .score-num{color:#9a6abe;font-size:2rem;font-weight:700}
+  .score-label{color:#6a5a8a;font-size:.8rem}
+  .complete-screen h3{color:#e8e0f0;font-size:1.3rem;margin-bottom:12px}
+  .complete-screen p{color:#9a9aaa;font-size:.95rem;margin-bottom:20px;line-height:1.5}
+  .restart-btn{background:#2e3740;color:#c8cdd2;border:none;padding:11px 24px;border-radius:6px;cursor:pointer;font-size:.9rem}
+  .footer-tag{background:#111518;border-top:1px solid #2e3740;padding:12px 24px;font-size:.78rem;color:#443355;text-align:center;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">🦠 MICROBE TREE TRAINING</div>
+  <div class="header-right">WEEK 14 · PESTS &amp; DISEASES</div>
+</div>
+<div class="container">
+  <div id="home-screen">
+    <h2>Emerald Ash Borer</h2>
+    <div class="alert-bar">
+      <div class="icon">⚠️</div>
+      <p><strong>Regulated pest — BC under active surveillance.</strong> EAB has established in Alberta (confirmed 2019, Edmonton area) and is spreading west. BC is not yet confirmed infested (as of 2026) but threat is imminent. Every green ash in the Okanagan is at risk. Know this pest before it arrives.</p>
+    </div>
+    <div class="ref-card">
+      <h3>📋 EAB at a Glance</h3>
+      <div class="ref-grid">
+        <div class="ref-item"><div class="label">Scientific name</div><div class="val"><em>Agrilus planipennis</em> Fairmaire (Coleoptera: Buprestidae)</div></div>
+        <div class="ref-item"><div class="label">Origin</div><div class="val">Asia (China, Korea, Russia, Japan); accidentally introduced to North America ~1990s</div></div>
+        <div class="ref-item"><div class="label">First detected NA</div><div class="val">Detroit/Windsor area, 2002</div></div>
+        <div class="ref-item"><div class="label">Host range</div><div class="val">All <em>Fraxinus</em> spp. (ash); no other confirmed hosts</div></div>
+        <div class="ref-item"><div class="label">Kill rate</div><div class="val">Nearly 100% of untreated ash within 3–5 years of infestation</div></div>
+        <div class="ref-item"><div class="label">Diagnostic sign</div><div class="val">D-shaped exit holes (3–4 mm); serpentine galleries under bark; crown dieback top-down</div></div>
+        <div class="ref-item"><div class="label">Spread vector</div><div class="val">Primarily firewood movement; adult flight 10–20 km/year natural spread</div></div>
+        <div class="ref-item"><div class="label">BC status (2026)</div><div class="val">Not confirmed in BC; active trapping surveillance program; CFIA regulated area covers much of Alberta</div></div>
+      </div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Start Quiz — 5 Questions</button>
+  </div>
 
+  <div class="quiz-screen" id="quiz-screen">
+    <div class="q-header">
+      <div class="q-progress" id="q-progress">Question 1 of 5</div>
+      <div class="q-score" id="q-score">Score: 0</div>
+    </div>
+    <div id="q-container"></div>
+  </div>
+
+  <div class="complete-screen" id="complete-screen">
+    <div class="score-circle"><div class="score-num" id="final-score-num">0/5</div><div class="score-label">correct</div></div>
+    <h3 id="complete-msg">Quiz Complete</h3>
+    <p id="complete-sub"></p>
+    <button class="restart-btn" onclick="restartQuiz()">Review Again</button>
+  </div>
+</div>
+<div class="footer-tag">
+  📚 ISA Exam Domain: Tree Biology (11%) &nbsp;·&nbsp; Sources: CFIA EAB regulatory documentation · BC Ministry of Forests · USDA Forest Service EAB information network · ISA Arborists' Certification Study Guide (4th Ed.)
+</div>
+<script>
+const questions = [
+  {
+    num:1,
+    text:"Emerald ash borer larvae kill ash trees primarily by:",
+    options:["Feeding on root tissue, causing the tree to starve","Mining serpentine galleries through the phloem and cambium, girdling the tree","Boring into heartwood, causing structural failure","Injecting toxins into xylem vessels, blocking water flow"],
+    correct:1,
+    lesson:{
+      title:"How EAB Kills — Phloem Mining and Girdling",
+      body:`<p>EAB larvae feed in the phloem and outer sapwood, creating characteristic S-shaped (serpentine) galleries that wind back and forth under the bark. These galleries effectively <strong>girdle</strong> the tree section by section — severing the phloem conductance pathway and disrupting the cambium's ability to form new tissue.</p>
+      <p>Unlike bark beetles (e.g., mountain pine beetle) that primarily attack stressed trees, EAB kills healthy ash trees. The infestation spreads from the upper crown downward — trees typically show top-down crown dieback as the galleries advance from initial entry in the upper crown toward the base.</p>
+      <ul>
+        <li>Eggs laid in bark crevices; larvae hatch and bore through bark into phloem</li>
+        <li>Larvae overwinter under bark in a prepupal stage</li>
+        <li>Adults emerge May–July, leaving diagnostic D-shaped exit holes (3–4 mm wide)</li>
+        <li>Adults feed on ash foliage (minor damage) before mating and laying eggs</li>
+        <li>1–2 year life cycle depending on temperature</li>
+      </ul>
+      <p>A heavily infested tree looks like it has been girdled repeatedly from top to bottom — because it has been.</p>`,
+      fieldNote:"Green ash is one of the most commonly planted boulevard trees in Kelowna, Penticton, and Vernon — thousands of trees in regulated grid plantings. When EAB arrives in the Okanagan (and the experts say 'when,' not 'if'), a single infestation at one end of a boulevard planting will move systematically through every ash tree within flight range. The municipalities and homeowners who have documented their ash trees in GIS now will be able to respond faster — if you encounter a client who has a significant ash collection, recommending proactive documentation and treatment planning is sound PHC advice."
+    }
+  },
+  {
+    num:2,
+    text:"Which of the following is the MOST diagnostic field sign of emerald ash borer infestation?",
+    options:["Round exit holes (5–8 mm) in the bark","D-shaped exit holes (3–4 mm) with flattened top","White resin tubes at entry points on the bark surface","Yellowing of needles beginning at branch tips"],
+    correct:1,
+    lesson:{
+      title:"The D-Shaped Exit Hole — EAB's Calling Card",
+      body:`<p>The <strong>D-shaped exit hole</strong> is the single most diagnostic field sign of EAB. When adults chew out through the bark in late spring/early summer, they create an exit hole that is distinctly <strong>D-shaped</strong> — a flat edge on one side (the straight side of the D), 3–4 mm wide. This shape results from the oval cross-section of the adult beetle pushing through the bark.</p>
+      <p>Key diagnostic comparisons:</p>
+      <ul>
+        <li><strong>Round holes (5–8 mm):</strong> Two-lined chestnut borer or other wood borers; not EAB</li>
+        <li><strong>Round holes (3–5 mm):</strong> Native ash borers (<em>Podosesia</em> spp.); not D-shaped</li>
+        <li><strong>D-shaped, 3–4 mm:</strong> EAB — confirm with gallery inspection under bark</li>
+      </ul>
+      <p>Other signs to look for together with D-holes:</p>
+      <ul>
+        <li>S-shaped galleries visible when bark is peeled back — cream-coloured larval mines packed with frass</li>
+        <li>Top-down crown dieback (canopy thins from top first)</li>
+        <li>Epicormic sprouting on trunk and major branches (tree attempting to compensate for crown loss)</li>
+        <li>Woodpecker foraging holes (especially flicker) — woodpeckers excavate bark to reach larvae</li>
+        <li>Blonding — woodpeckers strip bark, exposing pale wood beneath</li>
+      </ul>`,
+      fieldNote:"If you peel back bark on a dying ash and see cream-coloured S-shaped galleries filled with fine sawdust-like frass — do NOT assume it's native borers and move on. EAB galleries are distinctive. In Alberta, the first confirmed trees were identified by foresters peeling bark on dying ash and recognizing the gallery pattern. If you find suspect galleries on ash in the Okanagan, report to the BC Ministry of Agriculture or CFIA's EAB hotline immediately. Early detection changes everything — containment is possible in the first years; once established widely it is not."
+    }
+  },
+  {
+    num:3,
+    text:"Emerald ash borer was first detected in North America in which city and approximate year?",
+    options:["Toronto, Ontario — 1998","Detroit, Michigan / Windsor, Ontario — 2002","Minneapolis, Minnesota — 2005","Chicago, Illinois — 2000"],
+    correct:1,
+    lesson:{
+      title:"EAB in North America — The Spread History",
+      body:`<p>EAB was first detected in the Detroit/Windsor area in 2002, though it likely arrived as early as the early 1990s via solid wood packing material in shipping containers from Asia. By the time it was identified, it had already spread substantially through the Michigan ash forest.</p>
+      <p>The subsequent spread across North America is one of the most destructive invasive pest events in recent forestry history:</p>
+      <ul>
+        <li><strong>2002:</strong> Detected Michigan/Ontario</li>
+        <li><strong>2002–2010:</strong> Spreads through Great Lakes region; millions of ash trees die</li>
+        <li><strong>2012:</strong> Detected in New York, Ohio, Indiana, Illinois</li>
+        <li><strong>2013:</strong> Detected in Colorado (first western state)</li>
+        <li><strong>2018:</strong> Detected in Manitoba</li>
+        <li><strong>2019:</strong> Confirmed in Alberta (Edmonton area) — now within 500 km of the BC border</li>
+        <li><strong>2026:</strong> BC remains unconfirmed but surveillance is active</li>
+      </ul>
+      <p>Natural spread rate: approximately 10–20 km/year via adult beetle flight. Primary long-distance spread vector: human movement of infested firewood, nursery stock, and ash wood products. CFIA's regulated area in Alberta covers millions of hectares.</p>`,
+      fieldNote:"The firewood movement problem is not abstract — it directly affects Okanagan campgrounds and recreation areas. Many Okanagan campgrounds enforce 'don't move firewood' policies, and BC enforces rules against bringing Ontario or Alberta firewood into BC. When you're on a job and a client mentions getting firewood from 'out east,' that's a conversation worth having. In the arborist business, you may also be asked about importing ash logs or ash slabs — the answer from a regulatory standpoint is: check CFIA restrictions first. Don't inadvertently move EAB in wood products."
+    }
+  },
+  {
+    num:4,
+    text:"Which treatment option has demonstrated the highest efficacy for protecting ash trees from EAB infestation?",
+    options:["Preventive pruning to remove upper crown before infestation begins","Systemic insecticide treatment (trunk injection or soil drench) with emamectin benzoate or imidacloprid","Biological control using parasitic wasps imported from Asia","Bark sprays with pyrethroid applied in spring"],
+    correct:1,
+    lesson:{
+      title:"EAB Treatment — Systemic Insecticides Work When Applied Preventively",
+      body:`<p>Systemic insecticide treatment is the most effective management tool for ash trees where EAB is present or imminent. Key options:</p>
+      <ul>
+        <li><strong>Emamectin benzoate (TREE-äge):</strong> Trunk injection; highest efficacy; 2–3 year residual; effective even on lightly infested trees. Requires trained applicator and injection equipment. Most effective tool currently available in Canada for confirmed EAB areas.</li>
+        <li><strong>Imidacloprid (Merit, various):</strong> Soil drench or basal bark spray; good preventive efficacy; annual or biennial treatment; less effective on already-infested trees. Widely available.</li>
+        <li><strong>Dinotefuran:</strong> Basal bark spray; faster uptake than imidacloprid; reasonable preventive efficacy.</li>
+      </ul>
+      <p>Critical timing principle: <strong>Preventive treatment works. Curative treatment has limited efficacy.</strong> Trees with more than 30–40% crown dieback have too little phloem conductance to distribute systemic insecticide effectively. Treatment must begin before the tree is significantly infested.</p>
+      <p>Biological control: CFIA has released three parasitic wasps from Asia as EAB biocontrols in affected eastern provinces and states. Results are promising at the landscape scale over decades but are not a management strategy for individual tree protection. Not yet available as a tool for individual arborists.</p>
+      <p>Preventive pruning does not prevent EAB — it does not address the insect or its spread.</p>`,
+      fieldNote:"In Alberta, arborists are now offering EAB treatment programs to municipal clients and homeowners with ash. The business case is straightforward: a trunk injection treatment on a mature green ash costs $200–600 depending on DBH; removal of a mature ash 5 years later costs $3,000–8,000+. Proactive treatment on high-value specimens makes economic and ecological sense. When BC ash owners start asking you about EAB in the coming years, be ready with this knowledge — it positions Microbe Tree as the expert and builds long-term client relationships around an emerging crisis."
+    }
+  },
+  {
+    num:5,
+    text:"Under the CFIA's EAB regulated area in Alberta, which of the following activities is PROHIBITED without a permit?",
+    options:["Pruning ash trees within a regulated area","Moving ash firewood, logs, nursery stock, or wood chips out of a regulated area","Applying systemic insecticide to ash trees without a licensed applicator","Removing an ash tree without notifying the local municipality"],
+    correct:1,
+    lesson:{
+      title:"EAB Regulation — Why Movement Restrictions Matter",
+      body:`<p>The Canadian Food Inspection Agency (CFIA) establishes <strong>regulated areas</strong> around confirmed EAB infestations. Within these areas, movement of regulated articles is controlled. Regulated articles include:</p>
+      <ul>
+        <li>Ash firewood (split or unsplit)</li>
+        <li>Ash nursery stock (live trees)</li>
+        <li>Ash logs and lumber with bark</li>
+        <li>Ash wood chips (from infested trees or within regulated areas)</li>
+        <li>Any other ash material that could harbour EAB life stages</li>
+      </ul>
+      <p>Violations of CFIA movement restrictions carry significant penalties under the Plant Protection Act. The regulations exist because EAB can survive in cut wood for up to 2 years — the primary long-distance spread mechanism is exactly this kind of movement.</p>
+      <p>For arborists, this has direct professional implications:</p>
+      <ul>
+        <li>Do not chip or transport ash wood from regulated areas without checking current CFIA requirements</li>
+        <li>If working in Alberta and taking ash wood products (chips, logs) to BC, you are responsible for knowing the regulatory status</li>
+        <li>When EAB arrives in BC, similar regulated areas will be established — be ready to adapt your wood disposal protocols immediately</li>
+      </ul>`,
+      fieldNote:"Right now (August 2026), you can still work on Okanagan green ash without EAB concerns in your disposal protocol. But the situation can change quickly — EAB spread from Edmonton to the BC border could happen within a few years of establishment. The professional response is: (1) know the current CFIA regulated area boundaries; (2) have a wood disposal protocol ready to adapt; (3) stay current on BC Ministry of Agriculture EAB surveillance updates. The arborists in Ontario who were ahead of EAB arrived as trusted advisors; the ones who weren't became part of the problem. BC has a window — let's use it."
+    }
+  }
+];
+let score=0,answered=[];
+function startQuiz(){document.getElementById('home-screen').style.display='none';document.getElementById('quiz-screen').style.display='block';showQuestion(0);}
+function showQuestion(idx){
+  const q=questions[idx];
+  document.getElementById('q-progress').textContent=`Question ${idx+1} of ${questions.length}`;
+  document.getElementById('q-score').textContent=`Score: ${score}`;
+  document.getElementById('q-container').innerHTML=`<div class="q-box"><div class="q-num">Question ${q.num}</div><div class="q-text">${q.text}</div><div class="options" id="opts-${idx}">${q.options.map((o,i)=>`<button class="opt" onclick="sel(${idx},${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div class="lesson-reveal" id="rev-${idx}"><h4>📖 ${q.lesson.title}</h4>${q.lesson.body}<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>${q.lesson.fieldNote}</p></div><button class="next-btn" onclick="nxt(${idx})">${idx<questions.length-1?'Next Question →':'See Results'}</button></div></div>`;
+}
+function sel(qi,oi){
+  if(answered[qi]!==undefined)return;
+  answered[qi]=oi;
+  const q=questions[qi];
+  document.querySelectorAll(`#opts-${qi} .opt`).forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add(oi===q.correct?'correct':'reveal-correct');else if(i===oi&&oi!==q.correct)b.classList.add('wrong');});
+  if(oi===q.correct)score++;
+  document.getElementById('q-score').textContent=`Score: ${score}`;
+  document.getElementById(`rev-${qi}`).style.display='block';
+}
+function nxt(c){c<questions.length-1?showQuestion(c+1):showComplete();}
+function showComplete(){
+  document.getElementById('quiz-screen').style.display='none';
+  document.getElementById('complete-screen').style.display='block';
+  document.getElementById('final-score-num').textContent=`${score}/${questions.length}`;
+  const msgs=['More reps needed.','More reps needed.','Solid foundation.','Strong work.','EAB-ready.'];
+  const subs=['EAB is coming — this is not optional knowledge. Go back through the reveals, especially the kill mechanism and the D-hole diagnostic.','The diagnostic signs and treatment timing questions are the critical ones for field readiness. Review those reveals.','Good grasp of the threat and basics. The treatment efficacy and regulatory questions will matter most when EAB arrives.','Strong across the board. The "preventive not curative" principle for insecticide treatment is the most important clinical takeaway.','Perfect. You know the pest, the signs, the treatment window, and the regulatory obligations. This is exactly the knowledge base that makes you the expert in the room when clients start asking about EAB.'];
+  document.getElementById('complete-msg').textContent=msgs[score];
+  document.getElementById('complete-sub').textContent=subs[score];
+}
+function restartQuiz(){score=0;answered=[];document.getElementById('complete-screen').style.display='none';document.getElementById('quiz-screen').style.display='block';showQuestion(0);}
+</script>
+</body>
+</html>
