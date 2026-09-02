@@ -1,1 +1,257 @@
-TEST123
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 14 · Worksite Techniques — Pre-Climb Inspection</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1f24;color:#d4d8dc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+  .header{background:#111518;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #2a7a9e}
+  .header-left{color:#4a9aae;font-weight:700;font-size:1rem;letter-spacing:.04em}
+  .header-right{color:#3a5a6a;font-size:.85rem;font-weight:600;letter-spacing:.08em}
+  .container{max-width:900px;margin:0 auto;padding:28px 20px}
+  h2{color:#e0eef2;font-size:1.35rem;margin-bottom:8px}
+  .sub{color:#5a8a9a;font-size:.9rem;margin-bottom:20px}
+  .tab-bar{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap}
+  .tab{background:#1a2028;border:1.5px solid #2e3740;border-radius:6px 6px 0 0;padding:9px 16px;cursor:pointer;color:#7a9aaa;font-size:.85rem;font-weight:600;letter-spacing:.04em;transition:all .15s}
+  .tab.active{background:#1e2e36;border-color:#2a7a9e;border-bottom-color:#1e2e36;color:#4ab8d4}
+  .tab-content{display:none;animation:fadeIn .2s ease}
+  .tab-content.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+  .card{background:#1e2830;border:1px solid #2a7a9e44;border-radius:0 10px 10px 10px;padding:22px;margin-bottom:16px}
+  .card h3{color:#4ab8d4;font-size:1rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  p{color:#c4d4d8;font-size:.93rem;line-height:1.6;margin-bottom:12px}
+  ul,ol{padding-left:20px;margin-bottom:14px}
+  li{color:#c4d4d8;font-size:.93rem;line-height:1.6;margin-bottom:6px}
+  strong{color:#e0eef2}
+  .checklist{background:#111518;border-radius:8px;padding:16px;margin-bottom:16px}
+  .checklist-header{color:#2a9abe;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #1e3040}
+  .check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #1a2530}
+  .check-item:last-child{border-bottom:none}
+  .check-box{width:18px;height:18px;border:1.5px solid #2a6a7e;border-radius:3px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .check-box.checked{background:#2a7a9e;border-color:#2a7a9e;color:#fff;font-size:.8rem}
+  .check-label{color:#b8ccd4;font-size:.9rem;line-height:1.4}
+  .check-label strong{color:#d8eaf0}
+  .check-label .detail{color:#7a9aaa;font-size:.82rem;margin-top:2px}
+  .ref-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+  .ref-table th{background:#0e1a22;color:#4ab8d4;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;text-align:left;border-bottom:1px solid #2a5a70}
+  .ref-table td{padding:8px 10px;border-bottom:1px solid #1e2e38;font-size:.88rem;color:#b8ccd4;vertical-align:top}
+  .ref-table tr:hover td{background:#1a2830}
+  .go{color:#5aba70}
+  .warn{color:#e0a030}
+  .stop{color:#e05050}
+  .svg-wrap{background:#111518;border-radius:8px;padding:20px;margin-bottom:16px;text-align:center}
+  .tag{display:inline-block;background:#0e2030;border:1px solid #2a6a9e;border-radius:4px;padding:2px 8px;font-size:.78rem;color:#4ab8d4;margin:2px}
+  .ansi-box{background:#0a1018;border:1px solid #2a5a70;border-radius:6px;padding:14px 16px;margin-bottom:14px}
+  .ansi-box .code{color:#4ab8d4;font-family:monospace;font-size:.88rem}
+  .ansi-box p{margin-bottom:0}
+  .footer-tag{background:#111518;border-top:1px solid #2e3740;padding:12px 24px;font-size:.78rem;color:#2a4a5a;text-align:center;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">🦠 MICROBE TREE TRAINING</div>
+  <div class="header-right">WEEK 14 · WORKSITE TECHNIQUES</div>
+</div>
+<div class="container">
+  <h2>Pre-Climb Inspection &amp; Tailgate Meeting</h2>
+  <div class="sub">ANSI Z133 §4 Pre-Work Requirements — What you assess before you leave the ground</div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="showTab('overview')">Overview</div>
+    <div class="tab" onclick="showTab('tree')">Tree Assessment</div>
+    <div class="tab" onclick="showTab('site')">Site Hazards</div>
+    <div class="tab" onclick="showTab('tailgate')">Tailgate Meeting</div>
+    <div class="tab" onclick="showTab('go-nogo')">Go / No-Go</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="card">
+      <h3>📋 Why the Pre-Climb Inspection Exists</h3>
+      <p>ANSI Z133 (Safety Requirements for Arboricultural Operations) §4 mandates that before any arboricultural work begins, a qualified arborist <strong>inspect the tree and work site</strong> to identify hazards. This is not optional paperwork — it is the mechanism by which crews turn general training into specific decisions for this tree, on this day.</p>
+      <p>The pre-climb inspection has three functions:</p>
+      <ul>
+        <li><strong>Hazard identification</strong> — find what could injure you before you're exposed to it</li>
+        <li><strong>Work planning</strong> — translate the inspection findings into a sequence of work that controls the hazards</li>
+        <li><strong>Communication</strong> — ensure every person on the crew knows the plan, the hazards, and their role (the tailgate meeting)</li>
+      </ul>
+      <p>Most serious arborist injuries occur in situations where a known hazard was not communicated, or where a no-go condition existed but work proceeded anyway. A rigorous pre-climb inspection is not a bureaucratic burden — it is the single most effective tool for bringing everyone home.</p>
+    </div>
+    <div class="card">
+      <h3>🔄 The Inspection Sequence</h3>
+      <div class="ansi-box">
+        <div class="code">1. Arrive / read the site from the vehicle (wide view)</div>
+        <div class="code">2. Ground-level 360° walk-around of the tree</div>
+        <div class="code">3. Site hazard scan (utilities, DZ, access, ground conditions)</div>
+        <div class="code">4. Tree structural assessment (crown, root zone, attachment points)</div>
+        <div class="code">5. Identify tie-in points and rigging anchors</div>
+        <div class="code">6. Develop work plan and DZ/drop zone layout</div>
+        <div class="code">7. Tailgate meeting — brief the full crew</div>
+        <div class="code">8. Go / No-Go decision</div>
+      </div>
+      <p>Steps 1–7 happen before anyone puts on a harness. The inspection is always done by a <strong>qualified line-clearance arborist or ISA Certified Arborist</strong> — someone with the training to interpret what they find.</p>
+    </div>
+  </div>
+
+  <!-- TREE ASSESSMENT -->
+  <div class="tab-content" id="tab-tree">
+    <div class="card">
+      <h3>🌲 Tree Structural Assessment Checklist</h3>
+      <p>Complete a full <strong>360° walk-around</strong> at minimum. Back up far enough to see the whole crown. Use binoculars if needed. Assess from multiple angles — lean, crown asymmetry, and structural defects are often only visible from one direction.</p>
+      <div class="checklist">
+        <div class="checklist-header">Root Zone &amp; Base</div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Root plate heaving or lifting?</strong><div class="detail">One-sided heave on windward side = root plate failure risk; do not climb until assessed</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Soil crack around root collar?</strong><div class="detail">Cracking in a semicircle = root plate beginning to overturn; high-risk condition</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Basal decay or cavity?</strong><div class="detail">Sound test (mallet), look for conks/brackets, staining, soft wood at base</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Girdling roots or soil level changes?</strong><div class="detail">Buried root flare = reduced stability; note for PHC report</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Lean angle &amp; direction?</strong><div class="detail">Lean toward DZ = identify before planning cuts; &gt;15° lean in a compromised tree = reassess</div></div></div>
+      </div>
+      <div class="checklist">
+        <div class="checklist-header">Trunk</div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Bark condition — tight, slipping, loose?</strong><div class="detail">Slipping bark = cambium death; the tree or that section may be structurally compromised</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Cankers, wounds, or cracks in trunk?</strong><div class="detail">Large cracks (especially horizontal) can indicate severe internal decay</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Included bark at major unions?</strong><div class="detail">Do not tie-in above an included union without a rated cabling system in place</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Codominant stems — bark ridge or inclusion?</strong><div class="detail">Strong U-shaped union with bark ridge = use cautiously; V-shaped with included bark = high risk</div></div></div>
+      </div>
+      <div class="checklist">
+        <div class="checklist-header">Crown</div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Dead wood in crown (hangers, widow-makers)?</strong><div class="detail">Identify all hangers before entering crown; plan removal sequence</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Epicormic sprouting pattern?</strong><div class="detail">Dense epicormics on scaffold limbs = internal decay compensating; reduce loading</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Crown dieback extent &amp; distribution?</strong><div class="detail">Top-down dieback = root, vascular, or systemic issue; reassess climbing plan</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Proposed tie-in points sound and adequate?</strong><div class="detail">Visually inspect from ground; do not TIP into dead, heavily decayed, or compromised branches</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Wind — current conditions and forecast?</strong><div class="detail">High wind = defer; gusts exceeding 40 km/h = no-go for crown work on most residential trees</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITE HAZARDS -->
+  <div class="tab-content" id="tab-site">
+    <div class="card">
+      <h3>⚡ Site Hazard Identification</h3>
+      <div class="checklist">
+        <div class="checklist-header">Overhead Utilities (Priority 1 — assess before anything else)</div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Any overhead lines present?</strong><div class="detail">Identify: service drop to building, distribution lines, communication lines — they all need separate assessment</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Energized power lines within 3 m of work?</strong><div class="detail">STOP — line-clearance qualified crew required; notify utility company; zone of no entry without de-energization</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Service drop insulation intact?</strong><div class="detail">Frayed or damaged insulation = treat as uninsulated; do not touch</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Communication (telecom/cable) lines in tree?</strong><div class="detail">Not energized but can be under tension; notify provider if cutting near them</div></div></div>
+      </div>
+      <div class="checklist">
+        <div class="checklist-header">Drop Zone (DZ)</div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Clear DZ established and marked?</strong><div class="detail">Size DZ conservatively — account for bounce, roll, and unexpected trajectory; 1.5× piece length minimum</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Public and bystanders excluded from DZ?</strong><div class="check-item"></div><div class="detail">Cones, flagging tape, or barriers; assign a ground person to watch the exclusion zone</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Structures, vehicles, or property in potential DZ?</strong><div class="detail">Plan rigging to redirect pieces away from property if DZ is compromised</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Ground stability in DZ — soft, sloped, uneven?</strong><div class="detail">Log roll risk on slopes; chip truck positioning on soft ground can shift</div></div></div>
+      </div>
+      <div class="checklist">
+        <div class="checklist-header">Access &amp; Ground Conditions</div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Underground utilities located (BC 1-call)?</strong><div class="detail">Before any ground-disturbing work; BC 1-Call: 1-800-474-6886; 3 business days minimum</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Traffic control required?</strong><div class="detail">Road allowance work or DZ affecting traffic = WCB-compliant traffic control plan</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Irrigation lines or hardscape at root zone?</strong><div class="detail">Note for ground crew with shovels; report to client if discovered</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📐 Utility Clearance — Quick Reference (WorkSafeBC / ANSI Z133)</h3>
+      <table class="ref-table">
+        <tr><th>Utility Type</th><th>Minimum Clearance</th><th>Status</th></tr>
+        <tr><td>Energized distribution lines (7.2–14.4 kV)</td><td>3 m (10 ft)</td><td class="stop">Line-clearance crew only</td></tr>
+        <tr><td>Energized service drop (&lt;750 V, insulated)</td><td>1 m (3 ft)</td><td class="warn">Use insulated tools only</td></tr>
+        <tr><td>Energized service drop (&lt;750 V, bare)</td><td>3 m (10 ft)</td><td class="stop">Utility contact required</td></tr>
+        <tr><td>Telecom / cable lines (non-energized)</td><td>Contact utility</td><td class="warn">Notify before cutting near</td></tr>
+        <tr><td>No utility lines present</td><td>—</td><td class="go">Normal arborist operations</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAILGATE MEETING -->
+  <div class="tab-content" id="tab-tailgate">
+    <div class="card">
+      <h3>🗣️ The Tailgate Meeting — What It Must Cover</h3>
+      <p>ANSI Z133 §4.1 requires that all crew members are informed of hazards and the work plan before operations begin. The tailgate meeting is that communication event. It does not need to be long — 3 to 5 minutes on a typical residential job — but every item below must be covered.</p>
+      <div class="checklist">
+        <div class="checklist-header">Tailgate Meeting Required Elements</div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Tree and site hazards identified</strong><div class="detail">Walk the crew to each hazard; don't just describe it — point to it</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Work sequence and plan explained</strong><div class="detail">What gets removed first, why, and in what order; how rigging will be set up</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>DZ boundaries communicated and understood</strong><div class="detail">Where to stand, where NOT to stand; confirm everyone can describe the DZ back to you</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Communication signals confirmed</strong><div class="detail">Verbal signals ("TIMBER," "ROPE," "CLEAR"); noise conditions — chainsaw, chipper = hand signals</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>PPE requirements for this specific job</strong><div class="detail">Chainsaw chaps, face shield, hearing protection, climbing helmet — not generic, specific to today's work</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Emergency procedures</strong><div class="detail">Where is the nearest hospital (Kelowna General: 2268 Pandosy); who calls 911; who provides first aid</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Roles confirmed</strong><div class="detail">Climber, ground crew, spotter, traffic control — every person knows their assignment</div></div></div>
+        <div class="check-item"><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-label"><strong>Questions invited and addressed</strong><div class="detail">Crew members have authority to raise concerns; this is the moment to surface them</div></div></div>
+      </div>
+      <p><strong>Rule:</strong> If anyone on the crew cannot describe the DZ, the work sequence, and what to do if something goes wrong — the tailgate meeting is not finished.</p>
+    </div>
+    <div class="card">
+      <h3>📻 Communication Signals — Standard Set</h3>
+      <table class="ref-table">
+        <tr><th>Signal</th><th>Meaning</th><th>Notes</th></tr>
+        <tr><td><strong>"TIMBER"</strong></td><td>Piece falling — move now</td><td>Shouted loud; confirm all crew respond</td></tr>
+        <tr><td><strong>"ROPE" / "LINE"</strong></td><td>Lowering a rope or line</td><td>Ground crew confirms "CLEAR" before climber drops</td></tr>
+        <tr><td><strong>"CLEAR"</strong></td><td>DZ is clear; proceed</td><td>Ground gives this; climber waits for it</td></tr>
+        <tr><td><strong>"STOP" / "HOLD"</strong></td><td>Halt all work immediately</td><td>Anyone may call this; all work stops</td></tr>
+        <tr><td><strong>One whistle blast</strong></td><td>Stop / attention</td><td>Use when voice is inaudible (chipper running)</td></tr>
+        <tr><td><strong>Two whistle blasts</strong></td><td>Resume work</td><td>Confirm hazard is resolved before giving</td></tr>
+        <tr><td><strong>Fist raised</strong></td><td>STOP — visual signal</td><td>Any crew member; no verbal needed</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- GO / NO-GO -->
+  <div class="tab-content" id="tab-go-nogo">
+    <div class="card">
+      <h3>✅ Go / No-Go Decision Framework</h3>
+      <p>The go/no-go decision is made by the <strong>qualified arborist in charge</strong> after completing the inspection and tailgate meeting. Work proceeds only when all go conditions are met and all no-go conditions are absent or controlled.</p>
+    </div>
+    <div class="card">
+      <h3 style="color:#5aba70">✅ GO Conditions</h3>
+      <table class="ref-table">
+        <tr><th>Category</th><th>Condition</th></tr>
+        <tr><td>Tree</td><td>No uncontrolled structural failure risk; proposed TIP points are sound; hangers identified and planned for</td></tr>
+        <tr><td>Utilities</td><td>No energized lines within work zone; or qualified line-clearance crew present and utility notified</td></tr>
+        <tr><td>DZ</td><td>Clear exclusion zone established; public excluded; crew knows DZ boundaries</td></tr>
+        <tr><td>Weather</td><td>Wind below crew's operational threshold; no lightning within 10 km; visibility adequate</td></tr>
+        <tr><td>Crew</td><td>All crew members briefed, roles assigned, PPE correct for task</td></tr>
+        <tr><td>Communication</td><td>Signals confirmed and understood; noise mitigation in place if needed</td></tr>
+        <tr><td>Emergency</td><td>First aid kit accessible; emergency plan confirmed; 911 route known</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="color:#e05050">🛑 NO-GO Conditions (Mandatory Stop)</h3>
+      <table class="ref-table">
+        <tr><th>Condition</th><th>Action</th></tr>
+        <tr><td class="stop">Energized lines within 3 m of work zone</td><td>Stop all work; contact utility; do not resume until de-energized or line-clearance crew on site</td></tr>
+        <tr><td class="stop">Active root plate failure risk (heaving, cracking)</td><td>Do not climb; assess with qualified arborist; consider emergency removal techniques from ground</td></tr>
+        <tr><td class="stop">Public unable to be excluded from DZ</td><td>Delay start until DZ can be controlled; or replan to eliminate DZ toward public</td></tr>
+        <tr><td class="stop">Any crew member has not been briefed</td><td>Halt; complete briefing for all personnel before proceeding</td></tr>
+        <tr><td class="stop">Climber not fit for duty (fatigue, impairment, injury)</td><td>Do not climb; reallocate work or reschedule</td></tr>
+        <tr><td class="stop">Wind conditions exceeding crew threshold</td><td>Monitor; delay or reschedule; do not accept pressure to proceed</td></tr>
+        <tr><td class="stop">Uncontrolled hazard that cannot be mitigated</td><td>Reschedule; document; communicate to client in writing</td></tr>
+      </table>
+      <p style="margin-top:14px"><strong>The No-Go authority belongs to every crew member.</strong> ANSI Z133 §4 supports any worker's right to refuse work they believe is unsafe. A crew member calling a no-go is doing their job. The response from the lead arborist must be to address the concern — not to pressure the worker to proceed.</p>
+    </div>
+    <div class="card">
+      <h3>📝 Documentation Best Practice</h3>
+      <p>While ANSI Z133 mandates the inspection and meeting, it does not specify written documentation. However, maintaining a brief written record serves three purposes:</p>
+      <ul>
+        <li><strong>WorkSafeBC compliance</strong> — demonstrates due diligence if an incident occurs and is investigated</li>
+        <li><strong>Client communication</strong> — if a no-go condition means rescheduling, a written note protects the company</li>
+        <li><strong>Training tool</strong> — newer crew members seeing written inspections develop their own inspection habits</li>
+      </ul>
+      <p>A field inspection form (even a simple photo + voice memo) is more than most crews do and significantly better than nothing. Ask your lead arborist about Microbe Tree's current documentation protocol.</p>
+    </div>
+  </div>
+</div>
+<div class="footer-tag">
+  📚 ISA Exam Domain: Safe Work Practices (28%) &nbsp;·&nbsp; References: ANSI Z133-2017 Arboricultural Operations Safety Requirements · WorkSafeBC Arborist Guidelines · ISA Best Management Practices: Tree Risk Assessment (2nd Ed.)
+</div>
+<script>
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleCheck(el){el.classList.toggle('checked');el.textContent=el.classList.contains('checked')?'✓':'';}
+</script>
+</body>
+</html>
