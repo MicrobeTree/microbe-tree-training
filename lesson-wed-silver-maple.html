@@ -1,1 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 14 · Tree Profile — Silver Maple</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1f24;color:#d4d8dc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+  .header{background:#111518;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #c9922a}
+  .header-left{color:#c9922a;font-weight:700;font-size:1rem;letter-spacing:.04em}
+  .header-right{color:#7a7464;font-size:.85rem;font-weight:600;letter-spacing:.08em}
+  .layout{display:flex;max-width:1000px;margin:0 auto;min-height:calc(100vh - 52px)}
+  .sidebar{width:190px;min-width:190px;background:#111518;padding:20px 0;border-right:1px solid #2e3740}
+  .sidebar-title{color:#c9922a;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:0 16px 12px;border-bottom:1px solid #2e3740;margin-bottom:8px}
+  .nav-item{display:block;padding:10px 16px;color:#9aa0a8;font-size:.88rem;cursor:pointer;border-left:3px solid transparent;transition:all .15s;background:none;border-right:none;border-top:none;border-bottom:none;width:100%;text-align:left}
+  .nav-item:hover{color:#c8cdd2;background:#1a2028}
+  .nav-item.active{color:#c9922a;border-left-color:#c9922a;background:#1c1a10}
+  .content{flex:1;padding:28px 32px}
+  .section{display:none}.section.active{display:block}
+  h2{color:#e8e0d4;font-size:1.3rem;margin-bottom:6px}
+  .sci-name{color:#c9922a;font-style:italic;font-size:.95rem;margin-bottom:18px}
+  h3{color:#c9922a;font-size:.95rem;text-transform:uppercase;letter-spacing:.07em;margin:18px 0 10px}
+  p{color:#c8cdd2;font-size:.93rem;line-height:1.6;margin-bottom:12px}
+  ul{color:#c8cdd2;font-size:.93rem;line-height:1.6;padding-left:20px;margin-bottom:12px}
+  li{margin-bottom:5px}
+  .card{background:#242b33;border-radius:10px;padding:20px;margin-bottom:16px}
+  .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .id-item{background:#1a2028;border-radius:6px;padding:10px 12px}
+  .id-label{color:#c9922a88;font-size:.73rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+  .id-val{color:#e8e0d4;font-size:.9rem;line-height:1.4}
+  .field-note{background:#1c1610;border-left:3px solid #f0a030;border-radius:0 6px 6px 0;padding:14px;margin-top:14px}
+  .fn-label{color:#f0a030;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.88rem}
+  th{background:#1a2028;color:#c9922a;font-weight:700;padding:9px 10px;text-align:left;border-bottom:2px solid #2e3740;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+  td{padding:8px 10px;border-bottom:1px solid #2e3740;color:#c8cdd2;vertical-align:top}
+  .severity{display:inline-block;border-radius:4px;padding:2px 8px;font-size:.78rem;font-weight:700}
+  .sev-high{background:#3a1515;color:#e07070}
+  .sev-mod{background:#2a2010;color:#e0a040}
+  .sev-low{background:#0f1f17;color:#60b870}
+  .warn{background:#1f1a10;border:1px solid #c9922a55;border-radius:8px;padding:14px;margin:12px 0}
+  .warn-label{color:#c9922a;font-size:.78rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .footer-tag{background:#111518;border-top:1px solid #2e3740;padding:12px 24px;font-size:.78rem;color:#554433;text-align:center}
+  @media(max-width:640px){.layout{flex-direction:column}.sidebar{width:100%;min-width:0;border-right:none;border-bottom:1px solid #2e3740;padding:12px 0}.nav-item{border-left:none;border-bottom:3px solid transparent}.nav-item.active{border-left:none;border-bottom-color:#c9922a}.content{padding:20px 16px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">🌳 MICROBE TREE TRAINING</div>
+  <div class="header-right">WEEK 14 · TREE PROFILE</div>
+</div>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-title">Sections</div>
+    <button class="nav-item active" onclick="showSection('identity')">🔍 Identity</button>
+    <button class="nav-item" onclick="showSection('origin')">🗺 Origin</button>
+    <button class="nav-item" onclick="showSection('biology')">💧 Biology</button>
+    <button class="nav-item" onclick="showSection('pests')">🐛 Pest Pressures</button>
+    <button class="nav-item" onclick="showSection('diseases')">🦠 Disease Pressures</button>
+    <button class="nav-item" onclick="showSection('arborist')">🪚 Arborist Notes</button>
+  </div>
+  <div class="content">
 
+    <div class="section active" id="sec-identity">
+      <h2>Silver Maple</h2>
+      <div class="sci-name">Acer saccharinum L. — Family Sapindaceae (formerly Aceraceae)</div>
+      <div class="card">
+        <div class="id-grid">
+          <div class="id-item"><div class="id-label">Common names</div><div class="id-val">Silver maple, soft maple, white maple, river maple</div></div>
+          <div class="id-item"><div class="id-label">Family</div><div class="id-val">Sapindaceae (maple family)</div></div>
+          <div class="id-item"><div class="id-label">Height</div><div class="id-val">15–30 m; occasionally to 35 m in ideal sites</div></div>
+          <div class="id-item"><div class="id-label">DBH</div><div class="id-val">60–120 cm common; large specimens to 150 cm+</div></div>
+          <div class="id-item"><div class="id-label">Bark</div><div class="id-val">Young: smooth, grey; Mature: shaggy, plated, with long loose scales — distinctive "shredding" appearance</div></div>
+          <div class="id-item"><div class="id-label">Leaves</div><div class="id-val">5-lobed, deeply sinuate (cut nearly to midrib); underside silvery-white (diagnostic); opposite arrangement</div></div>
+          <div class="id-item"><div class="id-label">Leaf vs. Norway maple</div><div class="id-val">Silver maple: deeply cut sinuses, silvery underside, milky sap absent; Norway: shallower lobes, milky sap at petiole break</div></div>
+          <div class="id-item"><div class="id-label">Samaras</div><div class="id-val">Largest samaras of any maple — paired wings 4–7 cm, distinctive V-shape; ripen May–June</div></div>
+          <div class="id-item"><div class="id-label">Fall colour</div><div class="id-val">Yellow to pale orange — not as vivid as sugar or Manitoba maple</div></div>
+          <div class="id-item"><div class="id-label">Growth rate</div><div class="id-val">Very fast — 60–120 cm/year in good conditions; fastest growing maple in North America</div></div>
+        </div>
+        <h3>Key ID — Distinguishing Silver from Norway Maple</h3>
+        <p>These two species are consistently confused in the Okanagan. The critical differences:</p>
+        <ul>
+          <li><strong>Leaf underside:</strong> Silver maple = distinctly silvery-white; Norway maple = green on both sides</li>
+          <li><strong>Petiole sap:</strong> Break a Norway maple petiole = white milky sap immediately visible. Silver maple = clear sap</li>
+          <li><strong>Leaf sinuses:</strong> Silver maple sinuses cut nearly to the midrib (very deep); Norway maple sinuses are shallower</li>
+          <li><strong>Samara angle:</strong> Silver maple samara wings nearly parallel (small angle); Norway maple wings nearly flat (180°)</li>
+          <li><strong>Bark:</strong> Mature silver maple has distinctive shaggy, long-plated bark; Norway stays smoother longer</li>
+        </ul>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note</div>
+          <p>The silvery underside of the leaves is unmistakable in a breeze — on a windy Okanagan afternoon, silver maples flash white-green as the leaves turn in the wind. This is the fastest field ID from a distance. On still days, the deeply cut leaf sinuses (look like someone took large bites out of the leaf margins) are the next best indicator. Get comfortable with this ID — silver maple is everywhere in older Okanagan neighbourhoods, often mislabeled on arborist reports as Norway maple or "soft maple."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-origin">
+      <h2>Origin &amp; Natural History</h2>
+      <div class="card">
+        <h3>Native Range</h3>
+        <p>Silver maple is native to eastern North America — from New Brunswick south to Florida, west to Oklahoma and Nebraska, concentrated in the Mississippi and Ohio River valleys. It is characteristically a <strong>floodplain and riparian species</strong> in its native range, growing along rivers, lake margins, and in bottomland forests with seasonally high water tables.</p>
+        <p>It is not native to BC. Silver maple was widely planted across western Canada as a fast-growing shade tree from the mid-20th century onward — a choice that made aesthetic and economic sense at planting time but has created significant long-term arboricultural challenges as these trees have matured.</p>
+
+        <h3>Why It Was Planted Everywhere</h3>
+        <p>Post-WWII suburban expansion demanded fast shade trees for new residential developments. Silver maple delivered: fast growth, wide canopy, attractive leaf shape, tolerance of compacted clay soils and seasonal flooding. It was cheap, grew well in nursery conditions, and planted by the tens of thousands across the Okanagan between 1950 and 1990.</p>
+        <p>Those trees are now 40–80 years old — mature to overmature specimens with significant structural complexity and associated risk.</p>
+
+        <h3>Ecological Role in Native Range</h3>
+        <p>In eastern floodplain forests, silver maple fills the fast-growing pioneer niche in disturbed riparian areas — similar ecologically to black cottonwood in the Okanagan. It fixes nitrogen-poor flood-deposited sediments, provides early canopy cover, and is eventually succeeded by longer-lived species. Its native hydrology (periodic flooding) is the context in which its structural characteristics evolved — characteristics that become hazards in the static, dry Okanagan urban environment.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note</div>
+          <p>Many of the silver maples you'll work on in West Kelowna, Kelowna, and Penticton were planted by municipal programs or homebuilders in the 1960s–70s. They are now 50–60 years old, often growing over sidewalks, rooftops, and utilities that weren't there when the tree was planted. The structural assessment of a mature silver maple requires understanding both its biology (fast, weak wood) and its history (what was it planted into, and how has the site changed around it).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-biology">
+      <h2>Biology &amp; What It Wants</h2>
+      <div class="card">
+        <table>
+          <tr><th>Factor</th><th>Preference</th><th>Okanagan Reality</th></tr>
+          <tr><td>Water</td><td>High — native to floodplains; tolerates seasonal flooding</td><td>Okanagan is semi-arid; street-irrigated silver maples are consistently water-stressed compared to native habitat</td></tr>
+          <tr><td>Soil</td><td>Adaptable; tolerates clay, compaction, wet soils</td><td>Alkaline Okanagan soils (pH 7.5–8.5) can cause iron chlorosis; compacted boulevard soils are common</td></tr>
+          <tr><td>Sun</td><td>Full sun preferred; tolerates partial shade</td><td>Generally adequate in urban settings</td></tr>
+          <tr><td>Growth rate</td><td>Very fast — fastest growth of any North American maple</td><td>Fast growth = wide rings = lower wood density = weaker branches</td></tr>
+          <tr><td>Root system</td><td>Shallow, aggressive, wide-spreading</td><td>Highly invasive in irrigation lines, sewer pipes, sidewalk pavement</td></tr>
+          <tr><td>Wood density</td><td>Low — hence "soft maple"</td><td>Brittle branches; high failure risk under wind, ice, or snow load</td></tr>
+          <tr><td>Urban tolerance</td><td>Moderate — tolerates compaction better than most maples</td><td>Better than Norway maple in wet/clay; worse in dry, alkaline conditions</td></tr>
+        </table>
+
+        <h3>The Wood Problem</h3>
+        <p>Silver maple's fast growth rate produces wide annual rings with low density — this is what makes it a "soft maple." The wood is significantly weaker than sugar maple, red maple, or even red oak. Branch union angles in silver maple are often <strong>included bark</strong> configurations (narrow V-crotches) — these are structurally unreliable and far more common in silver maple than in other species due to its branching architecture.</p>
+        <p>Large silver maples in the Okanagan commonly develop a predictable structural pattern: a main trunk that has grown wide and dominant, multiple large codominant stems with included bark unions, cavities from previous branch failures, and a crown that has expanded far beyond the structural capacity of its attachment points.</p>
+
+        <h3>Root Invasiveness</h3>
+        <p>Silver maple roots are among the most infrastructure-invasive of any common urban tree. They actively seek water and oxygen — in the Okanagan's dry climate, irrigation lines, sewer pipes, and foundation drains are primary targets. Root barrier installation at planting time is standard practice; after the fact, it is too late. When assessing silver maples near structures, always ask about sewer camera inspection history.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Structural Assessment Priority</div>
+          <p>Silver maple is the most common species for large branch and whole-tree failure calls in West Kelowna and Kelowna after wind events. The included bark unions and weak wood mean that structural assessment is not optional on mature specimens — it's essential. During assessments: probe all major codominant unions with a mallet for hollowness; look for cracks at the union base; assess lean and crown weight distribution. The ISA Tree Risk Assessment Qualification (TRAQ) framework is the right tool — don't sign off on a mature silver maple over a target without a full TRAQ-level assessment.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-pests">
+      <h2>Pest Pressures</h2>
+      <div class="card">
+        <table>
+          <tr><th>Pest</th><th>Severity</th><th>Signs &amp; Notes</th></tr>
+          <tr>
+            <td><strong>Cottony Maple Scale</strong><br><em>Pulvinaria innumerabilis</em></td>
+            <td><span class="severity sev-mod">Moderate</span></td>
+            <td>White cottony egg masses on undersides of branches in early summer; heavy infestations cause dieback; very common on silver maple in Okanagan</td>
+          </tr>
+          <tr>
+            <td><strong>Silver Maple Borer</strong><br><em>Agrilus difficilis</em></td>
+            <td><span class="severity sev-mod">Moderate</span></td>
+            <td>Agrilus beetle; D-shaped exit holes; serpentine galleries under bark; attacks stressed trees; related to EAB (Thursday's lesson)</td>
+          </tr>
+          <tr>
+            <td><strong>Maple Aphids</strong><br>Various spp.</td>
+            <td><span class="severity sev-low">Low–Mod</span></td>
+            <td>Colonies on undersides of leaves; honeydew drip; sooty mold; cosmetic but client-visible; spike in mid-summer</td>
+          </tr>
+          <tr>
+            <td><strong>Oystershell Scale</strong><br><em>Lepidosaphes ulmi</em></td>
+            <td><span class="severity sev-mod">Moderate</span></td>
+            <td>Grey oyster-shell scales on bark; weakens stems; monitor for crawler emergence in spring</td>
+          </tr>
+          <tr>
+            <td><strong>Maple Leafcutter</strong><br><em>Paraclemensia acerifoliella</em></td>
+            <td><span class="severity sev-low">Low</span></td>
+            <td>Circular cuts in leaves; larvae use leaf pieces to form cases; cosmetic; uncommon but distinctive</td>
+          </tr>
+        </table>
+
+        <h3>Cottony Maple Scale — The One to Watch</h3>
+        <p>Cottony maple scale is the most commonly observed pest on silver maple in the Okanagan. The white egg masses appear in June and are unmistakable — they look like small cotton balls attached to branches. Heavy infestations cause branch dieback and weaken already structurally compromised trees. Management: horticultural oil in spring targeting overwintering crawlers; systemic imidacloprid injection for high-value specimens with severe infestations. Natural predators (parasitic wasps) provide some control in unsprayed settings.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note</div>
+          <p>When you're doing a structural assessment on a mature silver maple and the homeowner mentions "white stuff on the branches" — that's cottony maple scale, not mold or disease. It's worth including in your written report because heavy scale infestations compound the already compromised structural situation: weakened branches are more likely to fail. Document the scale presence, recommend a PHC consultation, and note that the pest pressure is an additional stressor on a tree already needing structural management.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-diseases">
+      <h2>Disease Pressures</h2>
+      <div class="card">
+        <table>
+          <tr><th>Disease</th><th>Causal Agent</th><th>Severity</th></tr>
+          <tr><td><strong>Verticillium Wilt</strong></td><td><em>Verticillium dahliae</em></td><td><span class="severity sev-high">High</span></td></tr>
+          <tr><td><strong>Anthracnose</strong></td><td><em>Discula</em> spp.</td><td><span class="severity sev-mod">Moderate</span></td></tr>
+          <tr><td><strong>Tar Spot</strong></td><td><em>Rhytisma acerinum</em></td><td><span class="severity sev-low">Low (cosmetic)</span></td></tr>
+          <tr><td><strong>Wood Decay</strong></td><td>Various (Ganoderma, Armillaria, etc.)</td><td><span class="severity sev-high">High in mature trees</span></td></tr>
+          <tr><td><strong>Iron Chlorosis</strong></td><td>Abiotic — high pH</td><td><span class="severity sev-mod">Moderate in Okanagan</span></td></tr>
+        </table>
+
+        <p><strong>Verticillium wilt</strong> is a major killer of Okanagan silver maples. The species is highly susceptible, and the urban boulevard soil environment (Verticillium-infested, compacted, alkaline) creates near-perfect conditions for infection. Sudden wilt of one or more large branches in midsummer, with vascular streaking visible on cross-section, is the characteristic presentation. No cure; management as per Thursday Week 4 lesson (Verticillium protocol).</p>
+        <p><strong>Wood decay</strong> is a near-universal finding in mature silver maples. The soft wood, frequent wounding (from branch failures, pruning, mechanical damage), and weak compartmentalization (Shigo CODIT Wall 4 is moderate in <em>Acer saccharinum</em>) make large cavities common. Treat all major wounds on silver maple as potential decay entry points until proven otherwise — always include internal decay assessment in risk evaluations.</p>
+        <p><strong>Iron chlorosis</strong> (interveinal yellowing of leaves, veins remaining green) is common in Okanagan silver maples in alkaline soils. Iron is present in the soil but unavailable at high pH. Management: soil acidification (sulfur), chelated iron foliar or trunk injection. Not lethal alone but chronic chlorosis weakens the tree.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — The Decay Assessment</div>
+          <p>In older West Kelowna and Kelowna neighbourhoods, a mature silver maple over a residence is one of the most time-sensitive risk assessments you'll do. These trees have been there 50+ years, they've had branch failures, the wood is soft, and Verticillium is in the soil. Before you climb one for a pruning job, do a walk-around: tap the major stem unions, look for fungal conks (Ganoderma especially), look for any cracks or seams at included bark unions. If you find significant internal decay and included bark together on the same stem, that's a TRAQ-level risk conversation with the client before any work proceeds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-arborist">
+      <h2>Arborist Notes</h2>
+      <div class="card">
+        <div class="warn">
+          <div class="warn-label">⚠ Structural Risk — Highest Priority</div>
+          <p>Silver maple is the highest-risk common boulevard tree in the Okanagan by branch failure frequency. Every mature specimen over a target requires structural assessment before pruning. Do not assume large branches are safe because the tree "looks fine" — included bark unions in silver maple can fail suddenly without visible warning.</p>
+        </div>
+
+        <h3>Pruning Approach</h3>
+        <p><strong>Best timing: Late winter to early spring (February–March)</strong> — before bud break, after frost risk diminishes. Silver maple bleeds heavily if pruned in spring sap flow. Summer pruning is acceptable for hazard mitigation; avoid fall.</p>
+        <p>Priority pruning objectives for mature silver maple:</p>
+        <ul>
+          <li>Remove dead, dying, and structurally defective branches (crown cleaning)</li>
+          <li>Reduce end-weight on long horizontal scaffold branches (subordination cuts to laterals)</li>
+          <li>Address included bark unions where size and position create significant targets</li>
+          <li>Crown reduction only if justified by written specification per ANSI A300 Part 1 — not as a substitute for removal on severely declined trees</li>
+        </ul>
+        <p>Per <strong>ANSI A300 Part 1</strong>: avoid removing more than 25% of live crown in a single season. Silver maple is particularly sensitive to over-pruning — excessive removal triggers epicormic growth from latent buds throughout the crown, creating poor attachment points and increased long-term management burden.</p>
+
+        <h3>Cabling &amp; Bracing</h3>
+        <p>Supplemental support systems (cabling per ANSI A300 Part 3) can extend the functional life of silver maples with codominant stems and included bark, but are not a substitute for hazard branch removal. Cable installations must be maintained and re-inspected annually — cable that was installed 15+ years ago and never re-inspected is a liability. When you see old galvanized cable in a silver maple crown, inspect the attachment hardware carefully before applying any additional load.</p>
+
+        <h3>Urban Suitability &amp; Replacement</h3>
+        <p>Silver maple should not be planted in standard Okanagan urban settings. If a client needs a replacement after removal: sugar maple (drought-sensitive but superior structure), red oak (<em>Quercus rubra</em>), hackberry (<em>Celtis occidentalis</em>), or ornamental pear are better long-term choices for most boulevard situations.</p>
+
+        <h3>Client Communication</h3>
+        <p>The hardest conversation with silver maple clients: "Your tree is a beautiful, mature specimen that will probably need to come down in the next 5–10 years, and here's why." Be specific — show them the included bark unions, explain what an embolism or decay column means for structural integrity, and give them the ISA risk framework language. A client who understands why is more likely to make good decisions than one who feels rushed.</p>
+
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — ISA Exam</div>
+          <p>Silver maple appears in ISA CA exam questions across multiple domains: Tree Risk Assessment (codominant stems, included bark, failure potential), Pruning (crown reduction standards, 25% rule, epicormic response), Supplemental Support Systems (cabling for codominant stems), and Tree Selection &amp; Establishment (appropriate species for urban sites). Know its structural weaknesses, its susceptibility to Verticillium, and the ANSI A300 implications for managing it. The exam may present a scenario: "A silver maple has two codominant stems with included bark over a parking lot. The recommended arboricultural action is..." — answer: structural assessment, documentation, and either cable installation per ANSI A300 Part 3 or removal, depending on condition and risk rating.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="footer-tag">
+  📚 ISA Exam Domains: Tree Biology (11%) · Tree Risk Assessment (11%) · Tree Selection &amp; Establishment (7%) · Pruning (15%) &nbsp;·&nbsp; Sources: ISA Arborists' Certification Study Guide (4th Ed.) · ANSI A300 Parts 1 &amp; 3 · ISA BMP for Pruning · USDA Silvics of North America
+</div>
+<script>
+function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');event.target.classList.add('active');}
+</script>
+</body>
+</html>
