@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 15 · Thursday: Ips Bark Beetles</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0f0f1a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+  header{background:#1e1e2e;border-bottom:3px solid #ef4444;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .brand{font-size:1.1rem;font-weight:700;color:#ef4444;letter-spacing:.05em}
+  .week-label{font-size:.8rem;color:#94a3b8;background:#0f0f1a;padding:4px 10px;border-radius:20px}
+  .day-badge{background:#ef444420;color:#ef4444;border:1px solid #ef444460;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+  main{max-width:760px;margin:0 auto;padding:24px 16px}
+  h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+  .subtitle{color:#94a3b8;margin-bottom:24px;font-size:.95rem}
+  .card{background:#1e1e2e;border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid #2d2d44}
+  h2{color:#ef4444;font-size:.95rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+  p{color:#cbd5e1;font-size:.9rem;line-height:1.65;margin-bottom:10px}
+  ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8;margin-bottom:10px}
+  li{margin-bottom:3px}
+  .key{color:#ef4444;font-weight:700}
+  .progress{display:flex;gap:6px;margin-bottom:20px;align-items:center}
+  .progress-dot{width:10px;height:10px;border-radius:50%;background:#2d2d44;transition:.2s}
+  .progress-dot.done{background:#ef4444}
+  .progress-dot.active{background:#ef444480}
+  .progress-label{color:#94a3b8;font-size:.8rem;margin-left:8px}
+  .question-card{background:#1e1e2e;border-radius:12px;padding:24px;border:1px solid #2d2d44}
+  .q-num{color:#ef4444;font-size:.8rem;font-weight:700;text-transform:uppercase;margin-bottom:10px}
+  .q-text{font-size:1.05rem;font-weight:600;line-height:1.5;margin-bottom:20px}
+  .options{display:flex;flex-direction:column;gap:10px}
+  .option{background:#0f0f1a;border:2px solid #2d2d44;border-radius:8px;padding:12px 16px;cursor:pointer;font-size:.9rem;transition:.15s;text-align:left;color:#e2e8f0;line-height:1.4}
+  .option:hover:not(:disabled){border-color:#ef444460;background:#ef444408}
+  .option.correct{border-color:#4ade80;background:#4ade8015;color:#4ade80}
+  .option.wrong{border-color:#ef4444;background:#ef444415;color:#ef4444}
+  .option.reveal-correct{border-color:#4ade8060;background:#4ade8008;color:#94a3b8}
+  .option:disabled{cursor:default}
+  .reveal{margin-top:20px;display:none;border-top:1px solid #2d2d44;padding-top:20px}
+  .reveal.show{display:block}
+  .reveal h3{color:#ef4444;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+  .reveal p{color:#cbd5e1;font-size:.9rem;line-height:1.6;margin-bottom:10px}
+  .reveal ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8}
+  .reveal ul li{margin-bottom:4px}
+  .field-note{background:#ef444410;border-left:3px solid #ef4444;border-radius:0 8px 8px 0;padding:14px;margin-top:12px}
+  .field-note-label{color:#ef4444;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .field-note p{color:#fecaca;font-size:.88rem;line-height:1.5}
+  .result-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:700;margin-bottom:10px}
+  .result-badge.correct-badge{background:#4ade8020;color:#4ade80;border:1px solid #4ade8060}
+  .result-badge.wrong-badge{background:#ef444420;color:#ef4444;border:1px solid #ef444460}
+  .btn{background:#ef4444;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:16px;transition:.15s}
+  .btn:hover{background:#dc2626}
+  .score-card{background:#1e1e2e;border-radius:12px;padding:32px;text-align:center;border:1px solid #ef444440}
+  .score-num{font-size:3rem;font-weight:800;color:#ef4444}
+  .score-sub{color:#94a3b8;margin-top:8px}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0}
+  th{background:#0f0f1a;color:#ef4444;padding:8px;text-align:left;border:1px solid #2d2d44;font-size:.78rem;text-transform:uppercase}
+  td{padding:8px;border:1px solid #2d2d44;color:#cbd5e1;vertical-align:top}
+  tr:nth-child(even) td{background:#0f0f1a40}
+  .domain-tag{text-align:center;color:#64748b;font-size:.78rem;margin-top:32px;padding-top:16px;border-top:1px solid #1e1e2e}
+  .domain-tag strong{color:#94a3b8}
+  #home-screen{display:block}
+  #quiz-screen{display:none}
+  #score-screen{display:none}
+  .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  @media(max-width:500px){.ref-grid{grid-template-columns:1fr}}
+  .ref-box{background:#0f0f1a;border:1px solid #ef444430;border-radius:8px;padding:10px 12px;font-size:.82rem}
+  .ref-box-title{color:#ef4444;font-weight:700;margin-bottom:6px;font-size:.8rem}
+  .ref-box p{font-size:.8rem;margin:0;color:#94a3b8}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🦠 Microbe Tree Training</div>
+  <div class="day-badge">Thursday · Pests &amp; Diseases</div>
+  <div class="week-label">Week 15</div>
+</header>
+<main>
+  <div id="home-screen">
+    <h1>Ips Bark Beetles</h1>
+    <p class="subtitle">Secondary killers, stress indicators, and outbreak conditions in BC Interior conifers</p>
+    <div class="card">
+      <h2>📋 Ips vs. Dendroctonus — Quick Reference</h2>
+      <p style="margin-bottom:10px">Ips and Dendroctonus are the two primary bark beetle genera on BC conifers. Knowing the difference matters for diagnosis and treatment decisions.</p>
+      <table>
+        <tr><th></th><th>Ips (Ips spp.)</th><th>Dendroctonus (e.g., MPB, Spruce Beetle)</th></tr>
+        <tr><td><strong>Gallery pattern</strong></td><td>I, Y, or H-shaped; egg galleries radiate from central chamber</td><td>Vertical winding "S"-shaped or irregular; varies by species</td></tr>
+        <tr><td><strong>Hind end</strong></td><td>Spines/teeth visible on rear (concave elytra with "spines")</td><td>Rounded rear; no distinctive spines</td></tr>
+        <tr><td><strong>Host status</strong></td><td>Usually secondary (]X�����\��Y��XZ�[�Y�Y\�O����[��H�[X\�H
+�[�]X��[��[�Y�ܛ�\��Y\�O�����������ۙϒ�^H��[�Y�[��X�Y\����ۙϏ���[O�K�[�O�[O�
+[�H[�ܘ]�\�K[O�K�]Y[���[O�
+��X�JO���T�
+[O��ۙ\���YO�[O�K��X�H�Y]H
+[O���Y�\[��\��[O�O�����������ۙϐ�YH�Z[�����ۙϏ���Y\�8�%\����X]Y�]]��[�X��[��O���Y\�8�%�YH�Z[�
+�[���X]�Y�[��JO�������X�O��]��\��H��Y�YܚY���]��\��H��Y�X����]��\��H��Y�X��]]H���Y[�Yێ�]�X�\��]����\�[��\�X�\�و]�\�Y�]��Y��\���\�H�Y]H[�\�Y��Y�ܛ�\��Y\�]��]X\�H]X��\�ˈX��[�]�X�\�ۈXY�Y\�H�YH�\�����\��Y��\�ۙ����]���]��\��H��Y�X����]��\��H��Y�X��]]H���Y[�Yێ���\���]����ܚ[��\�Z^Y�]]�8�%[��\�\�Y[�[�\��]H[���X�K���[�[��\��ܙ]�X�\�[�]�\�Hو�YK���\�����\�[�Y[�Y�H��[��Y]H�X�Y\ˏ���]���]��\��H��Y�X����]��\��H��Y�X��]]H��ܛ�ۈ�YH�\]Y[��O�]���ܙY[�8���Y[��YܙY[�8���Y[��8����YX���ۈ8���ܙ^K�\�]X���X^H�]\�H�\Y�YH
+�YZ��K�[����۝\�]X���ٝ[��YHݙ\�[۝ˈ[Z[��[�]H]X�ˏ���]���]��\��H��Y�X����]��\��H��Y�X��]]H��\����X]Y�[��O�]�����\�[�[����۝\��\��H�YK\�Z[��[��H
+�[���X]�Y
+K�\�H�[��H��ۚ^�H�\��������]\��[��ܝ[�X��[\�]H�YHX]��YH�Z[�[��و�]���H�Y]HX�]�]K����]����]����]����]ۈ�\��H����ۘ�X��H��\�]Z^�
+H���\�\��ۈ
+
+H]Y\�[ۜ�O؝]ۏ���]����]�YH�]Z^�\�ܙY[����]��\��H���ܙ\�ȈYH���ܙ\��X�\����]���]��\��H�]Y\�[ۋX�\��YH�KX�\����]����]����]�YH���ܙK\�ܙY[����]��\��H���ܙKX�\����]��\��H���ܙK[�[H�YH��[�[\��ܙH���]���]��\��H���ܙK\�X����]و
+H�ܜ�X��]����[OH���܎��ML؎�X\��[�]��M�ٛ۝\�^�N��\�[H���]�Y]�[�H]Y\�[ۈ�]�X[���Z[��ܘ�H�Y[\�XYHXYۛ��\ˏ����]ۈ�\��H����ۘ�X��H��\�\�]Z^�
+H��[OH�X\��[�]������\�\�\��ۏ؝]ۏ���]����]����]��\��H��XZ[�]Yȏ�'����ۙϒT�H^[H�XZ[�����ۙψ�YH�[���H
+LIJH0���Y�H�ܚ��X�X�\�
+�	JH	�����ɛ������ۙϔ��\��\Ώ���ۙψ��Z[�\��Hو�ܙ\���Y]HX[�Y�[Y[�X�X�][ۜ�0��T�H�ܙ\��\��X�H[O��\���Y]\�وH��[�Y�[��[O��Y�[ۈX��X�[��\�0��T�H\��ܚ\����\�Y�X�][ۈ�YH�ZYH
+Y�0�����	�[\��ܙ\�[O��ܙ\�[��[���O�[O��]����XZ[�����ܚ\���ۜ�]Y\�[ۜ�H�[N�K�^��\��\���Y]\�\�H[����[[ۛH�\��Y�YY\�	��X�ۙ\�I��\���Y]H\�ˈ�]�\�\��\��Y�X�][ۈYX[�[��X�X�Oȋ��[ۜΈ�^H]X��ۛH�Y\�]]�H[�XYH�Y[��[Y�H�[X\�H�Y]\�Z�H[�[�Z[�[�H�Y]H���^H\X�[H]X���Y\�]\�H[�XYH��\��Y�XZ�[�Y܈\�X�[H[XY�Y8�%�]�[��X��YH�[X\�H�[\��[��]��XZ��ۙ][ۜ�܈ۈ�\�[����[��X��\ȋ��^H\�H�X�ۙ\�H�X�]\�HZ\��[\�Y\�\�H��[��[�X]H�[X\�H�[\�Y\�و[����۝\��X�Y\ȋ��^H\�H\��X�ۛ�ZX�[H[\ܝ[�[��[X\�H\��[�\�H����][�[H[ۚ]ܙY�H��Z[�\��Hو�ܙ\�Ȃ�K��ܜ�X��K��]�X[�XY[�Έ��X�ۙ\�H�ˈ�[X\�H�\���Y]\ȋ���N���[��\��H��^H���X�ۙ\�H�\���Y]\���[��\�H�ܝ[�\�X�8�%^H]X���Y\�]]�H�Y[��Y\���Y�]X���H��\��[��\�K܈\�[���X�[X�[�K�[�\�[�[ZX�
+���X��ܛ�[�
+H�[][ۈ]�[�X[H�Y\��[��\�\�\�]X����Y��\�[���Έ�[�H�Y]H�ܙ\�[��X[H�[KH�YH����H[��H�]��[�\��\�[�]�[��H�Y]H�]�\�\��\�X�H\�H��ۙϜ]�X�O���ۙψۈH�\���\��X�K�������]�\���X�ۙ\�H��\���YX[��\�[\�ˈ�[��YH�]X][ۜ�\��X��Y\�H�[X\�H�[\�����[��O���ۙϒY�����\������ۙψ��Y�\��\��Y���Y[XY�Y܈�\��\�H�XZ�[�Y�Y\��[���[�[�H�\�[�Y�[��K�\�]X����X��YY�\�H^H��[�Z[ۈ�Y�ܛ�\��Y\ˈ��[�Y�[���Y��ۙ][ۜ�XZ�H\�H�X�\��[���ۘ�\����O��O���ۙϓ�]��XZ��[][ۜΏ���ۙψY�\��[�\�K�[�Y�H���[���[��ܛK܈X�H[XY�HܙX]\�X�[�[��\�
+��\�[��\�[�]Y���
+K\��[][ۜ�^�K�H����[Y\��[�����H�\��[��H\��H[��Y��X\��X]X��Y�X�[�]�[���Y\��Y�\�\��وZ\��Y��\�8�%ݙ\��[Z[��H�\�[�Y�[��H�H�Y\��Y]H�[X�\�ˏ�O��O���ۙϔ\��[ۙH]�X�[ێ����ۙψ\��X�Y\�\�HY�ܙY�][ۈ\��[ۙ\�
+\�[��\�Y[���\�]�\��[��
+H��XܝZ]X\��]X��ˈH�]���[�[���Y]\��[��\YH�XܝZ][��Y�[ܙK��O���[���H�X�X�[[\X�][ێ���ۙϒ\�ۈH]�[���YH\�H��\��[�X�]܏���ۙϋ���\�H�Y]H�؛[K��X]H��\��܈H�YH�[�۝[�YH��H]X��Y�H�X��\��]�H����ˏ����Y[��N��[�H��[�Y�[���Y�YX\��
+[��IܙH]�[��[ܙHو[JH\�H�YX�X�H����Y�H\�X�]�]Hۈ��\��Y[�H[���X�H[�\��[�[�[�\��X�H\�X\ˈ�[�[�H�YH��\���\��ۈH��[]�\�ۙ\���H[�HY�\�H�H�[[Y\�ۉ��\���[Y[�H�Y]H8�%���]H��HX�\�N��[�Y]�YH\��X�Z]�H�]\��\�\�H����ۙH��\X�[ۏ�[�H�X�[���[\�\��[��O�H�Y]H\�H�[\�K�H��Y���\��\�H\�X\�K���B�K��[N���^��Hۙ\���H[�HۈH�\�[�\��[�ۘH��\�H\���\�[��\�\�Y�ܚ[��\�
+��\��H[��\��ܙ]�X�\�]][\H�|nts along the mid-trunk. The crown is still green. Which Ips species is the most likely suspect in the Okanagan context?",
+    options: [
+      "Ips latidens — the large spruce engraver, which also attacks pine under drought stress",
+      "Ips pini — the pine engraver beetle, the most common Ips species on pines in the BC Interior",
+      "Ips calligraphus — a southern pine species not present in BC",
+      "Ips sexdentatus — a European pine species that has established in the Thompson-Okanagan"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Ips pini — The Pine Engraver",
+      body: `<p><span class="key">Ips pini</span> (the pine engraver beetle) is the primary Ips species attacking pines in the BC Interior, including the Okanagan. It attacks <strong>ponderosa pine, lodgepole pine</strong>, and to a lesser extent other pine species. It is well-documented throughout the Thompson-Okanagan and is the species most arborists encounter on urban and interface pines.</p>
+      <p><strong>Identification summary — Ips pini:</strong></p>
+      <ul>
+        <li>Adult: 3–5mm, reddish-brown to black; hind end (elytra) has a distinctly concave depression with <strong>4 pairs of spines</strong> — the spine count is diagnostic (Ips species are distinguished by spine count)</li>
+        <li>Attacks mid-trunk to upper trunk and large branches</li>
+        <li>Gallery pattern: egg galleries radiate in a Y or H pattern from a central nuptial chamber</li>
+        <li>Males initiate attack, excavate nuptial chamber, and release pheromones (ipsdienol, cis-verbenol) to attract females</li>
+        <li>1–3 generations per year in the Okanagan depending on temperature; more generations in hot years accelerate outbreak development</li>
+        <li>Associates with blue-stain fungi (<em>Ophiostoma</em> spp.) that colonize sapwood, contributing to tree death</li>
+      </ul>
+      <p><strong>Ips latidens</strong> (the large spruce engraver) is the main Ips species on spruce in BC — similar biology but attacking spruce rather than pine. <em>Ips calligraphus</em> is a southern US species absent from BC. <em>Ips sexdentatus</em> is European and not established in Canada.</p>`,
+      fieldnote: "Frass colour is a useful quick field ID: pink-red frass on pine bark = Ips pini or mountain pine beetle. White to cream frass on spruce = Ips latidens or spruce beetle. Confirm by pulling bark to see gallery pattern — the H/Y/I shape of Ips galleries is distinctive and unmistakable once you've seen it. Take a photo of the gallery pattern and frass for your records and client report."
+    }
+  },
+  {
+    num: 3,
+    text: "When you peel back bark on a recently attacked ponderosa pine, you find a characteristic Ips gallery system. Which pattern is diagnostic of Ips versus Dendroctonus (mountain pine beetle)?",
+    options: [
+      "A single vertical 'S'-shaped gallery running parallel to the grain, with egg niches on alternating sides",
+      "A central nuptial chamber with multiple egg galleries radiating outward in a Y, H, or I pattern (like a letter of the alphabet)",
+      "Horizontal egg galleries running perpendicular to the grain, with vertical larval mines above and below",
+      "A broad irregular gallery system with no distinguishable central chamber, covering large phloem areas"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Gallery Patterns — The Arborist's Field Key",
+      body: `<p>Gallery patterns are the most reliable field diagnostic for distinguishing bark beetle species. They are engraved in the phloem-cambium interface and remain readable on dead wood long after the beetles have emerged.</p>
+      <p><span class="key">Ips gallery pattern:</span> A central <strong>nuptial chamber</strong> (the mating and egg-laying room, roughly round or oval) with <strong>2–6 egg galleries radiating outward</strong> from the chamber — the pattern looks like a capital I, H, Y, or asterisk depending on how many females the male mates with. Egg niches are small chambers off the galleries where individual eggs are laid. Larval galleries then radiate from the egg niches, widening as larvae grow, creating a "herringbone" appearance around each egg gallery.</p>
+      <p><span class="key">Mountain pine beetle (Dendroctonus ponderosae) gallery pattern:</span> Vertical, winding, primarily vertical egg galleries — often described as a "vertical S" or irregular winding gallery running with the grain. MPB is a monogamous system (one male, one female per gallery system); the gallery is less branched than Ips.</p>
+      <p>Other species: Spruce beetle (<em>D. rufipennis</em>) makes similar vertical galleries in spruce. Western pine beetle (<em>D. brevicomis</em>) makes winding irregular galleries in ponderosa pine — often confused with MPB but less common in the Okanagan.</p>
+      <ul>
+        <li>I/H/Y gallery = Ips (engraver beetles)</li>
+        <li>Vertical S gallery = Dendroctonus (MPB, spruce beetle)</li>
+        <li>Always pull bark on at least 3 points around the trunk to get a representative sample</li>
+        <li>Document with photos — gallery pattern photos are powerful in client reports</li>
+      </ul>`,
+      fieldnote: "Pulling bark is the definitive diagnostic step, but do it carefully: use a wide chisel or bark spud (not a chainsaw — you'll destroy the evidence). On a dead or dying tree, the phloem will separate cleanly from the wood surface. Fresh attacks (within the last 4–6 weeks) show the complete gallery system with eggs or small larvae. Old attacks (months old) show the expanded larval galleries and pupal chambers but no live insects. Knowing the timing helps you understand whether there's still active brood in the tree — relevant for removal urgency."
+    }
+  },
+  {
+    num: 4,
+    text: "A tree care client calls: their neighbouring property just had a diseased ponderosa pine removed — the tree had heavy Ips activity. They're worried their own pine trees are at risk. What is the most important factor determining whether their trees will be attacked?",
+    options: [
+      "The proximity of their trees to the felled tree — Ips beetles can fly no more than 30 metres from their emergence site",
+      "The vigour of their trees — stressed trees are dramatically more susceptible because they cannot mount an effective resin defense",
+      "Whether their trees are ponderosa pine versus other pine species — Ips only attacks ponderosa",
+      "The time of year — Ips beetles can only attack during a 2-week emergence window in early summer"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Host Vigour — The Central Variable",
+      body: `<p>Ips flight distance is not the limiting factor — adults can fly several kilometres under outbreak conditions, and even endemic populations can find stressed trees at significant distances via host volatile cues. Ips species are attracted to the terpene volatiles produced by damaged or stressed trees, which they can detect at very low concentrations.</p>
+      <p>The central variable is <span class="key">host tree vigour and resin flow capacity</span>. A healthy, well-watered ponderosa pine in deep loam soil with adequate root zone can produce enough resin flow to pitch out attacking beetles — even under moderate attack pressure. This is a well-documented phenomenon called <strong>constitutive resin defense</strong>. Stressed trees, by contrast, have reduced resin duct development, lower resin production rates, and reduced monoterpene concentrations — all of which compromise their ability to resist attack.</p>
+      <p>The correct advice to the client:</p>
+      <ul>
+        <li>Assess the vigour of their trees: Is the crown full and green? Any crown thinning or dieback? Any history of root disturbance or drought?</li>
+        <li>Ensure the removed tree's slash (cut logs, bark) is removed or treated promptly — slash is a brood emergence site and can produce thousands of beetles in the following season</li>
+        <li>Begin or increase irrigation if trees are moisture-stressed — this is the single most effective preventive measure</li>
+        <li>Monitor for frass and pitch tubes monthly through the growing season</li>
+        <li>Preventive bark spray (carbaryl, bifenthrin) can be applied to the trunk and large branches of high-value at-risk trees — effectiveness is best when applied before beetle flight in spring</li>
+      </ul>
+      <p>Ips is not restricted to ponderosa pine — <em>I. pini</em> also attacks lodgepole. Flight timing spans multiple emergence windows across the season in BC (not limited to 2 weeks). The "30 metre" limit is false.</p>`,
+      fieldnote: "The slash management point is critical and often missed in residential removals. Ips-attacked wood removed from a property should not be left on site as firewood or log piles in close proximity to living trees. In BC, there is no mandatory slash treatment regulation for residential removals (unlike Crown land logging), but the ecological logic is sound: a large pile of Ips-infested wood 10 metres from a healthy pine is a risk. Recommend chipping the slash on site, or hauling logs away from the area. Document this recommendation in your work order."
+    }
+  },
+  {
+    num: 5,
+    text: "Blue stain is visible in the sapwood of a felled pine. Which process does blue stain indicate, and what is its arboricultural significance?",
+    options: [
+      "The blue colour is caused by atmospheric oxidation of the wood's phenolic compounds — it indicates old age but is not related to insects",
+      "Blue stain is caused by ophiostomatoid fungi introduced by bark beetles; it colonizes and blocks sapwood water transport pathways, contributing to tree death",
+      "Blue stain indicates the presence of Armillaria root rot, which was the primary cause of tree death and predisposed it to bark beetle attack",
+      "Blue staining occurs naturally in all stressed conifers as a self-defensive response, and indicates the tree was attempting to compartmentalize the beetle attack"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Blue Stain Fungi — The Beetle's Partner",
+      body: `<p>Blue stain is one of the most visually striking field signs in bark beetle-killed wood — a blue-grey to dark blue-black discolouration of the sapwood, often with a marbling pattern. It is caused by <span class="key">ophiostomatoid fungi</span> (<em>Ophiostoma</em> and <em>Grosmannia</em> species), which are vectored by bark beetles in specialized structures called <strong>mycangia</strong> (spore-carrying pouches on the beetle's body).</p>
+      <p><strong>The relationship is mutualistic:</strong> The fungi break down wood cells and create conditions favourable for larval development; the beetles provide transport and dispersal. The fungi do not attack the beetle.</p>
+      <p><strong>Arboricultural significance:</strong></p>
+      <ul>
+        <li>Blue stain fungi colonize the sapwood's tracheids and block water transport pathways — accelerating tree death alongside the direct phloem destruction by beetle galleries</li>
+        <li>Blue stain is a reliable indicator that bark beetle activity was involved in tree decline or death — distinguishes it from drought death alone</li>
+        <li>Blue-stained wood retains structural integrity — the fungi consume only cell contents, not cell walls. Blue-stained lumber is structurally sound (it's a cosmetic defect, not a structural one) — relevant if a client asks about using the timber</li>
+        <li>Blue stain fungi are not transmissible to adjacent healthy trees by contact — they require beetle vector to spread</li>
+        <li>Presence of blue stain confirms beetle activity even when no live beetles remain — useful in forensic tree assessments</li>
+      </ul>
+      <p>Note: Blue stain is not the same as <em>Armillaria</em> (honey fungus), which appears white and stringy under bark, and Armillaria has its own diagnostic signs (bootlace rhizomorphs, honey-coloured mushrooms, white mycelial fan). The two can co-occur, but they are separate organisms.</p>`,
+      fieldnote: "On a removal job involving Ips-killed pine, the blue stain in the fresh cross-cut is immediately visible — a powerful visual to photograph for the client file and report. If the staining is extensive (reaching deep into the sapwood), the tree was likely under attack for at least one full season before the crown showed visible symptoms. This is important context for client conversations about 'why didn't you catch this sooner' — bark beetle decline can progress faster than annual inspection intervals. Recommend twice-yearly assessments for high-value trees in at-risk areas (interface, adjacent to beetle-killed wood)."
+    }
+  }
+];
+
+let current = 0, score = 0;
+
+function startQuiz() {
+  document.getElementById('home-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQuestion();
+}
+
+function renderProgress() {
+  const bar = document.getElementById('progress-bar');
+  bar.innerHTML = questions.map((_, i) => `<div class="progress-dot ${i < current ? 'done' : i === current ? 'active' : ''}"></div>`).join('') + `<span class="progress-label">Question ${current + 1} of ${questions.length}</span>`;
+}
+
+function renderQuestion() {
+  renderProgress();
+  const q = questions[current];
+  document.getElementById('q-card').innerHTML = `
+    <div class="q-num">Question ${q.num}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="options">
+      ${q.options.map((o, i) => `<button class="option" id="opt-${i}" onclick="selectOption(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    </div>
+    <div class="reveal" id="reveal"></div>
+  `;
+}
+
+function selectOption(idx) {
+  const q = questions[current];
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.disabled = true);
+  const ok = idx === q.correct;
+  if (ok) { score++; opts[idx].classList.add('correct'); }
+  else { opts[idx].classList.add('wrong'); opts[q.correct].classList.add('reveal-correct'); }
+  const rev = document.getElementById('reveal');
+  rev.className = 'reveal show';
+  rev.innerHTML = `
+    <div class="result-badge ${ok ? 'correct-badge' : 'wrong-badge'}">${ok ? '✓ Correct' : '✗ Incorrect — Correct answer: ' + String.fromCharCode(65 + q.correct)}</div>
+    <h3>${q.reveal.heading}</h3>
+    ${q.reveal.body}
+    <div class="field-note">
+      <div class="field-note-label">📋 Field Note — Okanagan</div>
+      <p>${q.reveal.fieldnote}</p>
+    </div>
+    ${current < questions.length - 1
+      ? `<button class="btn" onclick="nextQuestion()">Next Question →</button>`
+      : `<button class="btn" onclick="showScore()">See Results</button>`}
+  `;
+}
+
+function nextQuestion() { current++; renderQuestion(); }
+
+function showScore() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('score-screen').style.display = 'block';
+  document.getElementById('final-score').textContent = score + '/5';
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('score-screen').style.display = 'none';
+  document.getElementById('home-screen').style.display = 'block';
+}
+</script>
+</body>
+</html>
