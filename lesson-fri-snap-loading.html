@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 15 · Friday: Snap Loading &amp; Shock Loading</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0f0f1a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+  header{background:#1e1e2e;border-bottom:3px solid #3b82f6;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .brand{font-size:1.1rem;font-weight:700;color:#3b82f6;letter-spacing:.05em}
+  .week-label{font-size:.8rem;color:#94a3b8;background:#0f0f1a;padding:4px 10px;border-radius:20px}
+  .day-badge{background:#3b82f620;color:#3b82f6;border:1px solid #3b82f660;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+  main{max-width:860px;margin:0 auto;padding:24px 16px}
+  h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+  .subtitle{color:#94a3b8;margin-bottom:24px;font-size:.95rem}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .nav-btn{background:#1e1e2e;border:2px solid #2d2d44;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:.85rem;color:#94a3b8;transition:.15s;font-family:inherit}
+  .nav-btn:hover{border-color:#3b82f660;color:#3b82f6}
+  .nav-btn.active{border-color:#3b82f6;color:#3b82f6;background:#3b82f610}
+  section{display:none}
+  section.active{display:block}
+  .card{background:#1e1e2e;border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid #2d2d44}
+  h2{color:#3b82f6;font-size:.95rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+  h3{color:#60a5fa;font-size:.92rem;font-weight:600;margin-bottom:8px;margin-top:14px}
+  h3:first-child{margin-top:0}
+  p{color:#cbd5e1;font-size:.9rem;line-height:1.65;margin-bottom:10px}
+  ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8;margin-bottom:10px}
+  li{margin-bottom:3px}
+  .key{color:#3b82f6;font-weight:700}
+  .warn{background:#ef444415;border-left:3px solid #ef4444;padding:14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.9rem;color:#fca5a5}
+  .warn strong{color:#ef4444}
+  .ok{background:#4ade8015;border-left:3px solid #4ade80;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.88rem;color:#a3e6b8}
+  .ok strong{color:#4ade80}
+  .field-note{background:#3b82f610;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;padding:14px;margin-top:14px}
+  .field-note-label{color:#3b82f6;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .field-note p{color:#bfdbfe;font-size:.88rem;line-height:1.5;margin:0}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0}
+  th{background:#0f0f1a;color:#3b82f6;padding:9px;text-align:left;border:1px solid #2d2d44;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+  td{padding:9px;border:1px solid #2d2d44;color:#cbd5e1;vertical-align:top}
+  tr:nth-child(even) td{background:#0f0f1a40}
+  .formula-box{background:#0f0f1a;border:1px solid #3b82f640;border-radius:10px;padding:16px;margin:12px 0;text-align:center}
+  .formula{font-size:1.3rem;font-weight:700;color:#60a5fa;font-family:'Courier New',monospace;letter-spacing:.04em}
+  .formula-note{color:#94a3b8;font-size:.82rem;margin-top:8px}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+  @media(max-width:600px){.two-col{grid-template-columns:1fr}}
+  .scenario-box{background:#0f0f1a;border:1px solid #3b82f640;border-radius:8px;padding:14px}
+  .scenario-title{color:#3b82f6;font-size:.85rem;font-weight:700;margin-bottom:8px}
+  .scenario-box p{font-size:.85rem;margin:0;color:#94a3b8}
+  .scenario-box .result{color:#ef4444;font-weight:700;font-size:.95rem;margin-top:8px}
+  .scenario-box .result.safe{color:#4ade80}
+  .domain-tag{text-align:center;color:#64748b;font-size:.78rem;margin-top:32px;padding-top:16px;border-top:1px solid #1e1e2e}
+  .domain-tag strong{color:#94a3b8}
+  .load-bar-wrap{margin:12px 0}
+  .load-bar-label{font-size:.8rem;color:#94a3b8;margin-bottom:4px}
+  .load-bar{height:20px;border-radius:4px;background:#2d2d44;overflow:hidden;margin-bottom:8px;position:relative}
+  .load-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:.75rem;font-weight:700;color:#fff;transition:width .5s}
+  .highlight-box{background:#3b82f615;border:1px solid #3b82f640;border-radius:8px;padding:14px;margin:12px 0}
+  .highlight-box .hl-title{color:#60a5fa;font-size:.85rem;font-weight:700;margin-bottom:6px}
+  .highlight-box p{font-size:.88rem;margin:0;color:#cbd5e1}
+  strong{color:#e2e8f0}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🧗 Microbe Tree Training</div>
+  <div class="day-badge">Friday · Worksite Techniques</div>
+  <div class="week-label">Week 15</div>
+</header>
+<main>
+  <h1>Snap Loading &amp; Shock Loading</h1>
+  <p class="subtitle">The physics of sudden load, why WLL isn't the whole story, and how to prevent rigging system failure</p>
+  <nav>
+    <button class="nav-btn active" onclick="showSection('physics')">The Physics</button>
+    <button class="nav-btn" onclick="showSection('wll')">WLL vs. MBS</button>
+    <button class="nav-btn" onclick="showSection('scenarios')">Scenarios</button>
+    <button class="nav-btn" onclick="showSection('prevention')">Prevention</button>
+    <button class="nav-btn" onclick="showSection('checklist')">Pre-Rig Checklist</button>
+  </nav>
+
+  <section id="physics" class="active">
+    <div class="card">
+      <h2>What Is Snap Loading?</h2>
+      <p><span class="key">Snap loading</span> (also called shock loading) occurs when a load falls freely and is arrested suddenly by the rigging system — generating a dynamic force spike that can dramatically exceed the static weight of the load. A piece that falls 30cm before the rope comes taut can generate forces many times its own weight. This is not a theoretical concern — it is one of the primary mechanisms of rigging system failure in tree work.</p>
+      <p>The <strong>ISA Best Management Practices for Rigging</strong> identifies shock loading as a leading cause of rigging component failures. ANSI Z133-2017 §9 addresses rigging operations and load estimation directly. Understanding the physics is not optional for anyone who rigs wood — it is a core Safe Work Practices competency.</p>
+
+      <h3>The Physics — Force = Mass × Deceleration</h3>
+      <p>When a mass (a section of wood) falls and is arrested by a rope, the kinetic energy of the falling mass must be absorbed by the rigging system. The force generated depends on two variables:</p>
+      <div class="formula-box">
+        <div class="formula">F = m × (v² / 2d)</div>
+        <div class="formula-note">F = peak force (N) · m = mass (kg) · v = velocity at arrest (m/s) · d = arrest distance (rope stretch, m)</div>
+      </div>
+      <p>What this means in plain language: <strong>the shorter the arrest distance and the higher the velocity, the higher the peak force.</strong> A piece that free-falls 1 metre before the rope becomes taut is travelling at approximately 4.4 m/s. Arrested over 5cm of rope stretch, it generates forces 8–10× its static weight.</p>
+
+      <h3>The Key Variables</h3>
+      <table>
+        <tr><th>Variable</th><th>Effect on Shock Force</th><th>Field Control Point</th></tr>
+        <tr><td><strong>Fall distance</strong></td><td>Longer fall = more velocity = more force. Exponential relationship (F ∝ v²)</td><td>Eliminate slack in rigging before a piece is cut free</td></tr>
+        <tr><td><strong>Load mass</strong></td><td>Heavier piece = proportionally more force</td><td>Know your piece weight; never estimate "it looks light"</td></tr>
+        <tr><td><strong>Rope elasticity</strong></td><td>More stretch = longer arrest distance = lower peak force</td><td>Use rigging ropes with appropriate elongation; avoid static ropes for dynamic loading</td></tr>
+        <tr><td><strong>System rigidity</strong></td><td>Rigid systems (steel cable, hardware on hardware) transmit more force to anchor</td><td>Include compliant elements (rope, friction devices) in rigging path</td></tr>
+        <tr><td><strong>Attachment point</strong></td><td>Load tied close to piece end vs. balanced — affects fall arc and swing</td><td>Tie off close to cut to minimize swing radius</td></tr>
+      </table>
+
+      <div class="warn">
+        <strong>⚠ The 2× Rule is Not Enough:</strong> A common field heuristic is "double the static weight to estimate shock force." Research and field data show that actual shock forces in tree rigging scenarios — with real rope systems, real fall distances, and variable friction — can reach <strong>3× to 10× static weight</strong> or more depending on conditions. Design your rigging system for the peak case, not the average.
+      </div>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>A ponderosa pine butt log 40cm diameter × 1.5m length weighs roughly 160kg. If the climber ties it off with 60cm of slack before the final cut, and the rope has only 3cm of stretch under load, the peak arrest force exceeds 1,500kg — nearly 10× the static load. Every person on the ground who was confident "the rope can handle it" based on rated capacity alone is now in danger of a failed anchor, failed block, or failed rope. This is a physics problem, not a judgement problem — but the physics has to be in your head before you tie the knot.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="wll">
+    <div class="card">
+      <h2>WLL, MBS, and Design Factor — What the Numbers Mean</h2>
+      <h3>Working Load Limit (WLL)</h3>
+      <p><span class="key">Working Load Limit (WLL)</span> is the maximum load a piece of rigging equipment is designed to support in normal, static working conditions. It is published by the manufacturer and is the number stamped on carabiners, slings, and hardware. <strong>WLL is a static load rating. It is not a dynamic load rating.</strong></p>
+
+      <h3>Minimum Breaking Strength (MBS)</h3>
+      <p><span class="key">Minimum Breaking Strength (MBS)</span> (also called Minimum Breaking Load, MBL, or Breaking Strength, BS) is the force at which a piece of equipment is designed to fail — the laboratory test result for tensile failure. MBS is always significantly higher than WLL.</p>
+
+      <h3>Design Factor (Safety Factor)</h3>
+      <p>The relationship between MBS and WLL is the <span class="key">design factor</span> (also called safety factor): <strong>Design Factor = MBS ÷ WLL</strong>. Industry standards prescribe minimum design factors for rigging equipment in arboricultural applications:</p>
+      <table>
+        <tr><th>Equipment Type</th><th>Minimum Design Factor (per ISA BMP Rigging)</th><th>Example</th></tr>
+        <tr><td>Rigging ropes (running rope)</td><td>5:1 minimum for personnel systems; 7:1 recommended</td><td>20kN MBS rope → WLL of 4kN (5:1)</td></tr>
+        <tr><td>Rigging hardware (blocks, pulleys)</td><td>Typically 4:1 minimum</td><td>40kN MBS block → WLL of 10kN</td></tr>
+        <tr><td>Slings (wire, synthetic)</td><td>5:1 for synthetic; 5:1 for wire per ASME B30.9</td><td>25kN MBS sling → WLL of 5kN</td></tr>
+        <tr><td>Carabiners / connecting links</td><td>Gate-closed strength; note gate-open is dramatically lower</td><td>Check both gate open and gate closed ratings</td></tr>
+      </table>
+
+      <h3>Why WLL Alone Is Insufficient for Rigging</h3>
+      <p>WLL is calibrated for <strong>static or slowly applied loads</strong>. Shock loading generates forces that exceed WLL (and in extreme cases, exceed MBS) instantaneously. The design factor is not surplus capacity for careless rigging — it is the buffer for the unforeseen dynamic forces inherent in working with falling wood.</p>
+
+      <div class="load-bar-wrap">
+        <div class="load-bar-label">200kg static piece on a 10kN WLL / 50kN MBS rigging system:</div>
+        <div class="load-bar"><div class="load-bar-fill" style="width:4%;background:#4ade80">2kN</div></div>
+        <div class="load-bar-label">Same piece, 30cm free fall, 5% rope elongation:</div>
+        <div class="load-bar"><div class="load-bar-fill" style="width:22%;background:#eab308">~11kN → EXCEEDS WLL</div></div>
+        <div class="load-bar-label">Same piece, 100cm free fall, 5% elongation:</div>
+        <div class="load-bar"><div class="load-bar-fill" style="width:68%;background:#ef4444">~35kN → Approaching MBS</div></div>
+      </div>
+
+      <div class="highlight-box">
+        <div class="hl-title">The Correct Mental Model</div>
+        <p>WLL tells you the maximum load you should apply statically. In rigging, you must estimate the dynamic load — accounting for fall distance, mass, and rope elasticity — and ensure the dynamic load stays within WLL. If you cannot ensure zero fall before arrest, reduce the piece size, use a friction device to slow descent, or use a more compliant rope system.</p>
+      </div>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The WLL on a carabiner is measured on the major axis with the gate closed. The gate-open strength of many carabiners is 6–9kN — dramatically lower than the 25kN gate-closed rating. A carabiner with an unintentionally open or cross-loaded gate under shock load is a catastrophic failure risk. Always check gate closure before every load. Screw gates must be locked. Auto-locking gates should be verified by manual check. This is ANSI Z133 §9.4 — mandatory, not optional.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="scenarios">
+    <div class="card">
+      <h2>Real-World Scenarios — Calculate the Risk</h2>
+      <p>Use these scenarios to build your field intuition for shock loading risk. All estimates assume a simple drop-and-arrest model with a nylon running rope (approximately 5% elongation at working load).</p>
+
+      <div class="two-col">
+        <div class="scenario-box">
+          <div class="scenario-title">Scenario A — Controlled Lowering, No Slack</div>
+          <p>Piece: 80kg log section. Lowering on a friction hitch with no free fall — constant tension on rope throughout cut and descent.</p>
+          <div class="result safe">Peak load ≈ 0.8–1.2kN (static + friction). LOW RISK</div>
+        </div>
+        <div class="scenario-box">
+          <div class="scenario-title">Scenario B — 20cm of Slack</div>
+          <p>Piece: 80kg, 20cm of slack in the rigging line before the final cut. Rope elongation: 5%.</p>
+          <div class="result">Peak estimated load: ~4–6kN. MODERATE — approaches WLL of lighter hardware</div>
+        </div>
+        <div class="scenario-box">
+          <div class="scenario-title">Scenario C — 60cm Slack, Heavy Piece</div>
+          <p>Piece: 200kg, 60cm free fall before arrest. Common scenario with hurried rigging on a removal.</p>
+    2     <div class="result">Peak estimated load: 12–18kN. HIGH RISK — likely exceeds WLL of most rigging blocks and slings</div>
+        </div>
+        <div class="scenario-box">
+          <div class="scenario-title">Scenario D — Rigging From Ground, Swing Factor</div>
+          <p>100kg piece rigged from a side branch redirected via ground anchor. Piece swings 1m arc on arrest — adding centripetal load component.</p>
+          <div class="result">Swing forces add 15–30% additional load to anchor and redirect. ACCOUNTS MUST BE MADE</div>
+        </div>
+      </div>
+
+      <h3>The Swing Factor</h3>
+      <p>A piece that doesn't fall vertically but swings in an arc generates <span class="key">centripetal force</span> at the anchor as well as arrest force. This is additive. A large butt piece with a long swing radius on a redirected rigging system can generate anchor forces that exceed the sum of the fall arrest force alone by 20–40%. Always consider the swing radius and the anchor point relative to the piece's center of gravity.</p>
+
+      <h3>The Fiddle Block Multiplication Effect</h3>
+      <p>Using a block-and-tackle (fiddle block) to mechanical advantage a piece does not eliminate shock loading — it changes where the forces go. A 3:1 mechanical advantage system with a 200kg load shock loading at 3× multiplier puts ~1,800kg on the anchor attachment point, not 200kg. Understand that mechanical advantage and shock loading interact: the anchor must be rated for the multiplied dynamic load, not the static weight.</p>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The most dangerous scenario in Okanagan removal work is the large-diameter ponderosa "widow maker" — a dead standing tree with unpredictable wood failure, rigged with a ground-based rope system and a climber who can't get above the piece. If the wood fails unexpectedly before the final cut (not at the cut plane), the piece can free-fall a distance that was not part of the rigging plan. This is why risk assessment includes the failure mode of the cut itself, not just the cut we intend. On dead wood, always build in maximum rigging redundancy and assume the piece will fall from the highest possible point.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="prevention">
+    <div class="card">
+      <h2>Prevention — Rigging Practices That Eliminate Shock Load</h2>
+
+      <h3>1. Eliminate Slack Before the Final Cut</h3>
+      <p>This is the single most effective practice. Before making the final separating cut, take all slack out of the rigging system — the rope should be under light tension. Ask the ground crew to take up the slack on the lowering device (Port-A-Wrap, friction hitch, or redirect) before the climber makes the final cut. If there is visible catenary (sag) in the rigging line, there is slack that will translate to a fall distance and shock load.</p>
+      <p><strong>Per ANSI Z133 §9.4 and ISA BMP for Rigging:</strong> the lowering system operator must be attentive and in communication with the climber throughout the rigging sequence. A piece that drops because the ground person was inattentive is a preventable failure.</p>
+
+      <h3>2. Size Your Pieces for Your System</h3>
+      <p>The WLL of your rigging system sets the maximum piece weight you can safely handle. Work backward from your rigging hardware's WLL (factoring in a dynamic multiplier of 2–4× for expected conditions) to determine maximum piece weight. If a piece exceeds this, reduce it: cut it smaller, rig it in sections, or use a larger-capacity system before proceeding.</p>
+      <div class="formula-box">
+        <div class="formula">Max safe piece ≈ WLL ÷ Dynamic Factor</div>
+        <div class="formula-note">Example: 10kN WLL system ÷ 3 (conservative dynamic factor) = ~300kg max piece weight for rigged lowering with minimal fall distance</div>
+      </div>
+
+      <h3>3. Use Friction Devices — Reduce Arrest Velocity</h3>
+      <p>A friction device (Port-A-Wrap, Stein Friction Saver, or redirect around a tree) converts the kinetic energy of a descending piece into heat rather than transmitting it to the anchor as a spike. <span class="key">The longer the arrest distance, the lower the peak force.</span> Controlled lowering through a friction device — even imperfect, partial braking — dramatically reduces shock loading compared to a free fall and sudden arrest.</p>
+      <ul>
+        <li>Port-A-Wrap: most common field device; wrap count controls braking force</li>
+        <li>Redirect around ground-anchor tree: adds friction via tree bark; also redirects forces to ground-level anchor rather than climbing anchor</li>
+        <li>Rigging rings and blocks: smooth surfaces concentrate forces vs. bark friction; more predictable but require proper hardware ratings</li>
+      </ul>
+
+      <h3>4. Communicate the Plan Before Every Piece</h3>
+      <p>Per ANSI Z133 §7 and ISA BMP for Rigging, pre-task communication is mandatory. Before every rigged piece:</p>
+      <ul>
+        <li>Climber announces piece weight estimate and rigging attachment point</li>
+        <li>Ground crew confirms ready on lowering device</li>
+        <li>Clear verbal signal for cut and lower sequence</li>
+        <li>All non-essential personnel out of the drop zone (minimum 2× tree height per ANSI Z133)</li>
+      </ul>
+
+      <h3>5. Inspect Hardware After Shock Loading Events</h3>
+      <p>If a piece slips or falls unexpectedly — even if the system held — inspect all components that bore the load before reuse. <span class="key">Any component that has been shock loaded to or near MBS must be removed from service.</span> Rope fibres that have taken extreme shock loading may show core damage not visible externally. Carabiners that have been shock loaded may be deformed on the gate axis. When in doubt, retire it.</p>
+
+      <div class="ok">
+        <strong>The One-Sentence Rule:</strong> If there is slack in the rigging when the saw goes through the wood, the rigging has failed before the piece has left the tree. Zero slack. Every cut. No exceptions.
+      </div>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Communication failure between climber and ground crew is the most common contributing factor in rigging incidents we hear about on Okanagan job sites. Chainsaw noise, wind, and distance make shouted signals unreliable. Establish a radio protocol (walkie-talkie on removal jobs) or use a standardized hand signal system reviewed at tailgate. "Ready" confirmed by the ground person BEFORE the climber initiates the final cut — not inferred by the lack of objection. This is a culture issue as much as a technique issue.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="checklist">
+    <div class="card">
+      <h2>Pre-Rigging Assessment Checklist</h2>
+      <p style="margin-bottom:14px">Work through this before setting up a rigging system on any piece. Use it at tailgate for complex removals.</p>
+
+      <h3>Load Estimation</h3>
+      <ul>
+        <li>☐ Estimated piece dimensions (length × diameter)</li>
+        <li>☐ Estimated piece weight (use species density tables: ponderosa pine green ≈ 700kg/m³; Douglas-fir green ≈ 750kg/m³)</li>
+        <li>☐ Estimated dynamic load (static weight × anticipated dynamic factor — minimum 2×, use 3× for any fall distance &gt;10cm)</li>
+        <li>☐ System WLL ≥ estimated dynamic load?</li>
+      </ul>
+
+      <h3>Hardware Inspection</h3>
+      <ul>
+        <li>☐ All rigging blocks, carabiners, and slings within inspection interval and showing no deformation, cracking, or corrosion</li>
+        <li>☐ Gate closure confirmed on all carabiners (screw gates locked, auto-locking gates verified)</li>
+        <li>☐ No cross-loading on any carabiner (load on major axis only)</li>
+        <li>☐ Sling choker angle &lt;120° — wider angles reduce effective WLL dramatically (at 120°, WLL is 50% of rated)</li>
+        <li>☐ Running rope inspected for core damage, sheath abrasion, and heat glazing</li>
+      </ul>
+
+      <h3>Anchor Assessment</h3>
+      <ul>
+        <li>☐ Anchor rated for dynamic load — not just static weight</li>
+        <li>☐ Ground-level anchor used where possible (takes load off climbing anchor and canopy)</li>
+        <li>☐ Swing radius accounted for — anchor position keeps piece from swinging into structures or personnel</li>
+        <li>☐ Friction device (Port-A-Wrap or redirect) in rigging path — controlled lowering confirmed</li>
+      </ul>
+
+      <h3>Communication</h3>
+      <ul>
+        <li>☐ Radio or clear hand signal protocol reviewed with all crew</li>
+        <li>☐ Ground person confirmed on lowering device, ready to take tension before cut</li>
+        <li>☐ Drop zone cleared — all personnel &gt;2× tree height from base per ANSI Z133</li>
+        <li>☐ Signal sequence for "ready," "cutting," and "lower" agreed and tested</li>
+      </ul>
+
+      <h3>Post-Event Inspection (if shock load occurred)</h3>
+      <ul>
+        <li>☐ All components that bore unexpected load inspected before reuse</li>
+        <li>☐ Rope checked for kinks, core damage, heat glazing at arrest point</li>
+        <li>☐ Hardware checked for deformation, gate operation, weld integrity</li>
+        <li>☐ Any component in doubt removed from service immediately</li>
+        <li>☐ Incident documented — near-miss reporting per WorkSafeBC OHS Regulation</li>
+      </ul>
+
+      <div class="warn">
+        <strong>⚠ Near-Miss Reporting is Mandatory:</strong> Per WorkSafeBC OHS Regulation, near-miss incidents (including uncontrolled rigging events where no injury occurred) must be investigated and documented. Reporting near-misses is not an admission of fault — it is a safety culture requirement and an ANSI Z133 §4 expectation. A rigging failure that didn't injure anyone today is the same failure that will injure someone tomorrow if not corrected.
+      </div>
+    </div>
+    <div class="domain-tag">📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;·&nbsp; <strong>Sources:</strong> ANSI Z133-2017 §9 · ISA Best Management Practices for Rigging (Blair, 2000) · TCIA Technical Bulletin TB-002 Rigging · WorkSafeBC OHS Regulation Part 26 · Donzelli &amp; Lilly, <em>Tree Climber's Companion</em></div>
+  </section>
+</main>
+<script>
+function showSection(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
