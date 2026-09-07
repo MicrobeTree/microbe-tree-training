@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 15 · Wednesday: White Spruce (Picea glauca)</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0f0f1a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+  header{background:#1e1e2e;border-bottom:3px solid #84cc16;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .brand{font-size:1.1rem;font-weight:700;color:#84cc16;letter-spacing:.05em}
+  .week-label{font-size:.8rem;color:#94a3b8;background:#0f0f1a;padding:4px 10px;border-radius:20px}
+  .day-badge{background:#84cc1620;color:#84cc16;border:1px solid #84cc1660;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+  .layout{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 60px)}
+  @media(max-width:640px){.layout{grid-template-columns:1fr}.sidebar{display:flex;flex-direction:row;flex-wrap:wrap;overflow-x:auto;border-right:none;border-bottom:1px solid #2d2d44}}
+  .sidebar{background:#1a1a2e;border-right:1px solid #2d2d44;padding:20px 0}
+  .sidebar-title{color:#84cc16;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:0 16px 12px}
+  .nav-item{padding:10px 16px;cursor:pointer;font-size:.88rem;color:#94a3b8;border-left:3px solid transparent;transition:.15s;display:flex;align-items:center;gap:8px}
+  .nav-item:hover{color:#e2e8f0;background:#84cc1608}
+  .nav-item.active{color:#84cc16;border-left-color:#84cc16;background:#84cc1610}
+  .nav-item .icon{font-size:1rem;flex-shrink:0}
+  .content{padding:28px;overflow-y:auto;max-width:680px}
+  section{display:none}
+  section.active{display:block}
+  h1{font-size:1.5rem;font-weight:800;margin-bottom:4px}
+  h1 em{font-style:italic;color:#84cc16}
+  .common-name{color:#94a3b8;font-size:.95rem;margin-bottom:20px}
+  h2{color:#84cc16;font-size:.9rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;margin-top:20px;padding-top:20px;border-top:1px solid #2d2d44}
+  h2:first-child{margin-top:0;padding-top:0;border:none}
+  h3{color:#a3e635;font-size:.92rem;font-weight:600;margin-bottom:8px;margin-top:16px}
+  h3:first-child{margin-top:0}
+  p{color:#cbd5e1;font-size:.9rem;line-height:1.65;margin-bottom:10px}
+  ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8;margin-bottom:10px}
+  li{margin-bottom:3px}
+  .key{color:#84cc16;font-weight:700}
+  .id-card{background:#1e1e2e;border-radius:12px;padding:18px;border:1px solid #84cc1630;margin-bottom:16px}
+  .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media(max-width:500px){.id-grid{grid-template-columns:1fr}}
+  .id-row{background:#0f0f1a;border-radius:6px;padding:8px 12px}
+  .id-label{color:#94a3b8;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+  .id-val{color:#e2e8f0;font-size:.88rem;font-weight:600}
+  .tag{display:inline-block;background:#84cc1620;color:#84cc16;border:1px solid #84cc1640;border-radius:16px;padding:3px 10px;font-size:.75rem;font-weight:700;margin:2px}
+  .tag.red{background:#ef444420;color:#ef4444;border-color:#ef444440}
+  .tag.yellow{background:#eab30820;color:#eab308;border-color:#eab30840}
+  .tag.blue{background:#3b82f620;color:#60a5fa;border-color:#3b82f640}
+  .field-note{background:#84cc1610;border-left:3px solid #84cc16;border-radius:0 8px 8px 0;padding:14px;margin-top:12px}
+  .field-note-label{color:#84cc16;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .field-note p{color:#d9f99d;font-size:.88rem;line-height:1.5;margin:0}
+  .warn{background:#ef444415;border-left:3px solid #ef4444;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.88rem;color:#fca5a5}
+  .warn strong{color:#ef4444}
+  .caution{background:#eab30815;border-left:3px solid #eab308;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.88rem;color:#fde68a}
+  .caution strong{color:#eab308}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0}
+  th{background:#0f0f1a;color:#84cc16;padding:8px;text-align:left;border:1px solid #2d2d44;font-size:.78rem;text-transform:uppercase}
+  td{padding:8px;border:1px solid #2d2d44;color:#cbd5e1;vertical-align:top}
+  tr:nth-child(even) td{background:#0f0f1a40}
+  .domain-tag{color:#64748b;font-size:.78rem;margin-top:28px;padding-top:16px;border-top:1px solid #1e1e2e}
+  .domain-tag strong{color:#94a3b8}
+  .severity{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .sev-high{background:#ef4444}
+  .sev-med{background:#eab308}
+  .sev-low{background:#4ade80}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🌳 Microbe Tree Training</div>
+  <div class="day-badge">Wednesday · Tree Profile</div>
+  <div class="week-label">Week 15</div>
+</header>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-title">Sections</div>
+    <div class="nav-item active" onclick="showTab('identity')"><span class="icon">🔍</span> Identity</div>
+    <div class="nav-item" onclick="showTab('origin')"><span class="icon">🗺</span> Origin &amp; Range</div>
+    <div class="nav-item" onclick="showTab('biology')"><span class="icon">💧</span> Biology</div>
+    <div class="nav-item" onclick="showTab('pests')"><span class="icon">🐛</span> Pest Pressures</div>
+    <div class="nav-item" onclick="showTab('disease')"><span class="icon">🍂</span> Disease Pressures</div>
+    <div class="nav-item" onclick="showTab('arborist')"><span class="icon">🧗</span> Arborist Notes</div>
+  </div>
+  <div class="content">
+
+    <section id="identity" class="active">
+      <h1><em>Picea glauca</em></h1>
+      <p class="common-name">White Spruce · Canadian Spruce · Cat Spruce</p>
+      <div class="id-card">
+        <div class="id-grid">
+          <div class="id-row"><div class="id-label">Family</div><div class="id-val">Pinaceae</div></div>
+          <div class="id-row"><div class="id-label">Genus / Species</div><div class="id-val"><em>Picea glauca</em></div></div>
+          <div class="id-row"><div class="id-label">Mature Height</div><div class="id-val">20–30m (urban 12–20m)</div></div>
+          <div class="id-row"><div class="id-label">Mature Spread</div><div class="id-val">5–8m (narrow conical)</div></div>
+          <div class="id-row"><div class="id-label">Form</div><div class="id-val">Pyramidal; dense; spire-topped</div></div>
+          <div class="id-row"><div class="id-label">Bark</div><div class="id-val">Grey-brown; thin; scaly plates</div></div>
+          <div class="id-row"><div class="id-label">Longevity</div><div class="id-val">200–300+ years (forest); 80–120yr urban</div></div>
+          <div class="id-row"><div class="id-label">Notable</div><div class="id-val">Most widely distributed conifer in Canada</div></div>
+        </div>
+      </div>
+      <h2>Field Identification</h2>
+      <h3>Needles</h3>
+      <p>Needles are <span class="key">single, 4-sided (rhombic in cross-section), and attached on peglike projections (sterigmata)</span> that remain on the twig after needles fall — a diagnostic feature for all spruces, distinguishing them from fir (flat needles, no pegs) and hemlock (short, flat, 2-ranked). White spruce needles are blue-green to grey-green, 1.5–2.5cm long, sharp-tipped, and when crushed have a distinctive musty or "cat urine" odour — earning it the name <em>Cat Spruce</em> in some regions. This odour is caused by <strong>β-phellandrene</strong> and is unique among BC conifers.</p>
+      <h3>Cones</h3>
+      <p>Cones are cylindrical, 3–6cm long, and hang downward from branch tips. Cone scales are thin, flexible, and have a smooth rounded edge — unlike the pointed, mouse-tail bracts of Douglas-fir or the prickly scales of Engelmann spruce. Cones ripen late summer and drop intact. A heavy cone crop (mast year) occurs every 2–6 years.</p>
+      <h3>Twigs</h3>
+      <p>Twigs are hairless (glabrous), pale orange-brown to buff-coloured. The persistent woody pegs (sterigmata) left after needle drop give the twig a rough, "pipe-cleaner" texture when needles are rubbed off. This peg characteristic is the fastest field ID: compare to fir (smooth round scars after needle drop) and hemlock (tiny peg but much smaller).</p>
+      <h3>Comparison — Similar BC Species</h3>
+      <table>
+        <tr><th>Feature</th><th>White Spruce</th><th>Engelmann Spruce</th><th>Sitka Spruce</th></tr>
+        <tr><td>Needle feel</td><td>Sharp but not extreme</td><td>Very sharp, prickly</td><td>Very sharp, flat</td></tr>
+        <tr><td>Needle odour</td><td>Cat/musty (β-phellandrene)</td><td>Unpleasant but different</td><td>None notable</td></tr>
+        <tr><td>Cone scale edge</td><td>Smooth, rounded</td><td>Jagged, wavy</td><td>Wrinkled, papery</td></tr>
+        <tr><td>Habitat</td><td>Boreal/montane, drier</td><td>High elevation, moist</td><td>Coastal only</td></tr>
+        <tr><td>Okanagan frequency</td><td>Common (esp. north Okanagan, planted)</td><td>High-elevation fringes</td><td>Absent</td></tr>
+      </table>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>In the urban Okanagan (Kelowna, Vernon, West Kelowna), white spruce appears frequently as a planted ornamental and boulevard tree — especially in older neighbourhoods where it was planted as a fast-growing windbreak or privacy screen in the 1970s–80s. It is often confused with Colorado blue spruce (<em>Picea pungens</em>) on residential sites. Key distinction: blue spruce has distinctly stiffer, stouter, sharply-prickly needles (touching a branch is uncomfortable) and a more silvery-blue colour. White spruce needles are softer in comparison and greener. Crush a needle — cat smell = white spruce.</p>
+      </div>
+    </section>
+
+    <section id="origin">
+      <h1><em>Picea glauca</em></h1>
+      <p class="common-name">White Spruce · Origin &amp; Range</p>
+      <h2>Native Range</h2>
+      <p>White spruce has the <span class="key">most extensive range of any conifer in Canada</span> — from Labrador and Newfoundland westward across the boreal zone to Alaska and the Yukon, dipping south through the Rocky Mountain cordillera. It occupies a vast latitudinal range: from the treeline in the subarctic (where it grades into the krummholz form) to montane forests at mid-elevations in BC and Alberta.</p>
+      <p>In British Columbia, white spruce is native to the northeastern boreal regions (Peace River, Liard), the northern interior, and sporadically in moister north-facing aspects in the Shuswap and North Okanagan. The <strong>Okanagan Highlands and Monashee Mountains</strong> on the eastern fringe of the Okanagan watershed contain native white spruce stands, typically above 900m elevation in moister pockets.</p>
+      <h2>Ecological Role in Native Habitat</h2>
+      <p>In boreal and subboreal forests, white spruce is a climax or near-climax canopy dominant in many successional sequences. It typically follows trembling aspen and paper birch after disturbance (fire, logging) — a pattern well-documented in interior BC ecology. The spruce understory establishes under the nurse canopy of pioneer broadleaves and eventually overtops them over decades.</p>
+      <p>White spruce is <span class="key">keystone habitat</span> for many wildlife species: red squirrels depend on the cone crop; many cavity-nesting birds use older snags; and boreal owl populations track spruce distributions closely. In the Okanagan context, adjacent spruce stands in the highlands provide connectivity for wildlife movement between valley and plateau.</p>
+      <h2>Urban Introduction History</h2>
+      <p>White spruce entered Okanagan urban landscapes primarily through nursery trade in the mid-20th century. Its cold hardiness, fast growth (40–60cm per year in good conditions), and conical form made it attractive for windbreaks and screening plantings. The selection <strong>'Densata'</strong> (Black Hills spruce — slower, denser) is commonly planted in commercial landscapes. The cultivar <strong>'Conica'</strong> (dwarf Alberta spruce) — technically <em>Picea glauca</em> var. <em>albertiana</em> 'Conica' — is extremely common in residential strata landscapes throughout the Okanagan as a small conical accent plant.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The dwarf Alberta spruce ('Conica') is worth special attention in strata and residential work. It is one of the most commonly planted conifers in Okanagan ornamental landscapes — and one of the most commonly damaged. Spider mites (particularly <em>Oligonychus ununguis</em>, the spruce spider mite) are devastating to 'Conica' in dry summers, turning it brown from the inside out. First symptom: fine webbing in the interior, bronzing needles. Property managers often mistake early mite damage for drought stress or winter injury. Knowing to look for mites — and that 'Conica' is more susceptible than standard white spruce — is directly useful on ornamental maintenance accounts.</p>
+      </div>
+    </section>
+
+    <section id="biology">
+      <h1><em>Picea glauca</em></h1>
+      <p class="common-name">White Spruce · Biology &amp; Cultural Requirements</p>
+      <h2>What White Spruce Wants</h2>
+      <h3>Climate Tolerance</h3>
+      <p>White spruce is among the most cold-hardy conifers on the continent — tolerating -40°C and colder in deep dormancy. In the Okanagan, cold hardiness is rarely the limiting factor. The challenge is the opposite: <span class="key">heat and drought stress</span>. White spruce evolved in a humid boreal environment with regular summer moisture. The semi-arid Okanagan valley floor — hot, dry, alkaline — is at the edge of its tolerance when planted without supplemental irrigation.</p>
+      <h3>Moisture</h3>
+      <p>White spruce is a moisture-demanding conifer relative to ponderosa pine or interior Douglas-fir. It performs best where soil moisture is consistent through the growing season. In irrigated urban settings, it can establish and thrive on the Okanagan valley floor. In dry, unirrigated sites (south-facing slopes, sandy soils), it struggles and becomes progressively more susceptible to insect attack and disease as stress accumulates.</p>
+      <p><strong>Irrigation requirements in the Okanagan urban context:</strong> Young trees (first 3–5 years) require supplemental irrigation of 10–15L/week during the growing season. Established trees on deep loam soils may be self-sustaining with average Okanagan precipitation (~300–350mm/year), but during drought years (increasingly common with climate change), supplemental irrigation markedly improves vigour and reduces pest susceptibility.</p>
+      <h3>Soil</h3>
+      <p>Preferred soil is well-drained, slightly acidic to neutral (pH 5.5–7.0). Okanagan soils tend toward alkaline (pH 7.2–8.2), which can limit nutrient availability — particularly iron and manganese, producing interveinal chlorosis in severe cases. White spruce is more tolerant of alkalinity than many conifers but will show symptoms in highly calcareous soils.</p>
+      <p>Compaction is a major enemy: white spruce roots are shallow and wide-spreading, and the roots are sensitive to oxygen depletion in compacted soils. Urban construction sites with heavy soil compaction are poor candidates for white spruce establishment.</p>
+      <h3>Light</h3>
+      <p>Full sun preferred for maximum growth. White spruce tolerates moderate shade but thins and weakens in deep shade. In urban settings, large mature trees can create significant shade below their lower canopy — a concern when planted as windbreaks that eventually shade understory plantings.</p>
+      <h3>Growth Rate</h3>
+      <p>Moderate to fast: 30–60cm per year in optimal conditions; 15–25cm/year in drier Okanagan sites without irrigation. In boreal sites, growth is slower due to shorter growing seasons. Maximum recorded height for BC specimens exceeds 30m; urban trees rarely exceed 20m due to modified growing conditions.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>White spruce planted as a boulevard tree in Kelowna or West Kelowna during the 1970s–80s is now reaching structural maturity — often 12–18m tall, canopy spreading into utility lines, and root systems cracking sidewalks. These trees commonly show stress symptoms (cytospora canker, spider mite damage, top dieback) because they were never irrigated after establishment and are growing in compacted boulevard soil. The correct diagnostic question on an estimate visit: when did they last get irrigation? Almost always: never. PHC starts with water.</p>
+      </div>
+    </section>
+
+    <section id="pests">
+      <h1><em>Picea glauca</em></h1>
+      <p class="common-name">White Spruce · Pest Pressures</p>
+      <h2>Primary Insect Pests</h2>
+
+      <h3><span class="severity sev-high"></span>Spruce Spider Mite (<em>Oligonychus ununguis</em>)</h3>
+      <span class="tag">Very Common</span><span class="tag red">High Severity on 'Conica'</span>
+      <p>Not a true insect but an arachnid — and the single most damaging pest of white spruce (particularly dwarf Alberta spruce 'Conica') in the Okanagan. Spruce spider mites are <span class="key">cool-season feeders</span> — populations peak in spring (April–June) and again in fall (September–October). Unlike most mites, they reduce during hot mid-summer, then resurge in cooler fall conditions.</p>
+      <p><strong>Field signs:</strong> Fine stippling of needles (tiny yellow/bronze dots from feeding); light webbing in interior branch crotches; needles turn bronzy-brown from inside canopy outward; shaking a branch over white paper reveals moving orange-brown specks (mites). Look for cast skins (white dust-like material) on needles.</p>
+      <p><strong>Management:</strong> Miticides (bifenazate, abamectin, spiromesifen) applied at population peak. Dormant oil applied in early spring before egg hatch provides good suppression. For 'Conica', monitoring every 2 weeks in April–May is recommended. Increase irrigation — water-stressed trees are dramatically more susceptible.</p>
+
+      <h3><span class="severity sev-high"></span>White Pine Weevil (<em>Pissodes strobi</em>)</h3>
+      <span class="tag">Common</span><span class="tag red">High — Kills Leader</span>
+      <p>The white pine weevil attacks the <span class="key">terminal leader</span> of spruce (and pine) — adults overwinter in duff, emerge in spring to feed on and lay eggs in the leader. Larvae mine downward in the phloem, killing the current year's leader and often 1–3 whorls below. The dead, drooping terminal ("shepherd's crook") is diagnostic. The tree forks from lateral branches that attempt to replace the leader, producing a multi-stemmed form with poor structural integrity.</p>
+      <p><strong>Management:</strong> Prune out and destroy infested leaders (bag and remove — do not chip on site) before adults emerge in June–July. Systemic imidacloprid (trunk injection) applied in spring before adult feeding provides protection for one season. Repeated attacks can severely compromise tree form and structural integrity, warranting removal of urban specimens.</p>
+
+      <h3><span class="severity sev-med"></span>Spruce Beetle (<em>Dendroctonus rufipennis</em>)</h3>
+      <span class="tag yellow">Intermittent Outbreak</span><span class="tag">Mature Trees</span>
+      <p>Spruce beetle is the major mortality agent in mature white and Engelmann spruce stands in BC. Endemic populations live in windthrown logs; epidemic populations can overwhelm living trees. In the Okanagan, major outbreaks have occurred in the highlands and Monashees — less common in urban settings, but urban stress can make trees susceptible to attack by endemic populations. <strong>Faded crown, boring dust on bark, and pitch tubes</strong> are field signs.</p>
+
+      <h3><span class="severity sev-med"></span>Eastern Spruce Budworm (<em>Choristoneura fumiferana</em>)</h3>
+      <span class="tag yellow">Cyclical Outbreak</span>
+      <p>Budworm feeds on new growth (candles) in late spring. Repeated defoliation over 5–10 year outbreak cycles severely weakens trees and predisposes them to bark beetle attack and disease. The interior BC outbreak cycle is tracked by BC Ministry of Forests — aerial survey maps are published annually. During outbreak years, timing foliar Btk (Bacillus thuringiensis var. kurstaki) applications to early instar timing (typically May–June by GDD tracking) provides effective control in high-value individual trees.</p>
+
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Spruce spider mite is the pest you will encounter most on Okanagan ornamental spruce. The standard residential call: "my blue/green spruce is turning brown from the inside." Check for mites first — run a branch over white paper. If the tree is 'Conica', the answer is almost certainly mites. Selling a mite monitoring program to strata accounts that maintain multiple 'Conica' plants is straightforward and high-value. Track GDD to time spring treatments to the early-May mite population build before they peak.</p>
+      </div>
+    </section>
+
+    <section id="disease">
+      <h1><em>Picea glauca</em></h1>
+      <p class="common-name">White Spruce · Disease Pressures</p>
+      <h2>Primary Disease Issues</h2>
+
+      <h3><span class="severity sev-high"></span>Rhizosphaera Needle Cast (<em>Rhizosphaera kalkhoffii</em>)</h3>
+      <span class="tag red">Common — Slow Decline</span>
+      <p>Rhizosphaera is a fungal pathogen that infects the current year's needles, causing needle cast that progresses from the interior lower canopy outward and upward over multiple seasons. <span class="key">Diagnostic sign:</span> Rows of black, pinpoint fruiting bodies (pycnidia) in the stomatal rows of infected needles — visible with a hand lens. Healthy stomata on white spruce are white; infected stomata are filled with black pycnidia. Two-year progression: infected needles turn purple-brown and are cast in the second season after infection, leaving bare inner branches.</p>
+      <p><strong>Management:</strong> Chlorothalonil or copper-based fungicides applied at bud break and again 3–4 weeks later for 2–3 consecutive seasons. Improve air circulation by reducing adjacent plantings. Ensure adequate irrigation to reduce drought stress (stressed trees are more susceptible). Remove severely infected lower branches. Per ISA BMP for PHC: fungicide program must be sustained over multiple seasons to allow canopy recovery.</p>
+
+      <h3><span class="severity sev-med"></span>Cytospora (Leucostoma) Canker (<em>Leucostoma kunzei</em>)</h3>
+      <span class="tag yellow">Stress-Linked</span>
+      <p>Cytospora canker on spruce is a <span class="key">stress-associated pathogen</span> — it infects trees that are already weakened by drought, compaction, physical injury, or other stressors. Symptoms: dead branches progressing from the bottom of the crown upward; resin-soaked dead wood at the point of infection; orange-to-black fruiting bodies (pycnidia) visible on cankered bark. The disease does not affect adjacent healthy trees under normal conditions.</p>
+      <p><strong>Management:</strong> Remove infected branches to clean wood below the canker margin (sterilize pruning tools between cuts with 70% isopropyl alcohol). Address predisposing stress — irrigation, compaction remediation, abiotic injury prevention. No curative fungicide is effective against established Cytospora in conifers. Prevention through maintaining tree vigour is the only reliable strategy.</p>
+
+      <h3><span class="severity sev-low"></span>Spruce Tip Blight (<em>Sirococcus strobilurus</em>)</h3>
+      <span class="tag">Occasional</span>
+      <p>Sirococcus causes dieback of current-year shoot tips in cool, wet springs. Infected shoot tips curl downward, turn brown, and die. Severe infections can give the canopy a scorched appearance from a distance. In the Okanagan's typically dry spring conditions, this is uncommon — it requires wet weather during bud break to spread. Management: copper fungicide applied at bud break during wet spring years; prune and remove affected tips.</p>
+
+      <h3><span class="severity sev-low"></span>Needlecast by Lirula and Lophodermium</h3>
+      <span class="tag">Occasional</span>
+      <p>Several additional fungi cause needle cast on white spruce. Lophodermium and Lirula species produce elongated black fruiting bodies (hysteria) along the needle — distinguishable from Rhizosphaera's dot-pattern pycnidia. Management is similar: fungicide programs, stress reduction, air circulation improvement.</p>
+
+      <h2>Abiotic Disorders</h2>
+      <h3>Winter Desiccation (Winter Burn)</h3>
+      <p>Brown needles on exposed south and west-facing branches in late winter/early spring — caused by transpirational water loss when frozen soil prevents water uptake. The tree cannot replace moisture lost through the needles. Common on young white spruce in exposed Okanagan sites. Prevention: anti-desiccant sprays applied in November; burlap wrapping for young trees; avoid exposed south-facing planting sites. This is often misdiagnosed as disease.</p>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>On a PHC assessment of a stressed spruce with dead lower branches, three things need to be ruled out in order: (1) spider mites — check with hand lens and paper test; (2) Rhizosphaera — check stomatal rows with hand lens for black pycnidia; (3) Cytospora — check branch death pattern and look for resin-soaked bark at the branch collar. In most Okanagan urban cases, the underlying cause is drought stress compounded by compacted soil. Fix the water problem first. Fungicide programs on a drought-stressed tree accomplish very little.</p>
+      </div>
+    </section>
+
+    <section id="arborist">
+      <h1><em>Picea glauca</em></h1>
+      <p class="common-name">White Spruce · Arborist Notes</p>
+      <h2>Pruning</h2>
+      <h3>Timing</h3>
+      <p>Prune white spruce in <span class="key">late winter to early spring (February–April) before bud break</span>, or in late summer (August–September) after the growing season has hardened. Avoid pruning during bud break and active shoot elongation — wounds made during this period are larger relative to the annual growth cycle and the stress window coincides with weevil and beetle activity. Late summer pruning avoids the spring weevil attack window when fresh-wound volatiles can attract adults.</p>
+      <h3>Pruning Approach</h3>
+      <ul>
+        <li>White spruce does not regenerate from old wood — do not cut back into wood older than 2–3 years with no live foliage beyond the cut. The branch will die. This is critical for 'Conica' and other dwarf forms where clients want size reduction.</li>
+        <li>Deadwood removal, crown cleaning, and subordination of co-dominant leaders are appropriate. Lion-tailing (removing inner foliage, leaving foliage only at branch tips) severely stresses conifers and is not acceptable practice per ANSI A300 Part 1.</li>
+        <li>Structural pruning of young trees: establish a single dominant leader early. White pine weevil attack creates competing leaders — if this occurs, select the most vertical, vigorous lateral and train it as the new leader; remove competing stems.</li>
+        <li>Make cuts to lateral branches at the branch collar — do not leave stubs. Stubs on spruce do not occlude (close over) and serve as entry points for Cytospora and other pathogens.</li>
+      </ul>
+      <h3>PHC Strategy</h3>
+      <p>The ISA Best Management Practices for Plant Health Care approach for stressed urban white spruce:</p>
+      <ul>
+        <li><strong>First priority: water.</strong> Establish or verify irrigation delivering 20–30L/week per cm trunk diameter during the growing season (April–September).</li>
+        <li><strong>Soil health:</strong> Aerate compacted soil via vertical mulching or air spading; apply 7–10cm organic mulch across the root zone (not against the trunk).</li>
+        <li><strong>Fertilize only after soil test:</strong> Do not add nitrogen to a stressed tree without knowing soil nutrient status — nitrogen can push susceptible tender growth that attracts pests. Confirm deficiencies before application.</li>
+        <li><strong>Pest/disease monitoring:</strong> Spring mite monitoring (GDD-tracked), annual assessment for Rhizosphaera, weevil leader inspection in June.</li>
+      </ul>
+      <h3>Site Suitability — Client Conversation</h3>
+      <p>White spruce in a sunny, dry, unirrigated Okanagan site is a long-term liability. When assessing new planting or replacement decisions:</p>
+      <ul>
+        <li><strong>Good candidate sites:</strong> North or east-facing aspects; sites with organic soil and regular irrigation; locations where the tree can achieve its mature size (6–8m spread) without clearance conflicts</li>
+        <li><strong>Poor candidate sites:</strong> Boulevard strips with no irrigation and compacted soil; south-facing exposed sites; small strata beds where mature size creates conflict</li>
+        <li><strong>Recommend instead:</strong> For dry, sunny sites — ponderosa pine, interior Douglas-fir, or drought-adapted ornamentals. For small sites wanting a conical evergreen — consider Rocky Mountain juniper ('Wichita Blue', 'Skyrocket') which is far more drought-tolerant than white spruce.</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>The most common white spruce scenario on a strata or residential account: a 25-year-old tree that was planted too close to the building or utility lines, never irrigated, showing Cytospora dieback on the bottom third of the canopy and mite damage on the interior. The client wants "trimming." The correct response is a full assessment: document the stress indicators, explain the root cause (drought and soil compaction), propose a PHC program, and have an honest conversation about long-term suitability. A tree in chronic decline in the wrong site is not a tree you keep maintaining indefinitely — it's a removal conversation waiting to happen.</p>
+      </div>
+      <div class="domain-tag">📚 <strong>ISA Exam Domain:</strong> Tree Biology (11%) · Tree Risk Assessment (11%) · Tree Selection &amp; Establishment (7%) · Soil Management (11%) &nbsp;·&nbsp; <strong>Sources:</strong> BC Ministry of Forests Species at Risk &amp; Ecology publications · ISA Arborists' Certification Study Guide 4th Ed. · Klinka et al., <em>Indicator Plants of Coastal British Columbia</em> · UBC Faculty of Forestry extension materials</div>
+    </section>
+
+  </div>
+</div>
+<script>
+function showTab(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>
