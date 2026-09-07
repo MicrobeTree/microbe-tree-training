@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 15 · Tuesday: Chainsaw Bar &amp; Chain Maintenance</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0f0f1a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+  header{background:#1e1e2e;border-bottom:3px solid #f97316;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .brand{font-size:1.1rem;font-weight:700;color:#f97316;letter-spacing:.05em}
+  .week-label{font-size:.8rem;color:#94a3b8;background:#0f0f1a;padding:4px 10px;border-radius:20px}
+  .day-badge{background:#f9731620;color:#f97316;border:1px solid #f9731660;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+  main{max-width:860px;margin:0 auto;padding:24px 16px}
+  h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+  .subtitle{color:#94a3b8;margin-bottom:24px;font-size:.95rem}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .nav-btn{background:#1e1e2e;border:2px solid #2d2d44;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:.85rem;color:#94a3b8;transition:.15s;font-family:inherit}
+  .nav-btn:hover{border-color:#f9731660;color:#f97316}
+  .nav-btn.active{border-color:#f97316;color:#f97316;background:#f9731610}
+  section{display:none}
+  section.active{display:block}
+  .card{background:#1e1e2e;border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid #2d2d44}
+  h2{color:#f97316;font-size:1rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+  h3{color:#fb923c;font-size:.95rem;font-weight:600;margin-bottom:8px;margin-top:14px}
+  h3:first-child{margin-top:0}
+  p{color:#cbd5e1;font-size:.9rem;line-height:1.65;margin-bottom:10px}
+  ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8;margin-bottom:10px}
+  li{margin-bottom:3px}
+  .key{color:#f97316;font-weight:700}
+  .warn{background:#ef444415;border-left:3px solid #ef4444;padding:12px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.88rem;color:#fca5a5}
+  .warn strong{color:#ef4444}
+  .ok{background:#4ade8015;border-left:3px solid #4ade80;padding:12px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.88rem;color:#a3e6b8}
+  .ok strong{color:#4ade80}
+  .field-note{background:#f9731610;border-left:3px solid #f97316;border-radius:0 8px 8px 0;padding:14px;margin-top:12px}
+  .field-note-label{color:#f97316;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .field-note p{color:#fed7aa;font-size:.88rem;line-height:1.5;margin:0}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:10px;margin-bottom:10px}
+  th{background:#0f0f1a;color:#f97316;padding:9px;text-align:left;border:1px solid #2d2d44;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+  td{padding:9px;border:1px solid #2d2d44;color:#cbd5e1;vertical-align:top}
+  tr:nth-child(even) td{background:#0f0f1a40}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  @media(max-width:600px){.two-col{grid-template-columns:1fr}}
+  .spec-box{background:#0f0f1a;border:1px solid #f9731640;border-radius:8px;padding:14px}
+  .spec-box h3{color:#f97316;font-size:.85rem;margin-bottom:10px}
+  .spec-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #2d2d44;font-size:.85rem}
+  .spec-row:last-child{border:none}
+  .spec-label{color:#94a3b8}
+  .spec-val{color:#e2e8f0;font-weight:600}
+  svg{max-width:100%;display:block;margin:0 auto}
+  .checklist{list-style:none;padding:0}
+  .checklist li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #2d2d4440;font-size:.88rem;color:#cbd5e1}
+  .checklist li:last-child{border:none}
+  .check-box{width:18px;height:18px;border:2px solid #f97316;border-radius:4px;flex-shrink:0;margin-top:1px}
+  .domain-tag{text-align:center;color:#64748b;font-size:.78rem;margin-top:32px;padding-top:16px;border-top:1px solid #1e1e2e}
+  .domain-tag strong{color:#94a3b8}
+  .badge{display:inline-block;background:#f9731620;color:#f97316;border:1px solid #f9731640;border-radius:20px;padding:3px 10px;font-size:.75rem;font-weight:700;margin-right:6px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🪚 Microbe Tree Training</div>
+  <div class="day-badge">Tuesday · Equipment &amp; Tools</div>
+  <div class="week-label">Week 15</div>
+</header>
+<main>
+  <h1>Chainsaw Chain &amp; Bar Maintenance</h1>
+  <p class="subtitle">Filing angles, depth gauges, tension, bar dressing, and when to retire equipment</p>
+  <nav>
+    <button class="nav-btn active" onclick="showSection('overview')">Overview</button>
+    <button class="nav-btn" onclick="showSection('chain')">Chain Anatomy</button>
+    <button class="nav-btn" onclick="showSection('filing')">Filing</button>
+    <button class="nav-btn" onclick="showSection('bar')">Bar Care</button>
+    <button class="nav-btn" onclick="showSection('tension')">Tension &amp; Drive</button>
+    <button class="nav-btn" onclick="showSection('retire')">Retire / Inspect</button>
+  </nav>
+
+  <section id="overview" class="active">
+    <div class="card">
+      <h2>Why This Matters</h2>
+      <p>A sharp chain on a well-maintained bar is not a preference — it is a <span class="key">safety requirement</span>. Per <strong>ANSI Z133-2017 §7</strong> and <strong>WorkSafeBC OHS Regulation Part 26</strong>, all cutting equipment must be maintained in serviceable condition. A dull chain forces the operator to apply increased downward pressure, dramatically increasing fatigue, kickback risk, and the likelihood of losing control of the saw.</p>
+      <p>The ISA <em>Safe Work Practices for Arborists</em> and TCIA training materials identify improper chain sharpening as one of the leading contributing factors in chainsaw incidents. Understanding how chains cut, what angles matter, and how to identify wear is foundational arborist knowledge — and a core Safe Work Practices exam topic.</p>
+      <div class="ok"><strong>Standard requirement:</strong> Chain should be sharpened or replaced at the first sign of dulling — burning odour, sawdust instead of chips, deviation from straight cuts, or visible light reflection on the cutter's top plate. Do not wait for complete dullness.</div>
+    </div>
+    <div class="card">
+      <h2>Quick Reference — Chain Specs by Pitch</h2>
+      <table>
+        <tr><th>Chain Pitch</th><th>Common Use</th><th>File Size</th><th>Top Plate Angle</th><th>Side Plate Angle</th></tr>
+        <tr><td>.325"</td><td>Arborist climbing saws (Stihl MS 201, Husqvarna 135)</td><td>3/16" (4.8mm)</td><td>30–35°</td><td>55–60°</td></tr>
+        <tr><td>3/8" Lo-Pro</td><td>Small homeowner / pole saws</td><td>5/32" (4.0mm)</td><td>30°</td><td>55°</td></tr>
+        <tr><td>3/8" full pitch</td><td>Medium groundwork saws (MS 261, 362)</td><td>7/32" (5.5mm)</td><td>30°</td><td>55°</td></tr>
+        <tr><td>.404"</td><td>Large felling saws, milling</td><td>7/32" (5.5mm)</td><td>30°</td><td>55°</td></tr>
+      </table>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Most Microbe Tree groundwork runs 3/8" full-pitch chain. Confirm chain pitch before filing — using a 5/32" file on a 3/8" pitch chain files too shallow a groove and leaves the chain weakened. File size is not interchangeable. If unsure: check the chain manufacturer's spec (stamped on the tie straps of many chains, or in the saw manual).</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="chain">
+    <div class="card">
+      <h2>Chain Anatomy — Know What You're Filing</h2>
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;background:#0f0f1a;border-radius:8px;padding:10px">
+        <!-- Chain link diagram -->
+        <rect x="30" y="80" width="80" height="40" rx="6" fill="#2d2d44" stroke="#f97316" stroke-width="1.5"/>
+        <text x="70" y="97" fill="#f97316" font-size="9" text-anchor="middle" font-weight="bold">CUTTER</text>
+        <text x="70" y="110" fill="#94a3b8" font-size="8" text-anchor="middle">Drive Link</text>
+        <!-- Top plate -->
+        <path d="M 30 80 L 110 80 L 100 60 L 40 60 Z" fill="#f9731630" stroke="#f97316" stroke-width="1.5"/>
+        <text x="70" y="52" fill="#f97316" font-size="9" text-anchor="middle" font-weight="bold">Top Plate</text>
+        <!-- Depth gauge -->
+        <rect x="40" y="58" width="8" height="22" rx="2" fill="#f97316"/>
+        <text x="20" y="62" fill="#fb923c" font-size="8" text-anchor="middle">Depth</text>
+        <text x="20" y="72" fill="#fb923c" font-size="8" text-anchor="middle">Gauge</text>
+        <!-- Side plate label -->
+        <path d="M 110 80 L 110 120 L 100 120 L 100 80 Z" fill="#f9731620" stroke="#f97316" stroke-width="1"/>
+        <text x="138" y="102" fill="#fb923c" font-size="9" text-anchor="start">Side Plate</text>
+        <!-- Drive link -->
+        <rect x="140" y="90" width="40" height="30" rx="4" fill="#2d2d44" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="160" y="109" fill="#94a3b8" font-size="8" text-anchor="middle">Drive</text>
+        <text x="160" y="119" fill="#94a3b8" font-size="8" text-anchor="middle">Link</text>
+        <!-- Tie strap -->
+        <rect x="200" y="90" width="40" height="30" rx="4" fill="#2d2d44" stroke="#64748b" stroke-width="1"/>
+        <text x="220" y="109" fill="#64748b" font-size="8" text-anchor="middle">Tie</text>
+        <text x="220" y="119" fill="#64748b" font-size="8" text-anchor="middle">Strap</text>
+        <!-- Second cutter (right-hand) -->
+        <rect x="260" y="80" width="80" height="40" rx="6" fill="#2d2d44" stroke="#f97316" stroke-width="1.5"/>
+        <path d="M 260 80 L 340 80 L 330 60 L 270 60 Z" fill="#f9731630" stroke="#f97316" stroke-width="1.5"/>
+        <text x="300" y="97" fill="#f97316" font-size="9" text-anchor="middle" font-weight="bold">CUTTER</text>
+        <text x="300" y="52" fill="#f97316" font-size="9" text-anchor="middle">Top Plate Angle</text>
+        <!-- Angle arc -->
+        <path d="M 270 60 A 20 20 0 0 1 290 60" stroke="#4ade80" stroke-width="1.5" fill="none"/>
+        <text x="265" y="45" fill="#4ade80" font-size="9">30–35°</text>
+        <!-- Filing direction arrow -->
+        <path d="M 400 100 L 500 100" stroke="#4ade80" stroke-width="2" marker-end="url(#arrow)"/>
+        <text x="450" y="92" fill="#4ade80" font-size="9" text-anchor="middle">Filing direction</text>
+        <text x="450" y="115" fill="#94a3b8" font-size="8" text-anchor="middle">Push stroke only</text>
+        <defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#4ade80"/></marker></defs>
+        <!-- Labels on right -->
+        <text x="540" y="75" fill="#e2e8f0" font-size="10" font-weight="bold">Key Angles:</text>
+        <text x="540" y="92" fill="#f97316" font-size="9">Top plate: 30–35°</text>
+        <text x="540" y="107" fill="#f97316" font-size="9">Side plate: 55–60°</text>
+        <text x="540" y="122" fill="#f97316" font-size="9">File tilt (down): 0–10°</text>
+        <text x="540" y="137" fill="#4ade80" font-size="9">Depth gauge: 0.025"</text>
+        <text x="540" y="152" fill="#4ade80" font-size="9">(0.64mm) below</text>
+        <text x="540" y="167" fill="#4ade80" font-size="9">top plate</text>
+      </svg>
+      <h3>The Three Parts That Matter</h3>
+      <p><span class="key">Cutter (also called the tooth)</span> — the cutting element. Each cutter has three functional surfaces:</p>
+      <ul>
+        <li><strong>Top plate</strong> — the horizontal cutting edge on top; filed at the top plate angle (30–35° from perpendicular to chain direction). This is the primary cutting edge for cross-cutting wood fibres.</li>
+        <li><strong>Side plate</strong> — the vertical cutting face on the side of the cutter; filed at roughly 55–60° from horizontal. Controls the depth of the cut in the kerf wall.</li>
+        <li><strong>Depth gauge (raker)</strong> — a raised tab in front of the cutter; limits how deep each cutter bites on each pass. This is the most under-maintained part of a chain.</li>
+      </ul>
+      <p><span class="key">Drive link</span> — fits into the bar groove; transfers chain movement from the drive sprocket. Drive links must engage the sprocket cleanly. Worn drive links cause chain jumping.</p>
+      <p><span class="key">Tie strap</span> — connects cutters and drive links. Cracks or deformation in tie straps = retire the chain immediately.</p>
+    </div>
+  </section>
+
+  <section id="filing">
+    <div class="card">
+      <h2>Filing Technique — Step by Step</h2>
+      <h3>Before You File</h3>
+      <ul>
+        <li>Engage the chain brake and ensure saw is off</li>
+        <li>Clamp the bar in a vice or use a filing guide clamp on the bar nose</li>
+        <li>Select correct round file diameter for chain pitch (see overview table)</li>
+        <li>Use a filing guide — essential for consistent angle maintenance. Filing by hand without a guide produces inconsistent angles that cause chain deviation and accelerated wear.</li>
+      </ul>
+      <h3>Filing the Cutters</h3>
+      <ul>
+        <li><strong>Set the top plate angle:</strong> Position your filing guide (or your body angle if guiding by eye) so the file crosses the top plate at 30–35° from perpendicular to the chain direction. Most guides have angle marks.</li>
+        <li><strong>File tilt:</strong> The file should be tilted slightly downward — 0–10° below horizontal — to produce a sharp hook on the leading edge of the top plate. Some chainsaw manufacturers (Stihl, Husqvarna) specify 0° for hardwood, slight downward tilt for softwood.</li>
+        <li><strong>File from inside outward</strong> on the push stroke only. Lift on the return — dragging the file back dulls the file and rounds the edge.</li>
+        <li><strong>File height:</strong> The round file should sit above the top plate by about 1/5 of its diameter. This produces the correct hook. If the file rides below the plate, you're filing the gullet, not the cutter.</li>
+        <li><strong>Equal strokes per cutter:</strong> Count strokes. Apply the same number of strokes to every cutter. The shortest cutter governs the chain — all others must match it.</li>
+        <li><strong>Alternate sides:</strong> File all left-hand cutters, then all right-hand cutters. Don't skip around.</li>
+        <li><strong>Post-filing check:</strong> A properly filed cutter has a bright, sharp, hook-shaped top plate edge with no light reflection from directly above. Any flat shiny section = still dull.</li>
+      </ul>
+      <h3>Filing the Depth Gauges</h3>
+      <p>Depth gauges control how much wood each cutter removes per pass. As cutters are filed down, depth gauges become proportionally too tall — the cutter can no longer reach down into the wood. The saw vibrates, cuts slowly, and operators compensate with pressure (a kickback risk).</p>
+      <ul>
+        <li>Depth gauges should be filed every 3–5 sharpenings, or when cutting becomes noticeably laboured</li>
+        <li>Standard depth gauge setting: <strong>0.025" (0.64mm) below the top plate height</strong> for most softwood arborist work. Hardwood applications may use 0.020" to reduce chain vibration.</li>
+        <li>Use a flat depth gauge tool (jointer) — lay it across the chain, flat file flush across the top if the raker protrudes above the tool slot</li>
+        <li>After filing, round the leading corner of the depth gauge with a flat file (a sharp square corner on the raker can snag and cause jolting)</li>
+        <li>Do not over-file depth gauges — too low = aggressive bite, vibration, chain slap, and greatly increased kickback potential</li>
+      </ul>
+      <div class="warn"><strong>⚠ ANSI Z133 Warning:</strong> Improper depth gauge setting is a significant kickback risk factor. Over-filing depth gauges causes the chain to grab aggressively. Under-filing causes operators to apply excessive downward force. Both conditions increase injury risk. Per ANSI Z133-2017 §7.5.3, chains must be sharpened per manufacturer specifications.</div>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Ponderosa pine is the Okanagan's dominant species and it is hard on chains — the resin loads fast and the sandy, gritty soil that coats butt cuts dulls cutters in one pass if you touch dirt. Keep a file in your hip pocket or on the bar whenever you're bucking. Two strokes per cutter every 15–20 minutes of cutting keeps you in the chips-not-dust zone. Check for chips in the sawdust: chips = sharp; fine powder = dull.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="bar">
+    <div class="card">
+      <h2>Bar Care — The Overlooked Half</h2>
+      <p>A perfectly filed chain on a worn bar is a cutting hazard and a waste of good chain. Bars wear at the rails (the groove edges that guide the chain), at the sprocket nose, and across the running surface. Bar maintenance is fast but most crews skip it until a bar fails.</p>
+      <h3>Daily Bar Maintenance</h3>
+      <ul>
+        <li><strong>Clean the bar groove:</strong> Remove pitch, wood chips, and carbon buildup from the bar groove at the end of every day. Use the bar groove cleaning tool (the pick on most bar wrench/scrench combos) or a piece of wire. Clogged grooves starve the chain of oil and cause rapid wear.</li>
+        <li><strong>Inspect the oiling hole:</strong> The bar oiling hole (near the powerhead end of the bar) must be clear. A blocked oiling hole = no chain lubrication = chain and bar destroyed within minutes.</li>
+        <li><strong>Check bar rail height:</strong> Rails must be equal height. Lay a straight edge or file flat across the bar — both rails should contact evenly. Uneven rails cause the chain to lean and cut at an angle. A unilaterally worn bar is a common cause of "the saw wants to pull left/right" complaints.</li>
+        <li><strong>Flip the bar:</strong> Most bars are reversible. Flip the bar 180° every 8–10 hours of use to equalize rail wear. Mark the bar with a paint pen to track rotation.</li>
+      </ul>
+      <h3>Dressing the Bar Rails</h3>
+      <p>If rails have developed mushrooming (burrs from chain pressure) or uneven wear, dress them with a flat file applied along the rail top. File until the rail is flat and both rails are equal height. Do not over-file — a bar with collapsed rails cannot be recovered.</p>
+      <h3>Sprocket Nose Inspection</h3>
+      <ul>
+        <li>Hard-nose bars (no replaceable sprocket) wear at the nose tip — check for groove narrowing or cracking. Replace bar when nose groove width is compromised.</li>
+        <li>Replaceable-sprocket bars: inspect the sprocket for teeth wear (rounded, not pointed teeth indicate replacement needed), bearing roughness (spin the nose — should turn freely and smoothly), and side play.</li>
+        <li>Lubricate sprocket nose: some bars have a Zerk fitting at the nose for grease. Inject grease every 1–2 hours of hard use.</li>
+      </ul>
+      <h3>Bar Retirement Criteria</h3>
+      <ul>
+        <li>Rail height difference &gt; 0.5mm between rails — bar cannot be corrected by dressing</li>
+        <li>Groove width worn beyond chain drive link specification (chain will ride up on rails)</li>
+        <li>Cracks at the powerhead mounting holes or along bar body</li>
+        <li>Bent bar (any bar that has been pinched in a severe barber chair or root swell binding)</li>
+        <li>Nose sprocket completely worn or bearing seized</li>
+      </ul>
+      <div class="warn"><strong>⚠ WorkSafeBC OHS Regulation §26.13:</strong> Defective chainsaw components must be removed from service immediately. A bent or cracked bar, or one with compromised rail geometry, is a defective component.</div>
+    </div>
+  </section>
+
+  <section id="tension">
+    <div class="card">
+      <h2>Chain Tension &amp; Drive System</h2>
+      <h3>Correct Chain Tension</h3>
+      <p>Chain tension is not just about preventing derailment — it directly affects cut quality and safety. An over-tight chain increases bar wear, heats rapidly, and puts load on the drive sprocket and clutch. A loose chain can derail and cause injury.</p>
+      <p><strong>Correct tension test (cold chain):</strong> Pull the chain down from the middle of the bar. It should hang 3–5mm below the bar rail, and snap back firmly when released. You should be able to pull the drive links clear of the bar groove with moderate effort, but the chain should not sag significantly or rattle when the bar is horizontal.</p>
+      <div class="two-col">
+        <div class="spec-box">
+          <h3>Too Tight</h3>
+          <ul style="margin:0;font-size:.85rem;color:#fca5a5">
+            <li>Cannot pull chain from bar</li>
+            <li>Rapid heating</li>
+            <li>Bar groove and drive link wear accelerated</li>
+            <li>Clutch bearing strain</li>
+            <li>Risk of chain breakage under load</li>
+          </ul>
+        </div>
+        <div class="spec-box">
+          <h3>Too Loose</h3>
+          <ul style="margin:0;font-size:.85rem;color:#fca5a5">
+            <li>Visible sag on underside of bar</li>
+            <li>Chain rattle and jumping</li>
+            <li>Derailment during cuts</li>
+            <li>Uncontrolled chain movement if derailment occurs</li>
+            <li>Drive sprocket damage</li>
+          </ul>
+        </div>
+      </div>
+      <h3>Tension During Use</h3>
+      <p>Chain loosens as it warms and stretches — check tension every 30–45 minutes of active use. <strong>Always allow the chain to cool before making final tension adjustments.</strong> A chain tensioned hot will over-tighten as it cools and can cause bar binding or chain breakage.</p>
+      <div class="warn"><strong>⚠ ANSI Z133 §7.5.1:</strong> Chain tension must be checked and adjusted before operation and periodically during use. Per Stihl and Husqvarna operator requirements, the saw must be shut down and the chain brake engaged before any chain tension adjustment.</div>
+      <h3>Drive Sprocket Inspection</h3>
+      <ul>
+        <li>The drive sprocket (at the clutch) should be replaced every 2–3 chain replacements</li>
+        <li>Worn sprocket: teeth appear pointed/sharply worn (should be rounded to match chain pitch rollers); chain may skip or rattle at idle</li>
+        <li>Using a new chain on a worn sprocket accelerates wear on the new chain — replace together</li>
+        <li>Spur sprockets (for .325" and full 3/8" chains) vs. rim sprockets — rim sprockets are user-replaceable on most saws; spur sprockets require partial clutch disassembly</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Hot Okanagan summer work days (35°C ambient) cause chains to expand rapidly. Tension that feels right at 8am will be notably looser after 30 minutes of bucking in the heat. Build chain tension checks into your work rhythm — before each tree, not just before the day. Two minutes of tension check is worth far more than a derailed chain in the middle of a removal.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="retire">
+    <div class="card">
+      <h2>Retirement Criteria &amp; Daily Inspection Checklist</h2>
+      <h3>Retire the Chain When:</h3>
+      <ul>
+        <li><strong>Cutter height is worn to depth gauge height</strong> — there is no cutter left to file. Run your thumb across the top: if it's flat or the gauge is as tall as (or taller than) the cutter, retire immediately.</li>
+        <li><strong>Tie strap cracks or deformation</strong> — chain is at risk of breaking under load. No exceptions.</li>
+        <li><strong>Drive link hooking or deformation</strong> — drive links that have snagged on bar or sprocket develop a hook; they will fail.</li>
+        <li><strong>Stretched chain</strong> — measure chain stretch with a chain stretch gauge. Most chains should be retired when they have stretched &gt;0.5% of original length. A stretched chain causes uneven pitch engagement on the sprocket and premature wear.</li>
+        <li><strong>Filed-out cutter length variation &gt;2mm between cutters</strong> — one cutter doing all the work creates vibration and poor cutting. Refile all cutters to the shortest length, but if shortest cutter is below minimum usable height — retire.</li>
+        <li><strong>Any chain that has been struck by a foreign object</strong> (rock, fence wire, nails in a tree) — retire without exception. Impact damage may not be visible but creates internal stress points.</li>
+      </ul>
+      <div class="warn"><strong>⚠ Critical — Struck by Foreign Object:</strong> Per ANSI Z133 and all manufacturer requirements, a chain that has contacted metal, rock, or any embedded object must be immediately removed from service and inspected. Continued use risks chain breakage, which can cause severe injury. If in doubt, replace the chain.</div>
+      <h3>Pre-Use Inspection Checklist</h3>
+      <ul class="checklist">
+        <li><span class="check-box"></span>Chain brake engages and releases cleanly; hand guard condition good</li>
+        <li><span class="check-box"></span>Chain tension correct — pulls 3–5mm from bar; snaps back</li>
+        <li><span class="check-box"></span>Cutters have visible hook; no light reflection from top plates</li>
+        <li><span class="check-box"></span>No cracked or bent tie straps visible on visual inspection</li>
+        <li><span class="check-box"></span>Drive links engage smoothly in bar groove — no hooking or rough spots</li>
+        <li><span class="check-box"></span>Bar groove clear of debris; oiling hole clean and open</li>
+        <li><span class="check-box"></span>Bar rails even — no unilateral wear visible</li>
+        <li><span class="check-box"></span>Oil tank filled; oiler functioning (hold bar over cardboard, rev briefly — oil line should appear)</li>
+        <li><span class="check-box"></span>Sprocket nose spins freely; no side play</li>
+        <li><span class="check-box"></span>Chain has not contacted foreign objects since last sharpening</li>
+      </ul>
+      <div class="field-note">
+        <div class="field-note-label">📋 Field Note — Okanagan</div>
+        <p>Interior BC work — removal of old Siberian elms and Norway maples in established neighbourhoods — frequently turns up nails, wire, and lag bolts buried in wood. Always probe suspected areas with a nail finder or visually scan cut surfaces before the next cut. A chain that has struck metal is retired. Full stop. The cost of a new chain is nothing compared to a broken chain at operating speed.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="domain-tag">📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;·&nbsp; <strong>Sources:</strong> ANSI Z133-2017 §7 · WorkSafeBC OHS Regulation Part 26 · Stihl Chainsaw Operator Manual · Husqvarna Technical Documentation · TCIA Chainsaw Safety Training</div>
+</main>
+<script>
+function showSection(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
