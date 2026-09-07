@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 15 · Monday: Phenology — Seasonal Growth Cycles</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0f0f1a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+  header{background:#1e1e2e;border-bottom:3px solid #4ade80;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-size:1.1rem;font-weight:700;color:#4ade80;letter-spacing:.05em}
+  .week-label{font-size:.8rem;color:#94a3b8;background:#0f0f1a;padding:4px 10px;border-radius:20px}
+  .day-badge{background:#4ade8020;color:#4ade80;border:1px solid #4ade8060;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+  main{max-width:760px;margin:0 auto;padding:24px 16px}
+  h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+  .subtitle{color:#94a3b8;margin-bottom:24px;font-size:.95rem}
+  .card{background:#1e1e2e;border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid #2d2d44}
+  .ref-card h2{color:#4ade80;font-size:1rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+  .stages{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .stage{background:#0f0f1a;border:1px solid #4ade8040;border-radius:8px;padding:10px 14px;flex:1;min-width:140px}
+  .stage-name{color:#4ade80;font-size:.8rem;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+  .stage-desc{font-size:.78rem;color:#94a3b8;line-height:1.4}
+  .arrow{color:#4ade8080;font-size:1.2rem;align-self:center;flex-shrink:0}
+  .progress{display:flex;gap:6px;margin-bottom:20px;align-items:center}
+  .progress-dot{width:10px;height:10px;border-radius:50%;background:#2d2d44;transition:.2s}
+  .progress-dot.done{background:#4ade80}
+  .progress-dot.active{background:#4ade8080;ring:2px solid #4ade80}
+  .progress-label{color:#94a3b8;font-size:.8rem;margin-left:8px}
+  .question-card{background:#1e1e2e;border-radius:12px;padding:24px;border:1px solid #2d2d44}
+  .q-num{color:#4ade80;font-size:.8rem;font-weight:700;text-transform:uppercase;margin-bottom:10px}
+  .q-text{font-size:1.05rem;font-weight:600;line-height:1.5;margin-bottom:20px}
+  .options{display:flex;flex-direction:column;gap:10px}
+  .option{background:#0f0f1a;border:2px solid #2d2d44;border-radius:8px;padding:12px 16px;cursor:pointer;font-size:.9rem;transition:.15s;text-align:left;color:#e2e8f0;line-height:1.4}
+  .option:hover:not(:disabled){border-color:#4ade8060;background:#4ade8008}
+  .option.correct{border-color:#4ade80;background:#4ade8015;color:#4ade80}
+  .option.wrong{border-color:#ef4444;background:#ef444415;color:#ef4444}
+  .option.reveal-correct{border-color:#4ade8060;background:#4ade8008;color:#94a3b8}
+  .option:disabled{cursor:default}
+  .reveal{margin-top:20px;display:none;border-top:1px solid #2d2d44;padding-top:20px}
+  .reveal.show{display:block}
+  .reveal h3{color:#4ade80;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+  .reveal p{color:#cbd5e1;font-size:.9rem;line-height:1.6;margin-bottom:10px}
+  .reveal ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8}
+  .reveal ul li{margin-bottom:4px}
+  .field-note{background:#4ade8010;border-left:3px solid #4ade80;border-radius:0 8px 8px 0;padding:14px;margin-top:12px}
+  .field-note-label{color:#4ade80;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+  .field-note p{color:#a3e6b8;font-size:.88rem;line-height:1.5}
+  .result-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:700;margin-bottom:10px}
+  .result-badge.correct-badge{background:#4ade8020;color:#4ade80;border:1px solid #4ade8060}
+  .result-badge.wrong-badge{background:#ef444420;color:#ef4444;border:1px solid #ef444460}
+  .btn{background:#4ade80;color:#0f0f1a;border:none;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:16px;transition:.15s}
+  .btn:hover{background:#22c55e}
+  .btn-sec{background:transparent;color:#4ade80;border:2px solid #4ade8060;padding:10px 24px;border-radius:8px;font-weight:600;font-size:.9rem;cursor:pointer;margin-top:16px;transition:.15s}
+  .btn-sec:hover{border-color:#4ade80}
+  .home-btn{display:none}
+  .score-card{background:#1e1e2e;border-radius:12px;padding:32px;text-align:center;border:1px solid #4ade8040}
+  .score-num{font-size:3rem;font-weight:800;color:#4ade80}
+  .score-sub{color:#94a3b8;margin-top:8px}
+  .domain-tag{text-align:center;color:#64748b;font-size:.78rem;margin-top:32px;padding-top:16px;border-top:1px solid #1e1e2e}
+  .domain-tag strong{color:#94a3b8}
+  #home-screen{display:block}
+  #quiz-screen{display:none}
+  #score-screen{display:none}
+  .key-term{color:#4ade80;font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:10px}
+  th{background:#0f0f1a;color:#4ade80;padding:8px;text-align:left;border:1px solid #2d2d44}
+  td{padding:8px;border:1px solid #2d2d44;color:#cbd5e1;vertical-align:top}
+  tr:nth-child(even) td{background:#0f0f1a40}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🌿 Microbe Tree Training</div>
+  <div class="day-badge">Monday · Tree Biology</div>
+  <div class="week-label">Week 15</div>
+</header>
+<main>
+  <div id="home-screen">
+    <h1>Phenology</h1>
+    <p class="subtitle">Seasonal Growth Cycles, Dormancy, and Bud Break</p>
+    <div class="card ref-card">
+      <h2>📋 Phenological Stages — Quick Reference</h2>
+      <table>
+        <tr><th>Stage</th><th>Trigger</th><th>Condition</th><th>Field Sign</th></tr>
+        <tr><td><strong>Hardening</strong> (late summer)</td><td>Shortening photoperiod</td><td>Active growth stopping, sugars converting to starches</td><td>Shoot extension ceasing; leaves darkening</td></tr>
+        <tr><td><strong>Endodormancy</strong> (true dormancy)</td><td>Internal hormone signals (ABA)</td><td>Growth blocked internally; chilling requirement unmet</td><td>Tight closed buds; no response to warmth</td></tr>
+        <tr><td><strong>Ecodormancy</strong></td><td>Chilling requirement met</td><td>Growth blocked only by cold temps; artificially warmable</td><td>Buds beginning to swell slightly in warm spell</td></tr>
+        <tr><td><strong>Bud Swell</strong></td><td>Warm temperatures</td><td>Meristems active; cells dividing; MOST FROST VULNERABLE</td><td>Visible bud elongation; bud scales separating</td></tr>
+        <tr><td><strong>Bud Break / Leaf Out</strong></td><td>GDD accumulation</td><td>Leaves emerging; rapid sap flow</td><td>Green tissue visible; bleeder species running</td></tr>
+        <tr><td><strong>Active Growth</strong></td><td>Sustained warmth + light</td><td>Full photosynthesis; cambium fully active</td><td>Bark slipping; new wood forming</td></tr>
+      </table>
+      <div style="margin-top:14px;padding:10px;background:#0f0f1a;border-radius:8px;font-size:.82rem;color:#94a3b8">
+        <strong style="color:#4ade80">Three Types of Dormancy:</strong><br>
+        • <strong style="color:#e2e8f0">Endodormancy</strong> — internal block; cold (chilling hours) required to release<br>
+        • <strong style="color:#e2e8f0">Ecodormancy</strong> — chilling met; growth limited only by low temperature<br>
+        • <strong style="color:#e2e8f0">Paradormancy</strong> — suppressed by another part of the plant (e.g., apical dominance)
+      </div>
+    </div>
+    <button class="btn" onclick="startQuiz()">Start Lesson (5 Questions)</button>
+  </div>
+
+  <div id="quiz-screen">
+    <div class="progress" id="progress-bar"></div>
+    <div class="question-card" id="q-card"></div>
+  </div>
+
+  <div id="score-screen">
+    <div class="score-card">
+      <div class="score-num" id="final-score"></div>
+      <div class="score-sub">out of 5 correct</div>
+      <p style="color:#94a3b8;margin-top:16px;font-size:.9rem">Review any question reveals above to reinforce the concepts.</p>
+      <button class="btn" onclick="restartQuiz()" style="margin-top:20px">Restart Lesson</button>
+    </div>
+  </div>
+
+  <div class="domain-tag">📚 <strong>ISA Exam Domain:</strong> Tree Biology (11%) · Tree Selection &amp; Establishment (7%) &nbsp;·&nbsp; <strong>Sources:</strong> ISA Arborists' Certification Study Guide 4th Ed. · BC Ministry of Forests Phenology Bulletins · Kozlowski &amp; Pallardy, <em>Growth Control in Woody Plants</em></div>
+</main>
+
+<script>
+const questions = [
+  {
+    num: 1,
+    text: "What environmental cue primarily triggers the onset of autumn hardening and the transition into dormancy in temperate deciduous trees?",
+    options: [
+      "Air temperature dropping below 5°C for three or more consecutive days",
+      "Decreasing photoperiod (shortening day length) detected through the phytochrome system",
+      "Soil moisture depletion dropping below permanent wilting point",
+      "First hard frost killing the apical meristem"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Photoperiod and the Phytochrome System",
+      body: `<p>The primary trigger for dormancy induction in most temperate trees is <span class="key-term">decreasing photoperiod</span> — shortening day length as autumn approaches. Trees detect this through <span class="key-term">phytochrome</span>, a light-sensitive pigment present in leaves that exists in two interconvertible forms: Pr (absorbs red light, active by day) and Pfr (the active form that suppresses dormancy signals). As nights lengthen and the Pr/Pfr ratio shifts, the tree's hormonal balance changes.</p>
+      <p>Abscisic acid (ABA) levels rise, gibberellin levels fall, and the tree initiates hardening: carbohydrates are converted to osmoprotectants, membranes are restructured for cold tolerance, and meristematic activity slows. This process — <span class="key-term">cold acclimation</span> — happens in stages and requires both the photoperiod signal AND subsequent cold temperatures to complete.</p>
+      <p><strong>Why not temperature?</strong> Temperature is unreliable as a primary trigger — it fluctuates. Photoperiod is astronomically precise: the same day length arrives the same week every year. Trees evolved to use it as a reliable calendar signal.</p>
+      <ul>
+        <li>Photoperiod = primary trigger for hardening initiation</li>
+        <li>Cold temperatures = secondary signal that completes hardening and drives endodormancy deeper</li>
+        <li>ABA rises, gibberellins fall, growth ceases</li>
+        <li>Phytochrome is present in leaves — defoliated branches may not respond normally</li>
+      </ul>`,
+      fieldnote: "In Kelowna and West Kelowna, boulevard maples and lindens planted near bright streetlights often show delayed hardening in autumn — the artificial light disrupts the phytochrome signal. Watch for late-season flush growth on streetlight-side canopy still green while the rest of the tree has begun to colour. That new growth is frost-vulnerable."
+    }
+  },
+  {
+    num: 2,
+    text: "A tree in endodormancy (true dormancy) requires what condition to resume growth — even if moved into a greenhouse?",
+    options: [
+      "Only sustained warm temperatures above 10°C for two weeks",
+      "A sufficient accumulation of cold hours (chilling requirement) at temperatures typically between 0°C and 7°C",
+      "Increasing photoperiod alone — warm temperatures are not necessary",
+      "Application of exogenous gibberellin to break the ABA block"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Chilling Requirement and Endodormancy",
+      body: `<p>Endodormancy is maintained by an <span class="key-term">internal hormonal block</span> — primarily elevated ABA — that cannot be overcome by warmth alone. To release this block, trees must accumulate a species-specific number of <span class="key-term">chilling hours</span>: typically defined as hours at 0–7°C (some models use slightly different ranges).</p>
+      <p>Once the chilling requirement is met, the tree transitions to <span class="key-term">ecodormancy</span>: growth is now blocked only by environmental temperature, not internal hormones. In ecodormancy, warm the tree and it will grow. This is how nurseries force early bloom on ornamentals, and why a January warm snap can push forsythia into bloom.</p>
+      <ul>
+        <li>Chilling requirement varies by species: apples need ~1,000–1,200 chilling hours; ponderosa pine needs far less</li>
+        <li>Insufficient chilling → delayed, erratic bud break; in fruit trees, this causes "delayed foliation syndrome"</li>
+        <li>Climate warming is reducing chilling hours in the Okanagan — a serious concern for the fruit industry</li>
+        <li>Endodormancy = ABA up, gibberellins down, growth blocked internally</li>
+        <li>Ecodormancy = chilling met, growth blocked only by cold ambient temperatures</li>
+      </ul>
+      <p>The distinction matters for arborists because it determines whether a warm spell in winter will pull a tree out of dormancy prematurely. In endodormancy, the tree is safe from early-season warm spells. In ecodormancy, it is not.</p>`,
+      fieldnote: "Okanagan winters sometimes deliver a warm spell in late January or February — temperatures in the mid-teens for a week. Trees already in ecodormancy (chilling requirement met) will respond: buds swell, occasionally burst early on south-facing aspects. When temperatures crash again, that swollen bud tissue is far more frost-sensitive than a tight dormant bud. Watch for this on ornamental cherries and apricots — premature bud break followed by late frost is the most common cause of the 'dead blossom' calls we get in April."
+    }
+  },
+  {
+    num: 3,
+    text: "Which phenological stage represents the highest risk of frost damage to a temperate tree?",
+    options: [
+      "Deep endodormancy (December–January), when buds are fully sealed",
+      "Ecodormancy (February), when chilling is complete but buds are still tight",
+      "Bud swell through early leaf emergence — from visible bud elongation to first leaf unfurling",
+      "Full canopy establishment in June, when leaves are fully expanded"
+    ],
+    correct: 2,
+    reveal: {
+      heading: "Cold Hardiness Loss During Bud Break",
+      body: `<p>Cold hardiness is not a static property — it changes across the phenological cycle. During deep endodormancy, cells in the buds are highly desiccated, membranes are restructured for cold tolerance, and antifreeze compounds are concentrated. A ponderosa pine in January may tolerate -40°C or colder.</p>
+      <p>As <span class="key-term">bud swell</span> begins, this hardiness is rapidly and irreversibly lost. Cells are rehydrating, membranes are destabilizing, and meristematic tissues are actively dividing — exactly the conditions that make them vulnerable to ice crystal formation. By the time bud scales are separating and new tissue is visible, even a brief -3°C frost can kill the emerging tissue.</p>
+      <p>This window — bud swell through early leaf emergence — is when the tree has committed to growth but has not yet built the structural and biochemical defenses that adult leaves carry. It is the most vulnerable phenological window for frost.</p>
+      <ul>
+        <li>Deep dormancy: maximum cold hardiness (can tolerate extreme cold)</li>
+        <li>Bud swell: rapid hardiness loss; cells rehydrating and dividing</li>
+        <li>Early leaf out: frost may kill emerging leaves but typically not the tree itself (reserves allow re-flush)</li>
+        <li>In fruit trees, frost at bloom = crop failure; the flower is more sensitive than vegetative buds</li>
+        <li>Late spring frosts (May in Okanagan) kill emerging shoot tips — look for shepherd's crook on conifers</li>
+      </ul>`,
+      fieldnote: "The Okanagan spring is notorious for this. A week of warm weather in April pulls boulevard trees and ornamentals into bud swell — then a cold front drops temperatures below -4°C overnight. The result: blackened new growth, dead flower buds, and sometimes dieback of the current season's shoot tips. For conifers, look for the 'candle kill' effect — new candles emerge silver-white and droop. For ornamental cherries, the petals turn brown and fall within days. The tree usually survives, but the display (and for fruit growers, the crop) is lost."
+    }
+  },
+  {
+    num: 4,
+    text: "You're scheduling dormant pruning for a large Okanagan paper birch in late February. Daytime highs have been 10–12°C for a week, and you can see buds beginning to swell. The best course of action is:",
+    options: [
+      "Proceed immediately — the tree is technically still dormant and pruning is safe",
+      "Delay pruning: once birch sap is actively rising (indicated by bud swell), heavy 'bleeding' begins; wait until fully leafed out in late May or until after mid-summer",
+      "Prune only the lower scaffold limbs now, leaving the upper canopy until summer",
+      "Apply wound sealant immediately after every cut to prevent sap loss from draining the tree"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Pruning Timing and the 'Bleeders'",
+      body: `<p>Most trees are best pruned during late dormancy — late winter before bud break — because wound closure begins rapidly with the first flush of cambial activity in spring. However, a group of species known as <span class="key-term">"bleeders"</span> are exceptions: they develop very high xylem pressure during bud swell and run heavy sap from pruning wounds.</p>
+      <p>The primary bleeders in Okanagan arborist work: <strong>paper birch, yellow birch, all maples, and elms</strong>. When pruned during active sap rise, these species ooze copious amounts of sap — sometimes several litres per day per large wound. While this is cosmetically alarming and can attract insects, it does not kill or significantly harm a healthy tree. However, it can promote secondary pathogens in the wound environment and is aesthetically problematic on client properties.</p>
+      <p><strong>Per ISA Best Management Practices for Pruning:</strong> timing pruning to minimize sap exudation is preferred. Recommended windows for bleeders:</p>
+      <ul>
+        <li><strong>Late spring (after full leaf out)</strong> — sap pressure has equalized; wounds begin closing actively</li>
+        <li><strong>Mid-summer (July–August)</strong> — minimal bleeding, fast compartmentalization of wounds</li>
+        <li><strong>Avoid:</strong> late winter through bud break — peak sap rise; maximum bleeding</li>
+      </ul>
+      <p>Wound sealants (dressings) are not recommended by current ISA BMP standards — they have been shown to impede the natural CODIT response and can trap pathogens. The old practice of tar-based dressings is obsolete.</p>`,
+      fieldnote: "In West Kelowna and Kelowna, paper birch is a favourite ornamental tree in established neighbourhoods. Calls for winter pruning (client wants the 'mess' cleaned up before spring) are common. The correct answer for birch is 'not yet' — push the work to late May or schedule a summer visit. Document the timing recommendation in your work order to protect yourself if the client pushes back. ANSI A300 Part 1 supports the scheduling rationale."
+    }
+  },
+  {
+    num: 5,
+    text: "Growing Degree Days (GDD) is a tool arborists and pest managers use to predict:",
+    options: [
+      "Annual ring width increments in millimetres, used to assess tree vigour",
+      "The timing of pest emergence, phenological events (bud break, bloom), and optimal treatment windows",
+      "The number of growing seasons before a tree achieves structural maturity per ANSI A300",
+      "Soil degree of weathering and cation exchange development in the B horizon"
+    ],
+    correct: 1,
+    reveal: {
+      heading: "Growing Degree Days — A Field-Ready Tool",
+      body: `<p><span class="key-term">Growing Degree Days (GDD)</span> are a heat accumulation metric: the sum of daily average temperatures above a defined base temperature (usually 5°C or 10°C, depending on the organism modelled). Each day contributes: GDD = (Tmax + Tmin)/2 − Base temp. Negative values are set to zero.</p>
+      <p>GDD accumulate from a defined start date (often January 1 or March 1) and can predict biological events with remarkable precision across different years and locations — because insects, pathogens, and plant development respond to heat accumulation, not calendar dates.</p>
+      <p><strong>Practical applications in Okanagan arborist work:</strong></p>
+      <ul>
+        <li><strong>Emerald Ash Borer (EAB):</strong> Adult flight begins ~450 GDD (base 10°C). In the Okanagan, this typically occurs early–mid July. Timing insecticide treatments to EAB adult emergence windows depends on GDD tracking.</li>
+        <li><strong>Mountain Pine Beetle:</strong> Adult flight typically begins at ~300 GDD (base 18.3°C). BC Ministry of Forests publishes annual MPB flight predictions based on GDD.</li>
+        <li><strong>Pruning timing:</strong> Cambium is generally active enough for wound closure above ~100 GDD accumulation from bud swell.</li>
+        <li><strong>Bud break prediction:</strong> Ponderosa pine in Kelowna area typically breaks bud at 50–80 GDD (base 5°C) from the start of warm accumulation.</li>
+        <li><strong>PHC scheduling:</strong> Dormant oil applications, systemic insecticide timing, and fungicide applications are all GDD-dependent for maximum efficacy.</li>
+      </ul>
+      <p>Many provincial and federal pest management resources publish GDD tools. The BC Ministry of Forests IPM toolbox includes degree-day models for major forest pests. Apps like Degree Days.net and university extension tools allow localized tracking.</p>`,
+      fieldnote: "Kelowna's semi-arid continental climate means heat accumulates quickly in spring — GDD can jump 20–30 units per day during a late April heat wave. In contrast, a cold, wet spring (like 2022 in much of the Okanagan) can delay pest emergence by 2–3 weeks relative to calendar dates. If your pest management timing is calendar-based, you'll miss the window in late springs and overshoot in early ones. GDD tracking takes 5 minutes a day and dramatically improves treatment efficacy — especially for systemic insecticides that need to be in the vascular system before target insects arrive."
+    }
+  }
+];
+
+let current = 0, score = 0, answered = [];
+
+function startQuiz() {
+  document.getElementById('home-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQuestion();
+}
+
+function renderProgress() {
+  const bar = document.getElementById('progress-bar');
+  bar.innerHTML = questions.map((_, i) => `<div class="progress-dot ${i < current ? 'done' : i === current ? 'active' : ''}"></div>`).join('') + `<span class="progress-label">Question ${current + 1} of ${questions.length}</span>`;
+}
+
+function renderQuestion() {
+  renderProgress();
+  const q = questions[current];
+  const card = document.getElementById('q-card');
+  card.innerHTML = `
+    <div class="q-num">Question ${q.num}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="options" id="options">
+      ${q.options.map((o, i) => `<button class="option" id="opt-${i}" onclick="selectOption(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    </div>
+    <div class="reveal" id="reveal"></div>
+  `;
+}
+
+function selectOption(idx) {
+  const q = questions[current];
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => { o.disabled = true; });
+  const isCorrect = idx === q.correct;
+  if (isCorrect) { score++; opts[idx].classList.add('correct'); }
+  else { opts[idx].classList.add('wrong'); opts[q.correct].classList.add('reveal-correct'); }
+  showReveal(q, isCorrect);
+}
+
+function showReveal(q, isCorrect) {
+  const rev = document.getElementById('reveal');
+  rev.className = 'reveal show';
+  rev.innerHTML = `
+    <div class="result-badge ${isCorrect ? 'correct-badge' : 'wrong-badge'}">${isCorrect ? '✓ Correct' : '✗ Incorrect — Correct answer: ' + String.fromCharCode(65 + q.correct)}</div>
+    <h3>${q.reveal.heading}</h3>
+    ${q.reveal.body}
+    <div class="field-note">
+      <div class="field-note-label">📋 Field Note — Okanagan</div>
+      <p>${q.reveal.fieldnote}</p>
+    </div>
+    ${current < questions.length - 1 
+      ? `<button class="btn" onclick="nextQuestion()">Next Question →</button>`
+      : `<button class="btn" onclick="showScore()">See Results</button>`}
+  `;
+}
+
+function nextQuestion() { current++; renderQuestion(); }
+
+function showScore() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('score-screen').style.display = 'block';
+  document.getElementById('final-score').textContent = score + '/5';
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('score-screen').style.display = 'none';
+  document.getElementById('home-screen').style.display = 'block';
+}
+</script>
+</body>
+</html>
