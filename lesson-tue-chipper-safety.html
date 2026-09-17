@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 16 · Tuesday: Chipper Operation &amp; Safety</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0f0f1a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+header{background:#1e1e2e;border-bottom:3px solid #f59e0b;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.brand{font-size:1.1rem;font-weight:700;color:#f59e0b;letter-spacing:.05em}
+.week-label{font-size:.8rem;color:#94a3b8;background:#0f0f1a;padding:4px 10px;border-radius:20px}
+.day-badge{background:#f59e0b20;color:#f59e0b;border:1px solid #f59e0b60;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:24px 16px}
+h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+.subtitle{color:#94a3b8;margin-bottom:24px;font-size:.95rem}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.nav-btn{background:#1e1e2e;border:2px solid #2d2d44;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.82rem;color:#94a3b8;transition:.15s;font-family:inherit}
+.nav-btn:hover{border-color:#f59e0b60;color:#f59e0b}
+.nav-btn.active{border-color:#f59e0b;color:#f59e0b;background:#f59e0b10}
+section{display:none}
+section.active{display:block}
+.card{background:#1e1e2e;border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid #2d2d44}
+h2{color:#f59e0b;font-size:.92rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+h3{color:#fbbf24;font-size:.92rem;font-weight:600;margin-bottom:8px;margin-top:16px}
+h3:first-child{margin-top:0}
+p{color:#cbd5e1;font-size:.9rem;line-height:1.65;margin-bottom:10px}
+ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8;margin-bottom:10px}
+li{margin-bottom:3px}
+.key{color:#f59e0b;font-weight:700}
+.warn{background:#ef444415;border-left:3px solid #ef4444;padding:14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.9rem;color:#fca5a5}
+.warn strong{color:#ef4444}
+.ok{background:#4ade8015;border-left:3px solid #4ade80;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.88rem;color:#a3e6b8}
+.ok strong{color:#4ade80}
+.field-note{background:#f59e0b10;border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:14px;margin-top:14px}
+.fn-label{color:#f59e0b;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.field-note p{color:#fde68a;font-size:.88rem;line-height:1.55;margin:0}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0}
+th{background:#0f0f1a;color:#f59e0b;padding:9px;text-align:left;border:1px solid #2d2d44;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+td{padding:9px;border:1px solid #2d2d44;color:#cbd5e1;vertical-align:top}
+tr:nth-child(even) td{background:#0f0f1a40}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:8px 10px;border-bottom:1px solid #2d2d44;display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:#cbd5e1}
+.checklist li:last-child{border-bottom:none}
+.check-box{width:18px;height:18px;border:2px solid #f59e0b;border-radius:3px;flex-shrink:0;margin-top:1px}
+.isa-footer{background:#1e1e2e;border-top:1px solid #2d2d44;padding:14px 20px;font-size:.8rem;color:#64748b;margin-top:24px;border-radius:8px}
+svg text{font-family:'Segoe UI',system-ui,sans-serif}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">🪚 Microbe Tree Training</div>
+  <div class="week-label">Week 16</div>
+  <div class="day-badge">Tuesday · Equipment &amp; Tools</div>
+</header>
+
+<main>
+  <h1>Chipper Operation &amp; Safety</h1>
+  <p class="subtitle">Bandit disc chippers · ANSI Z133 · WorkSafeBC OHS Reg. Part 26 · Infeed safety · Emergency stop</p>
+
+  <nav>
+    <button class="nav-btn active" onclick="show('disc-drum')">Disc vs Drum</button>
+    <button class="nav-btn" onclick="show('infeed-zone')">Infeed Zone Rules</button>
+    <button class="nav-btn" onclick="show('emergency')">Emergency Stop</button>
+    <button class="nav-btn" onclick="show('ppe')">PPE Requirements</button>
+    <button class="nav-btn" onclick="show('ansi')">ANSI Z133 Quick Ref</button>
+  </nav>
+
+  <!-- DISC VS DRUM -->
+  <section id="disc-drum" class="active">
+    <div class="card">
+      <h2>Disc Chipper vs Drum Chipper — Know Your Machine</h2>
+      <p>Bandit manufactures both disc and drum chippers. Understanding the mechanical differences matters for safe operation, kickback risk, and what material each handles best.</p>
+
+      <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:0 auto 16px;background:#0f0f1a;border-radius:8px">
+        <!-- Disc chipper diagram -->
+        <text x="120" y="22" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="bold">DISC CHIPPER</text>
+        <!-- Disc -->
+        <circle cx="130" cy="110" r="55" fill="#1e1e2e" stroke="#f59e0b" stroke-width="2"/>
+        <circle cx="130" cy="110" r="8" fill="#f59e0b" opacity=".5"/>
+        <!-- Knife lines on disc -->
+        <line x1="130" y1="55" x2="130" y2="75" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+        <line x1="130" y1="145" x2="130" y2="165" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+        <line x1="75" y1="110" x2="95" y2="110" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+        <line x1="165" y1="110" x2="185" y2="110" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+        <text x="147" y="64" fill="#fbbf24" font-size="9">knife</text>
+        <!-- Feed chute -->
+        <rect x="30" y="88" width="42" height="44" fill="#2d2d44" stroke="#64748b" stroke-width="1" rx="3"/>
+        <text x="51" y="113" text-anchor="middle" fill="#94a3b8" font-size="9">feed</text>
+        <!-- Rotation arrow -->
+        <path d="M 155 80 A 40 40 0 0 1 162 140" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="168" y="112" fill="#94a3b8" font-size="9">rotation</text>
+
+        <!-- Drum chipper -->
+        <text x="370" y="22" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="bold">DRUM CHIPPER</text>
+        <!-- Drum (rectangle in side view) -->
+        <rect x="320" y="60" width="80" height="100" fill="#1e1e2e" stroke="#60a5fa" stroke-width="2" rx="4"/>
+        <!-- Knives on drum -->
+        <line x1="320" y1="85" x2="400" y2="85" stroke="#93c5fd" stroke-width="2.5"/>
+        <line x1="320" y1="110" x2="400" y2="110" stroke="#93c5fd" stroke-width="2.5"/>
+        <line x1="320" y1="135" x2="400" y2="135" stroke="#93c5fd" stroke-width="2.5"/>
+        <text x="410" y="89" fill="#93c5fd" font-size="9">knife</text>
+        <!-- Feed direction -->
+        <rect x="258" y="88" width="50" height="44" fill="#2d2d44" stroke="#64748b" stroke-width="1" rx="3"/>
+        <text x="283" y="113" text-anchor="middle" fill="#94a3b8" font-size="9">feed</text>
+        <text x="315" y="113" text-anchor="middle" fill="#94a3b8" font-size="14">→</text>
+        <!-- Rotation arrow for drum -->
+        <path d="M 360 55 A 10 10 0 0 1 380 55" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="360" y="50" fill="#94a3b8" font-size="9">↻ drum rotates</text>
+      </svg>
+
+      <table>
+        <tr><th>Feature</th><th>Disc Chipper (Bandit 15XP, 18XP, 1890XP etc.)</th><th>Drum Chipper (Bandit 65, 75 series etc.)</th></tr>
+        <tr><td><strong>Cutting mechanism</strong></td><td>Rotating steel disc with fixed knives — chip is sliced off as material contacts the disc face</td><td>Rotating drum with helical knives — material is fed perpendicular to drum rotation</td></tr>
+        <tr><td><strong>Chip quality</strong></td><td>More uniform chip size; preferred for biomass/fuel chip spec</td><td>Slightly more variable; excellent for large diameter material</td></tr>
+        <tr><td><strong>Kickback potential</strong></td><td>Lower kickback risk — slicing action with disc</td><td>Higher kickback risk with some large-diameter or forked material — drum can grab and eject</td></tr>
+        <tr><td><strong>Large diameter capacity</strong></td><td>Limited by disc face diameter; typically 6"–18" capacity</td><td>Handles large, irregular material well; 12"–24"+ capacity</td></tr>
+        <tr><td><strong>Typical application</strong></td><td>Most Okanagan tree care brush/limb work</td><td>Larger production chipping, land clearing</td></tr>
+      </table>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Bandit disc chippers are the workhorse of most Okanagan tree care operations. The 12" and 15" disc machines are common on residential jobs. Know your specific machine's disc diameter and knife count — Bandit 1590XP has a 30" disc with 2 knives; the 18XP runs a larger disc with 3. Knife count affects chip thickness and the feel of feeding. When something "sounds different" during chipping, stop and check — disc imbalance or a cracked knife makes itself known acoustically before it fails catastrophically.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFEED ZONE -->
+  <section id="infeed-zone">
+    <div class="card">
+      <h2>Infeed Zone Rules — ANSI Z133 §8.4 / WorkSafeBC OHS Reg. §26.20</h2>
+
+      <div class="warn">
+        <strong>⚠ The infeed zone is the most dangerous area on the job site.</strong> A chipper drum or disc can pull a person in faster than any reflex can respond. There is no recovery from contact with the knives.
+      </div>
+
+      <h3>Mandatory Infeed Zone Rules (ANSI Z133:2017 §8.4)</h3>
+      <ul>
+        <li><span class="key">Never feed material while standing in front of the infeed chute</span> — always feed from the side, maintaining a 90° offset from the feed direction. The "side-feed" position keeps you out of the pull zone</li>
+        <li>Feed brush and limbs <span class="key">butt-end first</span> whenever practical — the chipper grabs butt-end material more smoothly and reduces the chance of hang-ups that cause sudden jolts</li>
+        <li><span class="key">Maintain a minimum 6-foot clearance</span> from the infeed opening when the machine is running and you are not actively feeding — this applies to ground crew observing and bystanders</li>
+        <li>Never reach into the infeed chute to clear a jam — <span class="key">shut the machine down and wait for all rotation to stop</span> before clearing blockages. Per ANSI Z133, the engine must be off and the disc/drum fully stopped</li>
+        <li>Long material creates a "lever" hazard — material longer than approximately 6 feet being pushed into the chipper can pivot and strike the operator. <span class="key">Feed long brush butt-first and let the machine pull it</span>; never push from behind on long pieces</li>
+        <li>If material stalls or the machine bogs, <span class="key">engage the reverse/retract control</span> (the green/yellow paddle or bar at infeed) to back material out — never pull on stuck material by hand while the machine is running</li>
+        <li><span class="key">No loose clothing, drawstrings, or gloves hanging loose</span> near the infeed — the chipper does not distinguish between a branch and a sleeve</li>
+      </ul>
+
+      <h3>Infeed Control Bar (Bandit) — Function</h3>
+      <p>Bandit chippers use a bar or paddle across the top of the infeed opening. This is the <strong>feed control / emergency stop bar</strong>:</p>
+      <ul>
+        <li><strong>Upper position (pulled toward operator)</strong> → engages automatic feed (material is drawn in by hydraulic feed rollers)</li>
+        <li><strong>Middle / neutral position</strong> → feed rollers disengage; chipping rotor continues running</li>
+        <li><strong>Lower position (pushed away from operator)</strong> → reverses feed rollers to back material out of infeed</li>
+      </ul>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>In tight residential yards in West Kelowna, the pressure to chip fast and move is real — but tight job sites also mean you're more likely to have forked brush, wet material, and people moving through the chip throw zone. Before you start chipping on any site, identify your feed zone offset position and make sure every crew member knows it. The WorkSafeBC fatality database has multiple chipper incidents where crew fed material while standing in front of the infeed — always from the side, every single time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMERGENCY STOP -->
+  <section id="emergency">
+    <div class="card">
+      <h2>Emergency Stop Procedures — Bandit Chippers</h2>
+
+      <h3>If a Person Makes Contact with the Infeed or Chipper Components</h3>
+      <div class="warn">
+        <strong>This is a life-safety emergency. Act without hesitation.</strong>
+      </div>
+      <ul>
+        <li><strong>Step 1:</strong> Hit the <span class="key">emergency stop / kill switch</span> — a large red mushroom-head button located on the control panel and/or at the rear of the machine. All Bandit machines since 2005 have at minimum one emergency stop. Newer models have additional stops at infeed and rear</li>
+        <li><strong>Step 2:</strong> Simultaneously, any crew member nearest the infeed can <span class="key">push the infeed control bar to the reverse position</span> to back material out — but this is secondary to engine stop</li>
+        <li><strong>Step 3:</strong> Call 911 immediately — do not delay emergency services to assess the situation</li>
+        <li><strong>Step 4:</strong> Do not attempt to move the victim or extract limbs from the machine. Wait for emergency responders. Moving a crush victim from machinery can cause fatal hemorrhage upon release</li>
+        <li><strong>Step 5:</strong> Secure the machine — prevent it from being restarted until emergency services and WorkSafeBC have been notified. Chipper incidents are <span class="key">WorkSafeBC-reportable serious injuries</span> — report within 24 hours per OHS Regulation §172</li>
+      </ul>
+
+      <h3>Locating Emergency Stops on Bandit Disc Chippers</h3>
+      <table>
+        <tr><th>Location</th><th>Type</th><th>Function</th></tr>
+        <tr><td>Rear control panel</td><td>Red mushroom E-stop button</td><td>Kills engine immediately</td></tr>
+        <tr><td>Infeed control bar (push away)</td><td>Hydraulic reverse</td><td>Backs material out of infeed rollers</td></tr>
+        <tr><td>Remote hand control (newer models)</td><td>Wireless E-stop</td><td>Engine kill from operator distance</td></tr>
+        <tr><td>PTO shaft (tow-behind models)</td><td>Slip clutch / shear bolt</td><td>Decouples PTO on overload — not an E-stop</td></tr>
+      </table>
+
+      <h3>Pre-Task Emergency Plan — Required by ANSI Z133 §4.1</h3>
+      <p>Per ANSI Z133:2017, a pre-task emergency action plan must be discussed at the start of every shift or job site change. For chipper work, this means verbally confirming:</p>
+      <ul>
+        <li>Location of all emergency stops on this specific machine</li>
+        <li>Who calls 911 and who secures the area</li>
+        <li>Nearest hospital with trauma care (Kelowna General for most Okanagan jobs)</li>
+        <li>That every crew member can operate the infeed control bar independently</li>
+      </ul>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Walk-around every chipper at the start of every day. Locate the E-stops before you need them — not while panicking. On Bandit machines, the mushroom E-stop is bright red and prominent, but on older machines it may be stiff from lack of use. Test it occasionally (with the machine safely positioned). WorkSafeBC OHS Regulation §26.15 requires that emergency controls be inspected before each use. That inspection takes 30 seconds and could be the most important thing you do all day.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PPE -->
+  <section id="ppe">
+    <div class="card">
+      <h2>PPE Requirements for Chipper Operation — ANSI Z133 §3 / WorkSafeBC OHS Reg.</h2>
+
+      <h3>Mandatory PPE — All Chipper Operations</h3>
+      <ul class="checklist">
+        <li><span class="check-box"></span><strong>Hard hat:</strong> CSA Z94.1 Class E (electrical) or ANSI Z89.1 Type II. Required whenever overhead work or falling debris risk exists — chipper work near the tree qualifies. Inspect shell and suspension before each shift</li>
+        <li><span class="check-box"></span><strong>Eye protection:</strong> Safety glasses or goggles meeting CSA Z94.3 / ANSI Z87.1. Chip discharge and wood debris make this non-negotiable. Face shield is additional, not a substitute for safety glasses</li>
+        <li><span class="check-box"></span><strong>Hearing protection:</strong> Required when sound levels exceed 85 dBA (8-hour TWA). Chipper noise commonly exceeds 95–105 dBA at the infeed position. Foam earplugs (NRR 29+) or earmuffs rated for the exposure level — WorkSafeBC OHS Reg. §7.98</li>
+        <li><span class="check-box"></span><strong>High-visibility vest or jacket:</strong> Required whenever working within proximity of vehicle traffic (ANSI 107 Class 2 minimum for roadside) and strongly recommended on any job site for crew visibility</li>
+        <li><span class="check-box"></span><strong>Work gloves:</strong> Leather palm at minimum for brush handling. Cut-resistant gloves appropriate for chainsaw chip handling. Critically: <span class="key">gloves must fit snugly</span> — loose gloves near the infeed can be snagged</li>
+        <li><span class="check-box"></span><strong>Leg protection (chainsaw chaps):</strong> Required for any person using a chainsaw in the vicinity of the chipper. Not required for chipper operation alone, but standard Microbe Tree practice is chaps-on until the saw is secured</li>
+        <li><span class="check-box"></span><strong>Steel-toed boots:</strong> CSA Z195 green patch (protective toe cap) minimum. Log and branch handling on site requires foot protection</li>
+      </ul>
+
+      <h3>What NOT to Wear Around the Chipper</h3>
+      <div class="warn">
+        <strong>Never wear:</strong> loose drawstring hoods, flapping jacket sleeves, dangling lanyards or badge holders, scarves, open-toed footwear, or unsecured hair near the infeed zone. The chipper will not give you time to react.
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Hearing damage from chipper exposure is cumulative and irreversible. A 10-minute exposure at 100 dBA without protection equals significant noise dose. Many experienced arborists have measurable high-frequency hearing loss from years of inadequate hearing protection. Foam earplugs have an NRR of 29 dB — worn correctly, they reduce 100 dBA to approximately 85 dBA, right at the WorkSafeBC limit. Double-up (plugs under earmuffs) for extended chipping shifts. Your hearing at 55 depends on the choices you make at 25.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANSI QUICK REF -->
+  <section id="ansi">
+    <div class="card">
+      <h2>ANSI Z133 Chipper Quick Reference — 2017 Edition</h2>
+      <p>ANSI Z133 "Safety Requirements for Arboricultural Operations" is the primary US/Canadian industry standard for tree work safety. Section 8 covers chipping operations. BC WorkSafeBC OHS Regulation Part 26 (Forestry) and Part 4 (General HV&amp;V) also apply. Where they conflict, the more stringent requirement governs.</p>
+
+      <table>
+        <tr><th>ANSI Z133 Section</th><th>Requirement</th></tr>
+        <tr><td>§3 — PPE</td><td>Hard hat, eye protection, hearing protection, appropriate clothing — all mandatory for chipper operation</td></tr>
+        <tr><td>§4.1 — Pre-Task Plan</td><td>Discuss emergency procedures, hazards, escape routes, and equipment operation at start of each work day</td></tr>
+        <tr><td>§8.4.1 — Infeed position</td><td>Operators shall feed brush from the side — not standing in front of the infeed throat</td></tr>
+        <tr><td>§8.4.2 — Clearing jams</td><td>Engine off, disc/drum fully stopped before clearing any blockage</td></tr>
+        <tr><td>§8.4.3 — Loose clothing</td><td>Prohibits loose garments or jewelry near moving parts of the chipper</td></tr>
+        <tr><td>§8.4.4 — Minimum crew</td><td>A minimum of two workers shall be present when operating a chipper</td></tr>
+        <tr><td>§8.4.5 — Tow vehicle</td><td>Chipper shall be secured from movement during operation (wheel chocks, tow vehicle in park)</td></tr>
+        <tr><td>§8.5 — Chip throw zone</td><td>No persons in the chip throw/discharge zone during operation</td></tr>
+      </table>
+
+      <h3>WorkSafeBC Specifics (OHS Regulation Part 26)</h3>
+      <ul>
+        <li>§26.15: All dangerous machine parts must be guarded or workers excluded from danger zones</li>
+        <li>§26.20: Specific chipper infeed requirements — equivalent to ANSI Z133 §8.4, with BC legal force</li>
+        <li>§172: Serious injury reporting — chipper incidents with injury or potential for serious injury must be reported to WorkSafeBC within 24 hours</li>
+        <li>BC requires documented pre-use equipment inspection records for powered equipment — keep a log</li>
+      </ul>
+
+      <div class="ok">
+        <strong>✓ Daily chipper check:</strong> Inspect disc/drum knives for chips, cracks, or loosening. Check feed roller condition. Verify all guards are in place. Test emergency stop function. Check hydraulic fluid level. Confirm wheel chocks are aboard. Takes 5 minutes. Required by law.
+      </div>
+
+      <div class="isa-footer">
+        📚 ISA Exam Domain: Safe Work Practices (28%) · Sources: ANSI Z133:2017 §8.4 · Bandit Industries Operator Manual · WorkSafeBC OHS Regulation Parts 4 &amp; 26
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+function show(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 16 · Wednesday: Blue Spruce — Picea pungens</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a1a14;color:#d4e8d4;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+header{background:#0d2218;border-bottom:3px solid #22c55e;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.brand{font-size:1.1rem;font-weight:700;color:#22c55e;letter-spacing:.05em}
+.week-label{font-size:.8rem;color:#6b9a7a;background:#061a0e;padding:4px 10px;border-radius:20px}
+.day-badge{background:#22c55e20;color:#22c55e;border:1px solid #22c55e60;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+.layout{display:flex;max-width:960px;margin:0 auto;min-height:calc(100vh - 60px)}
+aside{width:200px;flex-shrink:0;background:#0d2218;border-right:1px solid #1a3a28;padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+aside h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#4a7a5a;padding:0 16px 10px;border-bottom:1px solid #1a3a28;margin-bottom:8px}
+.nav-item{display:block;padding:10px 16px;font-size:.85rem;cursor:pointer;color:#7aaa8a;border-left:3px solid transparent;transition:.15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{color:#22c55e;background:#0a2a18}
+.nav-item.active{color:#22c55e;border-left-color:#22c55e;background:#0a2a18;font-weight:600}
+.nav-icon{margin-right:6px}
+main{flex:1;padding:28px 24px 60px;max-width:760px}
+section{display:none}
+section.active{display:block}
+h1{font-size:1.5rem;font-weight:700;color:#e8f8e8;margin-bottom:4px}
+.sci-name{font-style:italic;color:#22c55e;font-size:1rem;margin-bottom:4px}
+.tagline{color:#7aaa8a;font-size:.9rem;margin-bottom:20px}
+.card{background:#0d2218;border-radius:10px;padding:18px;margin-bottom:14px;border:1px solid #1a3a28}
+h2{color:#22c55e;font-size:.88rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+h3{color:#4ade80;font-size:.9rem;font-weight:600;margin-bottom:8px;margin-top:14px}
+h3:first-child{margin-top:0}
+p{color:#b8d8b8;font-size:.88rem;line-height:1.65;margin-bottom:10px}
+ul{padding-left:18px;color:#b8d8b8;font-size:.88rem;line-height:1.8;margin-bottom:10px}
+li{margin-bottom:3px}
+.key{color:#22c55e;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:.83rem;margin:10px 0}
+th{background:#061a0e;color:#22c55e;padding:8px 10px;text-align:left;border:1px solid #1a3a28;font-size:.75rem;text-transform:uppercase}
+td{padding:8px 10px;border:1px solid #1a3a28;color:#b8d8b8;vertical-align:top}
+tr:nth-child(even) td{background:#0a1a10}
+.alert-red{background:#2a0a0a;border-left:3px solid #ef4444;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.87rem;color:#fca5a5}
+.alert-red strong{color:#ef4444}
+.alert-yellow{background:#1a1500;border-left:3px solid #eab308;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.87rem;color:#fde68a}
+.alert-yellow strong{color:#eab308}
+.ok{background:#0a2a10;border-left:3px solid #22c55e;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.87rem;color:#86efac}
+.field-note{background:#061a0e;border-left:3px solid #22c55e;border-radius:0 8px 8px 0;padding:14px;margin-top:14px}
+.fn-label{color:#22c55e;font-size:.72rem;font-weight:700;text-transform:uppercase;margin-bottom:6px;letter-spacing:.08em}
+.field-note p{color:#86efac;font-size:.86rem;line-height:1.55;margin:0}
+.isa-footer{background:#0d2218;border-top:1px solid #1a3a28;padding:14px 24px;font-size:.78rem;color:#4a7a5a;margin-top:20px;border-radius:8px}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.spec-box{background:#061a0e;border:1px solid #1a3a28;border-radius:8px;padding:12px}
+.spec-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:#4a7a5a;margin-bottom:4px}
+.spec-val{font-size:.95rem;font-weight:700;color:#22c55e}
+.spec-note{font-size:.75rem;color:#7aaa8a;margin-top:2px}
+@media(max-width:640px){.layout{flex-direction:column} aside{width:100%;height:auto;position:static;padding:12px 0} .nav-item{display:inline-block;width:auto;border-left:none;border-bottom:2px solid transparent;padding:6px 12px} .nav-item.active{border-bottom-color:#22c55e;border-left:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">🌳 Microbe Tree Training</div>
+  <div class="week-label">Week 16</div>
+  <div class="day-badge">Wednesday · Tree Profile</div>
+</header>
+
+<div class="layout">
+  <aside>
+    <h3>Sections</h3>
+    <button class="nav-item active" onclick="show('identity')"><span class="nav-icon">🔍</span> Identity</button>
+    <button class="nav-item" onclick="show('origin')"><span class="nav-icon">🗺</span> Origin</button>
+    <button class="nav-item" onclick="show('biology')"><span class="nav-icon">💧</span> What It Wants</button>
+    <button class="nav-item" onclick="show('pests')"><span class="nav-icon">🪲</span> Pest Pressures</button>
+    <button class="nav-item" onclick="show('diseases')"><span class="nav-icon">🦠</span> Disease Pressures</button>
+    <button class="nav-item" onclick="show('arborist')"><span class="nav-icon">🧗</span> Arborist Notes</button>
+  </aside>
+
+  <main>
+
+    <!-- IDENTITY -->
+    <section id="identity" class="active">
+      <h1>Blue Spruce</h1>
+      <div class="sci-name">Picea pungens</div>
+      <div class="tagline">Rocky Mountain native · Okanagan's most commonly planted ornamental conifer · Iconic steel-blue foliage</div>
+
+      <div class="spec-grid">
+        <div class="spec-box"><div class="spec-label">Family</div><div class="spec-val">Pinaceae</div><div class="spec-note">Pine family</div></div>
+        <div class="spec-box"><div class="spec-label">Mature Height</div><div class="spec-val">15–25 m</div><div class="spec-note">60–90 ft in open-grown landscapes; can reach 30+ m native</div></div>
+        <div class="spec-box"><div class="spec-label">Mature Spread</div><div class="spec-val">5–8 m</div><div class="spec-note">Broadly pyramidal; lower branch spread 15–25 ft</div></div>
+        <div class="spec-box"><div class="spec-label">Growth Rate</div><div class="spec-val">30–60 cm/yr</div><div class="spec-note">Moderate; slower in dry Okanagan sites</div></div>
+        <div class="spec-box"><div class="spec-label">Lifespan</div><div class="spec-val">100–600 yr</div><div class="spec-note">Wild trees; urban specimens often shorter-lived</div></div>
+        <div class="spec-box"><div class="spec-label">Hardiness</div><div class="spec-val">Zone 2–7</div><div class="spec-note">USDA; Okanagan sits in Zone 5–6</div></div>
+      </div>
+
+      <div class="card">
+        <h2>Field Identification</h2>
+        <ul>
+          <li><span class="key">Needles:</span> 4-sided (square in cross-section), stiff, very sharp-tipped ("pungens" = sharp/piercing). Glaucous bloom gives silver-blue to blue-green colour. 1.5–3 cm long. Needles attach to peg-like woody projections (sterigmata) that remain after needles drop — a key spruce family ID character</li>
+          <li><span class="key">Colour range:</span> Wild-type green to blue; cultivated forms selected for intense silver-blue include 'Hoopsii' (most intensely blue), 'Fat Albert', 'Globosa', 'Montgomery' (dwarf globe)</li>
+          <li><span class="key">Cones:</span> Cylindrical, 6–11 cm long. Scales thin, flexible, with wavy/ragged margin — distinctive versus other spruces. Cones hang downward at branch tips. Light brown at maturity; persist on tree for 1+ year after seed shed</li>
+          <li><span class="key">Bark:</span> Grey-brown, thickening to rough ridged furrows with age. On young trees relatively smooth</li>
+          <li><span class="key">Branching:</span> Horizontal to slightly upswept, in regular whorls. Perfect pyramidal form when healthy and not pruned. Open lower branches create habitat value but can conflict with ground-level clearance on boulevard sites</li>
+          <li><span class="key">Smell:</span> Needles have a musky-resinous scent when crushed, stronger and more acrid than white spruce</li>
+        </ul>
+
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>Blue spruce is the single most common non-native conifer you'll encounter in Okanagan residential and boulevard plantings. Its distinctively blue-green foliage and perfect pyramidal form made it a landscape favourite from the 1970s onward. The problem: it was planted almost universally in sites that are too hot, too dry, and too alkaline for long-term health. By the time they're 30–40 years old, many Kelowna blue spruce specimens are showing significant Rhizosphaera decline. Learn to read the disease progression on these trees — it's some of the most common diagnosis work we do.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORIGIN -->
+    <section id="origin">
+      <div class="card">
+        <h2>Origin &amp; Natural History</h2>
+        <h3>Native Range</h3>
+        <p><em>Picea pungens</em> is native to the <strong>Rocky Mountains of the western United States</strong> — primarily Colorado, Utah, Wyoming, Idaho, New Mexico, and Arizona. Its core range sits along mountain stream corridors at elevations of 1,700–3,400 m (5,600–11,000 ft). It is the Colorado state tree.</p>
+        <p>In its native habitat, blue spruce grows in <strong>riparian zones</strong> — along streams, canyon bottoms, and moist mountain valleys. It is fundamentally a moisture-loving tree adapted to areas with seasonal snowmelt and reliable summer moisture from high-elevation precipitation. This is critical context for understanding why it struggles in Okanagan boulevard sites.</p>
+
+        <h3>Introduction to Canada and the Okanagan</h3>
+        <ul>
+          <li>Widely introduced to Canadian horticulture in the early-to-mid 20th century, primarily as an ornamental landscape tree</li>
+          <li>Its striking blue-silver foliage and formal pyramidal shape made it the preferred "statement conifer" in suburban landscapes across western Canada</li>
+          <li>Cultivars were developed specifically for intensified blue colour and compact form — 'Hoopsii' selected 1958 in Netherlands, 'Fat Albert' introduced 1970s, various globe and dwarf forms popular since 1980s</li>
+          <li>Not naturalized in BC — no wild reproduction; all occurrences are planted</li>
+          <li>Not invasive; does not spread from cultivation</li>
+        </ul>
+
+        <h3>Ecological Notes from Native Range</h3>
+        <p>In Colorado and Utah, blue spruce is a riparian specialist often growing alongside narrowleaf cottonwood (<em>Populus angustifolia</em>), box elder, Rocky Mountain maple, and Engelmann spruce at higher elevations. It tolerates periodic flooding and benefits from cool, moist microsites. The soils of its native range are often granite or sandstone-derived — more acidic and well-drained than the heavy alkaline clays of many Okanagan residential lots.</p>
+
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>When clients ask "why is my blue spruce dying?" the honest answer starts with the origin story: this tree evolved along Rocky Mountain stream banks at elevation. We planted it in a 6-meter wide boulevard strip in compacted alkaline silty-clay soil with full western exposure and summer temperatures of 38°C. The tree is not failing — it was set up for a difficult life. That's the conversation that helps clients make better choices going forward, and it points directly to what PHC interventions are likely to help.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BIOLOGY -->
+    <section id="biology">
+      <div class="card">
+        <h2>What It Wants — Cultural Requirements</h2>
+
+        <table>
+          <tr><th>Requirement</th><th>Optimal</th><th>Okanagan Reality</th></tr>
+          <tr><td><strong>Sun</strong></td><td>Full sun (6+ hrs); tolerates partial shade when young</td><td>Full sun common — this is met</td></tr>
+          <tr><td><strong>Moisture</strong></td><td>Moderate; consistent soil moisture especially in summer; intolerant of prolonged dry spells</td><td>Hot, dry summers with VPD up to 4–5 kPa — major stressor</td></tr>
+          <tr><td><strong>Soil pH</strong></td><td>5.5–7.0 (slightly acidic to neutral); iron-efficient below pH 7</td><td>Most Okanagan soils pH 7.5–8.2 — causes iron &amp; manganese deficiency, chlorosis</td></tr>
+          <tr><td><strong>Drainage</strong></td><td>Well-drained but moisture-retentive; does NOT tolerate waterlogging</td><td>Compacted clay or silty-clay boulevards common — drainage issues frequent</td></tr>
+          <tr><td><strong>Soil texture</strong></td><td>Loam; tolerates sandy loam</td><td>Heavy clay in many West Kelowna sites</td></tr>
+          <tr><td><strong>Salt tolerance</strong></td><td>Moderate; some tolerance of road salt</td><td>Road salt from highway boulevards is a secondary stress</td></tr>
+        </table>
+
+        <h3>Growth &amp; Form</h3>
+        <ul>
+          <li>Strongly excurrent (single dominant leader) form when young and healthy; maintains pyramidal symmetry well under ideal conditions</li>
+          <li>Lower branches persist naturally — blue spruce does not self-prune lower branches the way white spruce can. This is a feature for screening but a problem for pedestrian clearance</li>
+          <li>Root system: moderately deep with lateral spread. Sensitive to root zone compaction and soil de-watering</li>
+          <li>In alkaline soils, iron and manganese become unavailable — yellowing of new growth (interveinal chlorosis on new needles) is common. This is an abiotic disorder, not a pathogen, but weakens the tree for disease entry</li>
+        </ul>
+
+        <h3>Lifespan in Urban Settings</h3>
+        <p>Blue spruce lives 600+ years in its native mountain habitat. In urban Okanagan settings — particularly boulevard strips, foundation plantings, and water-stressed residential lots — a realistic urban lifespan is <strong>30–60 years</strong>, often cut short by Rhizosphaera needle cast, Cytospora canker, or drought stress. Trees over 10 metres on stressed sites frequently begin significant decline.</p>
+
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>The #1 PHC intervention for blue spruce in the Okanagan is irrigation. Deep, infrequent watering in July and August — reaching 45–60 cm soil depth — makes a measurable difference in tree resilience. Clients who deep-water their blue spruce survive drought years better and show less Rhizosphaera severity than neglected trees. If you're doing a PHC consult on a stressed blue spruce, the first question is always: "How are you watering?" The answer is almost always "not enough."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTS -->
+    <section id="pests">
+      <div class="card">
+        <h2>Pest Pressures</h2>
+
+        <h3>Spruce Spider Mite — <em>Oligonychus ununguis</em></h3>
+        <div class="alert-yellow">
+          <strong>Okanagan Severity: HIGH.</strong> The most common pest of blue spruce in the Okanagan. Hot, dry summers are perfect conditions.
+        </div>
+        <ul>
+          <li><strong>What it is:</strong> A cool-season mite (most active spring and fall; populations crash in summer heat, then resurge). Barely visible to naked eye — stippled, bronzed needles are the first sign</li>
+          <li><strong>Signs:</strong> Fine webbing on needles and twigs; bronzing/bleaching of inner needles; heavy infestations cause needle drop. Hold a white piece of paper under a branch and tap — moving dots confirm mite activity</li>
+          <li><strong>Peak activity:</strong> Spring (April–May) and fall (September–October) in the Okanagan. Mid-summer populations often low but can spike in cool wet Augusts</li>
+          <li><strong>Management:</strong> Horticultural oil or insecticidal soap sprays in spring and fall — timing to active population is critical. Avoid broad-spectrum pesticides that kill predatory mites (Phytoseiidae), which provide significant natural control. Maintain tree moisture to reduce stress-related susceptibility</li>
+        </ul>
+
+        <h3>Cooley Spruce Gall Adelgid — <em>Adelges cooleyi</em></h3>
+        <div class="alert-yellow">
+          <strong>Okanagan Severity: MODERATE to HIGH.</strong> Commonly seen; unsightly but rarely lethal on established trees.
+        </div>
+        <ul>
+          <li><strong>Life cycle:</strong> Alternates between spruce (primary) and Douglas-fir (alternate) — a 2-year cycle. On spruce, stem mothers overwinter on bark and lay eggs in spring. Nymphs feed at base of new needles, causing tissue to swell into <strong>cone-like galls</strong> at branch tips</li>
+          <li><strong>Signs:</strong> Pineapple or cone-shaped galls, 2–5 cm long, at ends of new growth. Galls start green in summer, turn brown by fall. Heavily infested branches may show dieback if galls girdle new growth</li>
+          <li><strong>On Douglas-fir:</strong> The alternate generation causes distinctive flocculent (cottony white) twig growth — "pine twig flocculent." Less damaging than the spruce gall stage</li>
+          <li><strong>Management:</strong> Dormant oil or imidacloprid soil injection before bud break (timing critical — must target overwintering stem mothers). For moderate infestations on established trees, pruning galls before July when adults emerge to lay eggs prevents population build-up</li>
+        </ul>
+
+        <h3>White Pine Weevil on Spruce — <em>Pissodes strobi</em></h3>
+        <div class="alert-yellow">
+          <strong>Okanagan Severity: MODERATE.</strong> Leader kill is the primary concern.
+        </div>
+        <ul>
+          <li><strong>What it does:</strong> Adult weevils overwinter in bark debris and emerge in spring to lay eggs in the bark of the current terminal leader. Larvae feed under bark, girdling the leader by mid-summer</li>
+          <li><strong>Signs:</strong> Dead, drooping leader ("shepherd's crook") by July–August. The dead leader shows pitch tubes and small emergence holes when larvae pupate in late summer. A lateral branch then typically grows up to assume apical dominance, creating a bend or kink in the trunk that remains for the tree's life</li>
+          <li><strong>Management:</strong> Prune dead leaders below the last pitch tube in August after adult emergence (to remove the new generation). Train the most upright lateral as a new leader. Preventive insecticide applications to the terminal shoot before egg laying (April in Okanagan) can protect high-value specimens</li>
+        </ul>
+
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>The spider mite — paper test is one of the most useful quick diagnostics in the field. Hold any white sheet of paper under a branch, give it a firm shake, then watch for a moment. Moving dots = active mites. If they're there, look for the population stage and time of year. Spring and fall infestations on hot, dry blue spruce are extremely common in Kelowna and West Kelowna. When you're on a PHC visit, do the paper test on every blue spruce — clients are always surprised to learn their "healthy-looking" tree is loaded with mites.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISEASES -->
+    <section id="diseases">
+      <div class="card">
+        <h2>Disease Pressures</h2>
+
+        <h3>Rhizosphaera Needle Cast — <em>Rhizosphaera kalkhoffii</em></h3>
+        <div class="alert-red">
+          <strong>Okanagan Severity: VERY HIGH.</strong> The most significant disease of ornamental blue spruce in the Okanagan and across western Canada.
+        </div>
+        <ul>
+          <li><strong>Pathogen:</strong> <em>Rhizosphaera kalkhoffii</em> (primary) and <em>R. pini</em> (secondary). Both are deuteromycetes (ascomycetes in holomorph). Primarily a needle pathogen</li>
+          <li><strong>Symptoms (see Thursday's lesson for full detail):</strong> Needles infected in one year show symptoms the following year — lower crown, inner needles first. Infected needles turn purple-brown and drop in late summer/fall, leaving bare inner branches. Black pycnidia (reproductive structures) erupt from the needle lenticels — visible as black dots in a row under 10× hand lens, or as black vs. white lenticels on examination. White spruce has white lenticels; Rhizosphaera-infected blue spruce has <span class="key">black lenticels</span></li>
+          <li><strong>Disease cycle:</strong> Spores produced in spring from previous year's infected needles; splashed by rain onto new expanding needles. Wet springs with prolonged needle wetness favour infection. Summer drought does not halt the disease — the pathogen is already inside</li>
+          <li><strong>Progression:</strong> Begins in lower, inner crown. Progressive needle loss works upward and outward over years. Trees can survive with significant needle loss, but when the disease reaches the upper crown, recovery is rarely achieved</li>
+          <li><strong>Treatment:</strong> 2-spray chlorothalonil or copper-based fungicide program — first spray at bud break (50% new needle emergence) and second spray 3–4 weeks later. Must be applied in spring of each treatment year; no curative effect on already-infected needles. 2 consecutive seasons of treatment typically required before visible improvement</li>
+        </ul>
+
+        <h3>Cytospora Canker on Spruce — <em>Leucostoma kunzei</em> (syn. <em>Cytospora kunzei</em>)</h3>
+        <div class="alert-red">
+          <strong>Okanagan Severity: HIGH on stressed trees.</strong> Opportunistic; almost always secondary to drought, compaction, or Rhizosphaera stress.
+        </div>
+        <ul>
+          <li><strong>Pathogen:</strong> <em>Leucostoma kunzei</em> (sexual stage) / <em>Cytospora kunzei</em> (asexual) — different from the cytospora affecting pine</li>
+          <li><strong>Signs:</strong> Branch dieback from lower crown upward. Affected branches show white crystalline resin exudate — distinctive white patches on bark near infected areas. Bark under the white resin is discoloured orange-brown. Pycnidia visible in bark tissue</li>
+          <li><strong>Key diagnostic:</strong> Resin exudate on branches (white on blue spruce) in absence of physical wounding. In ponderosa pine, cytospora resin is amber; on blue spruce it is typically whitish</li>
+          <li><strong>Management:</strong> No effective fungicide for Cytospora on spruce. Prune affected branches back to clean wood at the branch collar. Disinfect tools between cuts (70% isopropyl alcohol). Reduce stress through irrigation, mulching, and correction of compaction. Healthy trees compartmentalize Cytospora well; stressed trees succumb</li>
+        </ul>
+
+        <h3>Phomopsis Twig Blight — <em>Phomopsis</em> spp.</h3>
+        <div class="alert-yellow">
+          <strong>Okanagan Severity: LOW to MODERATE.</strong> Affects new growth during cool, wet spring periods.
+        </div>
+        <ul>
+          <li>Causes blight of new shoot growth in spring — shoots wilt, droop, and turn brown in a "flag" pattern shortly after bud break</li>
+          <li>Favoured by cool, wet spring weather; less problematic in dry years</li>
+          <li>Usually self-limiting; prune affected shoots, improve air circulation through light crown thinning if recurrent</li>
+        </ul>
+
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>On a blue spruce showing progressive lower crown needle loss, always do the hand-lens check before diagnosing Rhizosphaera. Pull a branch of needles from an inner zone where brown needles are still attached. Look at the lenticels (the small pores on the needle surface, arranged in rows). On a healthy needle, they're white or pale. On a Rhizosphaera-infected needle, they're filled with black pycnidia — tiny black dots. That's your confirmation. Don't treat without confirming the pathogen, because early-stage Cytospora branch dieback can look similar, and the treatments are completely different.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARBORIST NOTES -->
+    <section id="arborist">
+      <div class="card">
+        <h2>Arborist Notes</h2>
+
+        <h3>Pruning — Timing and Approach</h3>
+        <ul>
+          <li><strong>Best timing:</strong> Late winter to early spring (February–March) before new growth emerges, or late summer (August–September) after new growth has hardened off. Avoid pruning during wet spring periods when Rhizosphaera and Phomopsis inoculum are high</li>
+          <li>Blue spruce does NOT produce new growth from old wood (no epicormic shoots from branches stripped of needles). <span class="key">Never cut back to leafless wood</span> — the branch will not recover. All pruning cuts must be made to a lateral with live needles, or back to the branch collar</li>
+          <li>Removal of dead or heavily diseased lower branches improves air circulation (reducing Rhizosphaera infection pressure) and removes aesthetic eyesores — but communicate to the client that this is maintenance, not a cure</li>
+          <li>Shearing (flat-surface pruning) destroys the natural form and is strongly discouraged by ISA BMP for Pruning. It creates dense internal growth that promotes disease. Advise clients against "shaping" blue spruce into unnatural forms</li>
+          <li><strong>ANSI A300 Part 1:</strong> Remove no more than 25% of live crown per growing season. On declining trees, a more conservative approach is appropriate — removing only dead and structurally compromised wood</li>
+        </ul>
+
+        <h3>PHC Strategy for Declining Blue Spruce</h3>
+        <ul>
+          <li><strong>First priority — moisture:</strong> Deep irrigation to 45–60 cm depth, especially in July and August. Drip or tree bag irrigation is more effective than sprinkler application (which actually spreads Rhizosphaera spores)</li>
+          <li><strong>Soil pH:</strong> If soil pH above 7.5 (common in Okanagan), consider soil acidification applications (elemental sulfur, sulfuric acid injection) to improve iron and manganese availability. Chelated iron soil injection can provide faster temporary relief of chlorosis</li>
+          <li><strong>Mulch:</strong> 10–15 cm depth organic mulch in a ring from 30 cm out from trunk to the drip line. This is the single most effective cultural practice — retains moisture, moderates soil temperature, improves biology, gradually acidifies soil pH over years</li>
+          <li><strong>Rhizosphaera program:</strong> Two chlorothalonil or copper-based fungicide applications per spring for 2 consecutive years. Reassess after two full seasons of treatment. Realistic expectation: the disease slows, but already bare branches will not re-foliate. New growth protected going forward</li>
+          <li><strong>End-of-life conversation:</strong> When Rhizosphaera has progressed to the upper half of the crown and major scaffold branches are bare, the honest conversation is about replacement. A tree that has lost 60%+ of its foliage in the upper crown is not going to recover. Select a more appropriate species for replacement — Colorado spruce was never the right tree for a Kelowna boulevard</li>
+        </ul>
+
+        <h3>Species Suitability — Okanagan Context</h3>
+        <div class="alert-yellow">
+          <strong>Boulevard plantings:</strong> Blue spruce is increasingly considered a poor choice for new Okanagan boulevard plantings due to heat/drought stress and Rhizosphaera susceptibility. Recommend clients and city planners consider alternatives: white spruce cultivars ('Conica' for small sites), linden (where moisture allows), native species, or drought-tolerant species from Zone 5–6 continental climates.
+        </div>
+        <div class="ok">
+          <strong>✓ Where blue spruce can thrive:</strong> Private lots with reliable irrigation, larger root zones, cooler north-facing exposures, or locations near natural moisture sources. With proper PHC it can be a long-lived and beautiful specimen — it just needs realistic site matching.
+        </div>
+
+        <h3>Client Conversation Points</h3>
+        <ul>
+          <li>"The inner needles falling off is not normal aging — it's Rhizosphaera, a fungal disease that affects almost all blue spruce in the Okanagan eventually."</li>
+          <li>"The white sticky sap on the branches is Cytospora canker — a secondary disease that comes in when the tree is stressed. Good news: the tree fought hard enough to bleed it. Bad news: it means the tree is under stress we need to address."</li>
+          <li>"We can treat and manage this tree for many more years with an irrigation program and annual fungicide applications, or we can look at a replacement that's better suited to this site long-term."</li>
+        </ul>
+
+        <div class="isa-footer">
+          📚 ISA Exam Domains: Tree Biology (11%) · Tree Risk Assessment (11%) · Pruning (15%) · Sources: ISA Certification Study Guide 4th Ed. · ISA BMP Pruning · BC Landscape Plant Guide · Utah State Extension on <em>Picea pungens</em> diseases
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

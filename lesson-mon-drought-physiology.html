@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Drought Physiology &amp; Hydraulic Failure | Microbe Tree Training</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --card: #1c2128;
+  --accent: #2ea043;
+  --accent-light: #3fb950;
+  --accent-dim: #0d3320;
+  --text: #c9d1d9;
+  --text-muted: #8b949e;
+  --correct: #2ea043;
+  --wrong: #da3633;
+  --border: #30363d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; line-height: 1.6; }
+.header { background: #0a0e13; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.header-logo { font-size: 20px; font-weight: 800; color: var(--accent-light); letter-spacing: -0.5px; }
+.header-logo span { color: var(--text-muted); font-weight: 400; }
+.header-tag { background: var(--accent-dim); color: var(--accent-light); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; margin-left: auto; }
+.screen { display: none; max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+.screen.active { display: block; }
+.hero { text-align: center; padding: 32px 0 24px; }
+.day-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px; }
+.hero h1 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; color: #e6edf3; margin-bottom: 8px; }
+.hero p { color: var(--text-muted); font-size: 15px; max-width: 500px; margin: 0 auto 28px; }
+.start-btn { background: var(--accent); color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.start-btn:hover { background: var(--accent-light); }
+.ref-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+.ref-card h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 16px; }
+.ref-diagram { width: 100%; max-width: 520px; margin: 0 auto 16px; display: block; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ref-table th { text-align: left; padding: 6px 10px; background: #0d1117; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.ref-table td { padding: 8px 10px; border-bottom: 1px solid #21262d; vertical-align: top; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table .label { color: var(--accent-light); font-weight: 600; white-space: nowrap; }
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.q-num { background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+.progress-bar { flex: 1; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
+.progress-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.question-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.domain-tag { display: inline-block; font-size: 11px; color: var(--text-muted); background: #21262d; padding: 2px 8px; border-radius: 4px; margin-bottom: 12px; }
+.question-text { font-size: 17px; font-weight: 600; color: #e6edf3; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.option-btn { background: #1c2128; border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; text-align: left; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; gap: 12px; align-items: flex-start; }
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: #1e2a1e; }
+.option-label { font-weight: 700; color: var(--accent-light); min-width: 20px; }
+.option-btn.correct { background: #0d3320; border-color: var(--correct); }
+.option-btn.wrong { background: #2d0e0e; border-color: var(--wrong); animation: shake 0.3s ease; }
+.option-btn:disabled { cursor: default; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.lesson-reveal { display: none; background: #0a0e13; border: 1px solid var(--accent-dim); border-radius: 12px; padding: 24px; margin-top: 16px; }
+.lesson-reveal.visible { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.lesson-reveal h4 { color: var(--accent-light); font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.lesson-reveal p { font-size: 14px; color: var(--text); margin-bottom: 12px; line-height: 1.7; }
+.lesson-reveal ul { padding-left: 20px; margin-bottom: 12px; }
+.lesson-reveal li { font-size: 14px; color: var(--text); margin-bottom: 6px; line-height: 1.6; }
+.lesson-reveal strong { color: #e6edf3; }
+.field-note { background: #0e1a10; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 16px; }
+.field-note .fn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 6px; }
+.field-note p { font-size: 13px; color: #adbfad; line-height: 1.65; margin: 0; }
+.source-cite { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 10px; }
+.next-btn { display: none; margin-top: 20px; background: var(--accent); color: #fff; border: none; padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.next-btn.visible { display: inline-block; }
+.next-btn:hover { background: var(--accent-light); }
+.complete-card { background: var(--card); border: 1px solid var(--accent-dim); border-radius: 12px; padding: 32px 24px; text-align: center; }
+.complete-icon { font-size: 48px; margin-bottom: 16px; }
+.complete-card h2 { font-size: 24px; font-weight: 800; color: #e6edf3; margin-bottom: 8px; }
+.complete-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+.isa-tag { display: inline-block; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; padding: 6px 14px; border-radius: 6px; margin-bottom: 8px; }
+.restart-btn { background: transparent; color: var(--accent-light); border: 1px solid var(--accent); padding: 10px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600; margin-top: 16px; }
+.restart-btn:hover { background: var(--accent-dim); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Microbe Tree <span>Training</span></div>
+  <div class="header-tag">🌿 Tree Biology</div>
+</div>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="hero">
+    <div class="day-badge">🌿 Monday · Week 16</div>
+    <h1>Drought Physiology &amp;<br>Hydraulic Failure</h1>
+    <p>Five ISA exam-style questions on how trees cope with drought — and what happens when they can't. Field note at the end of each section is where the good stuff lives.</p>
+    <button class="start-btn" onclick="showScreen('screen-q1')">Begin Lesson →</button>
+  </div>
+
+  <div class="ref-card">
+    <h3>📋 Quick Reference — Drought Stress Cascade</h3>
+    <svg class="ref-diagram" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background -->
+      <rect width="500" height="200" fill="#0d1117" rx="8"/>
+      <!-- Cascade boxes -->
+      <rect x="20" y="30" width="90" height="40" rx="6" fill="#0d3320" stroke="#2ea043" stroke-width="1.5"/>
+      <text x="65" y="47" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="bold">Soil Water</text>
+      <text x="65" y="61" text-anchor="middle" fill="#3fb950" font-size="10">Deficit</text>
+
+      <text x="118" y="54" text-anchor="middle" fill="#8b949e" font-size="16">→</text>
+
+      <rect x="130" y="30" width="90" height="40" rx="6" fill="#1a2a0a" stroke="#4a8a20" stroke-width="1.5"/>
+      <text x="175" y="47" text-anchor="middle" fill="#a0c080" font-size="10" font-weight="bold">ABA Release</text>
+      <text x="175" y="61" text-anchor="middle" fill="#a0c080" font-size="10">from roots</text>
+
+      <text x="228" y="54" text-anchor="middle" fill="#8b949e" font-size="16">→</text>
+
+      <rect x="240" y="30" width="90" height="40" rx="6" fill="#1a2a0a" stroke="#4a8a20" stroke-width="1.5"/>
+      <text x="285" y="47" text-anchor="middle" fill="#a0c080" font-size="10" font-weight="bold">Stomata</text>
+      <text x="285" y="61" text-anchor="middle" fill="#a0c080" font-size="10">Close</text>
+
+      <text x="338" y="54" text-anchor="middle" fill="#8b949e" font-size="16">→</text>
+
+      <rect x="350" y="30" width="110" height="40" rx="6" fill="#1a2a0a" stroke="#4a8a20" stroke-width="1.5"/>
+      <text x="405" y="47" text-anchor="middle" fill="#a0c080" font-size="10" font-weight="bold">↓ Transpiration</text>
+      <text x="405" y="61" text-anchor="middle" fill="#a0c080" font-size="10">↓ Carbon gain</text>
+
+      <!-- Second row -->
+      <text x="175" y="92" text-anchor="middle" fill="#8b949e" font-size="10">If drought continues ↓</text>
+
+      <rect x="20" y="110" width="100" height="40" rx="6" fill="#1a0d0d" stroke="#da3633" stroke-width="1.5"/>
+      <text x="70" y="127" text-anchor="middle" fill="#ff6b6b" font-size="10" font-weight="bold">Xylem Tension</text>
+      <text x="70" y="141" text-anchor="middle" fill="#ff6b6b" font-size="10">increases</text>
+
+      <text x="128" y="133" text-anchor="middle" fill="#8b949e" font-size="16">→</text>
+
+      <rect x="140" y="110" width="100" height="40" rx="6" fill="#1a0d0d" stroke="#da3633" stroke-width="1.5"/>
+      <text x="190" y="127" text-anchor="middle" fill="#ff6b6b" font-size="10" font-weight="bold">Cavitation &amp;</text>
+      <text x="190" y="141" text-anchor="middle" fill="#ff6b6b" font-size="10">Embolism</text>
+
+      <text x="248" y="133" text-anchor="middle" fill="#8b949e" font-size="16">→</text>
+
+      <rect x="260" y="110" width="110" height="40" rx="6" fill="#1a0d0d" stroke="#da3633" stroke-width="1.5"/>
+      <text x="315" y="127" text-anchor="middle" fill="#ff6b6b" font-size="10" font-weight="bold">↓ Hydraulic</text>
+      <text x="315" y="141" text-anchor="middle" fill="#ff6b6b" font-size="10">Conductance</text>
+
+      <text x="378" y="133" text-anchor="middle" fill="#8b949e" font-size="16">→</text>
+
+      <rect x="390" y="110" width="85" height="40" rx="6" fill="#2a0a0a" stroke="#8a2020" stroke-width="1.5"/>
+      <text x="432" y="127" text-anchor="middle" fill="#ff4444" font-size="10" font-weight="bold">Hydraulic</text>
+      <text x="432" y="141" text-anchor="middle" fill="#ff4444" font-size="10">FAILURE</text>
+
+      <!-- P50 label -->
+      <text x="190" y="175" text-anchor="middle" fill="#8b949e" font-size="10">⬆ P50 threshold: 50% conductance lost</text>
+      <text x="395" y="175" text-anchor="middle" fill="#8b949e" font-size="10">⬆ P88: critical</text>
+    </svg>
+
+    <table class="ref-table">
+      <tr><th>Term</th><th>Definition</th></tr>
+      <tr><td class="label">Cavitation</td><td>Breakage of the water column in xylem when tension exceeds the air-seeding pressure — an air bubble forms</td></tr>
+      <tr><td class="label">Embolism</td><td>The air-filled blockage remaining after cavitation; reduces hydraulic conductance</td></tr>
+      <tr><td class="label">P50</td><td>Water potential (MPa) at which 50% of xylem hydraulic conductance is lost</td></tr>
+      <tr><td class="label">P88</td><td>Water potential at which 88% of conductance is lost — often associated with hydraulic failure threshold</td></tr>
+      <tr><td class="label">HSM</td><td>Hydraulic Safety Margin = P50 minus the most negative water potential a species typically experiences</td></tr>
+      <tr><td class="label">Isohydric</td><td>Strategy: close stomata early to maintain stable leaf water potential (conservative, avoids cavitation)</td></tr>
+      <tr><td class="label">Anisohydric</td><td>Strategy: keep stomata open longer, accept greater leaf water potential variation (aggressive, higher cavitation risk)</td></tr>
+      <tr><td class="label">ABA</td><td>Abscisic acid — produced in roots under drought, transported to leaves, triggers stomatal closure via guard cells</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- QUESTION 1 -->
+<div id="screen-q1" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 1 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology</div>
+    <div class="question-text">What is "cavitation" in the context of tree water transport?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">A</span> The formation of root hairs to increase surface area during drought</button>
+      <button class="option-btn" onclick="answer(this,'correct','q1')"><span class="option-label">B</span> The breakage of water columns in xylem conduits when tension exceeds the air-seeding threshold, forming gas bubbles</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">C</span> The collapse of phloem sieve tubes under low turgor pressure</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">D</span> A drought adaptation where trees shed leaves to reduce transpiration demand</button>
+    </div>
+  </div>
+  <div id="lesson-q1" class="lesson-reveal">
+    <h4>Breaking the Water Column: Cavitation Explained</h4>
+    <p>Trees move water from soil to leaves entirely without a pump. The mechanism — <strong>cohesion-tension</strong> — relies on the tremendous tensile strength of water molecules bonded together in narrow xylem conduits. Transpiration at the leaf surface creates negative pressure (tension) that pulls water upward through this continuous column.</p>
+    <ul>
+      <li>Water under tension is in a <em>metastable</em> state — it wants to vaporize, but cohesion holds it. When tension exceeds the <strong>air-seeding pressure</strong> of a pit membrane between adjacent conduits, air is drawn in from surrounding tissue</li>
+      <li>That bubble of air or water vapour — a <strong>cavitation event</strong> — immediately breaks the water column in that conduit. The conduit is now blocked by a gas-filled embolism</li>
+      <li>The embolized conduit loses its ability to conduct water. Hydraulic conductance in that pathway drops to zero</li>
+      <li>The tension threshold for cavitation varies widely by species — <strong>drought-tolerant species have lower (more negative) air-seeding pressures</strong>, meaning they resist cavitation longer</li>
+      <li>Conifer tracheids have bordered pits with torus-margo membranes that can actually <em>aspirate</em> (seal off) to isolate an embolism — a safety mechanism hardwood vessels largely lack</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Kelowna regularly sees July/August temperatures above 35°C with single-digit humidity. In those conditions, VPD (vapour pressure deficit) drives transpiration demand off the charts — trees are pulling water under massive tension. Ponderosa pine handles this aggressively (anisohydric strategy). When you see dead branches in the upper crown of a big pine in September, that's often the signature of cavitation that couldn't be reversed before the tree ran out of season. It's drought hydraulics written in dead wood.</p>
+    </div>
+    <p class="source-cite">Sources: ISA Certification Study Guide, 4th Ed., Ch. 3; Tyree &amp; Sperry (1989) Plant Physiology; Brodribb &amp; Cochard (2009) Plant Physiology</p>
+  </div>
+  <button id="next-q1" class="next-btn" onclick="showScreen('screen-q2')">Next Question →</button>
+</div>
+
+<!-- QUESTION 2 -->
+<div id="screen-q2" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 2 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology</div>
+    <div class="question-text">Which plant hormone is the primary signal that triggers stomatal closure when a tree experiences drought stress?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">A</span> Gibberellin (GA)</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">B</span> Cytokinin</button>
+      <button class="option-btn" onclick="answer(this,'correct','q2')"><span class="option-label">C</span> Abscisic acid (ABA)</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">D</span> Ethylene</button>
+    </div>
+  </div>
+  <div id="lesson-q2" class="lesson-reveal">
+    <h4>ABA: The Drought Alarm Signal</h4>
+    <p>Abscisic acid is often called the "stress hormone." When soil water deficit is detected, root cells synthesize ABA and load it into the xylem stream. It travels upward to the leaves, where it binds to receptors on <strong>guard cells</strong> — the paired cells flanking each stomate.</p>
+    <ul>
+      <li><strong>Guard cell response to ABA:</strong> ABA binding triggers a cascade: calcium ions are released, potassium and chloride ions pump out of guard cells, guard cells lose turgor, and the stomate closes. This is rapid — full closure can occur in minutes</li>
+      <li>Stomatal closure cuts transpiration and thus xylem tension — buying time before cavitation. But it also cuts CO₂ entry, shutting down photosynthesis</li>
+      <li><strong>ABA also has non-stomatal effects</strong>: it promotes root growth toward water, stimulates accumulation of compatible solutes for osmotic adjustment, and at high concentrations induces dormancy responses</li>
+      <li>Root-to-shoot ABA signalling can occur even before leaf water potential drops — some trees "know" the soil is drying before they feel it in their leaves. This is called <em>chemical signalling</em> vs. hydraulic signalling</li>
+      <li>Gibberellins promote stomatal opening; cytokinins from roots also promote opening — so the balance of these signals relative to ABA determines stomatal behaviour under stress</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>When clients ask why their newly planted tree looks stressed even though they're watering, it's often an ABA problem. Transplanting severs most of the root system — suddenly the remaining roots can't supply water fast enough, ABA floods the system, stomata slam shut, and the tree goes into drought-like stress even in wet soil. This is transplant shock at the hormonal level. It's why watering frequency matters less than root zone integrity, and why proper planting depth and minimal root disturbance pays off for years afterward.</p>
+    </div>
+    <p class="source-cite">Sources: ISA Certification Study Guide, 4th Ed., Ch. 2 — Physiology; Taiz &amp; Zeiger, Plant Physiology, 6th Ed.</p>
+  </div>
+  <button id="next-q2" class="next-btn" onclick="showScreen('screen-q3')">Next Question →</button>
+</div>
+
+<!-- QUESTION 3 -->
+<div id="screen-q3" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 3 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology</div>
+    <div class="question-text">A tree species is classified as "isohydric." What does this mean for its drought response strategy?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">A</span> It keeps stomata open as long as possible, accepting greater hydraulic risk to maximize carbon gain during dry periods</button>
+      <button class="option-btn" onclick="answer(this,'correct','q3')"><span class="option-label">B</span> It closes stomata early during drought to maintain relatively stable leaf water potential, avoiding cavitation risk</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">C</span> It sheds its bark during summer to reduce water loss through the epidermis</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">D</span> It adjusts root architecture each season to access deeper water sources</button>
+    </div>
+  </div>
+  <div id="lesson-q3" class="lesson-reveal">
+    <h4>Isohydric vs. Anisohydric: Two Ways to Handle a Drought</h4>
+    <p>Tree species differ fundamentally in <em>how conservative</em> they are with water. Two broad strategies have been defined based on how leaf water potential (Ψ) changes during drought:</p>
+    <ul>
+      <li><strong>Isohydric species</strong> ("same water"): maintain leaf Ψ within a narrow range regardless of drought severity by closing stomata aggressively. They sacrifice carbon gain to protect their hydraulics. <em>Example: some poplar species.</em> Safe, but costly in carbon during prolonged drought.</li>
+      <li><strong>Anisohydric species</strong> ("different water"): allow leaf Ψ to swing widely, keeping stomata open longer to fix carbon even as drought worsens. They accept higher cavitation risk in exchange for productivity. <em>Examples: ponderosa pine, grapevines.</em> This works until it doesn't — if drought is severe enough, embolism accumulates past the hydraulic safety margin.</li>
+      <li>Reality is a spectrum, not a binary. Most trees fall somewhere between the extremes, and individual trees of the same species may shift strategy with age, drought duration, or vapour pressure deficit</li>
+      <li>A species' <strong>Hydraulic Safety Margin (HSM)</strong> — the buffer between its minimum operating water potential and its P50 — reflects how much risk it builds in. Narrow HSM = living close to the edge</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Ponderosa pine is the Okanagan's classic anisohydric species. Through late July and August, ponderosa lets its water potential drop far lower than Douglas-fir would tolerate — it's gambling on rain. In a normal year, that works; the monsoon pulse in August gives it just enough relief. In extended drought years like those the Interior has seen since 2017, that gamble starts to fail. When you see ponderosa with dead tops and pitch tubes mid-crown, you're looking at an anisohydric strategy that ran out of margin.</p>
+    </div>
+    <p class="source-cite">Sources: ISA Certification Study Guide; Tardieu &amp; Simonneau (1998) J. Experimental Botany; McDowell et al. (2008) New Phytologist</p>
+  </div>
+  <button id="next-q3" class="next-btn" onclick="showScreen('screen-q4')">Next Question →</button>
+</div>
+
+<!-- QUESTION 4 -->
+<div id="screen-q4" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 4 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology</div>
+    <div class="question-text">In a hydraulic vulnerability curve, the term P50 refers to:</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">A</span> The soil moisture level at 50% field capacity</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">B</span> The leaf water potential at which 50% of stomata are fully closed</button>
+      <button class="option-btn" onclick="answer(this,'correct','q4')"><span class="option-label">C</span> The xylem water potential (in MPa) at which 50% of hydraulic conductance is lost to embolism</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">D</span> The percentage of root uptake capacity remaining after 50 days of drought</button>
+    </div>
+  </div>
+  <div id="lesson-q4" class="lesson-reveal">
+    <h4>Hydraulic Vulnerability Curves: Reading a Tree's Tolerance</h4>
+    <p>A <strong>hydraulic vulnerability curve</strong> plots the percentage loss of hydraulic conductance (PLC) against xylem water potential (Ψ, measured in megapascals, MPa). It is the definitive way to characterize how drought-resistant a species' xylem is.</p>
+    <ul>
+      <li><strong>P50</strong>: The Ψ at which 50% of xylem conductance is lost. Species with more negative P50 values (e.g., −5 MPa vs. −2 MPa) can withstand greater drought tension before losing half their conductance</li>
+      <li><strong>P88</strong>: The Ψ at 88% conductance loss — often used as a proxy for the lethal hydraulic threshold, where recovery becomes unlikely without severe dieback</li>
+      <li><strong>P12</strong>: The point at which embolism begins — the stomata of most species close around or before P12 in isohydric species, providing a safety buffer</li>
+      <li>The <strong>Hydraulic Safety Margin (HSM)</strong> is the gap between P50 and the minimum Ψ a species typically operates at in the field. A narrow HSM (e.g., 0.5 MPa) means little buffer; a wide one (e.g., 2+ MPa) means much more</li>
+      <li>Measuring P50 requires laboratory bench dehydration and hydraulic conductance testing — it's research-level data, but published values exist for most commercially important tree species</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Published P50 values put ponderosa pine around −3 to −3.5 MPa and interior Douglas-fir around −4 MPa — both are reasonably drought tolerant by design. Norway maple (a common boulevard tree in Kelowna) has a P50 of around −2.5 MPa and a much narrower hydraulic safety margin under drought — which is one reason Norway maples planted in tight boulevard strips with compacted soils decline faster than people expect. When a client has a stressed maple next to a paved boulevard, the hydraulic vulnerability curve is part of the story.</p>
+    </div>
+    <p class="source-cite">Sources: Choat et al. (2012) Nature — global vulnerability curves; Anderegg et al. (2016) PNAS; ISA Certification Study Guide, Ch. 3</p>
+  </div>
+  <button id="next-q4" class="next-btn" onclick="showScreen('screen-q5')">Next Question →</button>
+</div>
+
+<!-- QUESTION 5 -->
+<div id="screen-q5" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 5 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology · Tree Risk Assessment</div>
+    <div class="question-text">When cumulative xylem embolism in a tree exceeds its hydraulic safety margin during a prolonged drought, what is the most likely outcome without rainfall or intervention?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">A</span> The tree enters a protective dormancy state and resumes normal function when conditions improve</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">B</span> Phloem transport accelerates to compensate for reduced xylem conductance</button>
+      <button class="option-btn" onclick="answer(this,'correct','q5')"><span class="option-label">C</span> Progressive hydraulic failure leads to crown dieback, carbon starvation, and potentially whole-tree mortality</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">D</span> The cambium generates new xylem vessels to bypass embolized conduits within a single growing season</button>
+    </div>
+  </div>
+  <div id="lesson-q5" class="lesson-reveal">
+    <h4>Hydraulic Failure: When the System Collapses</h4>
+    <p>Hydraulic failure is a cascade, not a single event. Embolism accumulates as drought worsens, each blocked conduit reducing the tree's capacity to supply water to leaves. Two reinforcing processes drive mortality:</p>
+    <ul>
+      <li><strong>Hydraulic failure pathway:</strong> As conductance drops below the threshold needed to supply transpiring leaves, leaves desiccate and die. Crown dieback follows a predictable pattern — small terminal branches first, then larger limbs, then whole scaffold branches. Tip dieback is often the first visible sign</li>
+      <li><strong>Carbon starvation pathway:</strong> Stomatal closure during drought halts photosynthesis. Non-structural carbohydrate (NSC) reserves are drawn down to support respiration. Over months to a full season, NSC depletion compromises everything that requires energy — defence against pathogens, wound response, root growth, new xylem production</li>
+      <li><strong>The two pathways interact:</strong> Most drought-induced mortality involves both. Low NSC means the tree can't grow new xylem to replace embolized vessels; poor hydraulics mean weak photosynthesis means low NSC — it's a death spiral</li>
+      <li>Embolism <em>can</em> be reversed under some conditions — positive root pressure in spring (particularly in ring-porous hardwoods like oaks), or osmotically driven refilling — but severe, widespread embolism beyond P88 is generally irreversible without losing the affected tissue</li>
+      <li><strong>Secondary opportunists</strong>: Bark beetles, Ips species, Armillaria, and other pathogens key in on hydraulically stressed trees. The cambium relies on water-saturated resin flow to exclude borers — when that fails, trees become targets</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The BC Interior drought of 2021 (the year of Lytton) was a turning point for drought-induced mortality across the Okanagan. Trees that survived the summer started dying in 2022 and 2023 — the delayed mortality signature of NSC depletion paired with opportunistic pathogens. When you're called to assess a tree that "just started dying," ask when the last significant drought was. Trees can coast on stored reserves for 1–2 seasons post-stress before the bill comes due. Drought mortality is often a cold case, not a fresh one.</p>
+    </div>
+    <p class="source-cite">Sources: McDowell et al. (2008) New Phytologist — carbon starvation vs. hydraulic failure framework; ISA Certification Study Guide, 4th Ed.; Allen et al. (2010) Forest Ecology &amp; Management</p>
+  </div>
+  <button id="next-q5" class="next-btn" onclick="showScreen('screen-complete')">Complete Lesson →</button>
+</div>
+
+<!-- COMPLETE -->
+<div id="screen-complete" class="screen">
+  <div class="complete-card">
+    <div class="complete-icon">🌿</div>
+    <h2>Monday Done</h2>
+    <p>You've worked through drought physiology from ABA signalling to hydraulic failure. This is the mechanism behind what you see in the field every August.</p>
+    <div class="isa-tag">📚 ISA Exam Domain: Tree Biology (11%)</div><br>
+    <div class="isa-tag" style="margin-top:6px">Sources: ISA Certification Study Guide 4th Ed. · Brodribb &amp; Cochard · McDowell et al. (2008)</div>
+    <br>
+    <button class="restart-btn" onclick="showScreen('screen-home')">← Back to Home</button>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function answer(btn, result, qid) {
+  const opts = btn.closest('.options').querySelectorAll('.option-btn');
+  opts.forEach(b => b.disabled = true);
+  btn.classList.add(result);
+  document.getElementById('lesson-' + qid).classList.add('visible');
+  document.getElementById('next-' + qid).classList.add('visible');
+}
+</script>
+</body>
+</html>

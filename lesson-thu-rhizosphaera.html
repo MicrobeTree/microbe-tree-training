@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦠 Rhizosphaera Needle Cast | Microbe Tree Training</title>
+<style>
+:root {
+  --bg: #0d0d1a;
+  --surface: #13131f;
+  --card: #1a1a2e;
+  --accent: #8b5cf6;
+  --accent-light: #a78bfa;
+  --accent-dim: #1e1040;
+  --text: #c4c4e0;
+  --text-muted: #7070a0;
+  --correct: #22c55e;
+  --wrong: #ef4444;
+  --border: #2d2d4d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; min-height: 100vh; line-height: 1.6; }
+.header { background: #080810; border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.header-logo { font-size: 20px; font-weight: 800; color: var(--accent-light); letter-spacing: -0.5px; }
+.header-logo span { color: var(--text-muted); font-weight: 400; }
+.header-tag { background: var(--accent-dim); color: var(--accent-light); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; margin-left: auto; }
+.screen { display: none; max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+.screen.active { display: block; }
+.hero { text-align: center; padding: 32px 0 24px; }
+.day-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px; }
+.hero h1 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; color: #e0e0f0; margin-bottom: 8px; }
+.hero p { color: var(--text-muted); font-size: 15px; max-width: 520px; margin: 0 auto 28px; }
+.start-btn { background: var(--accent); color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.start-btn:hover { background: var(--accent-light); }
+.ref-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+.ref-card h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 16px; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ref-table th { text-align: left; padding: 6px 10px; background: #080810; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.ref-table td { padding: 8px 10px; border-bottom: 1px solid #1e1e35; vertical-align: top; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table .label { color: var(--accent-light); font-weight: 600; white-space: nowrap; }
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.q-num { background: var(--accent-dim); color: var(--accent-light); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+.progress-bar { flex: 1; background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
+.progress-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.question-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.domain-tag { display: inline-block; font-size: 11px; color: var(--text-muted); background: #1e1e30; padding: 2px 8px; border-radius: 4px; margin-bottom: 12px; }
+.question-text { font-size: 17px; font-weight: 600; color: #e0e0f0; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.option-btn { background: #1a1a2e; border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; text-align: left; color: var(--text); font-size: 14px; cursor: pointer; transition: all 0.15s; display: flex; gap: 12px; align-items: flex-start; }
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: #1a1530; }
+.option-label { font-weight: 700; color: var(--accent-light); min-width: 20px; }
+.option-btn.correct { background: #0d2a14; border-color: var(--correct); }
+.option-btn.wrong { background: #2a0d0d; border-color: var(--wrong); animation: shake 0.3s ease; }
+.option-btn:disabled { cursor: default; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.lesson-reveal { display: none; background: #080810; border: 1px solid var(--accent-dim); border-radius: 12px; padding: 24px; margin-top: 16px; }
+.lesson-reveal.visible { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.lesson-reveal h4 { color: var(--accent-light); font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.lesson-reveal p { font-size: 14px; color: var(--text); margin-bottom: 12px; line-height: 1.7; }
+.lesson-reveal ul { padding-left: 20px; margin-bottom: 12px; }
+.lesson-reveal li { font-size: 14px; color: var(--text); margin-bottom: 6px; line-height: 1.6; }
+.lesson-reveal strong { color: #e0e0f0; }
+.field-note { background: #0e0e20; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 16px; }
+.field-note .fn-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-light); margin-bottom: 6px; }
+.field-note p { font-size: 13px; color: #b0b0d8; line-height: 1.65; margin: 0; }
+.source-cite { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 10px; }
+.next-btn { display: none; margin-top: 20px; background: var(--accent); color: #fff; border: none; padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.next-btn.visible { display: inline-block; }
+.next-btn:hover { background: var(--accent-light); }
+.complete-card { background: var(--card); border: 1px solid var(--accent-dim); border-radius: 12px; padding: 32px 24px; text-align: center; }
+.complete-icon { font-size: 48px; margin-bottom: 16px; }
+.complete-card h2 { font-size: 24px; font-weight: 800; color: #e0e0f0; margin-bottom: 8px; }
+.complete-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+.isa-tag { display: inline-block; background: var(--accent-dim); color: var(--accent-light); font-size: 12px; padding: 6px 14px; border-radius: 6px; margin-bottom: 8px; }
+.restart-btn { background: transparent; color: var(--accent-light); border: 1px solid var(--accent); padding: 10px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 600; margin-top: 16px; }
+.restart-btn:hover { background: var(--accent-dim); }
+.disease-cycle { width: 100%; max-width: 500px; margin: 0 auto 16px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Microbe Tree <span>Training</span></div>
+  <div class="header-tag">🦠 Pests &amp; Diseases</div>
+</div>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="hero">
+    <div class="day-badge">🦠 Thursday · Week 16</div>
+    <h1>Rhizosphaera Needle Cast</h1>
+    <p>The most common disease of blue spruce in the Okanagan. Learn to recognize it, confirm it under a hand lens, and communicate the treatment timeline to clients accurately.</p>
+    <button class="start-btn" onclick="showScreen('screen-q1')">Begin Lesson →</button>
+  </div>
+
+  <div class="ref-card">
+    <h3>📋 Rhizosphaera Disease Cycle — Quick Reference</h3>
+
+    <svg class="disease-cycle" viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="240" fill="#080810" rx="8"/>
+      <!-- Season labels -->
+      <text x="70" y="22" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="bold">SPRING</text>
+      <text x="240" y="22" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="bold">SUMMER</text>
+      <text x="410" y="22" text-anchor="middle" fill="#8b5cf6" font-size="11" font-weight="bold">FALL / WINTER</text>
+      <!-- Circular arrow cycle -->
+      <path d="M 70 120 A 170 90 0 0 1 410 120" fill="none" stroke="#2d2d4d" stroke-width="2"/>
+      <path d="M 410 120 A 170 90 0 0 1 70 120" fill="none" stroke="#2d2d4d" stroke-width="2"/>
+      <!-- Events -->
+      <!-- Spring: spore release -->
+      <circle cx="70" cy="80" r="22" fill="#1e1040" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="70" y="76" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="bold">Pycnidia</text>
+      <text x="70" y="88" text-anchor="middle" fill="#a78bfa" font-size="9">release</text>
+      <text x="70" y="98" text-anchor="middle" fill="#a78bfa" font-size="8">spores</text>
+      <!-- Arrow down -->
+      <line x1="70" y1="103" x2="70" y2="118" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- Needle infection -->
+      <rect x="28" y="130" width="84" height="30" rx="5" fill="#1a0a30" stroke="#6040a0" stroke-width="1"/>
+      <text x="70" y="147" text-anchor="middle" fill="#c4a0ff" font-size="9">Rain-splashed spores</text>
+      <text x="70" y="158" text-anchor="middle" fill="#c4a0ff" font-size="9">infect new needles</text>
+
+      <!-- Summer: latent infection -->
+      <circle cx="240" cy="60" r="22" fill="#0a1a30" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="240" y="56" text-anchor="middle" fill="#93c5fd" font-size="9" font-weight="bold">Latent in</text>
+      <text x="240" y="68" text-anchor="middle" fill="#93c5fd" font-size="9">needle</text>
+      <text x="240" y="78" text-anchor="middle" fill="#93c5fd" font-size="8">(invisible)</text>
+
+      <!-- Fall: symptoms appear -->
+      <circle cx="410" cy="80" r="22" fill="#2a1010" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="410" y="76" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="bold">Year-old</text>
+      <text x="410" y="87" text-anchor="middle" fill="#fca5a5" font-size="9">needles</text>
+      <text x="410" y="97" text-anchor="middle" fill="#fca5a5" font-size="8">purple-brown</text>
+      <!-- Arrow down -->
+      <line x1="410" y1="103" x2="410" y2="118" stroke="#ef4444" stroke-width="1.5"/>
+      <rect x="366" y="130" width="88" height="30" rx="5" fill="#2a0a0a" stroke="#8a2020" stroke-width="1"/>
+      <text x="410" y="147" text-anchor="middle" fill="#fca5a5" font-size="9">Black pycnidia form</text>
+      <text x="410" y="158" text-anchor="middle" fill="#fca5a5" font-size="9">in lenticels; drop</text>
+
+      <!-- Arrows connecting seasons -->
+      <path d="M 125 80 Q 185 45 215 60" fill="none" stroke="#5a4a90" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <path d="M 265 60 Q 340 45 388 80" fill="none" stroke="#5a4a90" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+      <!-- Bottom note -->
+      <text x="240" y="200" text-anchor="middle" fill="#7070a0" font-size="9">Symptoms appear on YEAR-OLD needles — infection occurred the previous spring</text>
+      <text x="240" y="215" text-anchor="middle" fill="#7070a0" font-size="9">Fungicide must protect NEW needles in spring to break the cycle</text>
+
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#8b5cf6"/>
+        </marker>
+      </defs>
+    </svg>
+
+    <table class="ref-table">
+      <tr><th>Feature</th><th>Detail</th></tr>
+      <tr><td class="label">Pathogen</td><td><em>Rhizosphaera kalkhoffii</em> (primary); <em>R. pini</em> (secondary)</td></tr>
+      <tr><td class="label">Primary host</td><td>Blue spruce (<em>Picea pungens</em>) — most susceptible; also affects black and white spruce</td></tr>
+      <tr><td class="label">Diagnostic sign</td><td>Black pycnidia filling lenticels on needles from inner/lower crown — visible at 10× hand lens</td></tr>
+      <tr><td class="label">Symptom pattern</td><td>Lower crown inner needles first; progresses upward and outward over years</td></tr>
+      <tr><td class="label">Timing</td><td>Infection in spring; symptoms appear on infected needles the FOLLOWING year</td></tr>
+      <tr><td class="label">Fungicide options</td><td>Chlorothalonil (Daconil); copper-based fungicides (copper hydroxide)</td></tr>
+      <tr><td class="label">Application timing</td><td>Spray 1: bud break (~50% new needle emergence); Spray 2: 3–4 weeks later</td></tr>
+      <tr><td class="label">Treatment duration</td><td>2 consecutive spring seasons before visible improvement expected</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- QUESTION 1 -->
+<div id="screen-q1" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 1 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology — Pests &amp; Diseases</div>
+    <div class="question-text">Under a hand lens, which feature on a needle confirms a Rhizosphaera needle cast diagnosis?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">A</span> The needle tip turns brown while the base remains green, indicating tip dieback from pathogen entry</button>
+      <button class="option-btn" onclick="answer(this,'correct','q1')"><span class="option-label">B</span> The lenticels (stomatal pores) in rows on the needle surface are filled with black pycnidia, rather than appearing white or pale</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">C</span> A white powdery coating develops on the needle surface, similar to powdery mildew on broadleaf hosts</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q1')"><span class="option-label">D</span> A black ring forms at the base of each needle where it attaches to the sterigma</button>
+    </div>
+  </div>
+  <div id="lesson-q1" class="lesson-reveal">
+    <h4>The Hand-Lens Test: Confirming Rhizosphaera</h4>
+    <p>Rhizosphaera needle cast cannot be reliably distinguished from other causes of needle browning on spruce (drought, spider mites, Cytospora) without close examination of the needles. The definitive field diagnosis takes 30 seconds and a 10× hand lens.</p>
+    <ul>
+      <li><strong>Lenticels</strong> are rows of small pores running the length of the needle on each face — equivalent to stomata. On a healthy blue spruce needle, lenticels appear white or pale silver</li>
+      <li>When <em>Rhizosphaera kalkhoffii</em> colonises a needle, it produces fruiting bodies (<strong>pycnidia</strong>) inside the lenticels. These erupt through the lentigel surface as tiny black dots, arranged in neat rows. The contrast is unmistakable — white vs. black lenticels</li>
+      <li>Look for this on <strong>discoloured needles that are still attached</strong> — on needles from the lower, inner crown where symptoms appear earliest. Needles that have already dropped are less diagnostic</li>
+      <li>Don't confuse with <em>Stigmina</em> needle cast (<em>Stigmina lautii</em>), which can produce similar symptoms; laboratory culture is the definitive differentiator, but Rhizosphaera is far more common in the Okanagan</li>
+      <li>If lenticels are white → not Rhizosphaera. Consider other causes: drought (check watering), spider mites (do the paper test), natural needle shed (spruce shed 3-year-old needles normally)</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Carry a 10× hand lens on every visit. Pull a browning inner needle from the lower crown, hold it up to good light, and check the lenticels. In West Kelowna residential work, roughly 60–70% of symptomatic blue spruce we examine have black-filled lenticels — Rhizosphaera is extremely common here. Show the client what you're looking at. When they can see the black dots themselves, the conversation about treatment completely changes — they go from "is this serious?" to "what do we do?" immediately.</p>
+    </div>
+    <p class="source-cite">Sources: Utah State Extension — Rhizosphaera Needle Cast of Spruce; University of Minnesota Extension; ISA Certification Study Guide, 4th Ed., Ch. 8 — Diseases</p>
+  </div>
+  <button id="next-q1" class="next-btn" onclick="showScreen('screen-q2')">Next Question →</button>
+</div>
+
+<!-- QUESTION 2 -->
+<div id="screen-q2" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 2 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology — Pests &amp; Diseases</div>
+    <div class="question-text">What is the correct timing for the first fungicide application in a Rhizosphaera management program?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">A</span> In fall, after infected needles have dropped and before new infection can begin</button>
+      <button class="option-btn" onclick="answer(this,'correct','q2')"><span class="option-label">B</span> In spring at bud break, when new needles are approximately 50% expanded — before needle elongation is complete</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">C</span> In midsummer when purple-brown symptoms first become visible on lower crown needles</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q2')"><span class="option-label">D</span> During the dormant season in late winter, before buds swell</button>
+    </div>
+  </div>
+  <div id="lesson-q2" class="lesson-reveal">
+    <h4>Timing Is Everything — Why Spring Application Matters</h4>
+    <p>Understanding the Rhizosphaera disease cycle is essential to understanding why timing matters so critically. The pathogen infects <em>new needles</em> in spring — and symptoms don't appear on those needles until the following year. This creates a trap: by the time you see symptoms, the infection window is already past.</p>
+    <ul>
+      <li><strong>The spring window:</strong> <em>Rhizosphaera</em> pycnidia on infected needles release spores in spring, splashed by rain onto newly expanding needles. The infection window opens at bud break and remains open until the new needles reach full length and mature their waxy cuticle — approximately 4–6 weeks</li>
+      <li><strong>Application 1:</strong> When new needles are roughly 50% of their final length — usually mid-April to early May in the Okanagan, depending on elevation and microclimate. This is approximately 2–3 weeks after buds break</li>
+      <li><strong>Application 2:</strong> 3–4 weeks after the first — when new needles are near full length but not yet fully hardened. This ensures complete coverage of the susceptible growth period</li>
+      <li>Applying fungicide in fall or winter is ineffective — the pathogen is not actively spreading, and dormant needles are not the target. Applying in midsummer when symptoms are visible is also too late — those symptoms are from last year's infection, which cannot be reversed</li>
+      <li><strong>Coverage:</strong> Thorough coverage of the new growth throughout the crown is required. High-pressure spray rigs reach the upper crown of large trees. Ensure new needles — not just the foliage visible from the ground — are covered</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Bud break timing for blue spruce in Kelowna is typically late March to mid-April depending on the site and year. Watch for the first swelling of terminal buds and the appearance of the pale green new growth pushing out. The application window is narrow — you have maybe 10–14 days for the first spray, then another 3–4 weeks for the second. If you're running a Rhizosphaera program for multiple client trees, map your spray calendar in early March so you're not scrambling when the window opens. Missing the window by even a week significantly reduces efficacy.</p>
+    </div>
+    <p class="source-cite">Sources: Colorado State University Extension — Rhizosphaera Needle Cast Management; ISA BMP Plant Health Care, 2nd Ed.; BC landscape pest management resources</p>
+  </div>
+  <button id="next-q2" class="next-btn" onclick="showScreen('screen-q3')">Next Question →</button>
+</div>
+
+<!-- QUESTION 3 -->
+<div id="screen-q3" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 3 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology — Pests &amp; Diseases</div>
+    <div class="question-text">Among the common spruce species, which is most susceptible to Rhizosphaera needle cast?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">A</span> White spruce (Picea glauca) — the native BC Interior species</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">B</span> Engelmann spruce (Picea engelmannii) — the high-elevation Okanagan native</button>
+      <button class="option-btn" onclick="answer(this,'correct','q3')"><span class="option-label">C</span> Blue spruce (Picea pungens) — the most commonly planted ornamental spruce</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q3')"><span class="option-label">D</span> Norway spruce (Picea abies) — equally susceptible to all spruce needle pathogens</button>
+    </div>
+  </div>
+  <div id="lesson-q3" class="lesson-reveal">
+    <h4>Host Susceptibility — Why Blue Spruce Is the Primary Target</h4>
+    <p><em>Rhizosphaera kalkhoffii</em> can infect multiple spruce species, but the severity of disease varies dramatically by host. Blue spruce's exceptional susceptibility is one of the main reasons the disease has become epidemic in urban landscapes where blue spruce has been widely planted.</p>
+    <ul>
+      <li><strong>Blue spruce (<em>P. pungens</em>):</strong> Highly susceptible. The disease can progress rapidly from lower crown to full-crown needle loss over 5–10 years without treatment. Urban-stressed specimens (drought, compaction, poor soil) are dramatically more susceptible than well-sited trees</li>
+      <li><strong>White spruce (<em>P. glauca</em>):</strong> Moderately resistant. Can be infected but rarely develops severe disease unless under significant stress. Native BC Interior white spruce in forest settings rarely show needle cast; urban-planted white spruce are more susceptible but still far less so than blue</li>
+      <li><strong>Norway spruce (<em>P. abies</em>):</strong> Moderately susceptible; somewhat more resistant than blue but more susceptible than white. Occasionally seen with Rhizosphaera in wet years</li>
+      <li><strong>Engelmann spruce (<em>P. engelmannii</em>):</strong> Low susceptibility in natural settings; native range forests do not show significant Rhizosphaera incidence</li>
+      <li>The heightened susceptibility of blue spruce may relate to its natural habitat (riparian zones with high moisture) leaving it less adapted to the wet-lenticel conditions that favour spore germination; also, urban stress appears to reduce needle resistance</li>
+      <li>Practical implication: <strong>if a client wants to replace a declining blue spruce, recommend white spruce cultivars or alternative species</strong> — not another blue spruce, which will face the same pressure in the same site</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>On sites where Rhizosphaera has killed multiple blue spruce, don't recommend replanting blue spruce. The disease inoculum is in the soil and plant debris of those sites — replacement trees will be infected immediately. Suggest white spruce cultivars ('Densata', 'Sanders Blue', or the standard species which is more resistant), or a pivot to a completely different species better suited to the site's actual conditions. It's the right horticultural advice and it saves the client from repeating the same loss in 20 years.</p>
+    </div>
+    <p class="source-cite">Sources: Sinclair, Lyon, Johnson — Diseases of Trees and Shrubs, 2nd Ed.; ISA Certification Study Guide, Ch. 8</p>
+  </div>
+  <button id="next-q3" class="next-btn" onclick="showScreen('screen-q4')">Next Question →</button>
+</div>
+
+<!-- QUESTION 4 -->
+<div id="screen-q4" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 4 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology — Pests &amp; Diseases</div>
+    <div class="question-text">The term "needle cast" in Rhizosphaera needle cast refers to:</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">A</span> A laboratory casting technique used to identify the pathogen in diseased tissue samples</button>
+      <button class="option-btn" onclick="answer(this,'correct','q4')"><span class="option-label">B</span> The premature shedding (casting) of infected needles before their natural lifespan is complete</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">C</span> The casting (dispersal) of spores from pycnidia on infected needles in spring</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q4')"><span class="option-label">D</span> The fall season in which symptoms first become visible on lower-crown needles</button>
+    </div>
+  </div>
+  <div id="lesson-q4" class="lesson-reveal">
+    <h4>Understanding "Needle Cast" — Premature Needle Drop as a Disease Category</h4>
+    <p>"Needle cast" is a category of fungal diseases characterized by premature defoliation of conifer needles — the needles are "cast off" (dropped) well before their normal lifespan ends. This terminology applies across multiple pathogens and multiple conifer hosts.</p>
+    <ul>
+      <li>Blue spruce normally retains its needles for <strong>3–5 years</strong>. Rhizosphaera causes infected needles to die and drop after only <strong>1–2 years</strong> — roughly half or less of their natural lifespan</li>
+      <li>The result is progressive crown thinning from the bottom up, because: (a) the infection pressure is highest on lower, inner branches where humidity is high and spore load accumulates, and (b) lower needles that should still be alive are being dropped prematurely</li>
+      <li>Distinguish from <strong>normal needle shed</strong>: spruce naturally drop 3-year-old needles in fall — this looks like general browning from the inside of the crown and is uniform and symmetrical. Rhizosphaera drop is patchy, progressive, and concentrated in inner/lower zones with bare branches retained rather than gradual thinning</li>
+      <li>Other "needle cast" diseases use the same term: <em>Lophodermium</em> needle cast on pine, <em>Rhizosphaera</em> needle cast on spruce, <em>Meria</em> needle cast on larch — all involve fungal pathogens causing premature needle drop</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>A common client misdiagnosis is calling Rhizosphaera symptoms "normal needle drop" or "it just lost its lower branches as it grew." Both are wrong. Blue spruce does not naturally self-prune lower branches the way fir does — if your blue spruce looks like a lollipop with bare wood for the bottom 2 metres, that's Rhizosphaera, not natural growth habit. When setting expectations with clients on treated trees, explain clearly: "We can protect the new needles from further infection, but the already-bare branches won't re-foliate. What you get with treatment is a tree that stops getting worse." Honest expectations prevent unhappy clients who expected the treatment to restore a fully-needled tree.</p>
+    </div>
+    <p class="source-cite">Sources: Agrios, G. — Plant Pathology, 5th Ed.; Utah State University Extension — Needle Cast Diseases of Spruce</p>
+  </div>
+  <button id="next-q4" class="next-btn" onclick="showScreen('screen-q5')">Next Question →</button>
+</div>
+
+<!-- QUESTION 5 -->
+<div id="screen-q5" class="screen">
+  <div class="q-header">
+    <span class="q-num">Question 5 of 5</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="question-card">
+    <div class="domain-tag">ISA Domain: Tree Biology — Pests &amp; Diseases · PHC</div>
+    <div class="question-text">In the standard Rhizosphaera management program using chlorothalonil or copper-based fungicide, how many years of consecutive spring treatment are typically required before visible improvement is expected?</div>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">A</span> 1 year — results should be visible by fall of the treated year</button>
+      <button class="option-btn" onclick="answer(this,'correct','q5')"><span class="option-label">B</span> 2 consecutive years — improvement is visible in year 3 as protected needles have survived two seasons</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">C</span> 3–5 years minimum — the pathogen is too well established for earlier results</button>
+      <button class="option-btn" onclick="answer(this,'wrong','q5')"><span class="option-label">D</span> Annual treatment is required indefinitely, with no meaningful visual improvement ever expected</button>
+    </div>
+  </div>
+  <div id="lesson-q5" class="lesson-reveal">
+    <h4>Treatment Timeline — Setting Realistic Client Expectations</h4>
+    <p>Managing a client's Rhizosphaera program requires understanding not just the treatment protocol but the timeline — and why it appears slow even when it's working. The 1-year delay between infection and symptom expression means success and failure are both delayed by a year.</p>
+    <ul>
+      <li><strong>Year 1 of treatment:</strong> Two-spray chlorothalonil or copper fungicide program in spring. New needles expanding this spring are protected. Old infected needles from last year continue to show symptoms and drop — this is not treatment failure, it is expected. The client sees no visual improvement and needs to know this in advance</li>
+      <li><strong>Year 2 of treatment:</strong> Second consecutive spring treatment. New needles from year 1 (now 1 year old) look healthy — this is where you start to see the upper crown hold more needles. New needles this year are again protected</li>
+      <li><strong>Year 3 and beyond:</strong> Retained needles from years 1 and 2 of treatment are now visible as a denser, healthier crown. The tree begins to look measurably better — typically visible improvement starting in year 3. If treatment is discontinued, new infections can begin immediately in the next spring</li>
+      <li><strong>Is treatment permanent?</strong> No. Rhizosphaera is present in the landscape and will re-infect susceptible trees. Long-term management requires either continued annual spring treatments, or improved site conditions (irrigation, soil health) that reduce tree stress and susceptibility. The goal is a tree strong enough that moderate infection doesn't cause severe disease</li>
+      <li><strong>When to stop:</strong> If the disease has progressed past the upper 1/3 of the crown, treatment cost vs. benefit becomes a real conversation. A tree with bare wood through most of the crown is unlikely to recover to an acceptable aesthetic, even with treatment</li>
+    </ul>
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The two-year treatment expectation is the single most important thing to communicate before starting a Rhizosphaera program. If you don't say it, year-1 clients will call in October and say "your treatment didn't work — the tree still looks terrible." Walk through the disease cycle diagram with the client. Show them that the needles looking bad this fall were infected last spring — before your treatment — and that the needles you protected this spring won't show their status until next fall. Clients who understand the timeline are clients who keep the program going to completion.</p>
+    </div>
+    <p class="source-cite">Sources: Utah State Extension — Rhizosphaera Program Recommendations; ISA BMP Plant Health Care, 2nd Ed.; Colorado State Extension PHC guidelines for Rhizosphaera</p>
+  </div>
+  <button id="next-q5" class="next-btn" onclick="showScreen('screen-complete')">Complete Lesson →</button>
+</div>
+
+<!-- COMPLETE -->
+<div id="screen-complete" class="screen">
+  <div class="complete-card">
+    <div class="complete-icon">🦠</div>
+    <h2>Thursday Done</h2>
+    <p>Rhizosphaera needle cast: recognized it, diagnosed it with a hand lens, understood the treatment timing, and know how to talk about it with clients. That's the full loop.</p>
+    <div class="isa-tag">📚 ISA Exam Domain: Tree Biology (11%)</div><br>
+    <div class="isa-tag" style="margin-top:6px">Sources: ISA Certification Study Guide 4th Ed. · Utah State Extension · Colorado State Extension · Sinclair, Lyon, Johnson — Diseases of Trees and Shrubs</div>
+    <br>
+    <button class="restart-btn" onclick="showScreen('screen-home')">← Back to Home</button>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function answer(btn, result, qid) {
+  const opts = btn.closest('.options').querySelectorAll('.option-btn');
+  opts.forEach(b => b.disabled = true);
+  btn.classList.add(result);
+  document.getElementById('lesson-' + qid).classList.add('visible');
+  document.getElementById('next-' + qid).classList.add('visible');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 16 · Friday: Mechanical Advantage Systems</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0f0f1a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+header{background:#1e1e2e;border-bottom:3px solid #3b82f6;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.brand{font-size:1.1rem;font-weight:700;color:#3b82f6;letter-spacing:.05em}
+.week-label{font-size:.8rem;color:#94a3b8;background:#0f0f1a;padding:4px 10px;border-radius:20px}
+.day-badge{background:#3b82f620;color:#3b82f6;border:1px solid #3b82f660;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:24px 16px}
+h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+.subtitle{color:#94a3b8;margin-bottom:24px;font-size:.95rem}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.nav-btn{background:#1e1e2e;border:2px solid #2d2d44;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.82rem;color:#94a3b8;transition:.15s;font-family:inherit}
+.nav-btn:hover{border-color:#3b82f660;color:#3b82f6}
+.nav-btn.active{border-color:#3b82f6;color:#3b82f6;background:#3b82f610}
+section{display:none}
+section.active{display:block}
+.card{background:#1e1e2e;border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid #2d2d44}
+h2{color:#3b82f6;font-size:.92rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+h3{color:#60a5fa;font-size:.92rem;font-weight:600;margin-bottom:8px;margin-top:16px}
+h3:first-child{margin-top:0}
+p{color:#cbd5e1;font-size:.9rem;line-height:1.65;margin-bottom:10px}
+ul{padding-left:18px;color:#cbd5e1;font-size:.9rem;line-height:1.8;margin-bottom:10px}
+li{margin-bottom:3px}
+.key{color:#3b82f6;font-weight:700}
+.formula{background:#0f172a;border:1px solid #3b82f630;border-radius:8px;padding:14px;font-family:monospace;font-size:.9rem;color:#93c5fd;margin:10px 0;line-height:1.8}
+.formula .var{color:#60a5fa;font-weight:bold}
+.warn{background:#ef444415;border-left:3px solid #ef4444;padding:14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.9rem;color:#fca5a5}
+.warn strong{color:#ef4444}
+.ok{background:#4ade8015;border-left:3px solid #4ade80;padding:12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.88rem;color:#a3e6b8}
+.ok strong{color:#4ade80}
+.field-note{background:#3b82f610;border-left:3px solid #3b82f6;border-radius:0 8px 8px 0;padding:14px;margin-top:14px}
+.fn-label{color:#3b82f6;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.field-note p{color:#bfdbfe;font-size:.88rem;line-height:1.55;margin:0}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:10px 0}
+th{background:#0f0f1a;color:#3b82f6;padding:9px;text-align:left;border:1px solid #2d2d44;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+td{padding:9px;border:1px solid #2d2d44;color:#cbd5e1;vertical-align:top}
+tr:nth-child(even) td{background:#0f0f1a40}
+.diagram-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:16px 0}
+.diagram-box{background:#0f0f1a;border:1px solid #2d2d44;border-radius:10px;padding:12px;text-align:center;min-width:140px}
+.diagram-box svg{display:block;margin:0 auto 8px}
+.diagram-label{font-size:.8rem;color:#3b82f6;font-weight:700;margin-bottom:2px}
+.diagram-sub{font-size:.72rem;color:#64748b}
+.isa-footer{background:#1e1e2e;border-top:1px solid #2d2d44;padding:14px 20px;font-size:.8rem;color:#64748b;margin-top:24px;border-radius:8px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">🧗 Microbe Tree Training</div>
+  <div class="week-label">Week 16</div>
+  <div class="day-badge">Friday · Worksite Techniques</div>
+</header>
+
+<main>
+  <h1>Mechanical Advantage Systems</h1>
+  <p class="subtitle">Pulley configurations · TMA vs AMA · Z-Rig &amp; C-Rig · Friction losses · Applications in arborist work</p>
+
+  <nav>
+    <button class="nav-btn active" onclick="show('fundamentals')">MA Fundamentals</button>
+    <button class="nav-btn" onclick="show('configurations')">Configurations</button>
+    <button class="nav-btn" onclick="show('zrig')">Z-Rig &amp; C-Rig</button>
+    <button class="nav-btn" onclick="show('friction')">Friction &amp; AMA</button>
+    <button class="nav-btn" onclick="show('applications')">Applications</button>
+  </nav>
+
+  <!-- FUNDAMENTALS -->
+  <section id="fundamentals" class="active">
+    <div class="card">
+      <h2>Mechanical Advantage — The Physics</h2>
+      <p><strong>Mechanical Advantage (MA)</strong> is the ratio of the output force (load) to the input force (effort) in a system. In arborist work, MA systems use ropes and pulleys to allow one or two people to move loads that would otherwise require far more force — a suspended log, a stuck load in a rigging line, or a person in a rope rescue.</p>
+
+      <div class="formula">
+<span class="var">TMA</span> = Output Force / Input Force
+<span class="var">TMA</span> = Number of rope segments supporting the load
+<span class="var">AMA</span> = TMA × efficiency factor (typically 0.85–0.90 per pulley)
+      </div>
+
+      <h3>TMA — Theoretical Mechanical Advantage</h3>
+      <p>TMA is the simple rope-counting calculation — count the number of rope segments running to (or from) the moving block or load. This gives the ideal MA in a frictionless system.</p>
+      <ul>
+        <li><strong>1:1 system</strong> — 1 rope segment at the load; no MA. A single pulley redirects force but doesn't multiply it. 100 kg load requires 100 kg pull</li>
+        <li><strong>2:1 system</strong> — 2 rope segments support the load (one fixed, one running). 100 kg load requires 50 kg pull (TMA = 2)</li>
+        <li><strong>3:1 system</strong> — 3 rope segments. 100 kg load requires approximately 33 kg pull (TMA = 3)</li>
+        <li><strong>5:1 system</strong> — 5 rope segments. 100 kg load requires approximately 20 kg pull (TMA = 5). Common compound MA configuration</li>
+      </ul>
+
+      <h3>The Rope Counting Rule</h3>
+      <p>To find TMA quickly: draw a line at the moving block (or load). Count the number of ropes crossing that line. That number is the TMA.</p>
+
+      <div class="formula">
+<span class="var">Example — 3:1 Z-rig:</span>
+Anchor — [fixed pulley] — rope — [moving pulley] — rope — [fixed pulley] — haul
+Three ropes cross the "load line" → TMA = 3
+      </div>
+
+      <h3>Key Terms</h3>
+      <table>
+        <tr><th>Term</th><th>Definition</th></tr>
+        <tr><td><strong>TMA</strong></td><td>Theoretical Mechanical Advantage — ideal MA ignoring friction</td></tr>
+        <tr><td><strong>AMA</strong></td><td>Actual Mechanical Advantage — real-world MA after accounting for friction losses</td></tr>
+        <tr><td><strong>Haul line</strong></td><td>The rope being pulled by the crew — the input side of the system</td></tr>
+        <tr><td><strong>Load</strong></td><td>The weight being moved — a log section, a stuck rigging line, a person</td></tr>
+        <tr><td><strong>Fixed block</strong></td><td>A pulley anchored to a fixed point — changes rope direction but does not move with the load</td></tr>
+        <tr><td><strong>Moving block</strong></td><td>A pulley that travels with the load — creates the MA when rope passes through it</td></tr>
+        <tr><td><strong>Progress capture</strong></td><td>A device (prusik, cam, progress capture pulley) that holds the load while the hauler repositions — prevents rollback</td></tr>
+      </table>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>MA systems are not just for rescue — in day-to-day arborist work, they come up whenever a rigging line is jammed, a log section hangs at a bad angle, or you need to reposition heavy material in a confined yard. The Z-rig is the fastest to build in the field. Every climber and every ground crew person should be able to rig a 3:1 from a pulley and a rope in under 2 minutes. If you can't do that, practice it on the ground before you need it 60 feet up a ponderosa at 3 PM.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONFIGURATIONS -->
+  <section id="configurations">
+    <div class="card">
+      <h2>Common MA Configurations — Diagrams</h2>
+      <p>Below are the four most common MA pulley configurations in arborist work, with rope path diagrams. Load is shown at the bottom in each diagram.</p>
+
+      <div class="diagram-row">
+
+        <!-- 1:1 redirect -->
+        <div class="diagram-box">
+          <svg width="100" height="150" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+            <!-- Anchor -->
+            <rect x="35" y="8" width="30" height="12" fill="#2d2d44" rx="3"/>
+            <text x="50" y="18" text-anchor="middle" fill="#64748b" font-size="8">ANCHOR</text>
+            <!-- Fixed pulley -->
+            <circle cx="50" cy="42" r="12" fill="#1e1e2e" stroke="#3b82f6" stroke-width="2"/>
+            <circle cx="50" cy="42" r="4" fill="#3b82f6"/>
+            <!-- Rope down to load -->
+            <line x1="50" y1="54" x2="50" y2="110" stroke="#f59e0b" stroke-width="2.5"/>
+            <!-- Load box -->
+            <rect x="30" y="110" width="40" height="22" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5" rx="4"/>
+            <text x="50" y="125" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="bold">LOAD</text>
+            <!-- Haul arrow (sideways for redirect) -->
+            <line x1="62" y1="42" x2="88" y2="42" stroke="#4ade80" stroke-width="2.5" marker-end="url(#arrowG)"/>
+            <text x="78" y="36" fill="#4ade80" font-size="8">pull</text>
+            <!-- Rope to haul (from pulley sideways) -->
+            <line x1="50" y1="30" x2="62" y2="42" stroke="#f59e0b" stroke-width="2" stroke-dasharray="2,2"/>
+          </svg>
+          <div class="diagram-label">1:1 Redirect</div>
+          <div class="diagram-sub">No MA. Changes rope direction only. Pull = Load weight.</div>
+        </div>
+
+        <!-- 2:1 -->
+        <div class="diagram-box">
+          <svg width="100" height="150" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+            <!-- Anchor -->
+            <rect x="30" y="8" width="40" height="12" fill="#2d2d44" rx="3"/>
+            <text x="50" y="18" text-anchor="middle" fill="#64748b" font-size="8">ANCHOR</text>
+            <!-- Fixed point for rope end -->
+            <circle cx="28" cy="35" r="5" fill="#3b82f660" stroke="#3b82f6" stroke-width="1.5"/>
+            <!-- Moving pulley at load -->
+            <circle cx="50" cy="100" r="12" fill="#1e1e2e" stroke="#3b82f6" stroke-width="2"/>
+            <circle cx="50" cy="100" r="4" fill="#3b82f6"/>
+            <!-- Load box below moving pulley -->
+            <rect x="30" y="116" width="40" height="20" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5" rx="4"/>
+            <text x="50" y="130" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="bold">LOAD</text>
+            <!-- Rope: from anchor point down to moving pulley, back up -->
+            <line x1="28" y1="35" x2="38" y2="100" stroke="#f59e0b" stroke-width="2.5"/>
+            <line x1="62" y1="100" x2="72" y2="35" stroke="#f59e0b" stroke-width="2.5"/>
+            <!-- Redirect at top right -->
+            <circle cx="72" cy="35" r="10" fill="#1e1e2e" stroke="#60a5fa" stroke-width="1.5"/>
+            <!-- Haul line -->
+            <line x1="72" y1="25" x2="72" y2="10" stroke="#4ade80" stroke-width="2.5" marker-end="url(#arrowG)"/>
+            <text x="80" y="18" fill="#4ade80" font-size="8">pull</text>
+            <!-- 2 rope segments label -->
+            <text x="50" y="72" text-anchor="middle" fill="#94a3b8" font-size="7">2 segments</text>
+          </svg>
+          <div class="diagram-label">2:1 System</div>
+          <div class="diagram-sub">Moving block at load. Pull = ½ load weight (TMA 2).</div>
+        </div>
+
+        <!-- 3:1 Z-rig -->
+        <div class="diagram-box">
+          <svg width="110" height="160" viewBox="0 0 110 160" xmlns="http://www.w3.org/2000/svg">
+            <!-- Anchor top-left -->
+            <rect x="5" y="8" width="30" height="12" fill="#2d2d44" rx="3"/>
+            <text x="20" y="18" text-anchor="middle" fill="#64748b" font-size="7">ANCHOR</text>
+            <!-- Fixed pulley (top left) -->
+            <circle cx="20" cy="40" r="10" fill="#1e1e2e" stroke="#3b82f6" stroke-width="1.8"/>
+            <circle cx="20" cy="40" r="3.5" fill="#3b82f6"/>
+            <!-- Rope from anchor to moving pulley -->
+            <line x1="20" y1="50" x2="60" y2="100" stroke="#f59e0b" stroke-width="2.5"/>
+            <!-- Moving pulley (middle-right, at or near load) -->
+            <circle cx="60" cy="110" r="10" fill="#1e1e2e" stroke="#a78bfa" stroke-width="2"/>
+            <circle cx="60" cy="110" r="3.5" fill="#a78bfa"/>
+            <!-- Load below moving pulley -->
+            <rect x="42" y="124" width="36" height="18" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5" rx="3"/>
+            <text x="60" y="137" text-anchor="middle" fill="#ef4444" font-size="8" font-weight="bold">LOAD</text>
+            <!-- Rope from moving pulley back to fixed redirect -->
+            <line x1="50" y1="110" x2="20" y2="70" stroke="#f59e0b" stroke-width="2.5"/>
+            <!-- Fixed redirect pulley (top left, below anchor pulley) -->
+            <circle cx="20" cy="70" r="10" fill="#1e1e2e" stroke="#60a5fa" stroke-width="1.5"/>
+            <!-- Haul line from redirect -->
+            <line x1="30" y1="70" x2="100" y2="70" stroke="#4ade80" stroke-width="2.5" marker-end="url(#arrowG)"/>
+            <text x="88" y="64" fill="#4ade80" font-size="7">pull</text>
+            <!-- 3 segments label -->
+            <text x="60" y="88" text-anchor="middle" fill="#94a3b8" font-size="7">3 segments</text>
+          </svg>
+          <div class="diagram-label">3:1 Z-Rig</div>
+          <div class="diagram-sub">2 pulleys. Pull = ⅓ load weight (TMA 3). Most common arborist MA.</div>
+        </div>
+
+        <!-- 5:1 -->
+        <div class="diagram-box">
+          <svg width="110" height="160" viewBox="0 0 110 160" xmlns="http://www.w3.org/2000/svg">
+            <!-- Anchor -->
+            <rect x="35" y="4" width="40" height="10" fill="#2d2d44" rx="3"/>
+            <text x="55" y="13" text-anchor="middle" fill="#64748b" font-size="7">ANCHOR</text>
+            <!-- Fixed pulley 1 (top center) -->
+            <circle cx="55" cy="30" r="9" fill="#1e1e2e" stroke="#3b82f6" stroke-width="1.8"/>
+            <circle cx="55" cy="30" r="3" fill="#3b82f6"/>
+            <!-- Moving pulley 1 -->
+            <circle cx="30" cy="70" r="9" fill="#1e1e2e" stroke="#a78bfa" stroke-width="1.8"/>
+            <circle cx="30" cy="70" r="3" fill="#a78bfa"/>
+            <!-- Fixed pulley 2 -->
+            <circle cx="55" cy="70" r="9" fill="#1e1e2e" stroke="#60a5fa" stroke-width="1.5"/>
+            <!-- Moving pulley 2 (at load) -->
+            <circle cx="30" cy="115" r="9" fill="#1e1e2e" stroke="#a78bfa" stroke-width="2"/>
+            <circle cx="30" cy="115" r="3" fill="#a78bfa"/>
+            <!-- Fixed redirect -->
+            <circle cx="80" cy="95" r="9" fill="#1e1e2e" stroke="#60a5fa" stroke-width="1.5"/>
+            <!-- Load -->
+            <rect x="14" y="128" width="32" height="18" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5" rx="3"/>
+            <text x="30" y="141" text-anchor="middle" fill="#ef4444" font-size="8" font-weight="bold">LOAD</text>
+            <!-- Rope paths (simplified) -->
+            <line x1="30" y1="79" x2="30" y2="106" stroke="#f59e0b" stroke-width="2"/>
+            <line x1="21" y1="115" x2="21" y2="128" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2,1"/>
+            <line x1="39" y1="115" x2="46" y2="70" stroke="#f59e0b" stroke-width="2"/>
+            <line x1="21" y1="70" x2="46" y2="30" stroke="#f59e0b" stroke-width="2"/>
+            <line x1="64" y1="30" x2="64" y2="70" stroke="#f59e0b" stroke-width="2"/>
+            <line x1="64" y1="70" x2="71" y2="95" stroke="#f59e0b" stroke-width="2"/>
+            <!-- Haul line -->
+            <line x1="89" y1="95" x2="105" y2="95" stroke="#4ade80" stroke-width="2.5" marker-end="url(#arrowG)"/>
+            <text x="100" y="89" fill="#4ade80" font-size="7">pull</text>
+            <text x="62" y="55" fill="#94a3b8" font-size="7">5 segments</text>
+          </svg>
+          <div class="diagram-label">5:1 System</div>
+          <div class="diagram-sub">Compound system (3:1 pulling on 2:1). Pull = ⅕ load (TMA 5).</div>
+        </div>
+
+      </div>
+
+      <div class="warn">
+        <strong>⚠ More MA = more rope travel.</strong> A 3:1 system requires pulling 3 m of haul line to move the load 1 m. A 5:1 requires 5 m for 1 m of load travel. Higher MA systems mean longer haul distances and more resets of the progress capture device. In confined job sites, rope management becomes critical.
+      </div>
+
+      <table>
+        <tr><th>System</th><th>TMA</th><th>Effort needed for 100 kg load</th><th>Rope travel (per 1 m load travel)</th><th>Min pulleys needed</th></tr>
+        <tr><td>1:1 redirect</td><td>1</td><td>100 kg</td><td>1 m</td><td>1</td></tr>
+        <tr><td>2:1</td><td>2</td><td>50 kg</td><td>2 m</td><td>1 moving + 1 redirect</td></tr>
+        <tr><td>3:1 (Z-rig)</td><td>3</td><td>~33 kg</td><td>3 m</td><td>1 moving + 1 fixed</td></tr>
+        <tr><td>5:1 (compound)</td><td>5</td><td>~20 kg</td><td>5 m</td><td>2 moving + 2 fixed</td></tr>
+        <tr><td>6:1</td><td>6</td><td>~17 kg</td><td>6 m</td><td>2 moving + 2 fixed</td></tr>
+      </table>
+
+      <defs>
+        <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 Z" fill="#4ade80"/>
+        </marker>
+      </defs>
+    </div>
+  </section>
+
+  <!-- Z-RIG AND C-RIG -->
+  <section id="zrig">
+    <div class="card">
+      <h2>Z-Rig &amp; C-Rig — The Two Standard Field Configurations</h2>
+
+      <h3>3:1 Z-Rig — Most Common Arborist MA System</h3>
+      <p>The Z-rig gets its name from the Z-shape the rope makes when viewed from the side. It provides a 3:1 TMA with minimal hardware — just two pulleys and a progress capture device. It is the standard field MA for stuck loads, controlled lowering assistance, and rope rescue.</p>
+
+      <p><strong>Building a Z-rig (3:1):</strong></p>
+      <ul>
+        <li><strong>Step 1:</strong> Attach a pulley to your anchor point (high rigging point, trunk, or anchor sling). This is the <em>fixed redirect pulley</em></li>
+        <li><strong>Step 2:</strong> Run your haul line through the fixed pulley — it returns toward the load</li>
+        <li><strong>Step 3:</strong> Attach a second (moving) pulley to the load or to the load-side rope using a prusik or bowline loop. This pulley <em>travels with the load</em></li>
+        <li><strong>Step 4:</strong> Run the rope back through the fixed redirect pulley (or to the haulers directly). The haul direction is now away from the load, typically back toward the anchor</li>
+        <li><strong>Step 5:</strong> Install a <em>progress capture device</em> — a prusik on the line between the load and the fixed pulley — to hold progress when the haulers reset their grip</li>
+        <li><strong>Result:</strong> Three rope segments support the load = TMA 3</li>
+      </ul>
+
+      <h3>C-Rig (Reeve System) — 2:1 with Specific Geometry</h3>
+      <p>The C-rig (or "reeve system") is a 2:1 MA where the rope is anchored at the load, runs up through a fixed pulley, and returns to the hauler. The C-shape is formed by the anchor-to-load-to-pulley-to-hauler geometry.</p>
+      <ul>
+        <li>TMA = 2; simpler than Z-rig but half the MA</li>
+        <li>Advantage: the hauler can pull in the same direction as the load travel (load goes up, haul direction is down or away — natural body mechanics)</li>
+        <li>Common in single-rope rescue where a 2:1 is sufficient and simplicity matters</li>
+        <li>The moving element is the load itself (the rope end anchors to the load, then routes through a fixed block above)</li>
+      </ul>
+
+      <h3>Converting a 3:1 to 6:1 — Compound MA</h3>
+      <p>A compound MA system uses one MA system to pull on another:</p>
+      <ul>
+        <li>Attach the haul line of a 3:1 Z-rig to the moving block of a 2:1 system → compound 3×2 = 6:1 TMA</li>
+        <li>More practically: 3:1 Z-rig on the haul line of another 3:1 = 9:1 TMA — rarely needed but possible with available hardware</li>
+        <li>Each pulley added in a compound system also adds friction — AMA falls further below TMA</li>
+      </ul>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>In tight residential yards in West Kelowna, space for hauling is often the limiting factor. A 3:1 requires 3 m of haul line for every 1 m the log moves. In a 4 m wide driveway, you'll get through one or two hauls before you run out of room and need to reset the progress capture. Build that into your rigging plan — confirm the haul distance before you cut. Resetting a progress capture while managing a suspended log section is a three-handed job. Know who is doing what before any wood starts moving.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRICTION AND AMA -->
+  <section id="friction">
+    <div class="card">
+      <h2>Friction &amp; Actual Mechanical Advantage (AMA)</h2>
+      <p>Every pulley in a system introduces friction. Even a high-quality ball-bearing pulley absorbs some energy as heat, reducing the force transmitted to the load. This gap between TMA and AMA is a critical safety consideration — your system is never as efficient as the numbers suggest.</p>
+
+      <h3>Efficiency Per Pulley</h3>
+      <table>
+        <tr><th>Pulley Type</th><th>Approximate Efficiency</th><th>Typical Use</th></tr>
+        <tr><td>High-quality ball-bearing arborist pulley (Petzl, ISC, DMM)</td><td>90–95%</td><td>Rigging, MA systems</td></tr>
+        <tr><td>Standard aluminum side-plate pulley</td><td>85–90%</td><td>General rigging</td></tr>
+        <tr><td>Carabiner acting as pulley (rope running through gate)</td><td>50–65%</td><td>Emergency only — very inefficient</td></tr>
+        <tr><td>Friction hitch (prusik, VT) as progress capture</td><td>Adds load; reduces efficiency by ~10–15%</td><td>Progress capture; not a pulley</td></tr>
+      </table>
+
+      <div class="formula">
+<span class="var">AMA calculation example — 3:1 Z-rig with ball-bearing pulleys:</span>
+TMA = 3
+Efficiency per pulley ≈ 0.90 (90%)
+2 pulleys in system
+AMA ≈ 3 × (0.90 × 0.90) = 3 × 0.81 = <span class="var">~2.4</span>
+
+A "3:1" system with realistic friction delivers about 2.4:1 actual MA.
+      </div>
+
+      <h3>Practical Implications</h3>
+      <ul>
+        <li>A 3:1 system with two standard pulleys realistically delivers about <strong>2.4:1 to 2.7:1</strong> depending on pulley quality, rope stiffness, and bend angles</li>
+        <li>A 5:1 compound system with 4 pulleys and friction hitches may deliver only <strong>3:1 to 3.5:1</strong> AMA despite the theoretical 5:1</li>
+        <li>Rope stiffness matters — stiff 13 mm rigging line loses more energy in bends than supple 11 mm climbing rope</li>
+        <li>Sharp bend angles (rope bent tightly around small-diameter carabiners) dramatically increase friction — minimize tight bends, maximize pulley sheave diameter relative to rope diameter</li>
+        <li><strong>Design rule:</strong> When calculating required MA for a task, use AMA in your force calculations, not TMA. Add a safety margin — design to AMA with a 50% buffer</li>
+      </ul>
+
+      <h3>Calculating Required MA for a Known Load</h3>
+      <div class="formula">
+<span class="var">Required haul force = Load weight / AMA</span>
+
+Example: 150 kg log section, 3:1 Z-rig (AMA ~2.5)
+Required haul force = 150 / 2.5 = <span class="var">60 kg</span> per hauler
+
+Two-person haul team = 120 kg pulling force — sufficient.
+One person alone = 60 kg — may be marginal. Add a 5:1 or get a second hauler.
+      </div>
+
+      <div class="warn">
+        <strong>⚠ Never exceed hardware WLL.</strong> MA systems <em>multiply</em> force at the anchor and rigging points, not just at the load. A 3:1 system pulling with 60 kg of force generates 180 kg of load on the anchor pulley connection. Always check the WLL (Working Load Limit) of every component — carabiners, pulleys, slings, and rigging rings — against the calculated anchor load, not the haul load.
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLICATIONS -->
+  <section id="applications">
+    <div class="card">
+      <h2>Applications in Arborist Work</h2>
+
+      <h3>1. Rescuing a Stuck Rigging Line</h3>
+      <p>A common fieldwork scenario: a cut log is hung up on a crotch or co-dominant stem and won't come free with ground pull alone. A 3:1 Z-rig rigged from a separate anchor point (climbing line, pre-installed redirect) provides enough force to break it free without exceeding equipment limits.</p>
+      <ul>
+        <li>Anchor the fixed block high and away from the stuck load — maintain a favorable load angle</li>
+        <li>Attach the moving block to the hung rigging line via a bowline or wrap-and-cinch</li>
+        <li>Install progress capture before hauling</li>
+        <li>Communicate clearly — ground crew and climber must coordinate before force is applied to a stuck load. Sudden release can cause violent swing</li>
+      </ul>
+
+      <h3>2. Controlled Ground-Level Positioning of Heavy Logs</h3>
+      <p>Once a log section is on the ground, a 2:1 or 3:1 can be used to roll, reposition, or drag it clear of the work zone — reducing back injury risk from direct lifting of heavy wood.</p>
+      <ul>
+        <li>Anchor redirect to a nearby tree, vehicle hitch, or ground anchor stake</li>
+        <li>Loop rigging line around the log (timber hitch or loop with shackle) — pull from a safe angle</li>
+        <li>Keep all crew out of the load's potential travel path before hauling</li>
+      </ul>
+
+      <h3>3. SRS Rope Rescue — Rope Rescue for a Hanging Climber</h3>
+      <p>Per ANSI Z133:2017 §14 and ISA emergency response guidelines, every arborist crew must be capable of raising or lowering a suspended incapacitated climber. A 3:1 system rigged from the aerial attachment point can raise a person for extrication from a split crotch or tangled equipment situation.</p>
+      <ul>
+        <li>All crew must know how to build a 3:1 from available hardware before they need it under stress</li>
+        <li>Progress capture is mandatory — no system should rely on crew holding tension continuously</li>
+        <li>Coordinate with the victim when possible — they may be able to assist or redirect the haul rope</li>
+        <li><strong>Practice this drill regularly.</strong> Per ANSI Z133 §4.2, emergency procedures shall be rehearsed at intervals sufficient to maintain proficiency</li>
+      </ul>
+
+      <h3>4. Rigging Assistance on Difficult Directional Cuts</h3>
+      <p>When a large section needs to be held against its natural fall direction and lowered in a controlled path, a 2:1 rigging assist (rigging line through a block, back to the groundie) doubles the holding power of the ground crew — critical when a single person is managing a 300–400 kg log section.</p>
+
+      <h3>Quick Decision Guide — When to Use MA</h3>
+      <table>
+        <tr><th>Situation</th><th>Recommended System</th><th>Notes</th></tr>
+        <tr><td>Load needs redirecting, no MA required</td><td>1:1 redirect</td><td>One pulley at anchor; simplest</td></tr>
+        <tr><td>One groundie needs to hold/lower a large section</td><td>2:1 C-rig</td><td>Doubles effective holding force</td></tr>
+        <tr><td>Stuck log, 2 haul crew available</td><td>3:1 Z-rig</td><td>Standard field solution; fast to build</td></tr>
+        <tr><td>Very heavy stuck section, limited crew</td><td>5:1 compound</td><td>Slower, more rope management, higher anchor load</td></tr>
+        <tr><td>Rope rescue — raise a suspended climber</td><td>3:1 or 5:1 from overhead anchor</td><td>Progress capture mandatory; pre-plan before need</td></tr>
+      </table>
+
+      <div class="warn">
+        <strong>⚠ Every person on the haul team must know the plan.</strong> Who is hauling, who is tending the progress capture, who is watching the load and the anchor, and who is communicating with the climber (if applicable) — all must be established before force is applied. Per ANSI Z133, a crew member shall be designated to maintain communication with the climber during any rigging operation involving a load in the aerial.
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>The most underused MA skill on the job site is the pre-plan. Before any large piece comes out of a tree, the ground crew should be able to answer: what does this piece weigh (roughly)? What's our rigging configuration? What MA do we have? If the section hangs up, what's the rescue plan? On a well-run crew, this takes 60 seconds at the tailgate. On a poorly-run crew, these decisions get made in real time while a 200 kg log is suspended over a fence. Know your system before the cut. Every time.</p>
+      </div>
+
+      <div class="isa-footer">
+        📚 ISA Exam Domain: Safe Work Practices (28%) · Sources: ANSI Z133:2017 §8 &amp; §14 · ISA BMP Rigging, 2nd Ed. · Donzelli &amp; Lilly — A Guide to Rigging Problems and Practices (2001) · CMC Rescue Engineering — Rigging for Rescue (reference text)
+      </div>
+    </div>
+  </section>
+</main>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 Z" fill="#4ade80"/>
+    </marker>
+  </defs>
+</svg>
+
+<script>
+function show(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
