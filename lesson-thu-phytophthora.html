@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phytophthora Root &amp; Crown Rot — Week 9 Thursday · Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh}
+  header{background:linear-gradient(135deg,#1f1a0f 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:16px 24px;display:flex;align-items:center;gap:12px}
+  .logo{font-size:1.5rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+  .logo span{color:#fff}
+  .week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;letter-spacing:0.5px}
+  .day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+  main{max-width:860px;margin:0 auto;padding:24px 20px}
+  .lesson-title{font-size:1.6rem;font-weight:700;color:#fff;margin:20px 0 6px}
+  .lesson-sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:24px}
+
+  .ref-card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:20px;margin-bottom:28px}
+  .ref-card h3{color:#e8a838;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+  .fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+  .fact-cell{background:#0f1923;border-radius:8px;padding:12px;border-left:3px solid #5a3a1a}
+  .fact-cell label{font-size:0.7rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px}
+  .fact-cell span{font-size:0.88rem;color:#e8c5a3;font-weight:600;line-height:1.4}
+  .danger-box{background:#1f0f0f;border:1px solid #5a2a2a;border-radius:8px;padding:12px;margin-top:12px;font-size:0.85rem;color:#e8b0a0;line-height:1.6}
+
+  .question-card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:20px;margin-bottom:16px}
+  .q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .q-text{font-size:1.05rem;color:#e8edf2;margin-bottom:16px;line-height:1.5}
+  .options{display:grid;gap:8px}
+  .option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 14px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;color:#c5d0dc;display:flex;align-items:flex-start;gap:10px}
+  .option:hover:not(.disabled){border-color:#e8a838;background:#2a1f10;color:#fff}
+  .option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+  .option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+  .option.disabled{cursor:default}
+  .option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+  .option.correct .option-letter{color:#5cb85c}
+  .option.wrong .option-letter{color:#e05a5a}
+
+  .lesson-reveal{display:none;margin-top:16px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:18px}
+  .lesson-reveal.show{display:block}
+  .reveal-title{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:12px}
+  .reveal-body{font-size:0.92rem;color:#c5d0dc;line-height:1.7}
+  .reveal-body p{margin-bottom:10px}
+  .reveal-body ul{margin:8px 0 10px 20px}
+  .reveal-body li{margin-bottom:6px}
+  .reveal-body strong{color:#e8edf2}
+
+  .field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:14px;margin-top:14px}
+  .fn-label{font-size:0.75rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#a3d9a3;line-height:1.6}
+
+  .isa-footer{margin-top:32px;padding:14px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#5a6b7e;text-align:center}
+  .isa-footer strong{color:#7ec8e3}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 9</div>
+  <div class="day-tag">🦠 Thursday — Pests &amp; Diseases</div>
+</header>
+<main>
+  <div class="lesson-title">Phytophthora Root &amp; Crown Rot: The Silent Killer in Strata</div>
+  <div class="lesson-sub">It's not a fungus. It's not an insect. It comes in through the irrigation system. And by the time you see it above ground, it's usually too late.</div>
+
+  <!-- Quick Reference Card -->
+  <div class="ref-card">
+    <h3>⚠ Phytophthora — Fast Facts</h3>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Classification</label><span>Oomycete (water mould) — NOT a true fungus</span></div>
+      <div class="fact-cell"><label>Key Species</label><span>P. cinnamomi, P. cactorum, P. plurivora — all present in BC</span></div>
+      <div class="fact-cell"><label>Infection Route</label><span>Motile zoospores swim through saturated soil to roots</span></div>
+      <div class="fact-cell"><label>Trigger Conditions</label><span>Saturated soil, poor drainage, soil temps &gt;10°C</span></div>
+      <div class="fact-cell"><label>Primary Targets</label><span>Fine feeder roots → crown → basal trunk; kills cambium</span></div>
+      <div class="fact-cell"><label>Cure</label><span>None once established. Prevention is the only strategy.</span></div>
+      <div class="fact-cell"><label>High-Risk Trees</label><span>Juniper, rhododendron, avocado, dogwood, Port Orford cedar, many conifers</span></div>
+      <div class="fact-cell"><label>Okanagan Context</label><span>Extremely common in over-irrigated strata beds; less common in naturalized sites</span></div>
+    </div>
+    <div class="danger-box">
+      <strong>Why Oomycetes are different from fungi:</strong> Phytophthora and its relatives (downy mildews, Pythium) are Oomycetes — phylogenetically closer to brown algae than to true fungi. Their cell walls are made of cellulose (not chitin), and they produce motile zoospores that actively swim through water toward root exudates. This biology means many standard fungicides are ineffective — products targeting fungal ergosterol synthesis don't work on Oomycetes. Phosphonate-based compounds (phosphorous acid / fosetyl-Al) and mefenoxam-based fungicides are the effective chemistry classes.
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">Phytophthora spp. are correctly classified as which of the following?</div>
+    <div class="options" id="opts1">
+      <div class="option" onclick="answer(1,'A')"><span class="option-letter">A</span>True fungi in the Ascomycota division</div>
+      <div class="option" onclick="answer(1,'B')"><span class="option-letter">B</span>Bacteria in the genus Pseudomonas</div>
+      <div class="option" onclick="answer(1,'C')"><span class="option-letter">C</span>Oomycetes — water moulds more closely related to algae than to true fungi</div>
+      <div class="option" onclick="answer(1,'D')"><span class="option-letter">D</span>Nematodes in the Tylenchida order</div>
+    </div>
+    <div class="lesson-reveal" id="rev1">
+      <div class="reveal-title">Phytophthora Is Not a Fungus — This Matters for Treatment</div>
+      <div class="reveal-body">
+        <p>Phytophthora belongs to the <strong>Oomycetes</strong> (Class Oomycota, Kingdom Stramenopila) — a group sometimes called "water moulds" or "pseudofungi." Phylogenetically, they diverged from the true fungal lineage billions of years ago and are far more closely related to golden-brown algae than to the fungi they superficially resemble.</p>
+        <p>The practical implications of this distinction are significant:</p>
+        <ul>
+          <li><strong>Cell wall composition:</strong> True fungi have chitin-based cell walls. Oomycetes have cellulose-based cell walls. Fungicides that disrupt chitin synthesis (like polyoxins) or ergosterol synthesis (triazoles, demethylation inhibitors) are largely ineffective against Oomycetes.</li>
+          <li><strong>Effective chemistry:</strong> Phosphonates (phosphorous acid, fosetyl-aluminum) — which boost the plant's own defence response against Oomycetes — and mefenoxam (Metalaxyl-M) are the primary effective chemical classes. These are specific to Oomycetes.</li>
+          <li><strong>Reproduction:</strong> Oomycetes produce <em>zoospores</em> — biflagellate, motile spores that swim through water toward root tips, attracted by root exudates. This is why saturated soil is required for infection — without free water, zoospores can't move.</li>
+          <li><strong>Oospores:</strong> Long-lived resting spores that persist in soil for years — which is why once you have Phytophthora established in a bed, you can't simply drain it and replant the same species.</li>
+        </ul>
+        <p>The ISA Arborists' Certification Study Guide covers Phytophthora under root diseases and emphasizes the distinction from true fungal pathogens for exactly these treatment reasons.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>If a client or landscape contractor tells you they "sprayed a fungicide" for what looks like Phytophthora root rot, and asks why it's not working — the answer is that most common fungicides don't touch Oomycetes. The treatment window is also narrow: phosphonate trunk injections or drenches are most effective as preventive or very early curative applications, before the crown and main structural roots are compromised. Once the crown cambium is dead — no treatment restores it. Document the distinction for clients in writing: this changes the treatment approach and timeline entirely.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">A mature juniper in a strata irrigation bed is showing progressive dieback from the tips inward, with dead needles remaining attached (not dropping). Basal trunk tissue at the soil line is discoloured brown when cut. The tree is located in a bed irrigated daily through summer. What is the most likely diagnosis?</div>
+    <div class="options" id="opts2">
+      <div class="option" onclick="answer(2,'A')"><span class="option-letter">A</span>Juniper webworm defoliation</div>
+      <div class="option" onclick="answer(2,'B')"><span class="option-letter">B</span>Phytophthora root and crown rot</div>
+      <div class="option" onclick="answer(2,'C')"><span class="option-letter">C</span>Drought stress from insufficient irrigation</div>
+      <div class="option" onclick="answer(2,'D')"><span class="option-letter">D</span>Kabatina tip blight</div>
+    </div>
+    <div class="lesson-reveal" id="rev2">
+      <div class="reveal-title">Reading the Signs — Phytophthora vs. Look-Alikes</div>
+      <div class="reveal-body">
+        <p><strong>Phytophthora root and crown rot</strong> is the diagnosis. The scenario contains the classic diagnostic cluster:</p>
+        <ul>
+          <li><strong>Progressive tip dieback, inward:</strong> As the root system fails, the most distal branches (tips) lose their water supply first — they die and turn brown, but because vascular disruption is the cause, needles desiccate in place rather than abscising promptly.</li>
+          <li><strong>Needles remaining attached:</strong> Drought-killed conifers often retain dead needles for a season — so does Phytophthora. But fire, bark beetle, or most diseases cause more rapid needle drop. Retained dead needles point to vascular/root failure.</li>
+          <li><strong>Brown, necrotic crown tissue at soil line:</strong> This is the definitive sign. Cut away basal bark at the soil line — live cambium is cream-white to green. Phytophthora-infected crown tissue is brown, often with a distinct margin between live and dead tissue. Sometimes a water-soaked margin is visible at the advancing edge.</li>
+          <li><strong>Irrigated bed, daily schedule:</strong> This is the epidemiological clue. Juniperus scopulorum has near-zero tolerance for chronic soil saturation. Daily summer irrigation in an undrained bed is almost guaranteed to produce Phytophthora in susceptible species over 5–10 years.</li>
+        </ul>
+        <p><strong>Why not the others:</strong> Juniper webworm produces webbed masses with frass — easily visible, not a systemic decline. Drought stress would not occur in a daily-irrigated bed. Kabatina causes discrete tip blight with a clear basal lesion, not crown girdle and systemic decline.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>The "scratch test" at the crown is something every arborist and landscape tech should do on suspected decline cases: use your knife tip to nick away a small patch of outer bark at the root flare. Live cambium is moist and cream-white to light green. Dead cambium is brown and dry. The line between them tells you how far the disease front has progressed. If the brown extends all the way around the basal circumference — the tree is girdled and will die regardless of treatment. If one side is still alive, there may be enough vascular connection to sustain the tree while you address drainage — but it's a long shot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">Which soil condition is the primary prerequisite for Phytophthora zoospore release and infection of roots?</div>
+    <div class="options" id="opts3">
+      <div class="option" onclick="answer(3,'A')"><span class="option-letter">A</span>Dry, compacted soil with low organic matter</div>
+      <div class="option" onclick="answer(3,'B')"><span class="option-letter">B</span>Saturated or persistently waterlogged soil</div>
+      <div class="option" onclick="answer(3,'C')"><span class="option-letter">C</span>Sandy, rapidly-draining soil with low pH</div>
+      <div class="option" onclick="answer(3,'D')"><span class="option-letter">D</span>High-nitrogen soil with abundant organic mulch</div>
+    </div>
+    <div class="lesson-reveal" id="rev3">
+      <div class="reveal-title">The Water Connection — Why Drainage Is the Fix</div>
+      <div class="reveal-body">
+        <p><strong>Saturated or persistently waterlogged soil</strong> is the essential precondition. This is fundamental to Phytophthora biology and explains why drainage management is the cornerstone of prevention.</p>
+        <p>Phytophthora's infection mechanism depends entirely on water:</p>
+        <ul>
+          <li><strong>Sporangia production:</strong> In wet soil, sporangia (spore-containing sacs) form on mycelia in the soil. Sporangia require free water to release their contents.</li>
+          <li><strong>Zoospore release:</strong> When saturated soil conditions occur (especially when warm soil is flooded by irrigation or rain), sporangia burst and release 10–40 flagellated zoospores into the water film.</li>
+          <li><strong>Chemotaxis:</strong> Zoospores swim — actively, directed by chemotaxis toward root exudates (particularly isoflavonoids and certain amino acids released by roots). They navigate toward and encyst on root surfaces, then germinate and penetrate root tissue.</li>
+          <li><strong>Without free water:</strong> No zoospore movement is possible. In well-drained soil, Phytophthora exists as resting oospores but cannot actively infect. Drainage breaks the infection cycle.</li>
+        </ul>
+        <p>This biology makes the prevention prescription elegant and clear: <strong>eliminate the conditions that allow zoospore movement</strong> — specifically, saturated soil in the root zone. Properly designed planting beds with adequate drainage, appropriate irrigation scheduling, and species selection matched to the site are the solution.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>In the Okanagan, Phytophthora in natural settings is relatively uncommon — the semi-arid climate keeps soils dry enough to suppress zoospore activity most of the year. In landscape settings, irrigation creates artificial wet conditions that would never occur naturally. The disease is essentially imported with poor irrigation management. When you see strata beds with irrigation heads placing water directly against the trunks of conifers or shrubs, you're looking at a Phytophthora time bomb. The fix at design stage is free — the fix after 10 years of root rot is a full removal and replanting with corrected drainage. This is worth raising with strata councils as a long-term cost-avoidance issue.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">Which class of fungicide/biocide is most effective against Phytophthora, and why?</div>
+    <div class="options" id="opts4">
+      <div class="option" onclick="answer(4,'A')"><span class="option-letter">A</span>Triazole fungicides (e.g., tebuconazole) — inhibit ergosterol biosynthesis in cell membranes</div>
+      <div class="option" onclick="answer(4,'B')"><span class="option-letter">B</span>Phosphonate compounds (phosphorous acid / fosetyl-Al) — boost plant defence response and directly inhibit Oomycete metabolism</div>
+      <div class="option" onclick="answer(4,'C')"><span class="option-letter">C</span>Strobilurin fungicides (e.g., azoxystrobin) — block mitochondrial respiration in all fungi</div>
+      <div class="option" onclick="answer(4,'D')"><span class="option-letter">D</span>Copper-based bactericides — denature proteins across all microbial life</div>
+    </div>
+    <div class="lesson-reveal" id="rev4">
+      <div class="reveal-title">Treatment Options — What Works and Why</div>
+      <div class="reveal-body">
+        <p><strong>Phosphonate compounds</strong> are the most effective chemistry against Phytophthora, and the mechanism is important to understand:</p>
+        <ul>
+          <li><strong>Direct inhibition:</strong> Phosphorous acid (H₃PO₃) inhibits Oomycete metabolism by interfering with phospholipid synthesis — a metabolic pathway that Oomycetes share with plants, but which Oomycetes are far more sensitive to at the concentrations achievable in plant tissue.</li>
+          <li><strong>Plant defence stimulation (SAR):</strong> Phosphonates also induce systemic acquired resistance (SAR) — they trigger the plant's own defence response, causing upregulation of phytoalexins and other protective compounds in the root zone and crown.</li>
+          <li><strong>Application:</strong> Phosphorous acid is typically applied as a trunk injection, basal bark spray, or soil drench. For high-value trees, trunk injection delivers product directly to the xylem stream, bypassing soil chemistry. Fosetyl-Al (Aliette) is a systemic phosphonate registered for soil drench applications.</li>
+          <li><strong>Mefenoxam (Metalaxyl-M):</strong> Also effective specifically against Oomycetes — it disrupts RNA synthesis in a way specific to this group. Often used in combination with phosphonates for severe cases.</li>
+        </ul>
+        <p><strong>Why triazoles (Option A) don't work:</strong> Triazoles inhibit ergosterol biosynthesis — but Oomycetes don't make ergosterol. Their membranes use sitosterol and other sterols unaffected by triazole chemistry. <strong>Strobilurins (Option C)</strong> have some effect but are much less reliable. <strong>Copper (Option D)</strong> has some broad-spectrum activity but is not systemic and cannot reach root infections once established.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>Phosphonate trunk injections for Phytophthora treatment are a legitimate tool for high-value trees that are worth fighting for — ornamental specimens, mature trees in prominent landscape positions. The key is timing: phosphonates are most effective as preventive treatments or very early in the infection, when roots are still partially functional. By the time the tree shows obvious aboveground decline (tip dieback, crown thinning), the root and crown damage is typically too extensive for treatment to reverse. Use phosphonates as a preventive program on high-risk species in high-risk irrigation situations — not as a rescue treatment for trees already in severe decline.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">After removing a Phytophthora-killed juniper from a strata bed, what is the recommended approach for replanting the same location?</div>
+    <div class="options" id="opts5">
+      <div class="option" onclick="answer(5,'A')"><span class="option-letter">A</span>Replant immediately with the same juniper species after applying a phosphonate drench</div>
+      <div class="option" onclick="answer(5,'B')"><span class="option-letter">B</span>Wait one full year, then replant with a different species</div>
+      <div class="option" onclick="answer(5,'C')"><span class="option-letter">C</span>Address drainage first; if drainage cannot be corrected, do not replant with susceptible species — choose Phytophthora-tolerant species instead</div>
+      <div class="option" onclick="answer(5,'D')"><span class="option-letter">D</span>Replace all topsoil to a depth of 30 cm and replant immediately</div>
+    </div>
+    <div class="lesson-reveal" id="rev5">
+      <div class="reveal-title">After Phytophthora — The Right Replanting Protocol</div>
+      <div class="reveal-body">
+        <p><strong>Address drainage first; select resistant or tolerant species if drainage cannot be corrected.</strong> This is the ISA PHC framework applied to a specific scenario:</p>
+        <ul>
+          <li><strong>Oospores persist in soil:</strong> Phytophthora produces long-lived resting oospores that can survive in soil for 5–10+ years. Removing the dead tree and turning the soil does not eliminate the pathogen. Replanting a susceptible species into unmodified soil will likely result in the same fate within a few years.</li>
+          <li><strong>The root cause is drainage and irrigation:</strong> If the conditions that enabled Phytophthora are not corrected, no replanting strategy will succeed long-term. The prescription for the site must include: correcting drainage (grade, subsoil drainage, raised bed construction) and adjusting irrigation to appropriate zone timing and duration.</li>
+          <li><strong>Species selection after Phytophthora:</strong> If drainage correction is not feasible, choose species with documented Phytophthora tolerance — many ornamental grasses, some willows and poplars, native shrubs adapted to wet conditions. Avoid Juniperus, Rhododendron, Taxus, Abies, and other highly susceptible genera.</li>
+          <li><strong>Soil replacement (Option D):</strong> Topsoil replacement to 30 cm is insufficient — Phytophthora infects through the entire root depth and drains downward with water. It addresses the symptom, not the cause.</li>
+          <li><strong>Waiting one year (Option B):</strong> Insufficient — oospores persist for years. Time alone doesn't solve the drainage problem.</li>
+        </ul>
+        <p>The ISA BMP for Plant Health Care states that PHC decisions must address the root cause of decline, not just the pathogen. In Phytophthora cases, the root cause is always site drainage and moisture management.</p>
+        <div class="field-note">
+          <div class="fn-label">📋 Field Note — Okanagan</div>
+          <p>When advising a strata council on a Phytophthora-killed planting, the honest conversation is: "The species you planted are not compatible with the irrigation system you have, in the drainage conditions you have." This can be delivered constructively — reframe it as an opportunity to redesign the bed for lower maintenance: replace susceptible conifers with drought-tolerant ornamental grasses (Festuca, Calamagrostis), low-water native shrubs (Symphoricarpos, Mahonia), or xeriscape groundcovers that won't require drainage modification. In the Okanagan's water-scarce future, less water and fewer problems is a compelling pitch. The strata save money, the plants thrive, and you solve the actual problem.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="isa-footer">
+    📚 <strong>ISA Exam Domains:</strong> Tree Biology (11%) · Soil Management (11%) · Tree Selection &amp; Establishment (7%) &nbsp;|&nbsp; <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.) · ISA BMP: Plant Health Care · BC Ministry of Agriculture — Phytophthora Root Rot Factsheet · APS Compendium of Conifer Diseases
+  </div>
+</main>
+
+<script>
+const correct = {1:'C',2:'B',3:'B',4:'B',5:'C'};
+function answer(q, chosen){
+  const opts = document.querySelectorAll('#opts'+q+' .option');
+  opts.forEach(o => o.classList.add('disabled'));
+  opts.forEach(o => {
+    o.onclick = null;
+    const letter = o.querySelector('.option-letter').textContent;
+    if(letter === correct[q]) o.classList.add('correct');
+    else if(letter === chosen && chosen !== correct[q]) o.classList.add('wrong');
+  });
+  document.getElementById('rev'+q).classList.add('show');
+}
+</script>
+</body>
+</html>

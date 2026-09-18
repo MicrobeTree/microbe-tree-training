@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPE Inspection &amp; Retirement — Week 9 Tuesday · Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh}
+  header{background:linear-gradient(135deg,#1a1a2f 0%,#0f1923 100%);border-bottom:2px solid #2d3a5a;padding:16px 24px;display:flex;align-items:center;gap:12px}
+  .logo{font-size:1.5rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+  .logo span{color:#fff}
+  .week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;letter-spacing:0.5px}
+  .day-tag{background:#2a1a3a;color:#c8a3d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+  main{max-width:900px;margin:0 auto;padding:24px 20px}
+  h1{font-size:1.6rem;font-weight:700;color:#fff;margin:20px 0 6px}
+  .sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:28px}
+
+  /* Section tabs */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .tab{background:#131f2e;border:1.5px solid #2a3f55;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:0.85rem;color:#8a9bb0;transition:all 0.2s}
+  .tab.active{background:#1a2f4a;border-color:#5cb85c;color:#fff}
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+
+  /* Cards */
+  .section-title{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:4px}
+  .section-sub{color:#8a9bb0;font-size:0.85rem;margin-bottom:16px}
+  .std-ref{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 14px;font-size:0.82rem;color:#e8c97a;margin-bottom:16px}
+
+  .inspect-card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:18px;margin-bottom:14px}
+  .inspect-card h3{font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .inspect-card p,.inspect-card li{font-size:0.88rem;color:#c5d0dc;line-height:1.6;margin-bottom:6px}
+  .inspect-card ul{margin:8px 0 4px 18px}
+  .retire-badge{display:inline-block;background:#5a1a1a;color:#e05a5a;border:1px solid #8a2a2a;border-radius:4px;font-size:0.72rem;font-weight:700;padding:2px 7px;margin-left:8px;text-transform:uppercase;letter-spacing:0.5px}
+  .ok-badge{display:inline-block;background:#1a3a1a;color:#5cb85c;border:1px solid #2d5a2d;border-radius:4px;font-size:0.72rem;font-weight:700;padding:2px 7px;margin-left:8px;text-transform:uppercase;letter-spacing:0.5px}
+  .warn-badge{display:inline-block;background:#3a2a1a;color:#e8a838;border:1px solid #6a4a1a;border-radius:4px;font-size:0.72rem;font-weight:700;padding:2px 7px;margin-left:8px;text-transform:uppercase;letter-spacing:0.5px}
+
+  /* Checklist */
+  .checklist{background:#0a1520;border-radius:8px;padding:14px 18px}
+  .check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #1a2a3a;font-size:0.88rem;color:#c5d0dc}
+  .check-item:last-child{border-bottom:none}
+  .check-box{width:18px;height:18px;border:2px solid #3a5a3a;border-radius:4px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#5cb85c}
+  .check-item.critical .check-box{border-color:#8a2a2a}
+  .check-item.critical{color:#e8c5c5}
+  .critical-label{font-size:0.7rem;color:#e05a5a;font-weight:600;margin-left:6px}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse;margin:12px 0}
+  th{background:#131f2e;color:#7ec8e3;font-size:0.78rem;text-align:left;padding:10px 12px;border-bottom:2px solid #2a3f55}
+  td{padding:9px 12px;font-size:0.85rem;color:#c5d0dc;border-bottom:1px solid #1a2a3a}
+  tr:nth-child(even) td{background:#0a1520}
+  .retire{color:#e05a5a;font-weight:600}
+  .monitor{color:#e8a838}
+  .pass{color:#5cb85c}
+
+  .field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:14px;margin-top:16px}
+  .fn-label{font-size:0.75rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#a3d9a3;line-height:1.6}
+
+  .key-rule{background:#1a1a2f;border:1px solid #3a3a6a;border-radius:8px;padding:14px;margin:12px 0;font-size:0.88rem;color:#c5cce8;line-height:1.6}
+  .key-rule strong{color:#a3b8d9}
+
+  .isa-footer{margin-top:32px;padding:14px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#5a6b7e;text-align:center}
+  .isa-footer strong{color:#7ec8e3}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 9</div>
+  <div class="day-tag">🪚 Tuesday — Equipment &amp; Tools</div>
+</header>
+<main>
+  <h1>PPE Inspection &amp; Retirement Criteria</h1>
+  <div class="sub">Harnesses, helmets, lanyards, eye/ear protection — how to inspect, what pulls a piece from service, and the standards that back it up.</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('harness')">Climbing Harness</div>
+    <div class="tab" onclick="switchTab('helmet')">Helmets</div>
+    <div class="tab" onclick="switchTab('lanyard')">Lanyards &amp; Connectors</div>
+    <div class="tab" onclick="switchTab('eyeear')">Eye &amp; Ear PPE</div>
+    <div class="tab" onclick="switchTab('system')">The System</div>
+  </div>
+
+  <!-- HARNESS -->
+  <div class="tab-content active" id="tab-harness">
+    <div class="section-title">Climbing Harness Inspection</div>
+    <div class="section-sub">Every harness must be inspected before each use. Formal documented inspection by a competent person at least annually — per ANSI Z133.</div>
+    <div class="std-ref">📐 Per ANSI Z133-2017 §7.3: All personal protective equipment shall be inspected before each use. Equipment that fails inspection shall be immediately removed from service and shall not be used until repaired or replaced.</div>
+
+    <div class="inspect-card">
+      <h3>Webbing — The Load-Bearing Core <span class="retire-badge">Retire Immediately If Found</span></h3>
+      <ul>
+        <li><strong>Cuts, nicks, abrasion:</strong> Any cut through load-bearing webbing = immediate retirement. Abrasion that exposes fibres beneath the outer sheath = retirement.</li>
+        <li><strong>Glazing / heat damage:</strong> Shiny, stiff webbing indicates heat fusion of synthetic fibres — retirement. Often occurs from friction on ropes.</li>
+        <li><strong>Chemical contamination:</strong> Acids (battery acid, certain fertilizer salts) hydrolyze nylon webbing without visible exterior damage. If unknown chemical exposure occurred, retire.</li>
+        <li><strong>UV degradation:</strong> Chalky, brittle, or bleached-out webbing, especially on older harnesses stored in direct sunlight. Nylon and polyester degrade under sustained UV.</li>
+        <li><strong>How to check:</strong> Flex the webbing 90° — look for white stress marks in the inner fibres. Run your thumb along each strap edge feeling for cuts. Work every inch, every strap.</li>
+      </ul>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Stitching and Bartacks <span class="retire-badge">Retire Immediately If Damaged</span></h3>
+      <ul>
+        <li>Bartacks (dense reinforcing stitch groups at load points) must be fully intact — no broken, frayed, or missing stitches.</li>
+        <li>Load-bearing seam stitching on leg loops, tie-in points, and bridge must be complete and unfrayed.</li>
+        <li>Thread discolouration from UV or chemical exposure may precede hidden degradation — flag for assessment.</li>
+      </ul>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Hardware — Buckles, D-rings, and Adjusters <span class="warn-badge">Inspect Carefully</span></h3>
+      <ul>
+        <li><strong>Corrosion:</strong> Surface rust on steel hardware — monitor. Pitting, scaling, or structural corrosion — retire.</li>
+        <li><strong>Deformation:</strong> Any bent, cracked, or distorted metal hardware = retirement. A fall-arrested D-ring rarely looks visibly deformed, but stress-whitening around metal edges is a clue.</li>
+        <li><strong>Auto-lock buckles:</strong> Test that they lock under light load and release only with full intentional manipulation.</li>
+        <li><strong>Roller buckles:</strong> Check that rollers spin freely and the bar is fully seated.</li>
+      </ul>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Fall Arrest / Impact Indicators <span class="retire-badge">Retire After Any Fall Arrest</span></h3>
+      <p>If a harness has arrested a fall — retire it, regardless of visible condition. Internal webbing and stitching absorb energy invisibly. <strong>There are no exceptions to this rule.</strong> Many harnesses have sewn-in fall indicators (red stitching or foam pads that deform visibly) — inspect these at every pre-use check. WorkSafeBC OHS Regulation Part 11 (Fall Protection) requires fall-arrested equipment to be removed from service immediately.</p>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Service Life — Maximum Age <span class="warn-badge">Know Your Manufacturer Spec</span></h3>
+      <p>Most manufacturers specify a <strong>maximum service life of 10 years from manufacture date</strong> (not purchase date), with typical recommended retirement at <strong>5 years from first use</strong> under normal working conditions. This is manufacturer guidance, not an ANSI requirement — but ANSI Z133 defers to manufacturer specifications. The manufacture date is encoded on a label inside the harness (typically a 4-digit code — last two digits of year + week number). Find it. Know it.</p>
+    </div>
+
+    <div class="checklist">
+      <div style="font-size:0.8rem;color:#5cb85c;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Pre-Use Harness Inspection Checklist</div>
+      <div class="check-item critical"><div class="check-box">✓</div><div>All webbing: no cuts, nicks, abrasion through to fibres <span class="critical-label">CRITICAL</span></div></div>
+      <div class="check-item critical"><div class="check-box">✓</div><div>Bartacks and load-bearing stitching: all intact, no broken threads <span class="critical-label">CRITICAL</span></div></div>
+      <div class="check-item critical"><div class="check-box">✓</div><div>No evidence of previous fall arrest (check fall indicators) <span class="critical-label">CRITICAL</span></div></div>
+      <div class="check-item"><div class="check-box">✓</div><div>Hardware: no corrosion, deformation, or improper function</div></div>
+      <div class="check-item"><div class="check-box">✓</div><div>Webbing not glazed, stiff, or chemically contaminated</div></div>
+      <div class="check-item"><div class="check-box">✓</div><div>Manufacture date checked — within service life</div></div>
+      <div class="check-item"><div class="check-box">✓</div><div>All buckles and adjusters function correctly when tested</div></div>
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The Okanagan's UV intensity is brutal — significantly higher than coastal BC. Harnesses and ropes left in truck beds or on the tailgate between jobs accumulate UV damage faster than anywhere in the province. Get into the habit of bagging your harness and keeping it out of direct sun when not in use. The 5-year active use recommendation is conservative for good reason. Also: Kelowna area crews doing PHC injection work are regularly around fertilizer solutions — misting from injection ports onto harness webbing is a real chemical exposure scenario. Rinse webbing with clean water after any suspected chemical contact and inspect carefully.</p>
+    </div>
+  </div>
+
+  <!-- HELMETS -->
+  <div class="tab-content" id="tab-helmet">
+    <div class="section-title">Arborist Helmet Inspection</div>
+    <div class="section-sub">Arborist helmets are not construction hard hats. Know the difference. Know the standards.</div>
+    <div class="std-ref">📐 Arborist helmets must meet ANSI/ISEA Z89.1 (head protection) and ideally EN 12492 (climbing helmets) or AS/NZS 1801. ANSI Z133 requires head protection for all arborists working in the tree. WorkSafeBC OHS Regulation §8.12 requires head protection appropriate to the hazard.</div>
+
+    <table>
+      <tr>
+        <th>Inspection Point</th>
+        <th>Pass</th>
+        <th>Monitor / Flag</th>
+        <th>Retire Immediately</th>
+      </tr>
+      <tr>
+        <td>Shell exterior</td>
+        <td class="pass">Smooth, no cracks</td>
+        <td class="monitor">Surface scuffs, minor gouges</td>
+        <td class="retire">Any crack, dent, or penetration</td>
+      </tr>
+      <tr>
+        <td>Shell interior</td>
+        <td class="pass">Clean, no marks or deformation</td>
+        <td class="monitor">Minor scuffs</td>
+        <td class="retire">Impact marks, deformation, brittleness</td>
+      </tr>
+      <tr>
+        <td>Suspension system (harness inside shell)</td>
+        <td class="pass">All straps and webbing intact, adjusters functional</td>
+        <td class="monitor">Minor wear on non-load straps</td>
+        <td class="retire">Any broken, cut, or frayed load strap</td>
+      </tr>
+      <tr>
+        <td>Chin strap</td>
+        <td class="pass">Adjusts, buckles, snaps securely</td>
+        <td class="monitor">Minor adjustment wear</td>
+        <td class="retire">Non-functional buckle, cut strap</td>
+      </tr>
+      <tr>
+        <td>UV/age degradation</td>
+        <td class="pass">Shell firm, no chalky surface</td>
+        <td class="monitor">Slight surface chalking on old helmet</td>
+        <td class="retire">Chalky brittle shell; any age &gt;5 yr from mfg (check label)</td>
+      </tr>
+      <tr>
+        <td>Impact</td>
+        <td class="pass">No known impact to shell</td>
+        <td class="monitor">—</td>
+        <td class="retire">Any significant impact, even if no visible damage</td>
+      </tr>
+    </table>
+
+    <div class="inspect-card">
+      <h3>Hard Hat vs. Arborist Helmet — The Critical Distinction</h3>
+      <ul>
+        <li><strong>Standard construction hard hats (ANSI Z89.1 Type I):</strong> Designed for top-impact protection only. NOT designed for lateral impacts or impacts from multiple directions. NOT certified for climbing use.</li>
+        <li><strong>Arborist/climbing helmets (EN 12492 or equivalent):</strong> Omnidirectional impact protection — top, sides, and front. Required for climbers in the tree. Recognized by their rounded profile (no brim/peak in front) and integrated chin strap system.</li>
+        <li>A hard hat is acceptable for ground crew. A climbing helmet is required for anyone in the tree. Using a hard hat for climbing is a WorkSafeBC OHS violation and an ANSI Z133 non-compliance.</li>
+      </ul>
+    </div>
+
+    <div class="key-rule">
+      <strong>The 5-Year Rule:</strong> Most helmet manufacturers specify retirement at 5 years from date of first use or 10 years from manufacture — whichever comes first. The manufacture date is stamped or labelled inside the shell. A helmet that has taken any significant impact should be retired immediately regardless of age. Per ANSI Z133, manufacturer guidance governs service life.
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>The Okanagan sun degrades helmet shells faster than in most Canadian regions. If your helmet has spent summers in a truck, add UV degradation to your inspection routine — flex the rim gently; brittle crackling is an immediate retire. Always date-stamp new helmets in permanent marker on the interior the day you put them in service. Some crew write "retire date" on the inside: five years from activation. Don't guess. Check the label and do the math once when it's new.</p>
+    </div>
+  </div>
+
+  <!-- LANYARDS -->
+  <div class="tab-content" id="tab-lanyard">
+    <div class="section-title">Lanyards, Carabiners &amp; Snap Hooks</div>
+    <div class="section-sub">Connectors and positioning lanyards are your interface with the tree and the rope. Inspect every connector, every time.</div>
+    <div class="std-ref">📐 Per ANSI Z133 §7.2: Climbing lines, lanyards, and connectors shall be inspected before each use by the climber who will use them. Connectors shall meet or exceed ANSI/NFPA 1983 or equivalent standards with rated capacity &gt;5,000 lbf for life safety use.</div>
+
+    <div class="inspect-card">
+      <h3>Carabiners (Screw-gate, Auto-lock, Triple-action)</h3>
+      <ul>
+        <li><strong>Gate action:</strong> Must open smoothly and close/lock completely. Auto-lock gates must lock automatically on release. Triple-action gates must require three distinct motions to open — if any can be opened with one hand in one motion, retire.</li>
+        <li><strong>Gate play:</strong> Closed and locked, the gate should not move. Lateral play in a closed gate indicates wear — flag for assessment.</li>
+        <li><strong>Nose and spine:</strong> Check for cracks, gouges, or sharp edges. Rope-bearing surfaces (the spine and basket) must be smooth — any groove worn by a rope indicates significant use.</li>
+        <li><strong>Corrosion:</strong> Surface rust on steel — wipe, inspect, monitor. Pitting or flaking — retire. Aluminium: white powdery oxidation — monitor. Significant pitting or cracks — retire.</li>
+        <li><strong>Manufacturer rating:</strong> Confirm the kN markings (major axis, minor axis, gate open) are still legible. A carabiner whose rating can't be confirmed should not be used for life safety.</li>
+      </ul>
+      <div style="margin-top:10px;background:#0f1923;border-radius:6px;padding:10px;font-size:0.82rem;color:#8a9bb0">
+        <strong style="color:#e8c97a">WLL vs. MBS:</strong> Arborist connectors are rated by Minimum Breaking Strength (MBS) and Working Load Limit (WLL). A typical arborist carabiner has MBS of 25+ kN and WLL of 5 kN (approximately 1,100 lbf). Rigging connectors have higher WLLs. Never use a connector rated only for rigging (WLL in tons) for personal fall protection — it's about appropriate rating for the application, not just raw strength.
+      </div>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Positioning Lanyards (Adjustable, Fixed, and Flip-lines)</h3>
+      <ul>
+        <li><strong>Core integrity:</strong> Pinch and flex the lanyard along its full length — you should feel continuous solid rope core. Any soft spots, kinks, or flat spots suggest core damage — retire.</li>
+        <li><strong>Cover (sheath):</strong> Cuts, abrasion, glazing, or core visible through sheath — retire.</li>
+        <li><strong>Terminations:</strong> Splice ends, swage fittings, or sewn loops must be fully intact. Pull each end connection — they should be completely firm. Any mobility in a splice collar or swage = retire.</li>
+        <li><strong>Adjusters (Klein, Petzl, DMM grips):</strong> Cams and teeth must be sharp and engage fully. Worn-off teeth = retire. Check function: grip on the rope under body weight before committing.</li>
+        <li><strong>Steel flip-lines (wire rope):</strong> Check for broken wires throughout the length. More than one broken wire per lay length — retire. Also check fittings and thimbles for deformation.</li>
+      </ul>
+    </div>
+
+    <div class="checklist">
+      <div style="font-size:0.8rem;color:#5cb85c;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Connector Pre-Use Checklist</div>
+      <div class="check-item critical"><div class="check-box">✓</div><div>Gate locks completely; requires correct intentional motion to open <span class="critical-label">CRITICAL</span></div></div>
+      <div class="check-item critical"><div class="check-box">✓</div><div>No cracks, deformation, or deep gouges on spine, nose, or basket <span class="critical-label">CRITICAL</span></div></div>
+      <div class="check-item"><div class="check-box">✓</div><div>kN/WLL rating markings legible</div></div>
+      <div class="check-item"><div class="check-box">✓</div><div>No significant corrosion on load-bearing surfaces</div></div>
+      <div class="check-item critical"><div class="check-box">✓</div><div>Lanyard: no cuts, soft spots, or sheath damage; terminations solid <span class="critical-label">CRITICAL</span></div></div>
+      <div class="check-item"><div class="check-box">✓</div><div>Adjuster cams sharp, engage positively under load</div></div>
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>Carabiner wear from rope contact is insidious — it happens over hundreds of uses and the groove that forms on the spine or basket concentrates load in a way the manufacturer never intended. If you can feel a distinct groove with your thumb, it's time to retire the 'biner. Buy new, document the retirement with your inspection log. WorkSafeBC OHS regulation requires that equipment defects be recorded and removed from service — a written equipment log (date of inspection, who inspected, result, action taken) is your protection if ever there's a WorkSafe audit or incident review.</p>
+    </div>
+  </div>
+
+  <!-- EYE/EAR -->
+  <div class="tab-content" id="tab-eyeear">
+    <div class="section-title">Eye and Ear Protection</div>
+    <div class="section-sub">These are the easiest PPE to overlook and among the most consequential for long-term crew health.</div>
+    <div class="std-ref">📐 Eye protection: CSA Z94.3 (Canada) / ANSI Z87.1 (US) — required during chainsaw use, chipping, pruning, and any operation generating debris. Hearing protection: CSA Z94.2 — required when noise exposure exceeds 85 dBA (8hr TWA). WorkSafeBC OHS §8.34: When noise levels exceed 85 dBA, hearing protection must be provided and used.</div>
+
+    <div class="inspect-card">
+      <h3>Eye Protection — Safety Glasses, Goggles, and Face Shields</h3>
+      <ul>
+        <li><strong>Lens clarity:</strong> Scratched lenses impair vision and create optical distortion — replace when scratched. Scratches also indicate lens surface has been compromised, reducing impact resistance.</li>
+        <li><strong>Frame integrity:</strong> Cracked, broken, or deformed frames — replace. Loose temples or poorly fitting frames defeat the protective fit.</li>
+        <li><strong>Anti-fog coatings:</strong> Degraded coatings cause fogging that leads to removal — replace and consider ventilated models for hot summer work.</li>
+        <li><strong>Impact rating:</strong> For arborist work, lenses must meet impact protection (marked Z87+ in the US or CSA Z94.3 in Canada). Face shields for chainsaw work must be appropriate for the hazard (mesh visor or solid polycarbonate).</li>
+        <li><strong>Chainsaw work:</strong> A mesh visor (part of the arborist helmet system) provides face protection against flying chips. It does NOT provide eye protection from fine dust or chemical misting — safety glasses or goggles underneath are required for those hazards.</li>
+      </ul>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Hearing Protection — Earmuffs and Earplugs</h3>
+      <ul>
+        <li><strong>Earmuffs:</strong> Cushions must seal fully against the head — check for cracks, hardening, or compression loss in the cushions. A cushion that doesn't seal is not providing its rated attenuation. Replace deteriorated cushions — most manufacturers sell replacement cushion kits.</li>
+        <li><strong>Earplugs:</strong> Single-use foam plugs are single-use. Reusable silicone plugs — inspect for tears and clean after each use per manufacturer guidance.</li>
+        <li><strong>NRR rating:</strong> Noise Reduction Rating (NRR) must be appropriate for the noise source. Chainsaw at 1m: approximately 105–110 dBA. You need at least 20 dB of reduction to bring exposure below 85 dBA. Most arborist earmuffs are NRR 25–30. Use NRR correctly (derate by 7–50% for real-world fit) — if in doubt, use earmuffs AND earplugs together (dual protection adds ~5 dB effective attenuation).</li>
+        <li><strong>Comms integration:</strong> Radio-integrated earmuffs — check that electronic components function, battery isn't dead, and attenuation is not compromised when electronics are off (verify the passive NRR still applies).</li>
+      </ul>
+    </div>
+
+    <div class="key-rule">
+      <strong>Long-Term Consequences:</strong> Noise-induced hearing loss (NIHL) is cumulative and permanent. There is no treatment. WorkSafeBC occupational disease claims for hearing loss are among the most common in arboriculture. The damage accumulates over a career — crew who develop the hearing-protection habit early protect their long-term earning capacity. ISA Best Management Practices (Arborist Safety) explicitly identifies NIHL as a primary occupational health hazard.
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>High-elevation summer work in the Okanagan means intense sun. UV-absorbing or photochromic safety lenses are worth the investment for comfort — crew who are comfortable wear their PPE. A lens that's fog-free, UV-protective, and fits well is one the crew keeps on. One that fogs up or pinches gets pushed up to the forehead, defeating the point. Fit and comfort compliance is a real issue — get input from the crew on what works. The best eye protection is the one that actually gets worn.</p>
+    </div>
+  </div>
+
+  <!-- THE SYSTEM -->
+  <div class="tab-content" id="tab-system">
+    <div class="section-title">Building a PPE Management System</div>
+    <div class="section-sub">Individual inspections matter, but the system is what keeps everyone covered over time.</div>
+    <div class="std-ref">📐 Per ANSI Z133 §7.3: A formal inspection of all climbing and personal protective equipment shall be performed at least annually by a competent person and the results documented. Per WorkSafeBC OHS Regulation §4.11: Defective tools and equipment must be tagged and removed from service until repaired or replaced.</div>
+
+    <div class="inspect-card">
+      <h3>The Pre-Use / Pre-Job Inspection (Daily)</h3>
+      <p>Every climber inspects their own PPE before putting it on at every job. This is not a suggestion — ANSI Z133 makes it a requirement. A two-minute check before climbing is not optional. The inspection is the climber's final line of defence against equipment failure.</p>
+      <ul>
+        <li>Harness: webbing, stitching, hardware, fall indicators</li>
+        <li>Helmet: no cracks, suspension intact, within service life</li>
+        <li>Carabiners and connectors: gate function, no cracks or corrosion</li>
+        <li>Lanyard/flip-line: cover, core, terminations, adjuster</li>
+      </ul>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Annual Formal Inspection (Documented)</h3>
+      <p>At least once per year, a competent person conducts and documents a formal inspection of all PPE in service. This means:</p>
+      <ul>
+        <li>A physical inspection more thorough than pre-use — harnesses should be removed from the bag and inspected under good light, ideally with a UV light to check webbing condition</li>
+        <li>All serial numbers, manufacture dates, and first-use dates verified</li>
+        <li>All equipment with expired service life pulled and destroyed (not donated or sold)</li>
+        <li>Results recorded in a log with inspector name, date, and disposition of each piece</li>
+      </ul>
+    </div>
+
+    <div class="inspect-card">
+      <h3>Retiring Equipment — Do It Right</h3>
+      <ul>
+        <li><strong>Cut the webbing</strong> on retired harnesses — this prevents retired gear from re-entering service accidentally.</li>
+        <li><strong>Deface helmets</strong> so they can't be confused with in-service equipment — some teams cut the chin strap.</li>
+        <li><strong>Document the retirement</strong> — note the reason, date, and disposition. This record protects you in a WorkSafeBC audit.</li>
+        <li><strong>Never re-purpose life safety equipment</strong> — a retired harness is not a costume, a tool holder, or a demo piece. It's garbage. Treat it that way.</li>
+      </ul>
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Microbe Tree Crew</div>
+      <p>A simple PPE log — even a shared Google Sheet with harness serial numbers, manufacture dates, first-use dates, and last inspection dates — puts you ahead of 95% of tree companies in the Okanagan. During a WorkSafeBC inspection, being able to show that every piece of climbing equipment has a documented inspection history is a significant positive finding. It also protects you: if a crew member's harness causes an injury and you can't demonstrate it was inspected and within service life, the liability exposure is real. The system doesn't have to be fancy — it has to be consistent.</p>
+    </div>
+  </div>
+
+  <div class="isa-footer">
+    📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;|&nbsp; <strong>Sources:</strong> ANSI Z133-2017 §7 · WorkSafeBC OHS Regulation Part 11 · CSA Z259 Series · ISA BMP: Arborist Safety
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crew Communication &amp; Drop Zone — Week 9 Friday · Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh}
+  header{background:linear-gradient(135deg,#1a1a2f 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:16px 24px;display:flex;align-items:center;gap:12px}
+  .logo{font-size:1.5rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+  .logo span{color:#fff}
+  .week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;letter-spacing:0.5px}
+  .day-tag{background:#2a1f3a;color:#c8b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+  main{max-width:920px;margin:0 auto;padding:24px 20px}
+  h1{font-size:1.6rem;font-weight:700;color:#fff;margin:20px 0 6px}
+  .sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:28px}
+
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .tab{background:#131f2e;border:1.5px solid #2a3f55;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:0.85rem;color:#8a9bb0;transition:all 0.2s}
+  .tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+
+  .std-ref{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 14px;font-size:0.82rem;color:#e8c97a;margin-bottom:20px}
+
+  h2{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:4px}
+  .sec-sub{color:#8a9bb0;font-size:0.85rem;margin-bottom:16px}
+
+  .signal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:20px}
+  .signal-card{background:#131f2e;border-radius:10px;padding:16px;border-top:3px solid #5cb85c}
+  .signal-card.stop{border-top-color:#e05a5a}
+  .signal-card.warn{border-top-color:#e8a838}
+  .signal-card.info{border-top-color:#7ec8e3}
+  .signal-icon{font-size:2rem;margin-bottom:8px}
+  .signal-name{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:4px}
+  .signal-desc{font-size:0.82rem;color:#8a9bb0;margin-bottom:6px}
+  .signal-how{font-size:0.82rem;color:#c5d0dc;line-height:1.5}
+
+  .rule-card{background:#131f2e;border:1px solid #2a3f55;border-radius:10px;padding:16px;margin-bottom:12px}
+  .rule-card h3{font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .rule-card p,.rule-card li{font-size:0.88rem;color:#c5d0dc;line-height:1.6;margin-bottom:6px}
+  .rule-card ul{margin:6px 0 4px 18px}
+
+  .critical-box{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:14px;margin:12px 0}
+  .critical-label{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .critical-box p{font-size:0.88rem;color:#e8c5c5;line-height:1.6}
+
+  /* Radio protocol */
+  .radio-table{width:100%;border-collapse:collapse;margin:12px 0}
+  .radio-table th{background:#131f2e;color:#7ec8e3;font-size:0.78rem;text-align:left;padding:10px 12px;border-bottom:2px solid #2a3f55}
+  .radio-table td{padding:9px 12px;font-size:0.85rem;color:#c5d0dc;border-bottom:1px solid #1a2a3a}
+  .radio-table tr:nth-child(even) td{background:#0a1520}
+  .call-word{font-family:monospace;background:#1a2f4a;color:#7ec8e3;padding:2px 6px;border-radius:4px;font-size:0.82rem}
+  .phonetic{font-family:monospace;color:#a3d9a3;font-size:0.8rem}
+
+  /* Drop zone */
+  .dz-card{background:#131f2e;border-radius:10px;padding:16px;margin-bottom:12px}
+  .dz-card h3{font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px}
+  .dz-card p,.dz-card li{font-size:0.88rem;color:#c5d0dc;line-height:1.6;margin-bottom:6px}
+  .dz-card ul{margin:6px 0 6px 18px}
+
+  /* Tailgate checklist */
+  .checklist{background:#0a1520;border-radius:8px;padding:14px 18px}
+  .check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #1a2a3a;font-size:0.88rem;color:#c5d0dc}
+  .check-item:last-child{border-bottom:none}
+  .check-box{width:18px;height:18px;border:2px solid #3a5a3a;border-radius:4px;flex-shrink:0;margin-top:1px}
+  .check-item.red .check-box{border-color:#8a2a2a}
+  .check-item.red{color:#e8c5c5}
+  .req{font-size:0.7rem;color:#e05a5a;font-weight:600;margin-left:6px}
+
+  .field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:14px;margin-top:16px}
+  .fn-label{font-size:0.75rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#a3d9a3;line-height:1.6}
+
+  .isa-footer{margin-top:32px;padding:14px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#5a6b7e;text-align:center}
+  .isa-footer strong{color:#7ec8e3}
+
+  strong{color:#e8edf2}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 9</div>
+  <div class="day-tag">🧗 Friday — Worksite Techniques</div>
+</header>
+<main>
+  <h1>Crew Communication: Hand Signals, Radio Protocol &amp; Drop Zone Management</h1>
+  <div class="sub">How information moves on a worksite determines whether wood moves safely. Bad communication doesn't just cause confusion — it causes injuries. This is how we do it right.</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('signals')">Hand Signals</div>
+    <div class="tab" onclick="switchTab('radio')">Radio Protocol</div>
+    <div class="tab" onclick="switchTab('dropzone')">Drop Zone Management</div>
+    <div class="tab" onclick="switchTab('tailgate')">Tailgate Meeting</div>
+  </div>
+
+  <!-- HAND SIGNALS -->
+  <div class="tab-content active" id="tab-signals">
+    <h2>Hand Signals</h2>
+    <div class="sec-sub">When chainsaws are running and chippers are roaring, voice commands don't travel. Hand signals are the standard non-verbal communication system. Every crew member must know and use these consistently.</div>
+    <div class="std-ref">📐 Per ANSI Z133-2017 §4.1: Before operations begin, all crew members shall be briefed on the work plan, roles, hazards, and communication signals to be used. WorkSafeBC OHS Regulation §4.15 requires a pre-job hazard assessment communicated to all workers before work begins — which includes confirmation of signal system.</div>
+
+    <div class="critical-box">
+      <div class="critical-label">⚠ Critical Principle</div>
+      <p>The signal system only works if it is <strong>standardized across the crew</strong> and <strong>briefed before every job</strong>. Never assume a new crew member, a sub, or a hired hand knows your signals. Five seconds at tailgate to confirm signals prevents a miscommunication that takes seconds to cause a serious injury.</p>
+    </div>
+
+    <div class="signal-grid">
+      <div class="signal-card">
+        <div class="signal-icon">✋</div>
+        <div class="signal-name">STOP / HOLD</div>
+        <div class="signal-desc">Arm raised, open palm facing outward. Absolute stop — all operations cease immediately.</div>
+        <div class="signal-how"><strong>Use:</strong> Person or hazard in drop zone; unexpected condition; equipment problem; anything that requires immediate halt. This signal overrides all others. Anyone on the crew can call a stop — not just the climber or foreman.</div>
+      </div>
+      <div class="signal-card stop">
+        <div class="signal-icon">🤙</div>
+        <div class="signal-name">LOWER (Lower Load)</div>
+        <div class="signal-desc">Arm extended down, finger pointing down, circular motion. Groundperson signals to lower a piece. Thumbs down is also common.</div>
+        <div class="signal-how"><strong>Use:</strong> Rigging load on descent, lowering tool bags, any controlled vertical movement downward.</div>
+      </div>
+      <div class="signal-card warn">
+        <div class="signal-icon">👆</div>
+        <div class="signal-name">RAISE / UP</div>
+        <div class="signal-desc">Index finger pointing up with circular motion. Take up slack or raise a load.</div>
+        <div class="signal-how"><strong>Use:</strong> Taking up rigging rope, lifting equipment. Paired with slow circular for "slowly." Used in conjunction with the friction hitch or mechanical device operator.</div>
+      </div>
+      <div class="signal-card">
+        <div class="signal-icon">✊</div>
+        <div class="signal-name">HOLD / STOP MOTION (on rigging)</div>
+        <div class="signal-desc">Closed fist raised — freeze in place. Used when working with rigging devices.</div>
+        <div class="signal-how"><strong>Use:</strong> Load is in a critical position, adjustment needed. Groundperson or climber freezes all movement until next signal is given. Widely used in lowering and rigging operations.</div>
+      </div>
+      <div class="signal-card info">
+        <div class="signal-icon">👍</div>
+        <div class="signal-name">READY / OK</div>
+        <div class="signal-desc">Thumbs up. Confirmation that position is ready, conditions are clear, or operation can proceed.</div>
+        <div class="signal-how"><strong>Use:</strong> Climber gives thumbs up when seated and rigged; groundperson gives thumbs up when drop zone is clear and secure; foreman gives thumbs up when all positions are confirmed.</div>
+      </div>
+      <div class="signal-card info">
+        <div class="signal-icon">🙌</div>
+        <div class="signal-name">CLEAR THE AREA</div>
+        <div class="signal-desc">Both arms extended, waving away from body — clear out. Or: one arm sweeping motion toward the perimeter.</div>
+        <div class="signal-how"><strong>Use:</strong> When a large piece is about to fall free-fall, or when an emergency condition develops and personnel need to move away immediately. Precedes major felling operations.</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <h3>📋 Signal Discipline Rules</h3>
+      <ul>
+        <li><strong>Confirm receipt:</strong> When a signal is given, the receiver confirms by mirroring it back. Climber signals "lower" → groundperson mirrors "lower" → climber nods confirmation → groundperson begins lowering. This two-way confirmation is the standard.</li>
+        <li><strong>Visual line required:</strong> If you cannot see the person you're signalling, the signal cannot be given. Call a tool (radio) or reposition. Operating on assumed signals is never acceptable.</li>
+        <li><strong>One person gives signals at a time:</strong> Multiple people signalling simultaneously creates confusion. In a rigging or lowering operation, designate one groundperson as the signal contact for the climber. Others observe and can call a stop if needed, but the primary signal person is designated in advance.</li>
+        <li><strong>Stop is universal and immediate:</strong> Any crew member — including the newest apprentice — has authority to signal STOP. No one ever gets questioned for stopping an operation. This is a WorkSafeBC right — workers have the right to refuse unsafe work and to stop work when they observe an unsafe condition.</li>
+      </ul>
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Microbe Tree Crew</div>
+      <p>In strata work where the public is nearby, signal discipline is also about crew professionalism. Residents watching a crew work read the body language — a crew where signals are crisp, confirmations happen, and stops are called without hesitation looks professional and competent. It also reduces the chance of a strata resident walking into the drop zone because they thought a wave was a greeting. Clear signals on the perimeter, clear stop gestures at the public, and a crew that works visibly coordinated is a differentiator clients notice and remember.</p>
+    </div>
+  </div>
+
+  <!-- RADIO -->
+  <div class="tab-content" id="tab-radio">
+    <h2>Radio Protocol</h2>
+    <div class="sec-sub">When hand signals aren't possible — crew members are out of sightlines, controlling traffic at a distance, or working on large sites — portable two-way radios become the communication backbone. Radio discipline matters as much as signal discipline.</div>
+    <div class="std-ref">📐 ANSI Z133 §4.1 and WorkSafeBC OHS Regulation §4.15 both require pre-task communication of signals and procedures. Radios are the designated communication tool when visual contact is not maintained. BC radio frequency use is governed by ISED Canada; business/industrial frequencies require registration.</div>
+
+    <div class="rule-card">
+      <h3>📻 Radio Protocol Basics</h3>
+      <ul>
+        <li><strong>Test before the job starts.</strong> Confirm radio function, battery, and reception before anyone is in the tree or on the chipper. A dead radio in the middle of a cut is worse than no radio — it creates false confidence.</li>
+        <li><strong>Identify yourself when calling.</strong> Don't just speak — identify who you are and who you're calling. "Anton to Tyler" is clear. "Hey" is not.</li>
+        <li><strong>Say "over" when done speaking.</strong> This signals you're releasing the channel and waiting for a response. Without it, the other person doesn't know if you're finished.</li>
+        <li><strong>Confirmation is mandatory for safety-critical communications.</strong> Before a cut, before lowering a piece, before removing a person from a stop position — confirm verbally. "Tyler, Anton — drop zone is clear, you're good to cut." "Copy, dropping the stem, over."</li>
+        <li><strong>Keep it brief and clear.</strong> Radio is not conversation. Get in, say what's needed, confirm, get out. Every second on the channel is a second someone else can't communicate.</li>
+        <li><strong>Watch for radio shadow and dead zones.</strong> In canyon terrain and around buildings, radio can fail silently. If a response isn't received within a reasonable time, do NOT proceed — reposition or use a physical check-in.</li>
+      </ul>
+    </div>
+
+    <table class="radio-table">
+      <tr>
+        <th>Phrase / Call Word</th>
+        <th>Meaning</th>
+        <th>Example Use</th>
+      </tr>
+      <tr>
+        <td><span class="call-word">Over</span></td>
+        <td>I'm done speaking; your turn</td>
+        <td>"Drop zone clear, you're good to cut, over."</td>
+      </tr>
+      <tr>
+        <td><span class="call-word">Copy / Roger</span></td>
+        <td>Message received and understood</td>
+        <td>"Copy that, cutting in ten seconds."</td>
+      </tr>
+      <tr>
+        <td><span class="call-word">Negative</span></td>
+        <td>No / do not proceed</td>
+        <td>"Negative — wait, pedestrian in zone."</td>
+      </tr>
+      <tr>
+        <td><span class="call-word">Affirmative</span></td>
+        <td>Yes / proceed</td>
+        <td>"Affirmative, zone is clear."</td>
+      </tr>
+      <tr>
+        <td><span class="call-word">Stand by</span></td>
+        <td>Wait — I'm occupied, will respond shortly</td>
+        <td>"Stand by, positioning the rigging block."</td>
+      </tr>
+      <tr>
+        <td><span class="call-word">Say again</span></td>
+        <td>Repeat your last message (not "repeat" — military/fire standard avoids "repeat")</td>
+        <td>"Say again — didn't copy your position."</td>
+      </tr>
+      <tr>
+        <td><span class="call-word">Break break</span></td>
+        <td>Urgent — interrupting channel for priority communication</td>
+        <td>"Break break — pedestrian in the drop zone, stop the cut!"</td>
+      </tr>
+      <tr>
+        <td><span class="call-word">Out</span></td>
+        <td>Conversation is complete; channel is free</td>
+        <td>"Good to go, out."</td>
+      </tr>
+    </table>
+
+    <div class="rule-card">
+      <h3>📋 Phonetic Alphabet — When Clarity Matters</h3>
+      <p style="font-size:0.88rem;color:#c5d0dc;line-height:1.6;margin-bottom:8px">Use phonetic alphabet for spelling names, addresses, or codes when radio clarity is poor. Know at least: A=<span class="phonetic">Alpha</span>, B=<span class="phonetic">Bravo</span>, C=<span class="phonetic">Charlie</span>, D=<span class="phonetic">Delta</span>, E=<span class="phonetic">Echo</span>, F=<span class="phonetic">Foxtrot</span>, G=<span class="phonetic">Golf</span>, H=<span class="phonetic">Hotel</span>, I=<span class="phonetic">India</span>, J=<span class="phonetic">Juliet</span>, K=<span class="phonetic">Kilo</span>, L=<span class="phonetic">Lima</span>, M=<span class="phonetic">Mike</span>, N=<span class="phonetic">November</span>, O=<span class="phonetic">Oscar</span>, P=<span class="phonetic">Papa</span>, R=<span class="phonetic">Romeo</span>, S=<span class="phonetic">Sierra</span>, T=<span class="phonetic">Tango</span>, U=<span class="phonetic">Uniform</span>, W=<span class="phonetic">Whiskey</span>, Z=<span class="phonetic">Zulu</span></p>
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Microbe Tree Crew</div>
+      <p>The most common radio failure on arborist sites isn't technical — it's a crew member who doesn't respond and the other person assumes they heard and proceeds anyway. This is the assumption that causes incidents. The rule is simple: if you don't receive a confirmation, you do not proceed. Radio silence is a STOP signal. Call again, wait, reposition if needed. "I thought they heard me" is never a defensible explanation after something goes wrong.</p>
+    </div>
+  </div>
+
+  <!-- DROP ZONE -->
+  <div class="tab-content" id="tab-dropzone">
+    <h2>Drop Zone Management</h2>
+    <div class="sec-sub">The drop zone is the area where cut wood will land. Every fatality and serious injury from falling wood comes back to drop zone failure. This is non-negotiable territory.</div>
+    <div class="std-ref">📐 Per ANSI Z133 §4.6: An exclusion zone shall be established and maintained around the work area. No persons other than those directly involved in the operation shall be permitted within the exclusion zone. WorkSafeBC OHS Regulation §26.6 (Felling and Bucking): An exclusion zone of at least 2 tree lengths shall be maintained around a felling operation.</div>
+
+    <div class="critical-box">
+      <div class="critical-label">⚠ The Fundamental Rule</div>
+      <p><strong>No one enters the drop zone while work is in progress.</strong> Not to grab a piece of wood. Not to move a cone. Not to take a quick look. Not for any reason. The drop zone boundary is enforced absolutely, or it doesn't exist at all. An exclusion zone with exceptions is no protection.</p>
+    </div>
+
+    <div class="dz-card">
+      <h3>Establishing the Drop Zone — Before Work Starts</h3>
+      <ul>
+        <li><strong>Determine the maximum fall radius:</strong> For aerial work, this is the height of the tree plus the length of the limb/stem being cut. Wood can bounce, roll, and travel further than expected — add a safety margin.</li>
+        <li><strong>Assess the landing surface:</strong> Hard surfaces (concrete, asphalt, pavers) cause greater bounce and more unpredictable travel. Anticipate this in zone sizing.</li>
+        <li><strong>Establish physical barriers:</strong> Cones, barrier tape, rope lines, or signage at minimum. On high-traffic sites (residential strata, boulevard work), physical barriers visible to pedestrians and drivers are required.</li>
+        <li><strong>Assign a groundperson as drop zone monitor:</strong> One person whose primary job during aerial cuts is watching the zone and ensuring no one enters. This is not a task that can be done while also running a chipper, moving brush, or looking at a phone.</li>
+        <li><strong>Confirm with the crew at tailgate:</strong> Everyone on site — including any sub-trades, strata maintenance, delivery drivers expected on site — knows where the zone is and that it is off-limits during operations.</li>
+      </ul>
+    </div>
+
+    <div class="dz-card">
+      <h3>Controlled Lowering vs. Free Fall — Drop Zone Implications</h3>
+      <p style="font-size:0.88rem;color:#c5d0dc;line-height:1.6;margin-bottom:8px">The drop zone requirements differ significantly between controlled lowering and free-fall (drop) operations:</p>
+      <ul>
+        <li><strong>Controlled lowering:</strong> Drop zone can be smaller and more predictable — the load is guided by the rigging system. The zone still exists (rope can fail, pieces can swing), but can be refined to the likely landing area of the controlled descent.</li>
+        <li><strong>Free-fall / drop cuts:</strong> Drop zone must account for full possible trajectory — bounce, roll, and deflection. On slope, extend the zone downhill significantly. Never make a drop cut without a fully clear and monitored zone.</li>
+        <li><strong>Brush and small wood:</strong> Even small material can travel further than expected when dropped from height, and can reach running speed on slopes. Brush drop zones still need monitoring — not just large stem operations.</li>
+      </ul>
+    </div>
+
+    <div class="dz-card">
+      <h3>Managing Public and Third Parties</h3>
+      <ul>
+        <li><strong>Residents and strata occupants:</strong> Brief property management or the client contact before work starts. Ask that residents be informed that the drop zone area is off limits for the duration of work. Don't rely on them to enforce it — the crew monitors the zone.</li>
+        <li><strong>Pedestrians:</strong> On boulevard and street-adjacent work, place traffic cones a minimum of 15 m from the work zone in each direction (more on faster roads). Ground crew is responsible for preventing pedestrian entry — this takes priority over any other task when someone approaches.</li>
+        <li><strong>Vehicles:</strong> If road access cannot be controlled with cones, arrange a traffic flagger or coordinate with the municipality for road closure. Never assume traffic will stop — vehicles don't see rope barriers the same way pedestrians do.</li>
+        <li><strong>"Clear — clear — clear":</strong> The verbal call before a piece drops (even in a controlled lower) is standard practice. Called by the climber, confirmed by the groundperson monitoring the zone. Becomes habit. Protects everyone.</li>
+      </ul>
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Okanagan</div>
+      <p>In Okanagan strata environments, residents frequently believe that because it's "their" strata property, they have the right to walk through your work zone. The law disagrees — and WorkSafeBC is clear that the arborist company operating on site is responsible for maintaining exclusion zones. You don't need to be confrontational, but you do need to be firm: "I can't allow you through here while we're cutting — for your safety and ours. I'll let you know when we're done with this section." Most people respond reasonably to respectful directness. The few who don't can be referred to the strata manager. Document any refusals or zone violations in your site log.</p>
+    </div>
+  </div>
+
+  <!-- TAILGATE -->
+  <div class="tab-content" id="tab-tailgate">
+    <h2>The Tailgate / Pre-Task Meeting</h2>
+    <div class="sec-sub">The tailgate meeting is not a formality. It is the primary tool for synchronizing the crew's situational awareness before hazards become incidents. ANSI Z133 makes it a requirement. WorkSafeBC makes it a requirement. Good arborists make it a habit.</div>
+    <div class="std-ref">📐 Per ANSI Z133 §4.1: A pre-task meeting shall be conducted at the start of each work day and whenever site conditions change significantly. Per WorkSafeBC OHS Regulation §4.15: Employers shall ensure that a hazard assessment is performed and that workers are instructed on hazards before beginning work.</div>
+
+    <div class="rule-card">
+      <h3>What the Tailgate Must Cover</h3>
+      <p style="font-size:0.88rem;color:#c5d0dc;margin-bottom:8px">The meeting doesn't have to be long — 5 minutes is enough for a routine residential job. What it has to cover:</p>
+      <ul>
+        <li><strong>The plan:</strong> What trees, which limbs, what sequence. Who's climbing. Who's on the ground. Who's on the chipper. Who's driving. Is there a co-worker today who isn't regular crew?</li>
+        <li><strong>Identified hazards:</strong> Overhead utilities (confirmed location, confirmed clearances), proximity of structures, slope and terrain, root system hazards at the base, wildlife (nests, wasps, hornets — wasp nests are a real Okanagan summer hazard), soft or unstable ground.</li>
+        <li><strong>Communication plan:</strong> Signal system confirmed. Radio channels confirmed and tested. Who contacts who if there's an incident.</li>
+        <li><strong>Drop zone:</strong> Defined and understood by everyone. Who is monitoring the zone. What happens if a member of the public approaches.</li>
+        <li><strong>Emergency plan:</strong> Where is the nearest hospital (Kelowna General, Vernon Jubilee, Penticton Regional). Who is calling 911. Does anyone have a current first aid certificate? Where is the first aid kit on the truck?</li>
+        <li><strong>Equipment status:</strong> Any defects noted during pre-use inspection? Any equipment that was flagged from a previous day?</li>
+        <li><strong>Changes mid-day:</strong> Any significant change in site conditions — a new hazard discovered during work, a co-worker leaving the site, wind picking up — triggers a mini tailgate to update the crew.</li>
+      </ul>
+    </div>
+
+    <div class="checklist">
+      <div style="font-size:0.8rem;color:#5cb85c;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Tailgate Meeting Checklist</div>
+      <div class="check-item red"><div class="check-box"></div><div>Work plan briefed — sequence, roles, who's climbing <span class="req">REQUIRED</span></div></div>
+      <div class="check-item red"><div class="check-box"></div><div>Hazards identified and communicated to all crew <span class="req">REQUIRED</span></div></div>
+      <div class="check-item red"><div class="check-box"></div><div>Communication signals confirmed — hand signals and radio channel <span class="req">REQUIRED</span></div></div>
+      <div class="check-item red"><div class="check-box"></div><div>Drop zone defined and zone monitor assigned <span class="req">REQUIRED</span></div></div>
+      <div class="check-item red"><div class="check-box"></div><div>Utilities assessed and clearances confirmed <span class="req">REQUIRED</span></div></div>
+      <div class="check-item red"><div class="check-box"></div><div>Emergency plan reviewed — nearest hospital, first aid kit location, who calls 911 <span class="req">REQUIRED</span></div></div>
+      <div class="check-item"><div class="check-box"></div><div>Equipment: any defects or concerns from inspection?</div></div>
+      <div class="check-item"><div class="check-box"></div><div>New crew, subs, or visitors confirmed on communication plan</div></div>
+      <div class="check-item"><div class="check-box"></div><div>Weather: wind speed / forecast, lightning risk?</div></div>
+      <div class="check-item"><div class="check-box"></div><div>Special conditions: occupied spaces nearby, animals, site-specific notes</div></div>
+    </div>
+
+    <div class="rule-card" style="margin-top:16px">
+      <h3>📋 Right to Refuse Unsafe Work — Every Crew Member</h3>
+      <p>WorkSafeBC OHS Regulation §3.12 gives every worker in BC the right to refuse work they believe is unsafe — without reprisal. This right extends to specific tasks within a job, not just the job as a whole. If a crew member identifies a condition they believe is hazardous — a utility clearance they're not comfortable with, a rigging setup that doesn't look right, a drop zone that isn't maintained — they have the right and the responsibility to raise it. A crew culture where this right is exercised freely and without social penalty is the safest crew culture. Normalize it at tailgate: "If anyone sees something that doesn't look right at any point today, call it out. That's the job."</p>
+    </div>
+
+    <div class="field-note">
+      <div class="fn-label">📋 Field Note — Microbe Tree Crew</div>
+      <p>The tailgate meeting is also a cultural signal. A crew that does a real tailgate — where hazards are actually discussed, not just nodded through — is a crew that takes itself seriously. Clients who are present sometimes observe the pre-job meeting. Watching a foreman walk the crew through the drop zone, confirm signals, and assign roles reads as professional and deliberate. It's one of those small things that justifies the premium price point. Do it every job, every time, even when the job seems simple — especially when the job seems simple, because that's when attention slips.</p>
+    </div>
+
+    <div class="isa-footer">
+      📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (28%) &nbsp;|&nbsp; <strong>Sources:</strong> ANSI Z133-2017 §§4.1, 4.6 · WorkSafeBC OHS Regulation §§3.12, 4.15, 26.6 · ISA BMP: Arborist Safety · TCIA Safety Manual
+    </div>
+  </div>
+</main>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

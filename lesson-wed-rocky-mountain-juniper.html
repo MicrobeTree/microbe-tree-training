@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocky Mountain Juniper — Week 9 Wednesday · Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;display:flex;flex-direction:column}
+  header{background:linear-gradient(135deg,#1a2f1a 0%,#0f1923 100%);border-bottom:2px solid #2d5a2d;padding:16px 24px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+  .logo{font-size:1.5rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+  .logo span{color:#fff}
+  .week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+  .day-tag{background:#1a3a2a;color:#a3d9b3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+
+  .layout{display:flex;flex:1;min-height:0}
+
+  /* Sidebar */
+  .sidebar{width:210px;flex-shrink:0;background:#0a1215;border-right:1px solid #1e2e20;padding:20px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .species-header{padding:0 16px 16px;border-bottom:1px solid #1e2e20}
+  .species-latin{font-style:italic;font-size:1.05rem;font-weight:700;color:#fff;line-height:1.3}
+  .species-common{font-size:0.78rem;color:#5cb85c;margin-top:2px;font-weight:600}
+  .family-tag{font-size:0.72rem;color:#5a6b7e;margin-top:4px}
+
+  nav{padding:12px 0}
+  .nav-item{padding:10px 16px;cursor:pointer;font-size:0.85rem;color:#8a9bb0;border-left:3px solid transparent;transition:all 0.2s;line-height:1.3}
+  .nav-item:hover{background:#131f2e;color:#c5d0dc}
+  .nav-item.active{background:#131f2e;color:#fff;border-left-color:#5cb85c}
+  .nav-item .nav-icon{margin-right:6px}
+
+  /* Content */
+  .content{flex:1;padding:28px 32px;overflow-y:auto;max-width:720px}
+  .section{display:none}
+  .section.active{display:block}
+
+  h2{font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:6px}
+  .section-sub{font-size:0.88rem;color:#8a9bb0;margin-bottom:20px;line-height:1.5}
+
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+  .info-cell{background:#131f2e;border-radius:8px;padding:12px}
+  .info-cell label{font-size:0.7rem;color:#5a6b7e;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px}
+  .info-cell span{font-size:0.9rem;color:#e8edf2;font-weight:600}
+
+  .prose{font-size:0.92rem;color:#c5d0dc;line-height:1.75}
+  .prose p{margin-bottom:12px}
+  .prose ul{margin:8px 0 12px 20px}
+  .prose li{margin-bottom:6px}
+  .prose strong{color:#e8edf2}
+
+  .highlight-box{background:#131f2e;border-left:3px solid #5cb85c;border-radius:0 8px 8px 0;padding:14px 16px;margin:14px 0;font-size:0.9rem;color:#c5d0dc;line-height:1.6}
+  .highlight-box.warn{border-left-color:#e8a838}
+  .highlight-box.alert{border-left-color:#e05a5a}
+
+  .pest-entry{background:#131f2e;border-radius:8px;padding:14px;margin-bottom:12px}
+  .pest-entry h4{font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:4px}
+  .pest-meta{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .badge{font-size:0.7rem;font-weight:600;padding:3px 8px;border-radius:12px}
+  .badge.high{background:#5a1a1a;color:#e05a5a}
+  .badge.mod{background:#3a2a1a;color:#e8a838}
+  .badge.low{background:#1a3a1a;color:#5cb85c}
+  .badge.common{background:#1a2f4a;color:#7ec8e3}
+
+  .arborist-card{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:10px;padding:16px;margin-bottom:12px}
+  .arborist-card h4{color:#a3d9a3;font-size:0.9rem;font-weight:700;margin-bottom:8px}
+
+  .field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:14px;margin-top:20px}
+  .fn-label{font-size:0.75rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#a3d9a3;line-height:1.6}
+
+  .isa-footer{margin-top:32px;padding:14px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#5a6b7e}
+  .isa-footer strong{color:#7ec8e3}
+
+  @media(max-width:680px){.layout{flex-direction:column}.sidebar{width:100%;height:auto;position:static}.content{padding:20px 16px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 9</div>
+  <div class="day-tag">🌳 Wednesday — Tree Profile</div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="species-header">
+      <div class="species-latin">Juniperus scopulorum</div>
+      <div class="species-common">Rocky Mountain Juniper</div>
+      <div class="family-tag">Family: Cupressaceae</div>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="showSection('identity')"><span class="nav-icon">🔍</span>Identity</div>
+      <div class="nav-item" onclick="showSection('origin')"><span class="nav-icon">🌐</span>Origin &amp; Range</div>
+      <div class="nav-item" onclick="showSection('biology')"><span class="nav-icon">🌱</span>Biology &amp; Culture</div>
+      <div class="nav-item" onclick="showSection('pests')"><span class="nav-icon">🪲</span>Pest Pressures</div>
+      <div class="nav-item" onclick="showSection('diseases')"><span class="nav-icon">🦠</span>Disease Pressures</div>
+      <div class="nav-item" onclick="showSection('arborist')"><span class="nav-icon">🪚</span>Arborist Notes</div>
+    </nav>
+  </div>
+
+  <div class="content">
+
+    <!-- IDENTITY -->
+    <div class="section active" id="sec-identity">
+      <h2>Identity</h2>
+      <div class="section-sub">A slow-growing, long-lived conifer at home in the dry rocky slopes and canyon rims of the Okanagan — one of BC's most drought-tolerant native trees.</div>
+
+      <div class="info-grid">
+        <div class="info-cell"><label>Family</label><span>Cupressaceae</span></div>
+        <div class="info-cell"><label>Genus / Species</label><span>Juniperus scopulorum</span></div>
+        <div class="info-cell"><label>Common Names</label><span>Rocky Mountain Juniper, Western Red Cedar (incorrect but common)</span></div>
+        <div class="info-cell"><label>Mature Height</label><span>6–15 m (20–50 ft) typical; up to 20 m in ideal sites</span></div>
+        <div class="info-cell"><label>Form</label><span>Narrowly pyramidal to columnar; often irregular on rocky sites</span></div>
+        <div class="info-cell"><label>Lifespan</label><span>Often 200–500+ years; specimens over 1,000 years recorded</span></div>
+        <div class="info-cell"><label>Bark</label><span>Thin, fibrous, reddish-brown, shredding in narrow strips — diagnostic</span></div>
+        <div class="info-cell"><label>Foliage</label><span>Scale-like (adult) and awl-like (juvenile); blue-green to grey-green; aromatic</span></div>
+      </div>
+
+      <div class="prose">
+        <p><strong>Foliage:</strong> Rocky Mountain juniper carries both juvenile and adult foliage on the same plant. <em>Juvenile foliage</em> is needle-like (awl-shaped), sharp, and often persists on vigorous new growth or stressed branches reverting to juvenile form. <em>Adult foliage</em> is scale-like — tiny overlapping scales pressed against branchlets, giving the classic juniper texture. Foliage is aromatic, intensely so when crushed (the familiar juniper oil scent).</p>
+        <p><strong>Cones (female):</strong> Berry-like fleshy cones, 5–7 mm diameter, blue-purple with a waxy bloom at maturity (biennial — takes two years to ripen). The "juniper berries" of gin fame are these cones. Not a true berry — botanically a modified, fleshy cone scale.</p>
+        <p><strong>Male cones:</strong> Small, yellow-brown, clustered at branchlet tips — release clouds of pollen in early spring. Dioecious species — male and female cones on separate trees, although occasional bisexual trees occur.</p>
+        <p><strong>Bark:</strong> Thin, reddish-brown to grey-brown, shredding in long fibrous strips. Often used by birds for nesting material. Distinguished from Thuja plicata (western redcedar) by habitat (dry rocky sites vs. moist forest), foliage arrangement, and cone type.</p>
+        <p><strong>Root system:</strong> Highly adaptive deep-penetrating taproot in young trees gives way to wide lateral roots in mature specimens. Roots exploit rock fissures — a primary mechanism allowing colonization of bare rock outcrops.</p>
+
+        <div class="highlight-box">
+          <strong>ID Confusion:</strong> J. scopulorum is frequently confused with Eastern Red Cedar (<em>Juniperus virginiana</em>) — a closely related and sometimes hybridizing species, common in ornamental cultivation. Rocky Mountain juniper tends to have bluer foliage, more strictly columnar cultivars, and is better adapted to western continental climate. In the Okanagan, assume the tree is <em>J. scopulorum</em> unless there's a confirmed horticultural cultivar label.
+        </div>
+      </div>
+    </div>
+
+    <!-- ORIGIN -->
+    <div class="section" id="sec-origin">
+      <h2>Origin &amp; Range</h2>
+      <div class="section-sub">A true western North American native, reaching its Canadian limits in the BC Interior.</div>
+
+      <div class="prose">
+        <p><strong>Native range:</strong> Rocky Mountain juniper is native to western North America from Alberta and BC south through the Rocky Mountains and Great Basin to northern Mexico. Its range spans dramatically different climates and elevations — from sea level to 3,000+ m in parts of the Rockies.</p>
+        <p><strong>BC distribution:</strong> In British Columbia, <em>J. scopulorum</em> is predominantly a species of the dry interior. It reaches its northern limits in the BC Interior plateau and the South Okanagan. It is native to the Thompson-Okanagan region and is a characteristic species of the Ponderosa Pine BEC zone (PP), occurring on south-facing rocky slopes, canyon walls, benchlands, and xeric ridgelines.</p>
+        <p><strong>Habitat:</strong> A colonizer of extreme habitats. Rocky Mountain juniper thrives on exposed rocky outcrops, talus slopes, canyon rims, and shallow-soil benchlands where little else establishes. It tolerates:</p>
+        <ul>
+          <li>Shallow, rocky, infertile soils over a wide pH range (5.5–8.0)</li>
+          <li>Intense summer drought (100–300 mm annual precip in core Okanagan range)</li>
+          <li>High UV exposure</li>
+          <li>Wide temperature ranges (hot summers, cold winters)</li>
+          <li>Wind exposure and late-season snow load</li>
+        </ul>
+        <p><strong>Ecological role:</strong> In the South Okanagan grassland-forest interface, large juniper specimens provide crucial wildlife habitat — cover for mule deer, nesting sites for raptors (great horned owl, Cooper's hawk), berry crop for over 50 bird species including Cedar Waxwing and American Robin. The aromatic wood is rot-resistant and historically used for fence posts, fuel, and medicinal purposes by Interior Salish peoples.</p>
+
+        <div class="highlight-box">
+          <strong>Okanagan Context:</strong> Rocky Mountain juniper is native on the dry benchlands and rocky canyon walls throughout the South and Central Okanagan — common in undisturbed natural areas around Penticton, Oliver, and Osoyoos, and extending into the Kelowna area on rocky southwest-facing slopes. In West Kelowna and the Westside, it occurs on the rocky knolls and bluffs characteristic of the landscape. In cultivation, it is widely planted as landscape junipers and privacy screens throughout the region.
+        </div>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="section" id="sec-biology">
+      <h2>Biology &amp; Cultural Requirements</h2>
+      <div class="section-sub">What this tree wants — and what kills it when we try to give it what it doesn't need.</div>
+
+      <div class="prose">
+        <p><strong>Water:</strong> Exceptional drought tolerance is the defining characteristic of <em>J. scopulorum</em>. Once established (typically 2–3 years), it requires no supplemental irrigation in the Okanagan — the semi-arid climate is its home climate. <strong>The most common way to kill a Rocky Mountain juniper in a landscape setting is overwatering.</strong> Excessive irrigation promotes root rot fungi (particularly Phytophthora spp.) and creates exactly the anaerobic, wet-soil conditions this species cannot tolerate.</p>
+        <p><strong>Soil:</strong> Prefers well-drained, even rocky soils. Tolerates a wide pH range. Does not tolerate waterlogged or heavily compacted soils with restricted drainage. Excellent soil aeration is more important than fertility.</p>
+        <p><strong>Light:</strong> Full sun. Shade-intolerant — specimens that become overtopped by faster-growing competitors thin out, die back, and lose form rapidly.</p>
+        <p><strong>Growth rate:</strong> Slow. Typically 15–30 cm per year in good conditions. Slow growth means high wood density and strong structure — but it also means damage (broken limbs, canker lesions) takes a very long time to grow out.</p>
+        <p><strong>Dioecious biology:</strong> Male trees produce no fruit (clean, no berry mess) — most landscape cultivars are selected male trees. Female trees produce the attractive blue "berries" but can drop messy fruit over hardscape. Know the sex of the tree before speccing for a client.</p>
+        <p><strong>Root crown zone:</strong> Critical concept for this species. The root-crown (where trunk meets soil) must remain dry and well-aerated. Mulch piled against the trunk, soil grade raised around the base, or irrigation directed at the trunk base are all quick pathways to collar rot and death. Maintain a dry mulch-free zone of at least 20–30 cm around the trunk at grade.</p>
+      </div>
+
+      <div class="arborist-card">
+        <h4>Cultural Requirements Summary</h4>
+        <div class="prose">
+          <ul>
+            <li><strong>Water:</strong> Low — drought-adapted; no supplemental irrigation once established</li>
+            <li><strong>Soil drainage:</strong> Critical — must be well-drained; wet feet = death over time</li>
+            <li><strong>Soil pH:</strong> Adaptable (5.5–8.0); fine in Okanagan alkaline soils</li>
+            <li><strong>Light:</strong> Full sun only — shade intolerant</li>
+            <li><strong>Fertilization:</strong> Rarely beneficial; light balanced fertilizer can support establishment only</li>
+            <li><strong>Pruning timing:</strong> Late winter to early spring before growth flush; avoid late summer pruning that stimulates succulent growth before dormancy</li>
+            <li><strong>Cold hardiness:</strong> Hardy to Zone 3 — not a limiting factor in the Okanagan</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>In strata complexes throughout West Kelowna and Kelowna, juniper cultivars ('Skyrocket', 'Wichita Blue', 'Blue Arrow') are planted in irrigated perennial beds right next to in-ground irrigation heads. The irrigation systems are often set to daily summer schedules appropriate for the annuals and perennials — but the junipers are getting watered on the same schedule. After 5–10 years, many of these junipers start declining: slow dieback from the tips inward, twig blight symptoms, and root systems that are rotted at the crown. The prescription is almost always irrigation segregation and drainage correction, not pesticide treatment. Always ask: what is the irrigation situation?</p>
+      </div>
+    </div>
+
+    <!-- PESTS -->
+    <div class="section" id="sec-pests">
+      <h2>Pest Pressures</h2>
+      <div class="section-sub">Rocky Mountain juniper hosts a specific community of insects. Most are manageable with cultural controls.</div>
+
+      <div class="pest-entry">
+        <h4>Juniper Webworm (Dichomeris marginella)</h4>
+        <div class="pest-meta">
+          <span class="badge mod">Moderate Severity</span><span class="badge common">Common in Okanagan</span>
+        </div>
+        <div class="prose">
+          <p>Larvae web together and feed on juniper foliage in late spring and summer, creating unsightly masses of webbed, brown dead foliage with frass-filled tunnels inside. Damage is cosmetic in most cases but can be severe on stressed trees.</p>
+          <p><strong>Signs:</strong> Webbed clusters of brown foliage, often interior branches. Small caterpillars visible inside webbing.</p>
+          <p><strong>Management:</strong> Prune and destroy webbed masses when caught early. Bacillus thuringiensis (Bt) effective on young larvae. Severe infestations may warrant a registered insecticide application. IPM approach: a tree weakened by drought or overwatering is far more attractive to webworm — address the underlying stress first.</p>
+        </div>
+      </div>
+
+      <div class="pest-entry">
+        <h4>Juniper Scale (Carulaspis juniperi)</h4>
+        <div class="pest-meta">
+          <span class="badge mod">Moderate Severity</span><span class="badge common">Common</span>
+        </div>
+        <div class="prose">
+          <p>Armoured scale insect feeding on foliage and stems. Infestations cause yellowing, dieback, and a grayish encrustation on branches. Often overlooked until the tree is heavily infested.</p>
+          <p><strong>Signs:</strong> Grey-white encrustation (the scale covers) on foliage and stems; yellow or reddish foliage discolouration; general decline.</p>
+          <p><strong>Management:</strong> Horticultural oil applications (1% in late dormancy, pre-bud break) are effective against crawlers. Monitor for crawlers in early June with double-sided tape on branches. Systemics (imidacloprid soil drench) for severe infestations in high-value specimens.</p>
+        </div>
+      </div>
+
+      <div class="pest-entry">
+        <h4>Juniper Tip Moth (Argyresthia spp.)</h4>
+        <div class="pest-meta">
+          <span class="badge low">Low–Moderate Severity</span><span class="badge common">Occasional</span>
+        </div>
+        <div class="prose">
+          <p>Larvae mine into branch tips causing tip dieback. Individual dead tips are characteristic. Rarely causes serious structural damage but reduces ornamental quality and is sometimes confused with disease dieback.</p>
+          <p><strong>Signs:</strong> Dead branch tips with hollowed interior; small exit holes at the base of affected tips.</p>
+          <p><strong>Management:</strong> Prune out and destroy affected tips in late winter. Registered insecticides applied at adult flight time (early summer) if warranted. Primarily cultural: healthy, well-sited trees tolerate tip moth with no significant long-term impact.</p>
+        </div>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Spider mites (Tetranychus urticae and relatives) are a significant pest on junipers in the Okanagan's hot, dry summers — often more damaging than insect pests. They cause bronzing, stippling, and fine webbing on foliage, especially during July and August heat. Mites thrive in dry, dusty conditions and are suppressed by rain and adequate humidity — neither of which the Okanagan summer provides in abundance. Diagnosis: tap a suspect branch over white paper — if tiny moving dots appear, you have mites. Treatment: horticultural oil or insecticidal soap (effective against mites but not insects), miticide if severe. Irrigation-stressed junipers are prime mite habitat — again, the underlying stress management is the first line of defence.</p>
+      </div>
+    </div>
+
+    <!-- DISEASES -->
+    <div class="section" id="sec-diseases">
+      <h2>Disease Pressures</h2>
+      <div class="section-sub">The diseases that trouble junipers in the Okanagan — and how to tell them from cultural problems.</div>
+
+      <div class="pest-entry">
+        <h4>Phytophthora Root and Crown Rot</h4>
+        <div class="pest-meta">
+          <span class="badge high">High Severity</span><span class="badge common">Very Common in Landscape</span>
+        </div>
+        <div class="prose">
+          <p>The most common cause of juniper death in irrigated landscape settings. Phytophthora spp. (water moulds, Oomycetes) infect the root system and basal crown of trees growing in persistently wet soils. <em>J. scopulorum's</em> extreme drought adaptation means it has minimal tolerance for the anaerobic, waterlogged conditions that Phytophthora requires to sporulate and spread.</p>
+          <p><strong>Signs:</strong> Gradual dieback from shoot tips inward; needles turning reddish-brown and persisting (not dropping immediately); dark, necrotic crown tissue at the soil line; root system showing brown, mushy roots with no viable white root tips.</p>
+          <p><strong>Management:</strong> No curative treatment once established — this is a death sentence for most affected trees. Prevention through drainage and irrigation management is everything. Remove and do not replant the same species in the same location without addressing drainage.</p>
+        </div>
+      </div>
+
+      <div class="pest-entry">
+        <h4>Cedar-Apple Rust / Juniper-Hawthorn Rust (Gymnosporangium spp.)</h4>
+        <div class="pest-meta">
+          <span class="badge mod">Moderate Severity</span><span class="badge common">Common where hosts co-occur</span>
+        </div>
+        <div class="prose">
+          <p>A fascinating and destructive host-alternating rust fungus. <em>Gymnosporangium</em> requires two hosts to complete its life cycle: junipers (family Cupressaceae) and members of the rose family (Rosaceae) — apples, hawthorns, serviceberry, crabapple. The juniper hosts the telial (overwintering) stage; the rosaceous host shows the dramatic orange-yellow leaf and fruit spots in summer.</p>
+          <p><strong>On juniper:</strong> Perennial spindle-shaped galls form on branches (cedar-apple rust galls can reach golf-ball size). In wet spring weather, galls extrude bright orange-yellow gelatinous telial horns — visually dramatic. The gall itself is the persistent damage on the juniper, causing local branch dieback above the gall over years.</p>
+          <p><strong>Management:</strong> Remove galls on junipers before spring spore release. Fungicide protection on the rosaceous hosts during wet periods. In the Okanagan, the dry spring often limits rust severity — rainy springs increase risk. Avoid planting susceptible rosaceous species (hawthorn, ornamental crabapple) immediately adjacent to juniper plantings.</p>
+        </div>
+      </div>
+
+      <div class="pest-entry">
+        <h4>Kabatina and Phomopsis Tip Blights</h4>
+        <div class="pest-meta">
+          <span class="badge mod">Moderate Severity</span><span class="badge common">Occasional</span>
+        </div>
+        <div class="prose">
+          <p>Two fungal diseases causing tip dieback on junipers. <em>Kabatina juniperi</em> infects through wounds or natural openings in early spring; <em>Phomopsis juniperovora</em> infects young, succulent growth in spring under wet conditions.</p>
+          <p><strong>Signs:</strong> Dead, brown shoot tips; grey-tan lesions at the base of affected shoots; tiny black fruiting bodies (pycnidia) visible in the lesion under magnification.</p>
+          <p><strong>Distinction from drought/mite damage:</strong> Fungal tip blights show a clear lesion at the base of the dead section. Drought and mite damage show progressive browning from the tip inward without a basal lesion.</p>
+          <p><strong>Management:</strong> Prune and destroy infected material during dry weather (wet conditions spread spores). Improve air circulation. Registered fungicides containing copper or thiophanate-methyl during spring growth flush for high-value specimens.</p>
+        </div>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Most "sick juniper" calls in the Okanagan come down to one of three things: (1) overwatering/Phytophthora — slow dieback, roots mushy, located in irrigated bed; (2) juniper webworm — webbed brown masses in summer; or (3) spider mites — bronzing in July–August. Field diagnosis starts with: Is this in an irrigated bed? Yes → check roots and drainage first. No → look for webbing (webworm) or stippling with mite movement (mites). Fungal diseases are the fourth consideration. This sequence saves time and gets you to the right answer faster than running through a pathogen checklist first.</p>
+      </div>
+    </div>
+
+    <!-- ARBORIST NOTES -->
+    <div class="section" id="sec-arborist">
+      <h2>Arborist Notes</h2>
+      <div class="section-sub">What you need to know to work on this tree well — from pruning timing to client conversations.</div>
+
+      <div class="arborist-card">
+        <h4>Pruning — The Hard Rule</h4>
+        <div class="prose">
+          <p>Rocky Mountain juniper does <strong>not regenerate from old wood</strong>. Unlike many broadleaf trees, junipers have no latent buds capable of sprouting from bare wood — if you prune back past the green foliage into bare brown wood, that branch will not regrow. This is the single most important pruning principle for this genus.</p>
+          <ul>
+            <li><strong>Prune only into live, foliage-bearing wood.</strong> Never cut back to bare brown stems expecting regrowth.</li>
+            <li>Timing: late winter to early spring, before growth flush. Avoid late summer pruning — succulent new growth initiated late in the season is vulnerable to frost damage and disease.</li>
+            <li>For shaping, light annual tip pruning during active growth maintains form without exposing dead wood.</li>
+            <li><strong>Renovation of overgrown junipers</strong> is extremely limited — there is no "cut it back hard and let it fill in" option. If the tree is too large, removal and replacement is often the only realistic option.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arborist-card">
+        <h4>PHC Approach</h4>
+        <div class="prose">
+          <ul>
+            <li><strong>Irrigation audit first.</strong> More junipers die from overwatering in landscape settings than from any pest or disease. Before any other intervention, confirm what irrigation schedule the tree is on.</li>
+            <li><strong>Soil drainage assessment.</strong> Probe the root zone — is it consistently moist? A percolation test (dig a hole, fill with water, time the drainage) can be done on-site quickly. More than 1 hour to drain indicates a drainage issue.</li>
+            <li><strong>Fertilization:</strong> Rarely needed. If soil test shows genuine deficiency, a balanced slow-release fertilizer in early spring. Do not fertilize stressed or declining trees — it diverts energy the tree needs for defence.</li>
+            <li><strong>Mulch:</strong> 5–10 cm of coarse organic mulch over the root zone, pulled back from the trunk. Reduces soil temperature extremes and moisture evaporation. Do not use fine bark mulch piled high — it retains too much moisture at the crown.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arborist-card">
+        <h4>Strata / Boulevard Suitability</h4>
+        <div class="prose">
+          <ul>
+            <li><strong>Strengths:</strong> Extremely drought-tolerant once established, no litter issues (male trees), high wildlife value, native to the region, long-lived, no significant root infrastructure issues, attractive year-round.</li>
+            <li><strong>Weaknesses:</strong> Very slow growth, does not tolerate poorly drained strata beds, cannot be pruned back hard, requires low-water irrigation zone separate from adjacent plantings, sensitive to de-icing salts if planted near roads.</li>
+            <li><strong>Best siting:</strong> Dry, sunny, well-drained locations with no overhead irrigation. Rockeries, dry-stone wall plantings, xeriscape borders. Excellent on Westside slopes and benchland properties.</li>
+            <li><strong>Client conversation:</strong> Manage expectations on growth rate — 'Skyrocket' juniper planted at 1.5 m will take 10+ years to reach 4 m. Clients who buy junipers for quick screening will be disappointed. Set realistic timelines upfront.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="field-note">
+        <div class="fn-label">📋 Field Note — Okanagan</div>
+        <p>Native juniper stands on the natural benchlands around West Kelowna are being encroached on by development — and those mature 200-year-old junipers on property are worth preserving. A juniper of that age has survived generations of drought, beetle cycles, and fire-exclusion pressure. It will not be easily replaced. When doing development consulting or tree risk assessment on acreage with native juniper, advocate hard for protection zones. The ISA Tree Risk Assessment Qualification (TRAQ) framework applies — document the tree's condition, structural attributes, and target zones before recommending anything. These trees are irreplaceable on any reasonable timescale.</p>
+      </div>
+
+      <div class="isa-footer">
+        📚 <strong>ISA Exam Domains:</strong> Tree Biology (11%) · Tree Selection &amp; Establishment (7%) · Pruning (15%) &nbsp;|&nbsp; <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.) · BC Ministry of Forests Species Accounts · Flora of BC (Pojar &amp; MacKinnon) · ISA BMP: Pruning
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
