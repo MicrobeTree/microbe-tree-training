@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mineral Nutrition — Week 9 Monday · Microbe Tree Training</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh}
+  header{background:linear-gradient(135deg,#1a2f1a 0%,#0f1923 100%);border-bottom:2px solid #2d5a2d;padding:16px 24px;display:flex;align-items:center;gap:12px}
+  .logo{font-size:1.5rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+  .logo span{color:#fff}
+  .week-tag{background:#2d5a2d;color:#a3d9a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;letter-spacing:0.5px}
+  .day-tag{background:#1a3a4a;color:#7ec8e3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+  main{max-width:860px;margin:0 auto;padding:24px 20px}
+  .lesson-title{font-size:1.6rem;font-weight:700;color:#fff;margin:20px 0 6px}
+  .lesson-sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:24px}
+
+  /* Quick Reference Card */
+  .ref-card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:20px;margin-bottom:28px}
+  .ref-card h3{color:#7ec8e3;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+  .nutrient-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+  .nutrient-card{background:#0f1923;border-radius:8px;padding:12px;border-left:3px solid #5cb85c}
+  .nutrient-card.micro{border-left-color:#e8a838}
+  .nutrient-card.deficit{border-left-color:#e05a5a}
+  .nutrient-card h4{font-size:0.8rem;color:#a3d9a3;margin-bottom:4px;font-weight:600}
+  .nutrient-card.micro h4{color:#e8c97a}
+  .nutrient-card p{font-size:0.78rem;color:#8a9bb0;line-height:1.5}
+  .ph-bar{margin-top:14px}
+  .ph-bar h4{font-size:0.8rem;color:#8a9bb0;margin-bottom:8px}
+  .ph-row{display:flex;height:28px;border-radius:6px;overflow:hidden;margin-bottom:6px}
+  .ph-seg{display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:600}
+  .ph-label{display:flex;justify-content:space-between;font-size:0.7rem;color:#5a6b7e}
+
+  /* Quiz */
+  .quiz-section{margin-bottom:20px}
+  .question-card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:20px;cursor:pointer;transition:border-color 0.2s}
+  .question-card:hover{border-color:#5cb85c}
+  .question-card.answered{cursor:default}
+  .q-num{font-size:0.75rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .q-text{font-size:1.05rem;color:#e8edf2;margin-bottom:16px;line-height:1.5}
+  .options{display:grid;gap:8px}
+  .option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 14px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;color:#c5d0dc;display:flex;align-items:flex-start;gap:10px}
+  .option:hover:not(.disabled){border-color:#5cb85c;background:#1a2f1a;color:#fff}
+  .option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+  .option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+  .option.disabled{cursor:default}
+  .option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+  .option.correct .option-letter{color:#5cb85c}
+  .option.wrong .option-letter{color:#e05a5a}
+
+  /* Lesson reveal */
+  .lesson-reveal{display:none;margin-top:16px;background:#0a1520;border-left:3px solid #5cb85c;border-radius:0 8px 8px 0;padding:18px}
+  .lesson-reveal.show{display:block}
+  .reveal-title{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:12px}
+  .reveal-body{font-size:0.92rem;color:#c5d0dc;line-height:1.7}
+  .reveal-body p{margin-bottom:10px}
+  .reveal-body ul{margin:8px 0 10px 20px}
+  .reveal-body li{margin-bottom:6px}
+  .reveal-body strong{color:#e8edf2}
+  .field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:14px;margin-top:14px}
+  .field-note-label{font-size:0.75rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .field-note p{font-size:0.88rem;color:#a3d9a3;line-height:1.6}
+
+  .result-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;margin-top:10px}
+  .result-badge.correct{background:#1a3a1a;color:#5cb85c;border:1px solid #2d5a2d}
+  .result-badge.wrong{background:#3a1a1a;color:#e05a5a;border:1px solid #5a2a2a}
+
+  .isa-footer{margin-top:32px;padding:14px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#5a6b7e;text-align:center}
+  .isa-footer strong{color:#7ec8e3}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 9</div>
+  <div class="day-tag">🌿 Monday — Tree Biology</div>
+</header>
+<main>
+  <div class="lesson-title">Mineral Nutrition: Essential Elements, Uptake, and Deficiency Symptoms</div>
+  <div class="lesson-sub">What trees eat, how they eat it, and how to read the signs when something's missing — especially in the Okanagan's alkaline soils.</div>
+
+  <!-- Quick Reference Card -->
+  <div class="ref-card">
+    <h3>📋 Essential Nutrient Quick Reference</h3>
+    <div class="nutrient-grid">
+      <div class="nutrient-card">
+        <h4>Nitrogen (N) — Macro</h4>
+        <p>Proteins, chlorophyll, nucleic acids. Mobile. Deficiency: chlorosis oldest leaves first, bottom-up yellowing.</p>
+      </div>
+      <div class="nutrient-card">
+        <h4>Phosphorus (P) — Macro</h4>
+        <p>Energy (ATP), root dev, cell membranes. Mobile. Deficiency: purple/red discolouration, stunted growth.</p>
+      </div>
+      <div class="nutrient-card">
+        <h4>Potassium (K) — Macro</h4>
+        <p>Stomatal regulation, enzyme activation. Mobile. Deficiency: marginal leaf scorch, older tissue first.</p>
+      </div>
+      <div class="nutrient-card">
+        <h4>Calcium (Ca) — Macro</h4>
+        <p>Cell wall integrity, meristem function. Immobile. Deficiency: shoot tip dieback, distorted young growth.</p>
+      </div>
+      <div class="nutrient-card">
+        <h4>Magnesium (Mg) — Macro</h4>
+        <p>Chlorophyll centre atom. Mobile. Deficiency: interveinal chlorosis old leaves, green veins, yellow tissue.</p>
+      </div>
+      <div class="nutrient-card">
+        <h4>Sulfur (S) — Macro</h4>
+        <p>Amino acids (cysteine, methionine). Immobile. Deficiency: uniform yellowing young leaves.</p>
+      </div>
+      <div class="nutrient-card micro">
+        <h4>Iron (Fe) — Micro ⚠</h4>
+        <p>Chlorophyll synthesis, electron transport. Immobile. Deficiency: interveinal chlorosis on YOUNG leaves. Most common microdeficiency in Okanagan.</p>
+      </div>
+      <div class="nutrient-card micro">
+        <h4>Manganese (Mn) — Micro</h4>
+        <p>Photosystem II, enzyme co-factor. Immobile. Deficiency: interveinal chlorosis young leaves (similar to Fe).</p>
+      </div>
+      <div class="nutrient-card micro">
+        <h4>Zinc (Zn) — Micro</h4>
+        <p>Auxin synthesis, enzyme co-factor. Immobile. Deficiency: small leaves, shortened internodes, rosetting.</p>
+      </div>
+      <div class="nutrient-card micro">
+        <h4>Boron (B) — Micro</h4>
+        <p>Cell wall structure, pollen viability. Immobile. Deficiency: distorted growing tips, dieback, witches'-broom.</p>
+      </div>
+    </div>
+    <div class="ph-bar" style="margin-top:16px">
+      <h4>Nutrient Availability by Soil pH (Okanagan alkaline soils typically pH 7.5–8.5 ⚠)</h4>
+      <div style="font-size:0.78rem;color:#8a9bb0;line-height:1.6;background:#0f1923;border-radius:8px;padding:10px;margin-top:6px">
+        At pH &gt; 7.5: Fe, Mn, Zn, Cu, and B become less plant-available as they form insoluble compounds. N (as nitrate) and Mo remain available or increase. Ca and Mg are abundant but can compete with K and Mg uptake at very high pH. This is why iron chlorosis and trace-element deficiencies dominate in the Okanagan — not because the nutrient isn't in the soil, but because the chemistry locks it up.
+      </div>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div class="quiz-section">
+
+    <!-- Q1 -->
+    <div class="question-card" id="qc1">
+      <div class="q-num">Question 1 of 5</div>
+      <div class="q-text">Which essential nutrient is most commonly deficient in the alkaline soils (pH 7.5–8.5) widespread across the Okanagan Interior?</div>
+      <div class="options" id="opts1">
+        <div class="option" onclick="answer(1,'A')"><span class="option-letter">A</span>Nitrogen (N)</div>
+        <div class="option" onclick="answer(1,'B')"><span class="option-letter">B</span>Iron (Fe)</div>
+        <div class="option" onclick="answer(1,'C')"><span class="option-letter">C</span>Calcium (Ca)</div>
+        <div class="option" onclick="answer(1,'D')"><span class="option-letter">D</span>Phosphorus (P)</div>
+      </div>
+      <div class="lesson-reveal" id="rev1">
+        <div class="reveal-title">Iron Deficiency in Alkaline Soils</div>
+        <div class="reveal-body">
+          <p>Iron (Fe) is the answer — and this is one of the most practically important nutritional concepts for Okanagan arborists. The region's soils are often derived from lacustrine sediments and glaciofluvial deposits with naturally high calcium carbonate content, pushing pH well above 7.5 and often to 8.0 or higher.</p>
+          <p>The problem isn't a shortage of iron in the soil — iron is the fourth most abundant element in the earth's crust. The problem is <strong>availability</strong>. At high pH, iron exists predominantly as Fe³⁺ (ferric iron) which forms insoluble hydroxides. Plant roots can absorb iron most readily as Fe²⁺ (ferrous iron), which becomes vanishingly scarce above pH 6.5.</p>
+          <ul>
+            <li><strong>Reduction strategy:</strong> Dicot trees and most conifers rely on root-tip acidification and Fe³⁺ reductase enzymes to convert Fe³⁺ → Fe²⁺ for uptake. This is energy-expensive and rate-limited.</li>
+            <li><strong>Chelation strategy:</strong> Some plants (especially grasses) release phytosiderophores that chelate Fe³⁺ and bring it in as a complex — trees do this to a limited extent.</li>
+            <li><strong>Visual key:</strong> Iron is <em>immobile</em> in the phloem, meaning deficiency symptoms appear first in the youngest tissue — interveinal chlorosis on new leaves, with veins remaining green against yellowing tissue.</li>
+          </ul>
+          <p>The ISA Certification Study Guide explicitly lists iron as the micronutrient most affected by pH-mediated unavailability, and the ANSI A300 Part 2 (Fertilization) guidance emphasizes soil pH adjustment or chelated iron applications as the primary corrective approach.</p>
+          <div class="field-note">
+            <div class="field-note-label">📋 Field Note — Okanagan</div>
+            <p>You'll see iron chlorosis constantly in West Kelowna and Kelowna strata work: Norway maples with lime-yellow new leaves, ornamental cherries that look half-dead in spring, pin oaks that can barely push colour. Before reaching for a foliar spray, test the soil pH. A cheap pH meter and a bucket of soil is often more useful than any treatment. If the pH is 7.8+, foliar chelated iron (EDTA-Fe or DTPA-Fe) is a stopgap — long-term, soil acidification with elemental sulfur or acidifying mulch is the only durable fix. Injections with chelated iron (via trunk injection) bypass the soil chemistry entirely and are sometimes the only viable option for high-value trees in established hardscape.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card" style="margin-top:16px" id="qc2">
+      <div class="q-num">Question 2 of 5</div>
+      <div class="q-text">A Siberian elm on a West Kelowna boulevard is showing uniform yellowing of its oldest leaves. Newer growth at the shoot tips looks normal green. Which deficiency does this pattern most strongly suggest?</div>
+      <div class="options" id="opts2">
+        <div class="option" onclick="answer(2,'A')"><span class="option-letter">A</span>Iron deficiency</div>
+        <div class="option" onclick="answer(2,'B')"><span class="option-letter">B</span>Calcium deficiency</div>
+        <div class="option" onclick="answer(2,'C')"><span class="option-letter">C</span>Nitrogen deficiency</div>
+        <div class="option" onclick="answer(2,'D')"><span class="option-letter">D</span>Boron deficiency</div>
+      </div>
+      <div class="lesson-reveal" id="rev2">
+        <div class="reveal-title">Nutrient Mobility and Symptom Location — The Diagnostic Key</div>
+        <div class="reveal-body">
+          <p><strong>Nitrogen deficiency</strong> is the answer. The critical diagnostic tool here is <strong>nutrient mobility</strong> — whether a nutrient can be remobilized from older tissue to newer tissue when demand exceeds supply.</p>
+          <p><strong>Mobile nutrients:</strong> N, P, K, Mg, and Cl can be translocated from mature leaves to growing tips via the phloem. When deficient, the plant cannibalizes old tissue first — symptoms appear in the oldest leaves, and young growth looks relatively healthy longest.</p>
+          <p><strong>Immobile nutrients:</strong> Ca, Fe, Mn, Zn, Cu, B — once deposited in cell walls or structural components, they can't be moved. Deficiency symptoms appear first in the youngest, most actively growing tissue.</p>
+          <ul>
+            <li><strong>Oldest leaves showing symptoms = mobile nutrient problem</strong> → think N, P, K, Mg</li>
+            <li><strong>Youngest leaves showing symptoms = immobile nutrient problem</strong> → think Fe, Ca, Mn, Zn, B</li>
+            <li>Nitrogen deficiency produces a <em>uniform pale green to yellow</em> appearance because N is essential for chlorophyll synthesis throughout the leaf. Compare this to Mg deficiency, which produces <em>interveinal</em> chlorosis on old leaves (Mg is the central atom of the chlorophyll molecule, concentrated in the tissue between veins).</li>
+          </ul>
+          <p>The ISA Study Guide uses this mobile/immobile framework as a primary diagnostic key — it's worth knowing cold for the exam and for field diagnosis.</p>
+          <div class="field-note">
+            <div class="field-note-label">📋 Field Note — Okanagan</div>
+            <p>Nitrogen deficiency in boulevard trees is often a compaction and competition problem, not a soil shortage. Nitrogen mineralizes from organic matter — if the soil is compacted, anaerobic, and bare (no mulch, grass competition to the trunk), the biology that releases N from organic matter is suppressed. Adding fertilizer into a compacted, low-oxygen root zone is often pointless. The fix starts with aeration, mulch, and sometimes vertical mulching or soil fracturing — then you address the N. This is the PHC mindset: diagnosis before treatment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card" style="margin-top:16px" id="qc3">
+      <div class="q-num">Question 3 of 5</div>
+      <div class="q-text">Which of the following most accurately describes the primary roles of potassium (K) in tree physiology?</div>
+      <div class="options" id="opts3">
+        <div class="option" onclick="answer(3,'A')"><span class="option-letter">A</span>Central atom in the chlorophyll molecule; required for light absorption</div>
+        <div class="option" onclick="answer(3,'B')"><span class="option-letter">B</span>Primary component of cell walls; maintains structural rigidity</div>
+        <div class="option" onclick="answer(3,'C')"><span class="option-letter">C</span>Regulates stomatal guard cell turgor and activates over 60 enzymes</div>
+        <div class="option" onclick="answer(3,'D')"><span class="option-letter">D</span>Required for nitrogen fixation by rhizosphere bacteria</div>
+      </div>
+      <div class="lesson-reveal" id="rev3">
+        <div class="reveal-title">Potassium — The "Quality" Element</div>
+        <div class="reveal-body">
+          <p>Potassium (K) is one of the most abundant nutrients in tree tissue by weight, yet its role is fundamentally different from nitrogen or carbon — it's not built into organic molecules. Instead, K acts as an <strong>ionic regulator and enzyme co-factor</strong>.</p>
+          <ul>
+            <li><strong>Stomatal regulation:</strong> Guard cells open and close by accumulating or releasing K⁺ ions, which drives water in or out osmotically. K deficiency means impaired stomatal control — trees lose the ability to regulate water loss efficiently, a significant problem in the Okanagan's dry summers.</li>
+            <li><strong>Enzyme activation:</strong> K⁺ is required by more than 60 enzymes, including those involved in protein synthesis and photosynthesis.</li>
+            <li><strong>Osmotic adjustment:</strong> K is the primary solute used by roots to lower water potential and pull water in from dry soil — critical for drought tolerance.</li>
+            <li><strong>Phloem loading:</strong> Sucrose transport in phloem requires K⁺ as a co-transporter — K-deficient trees have impaired carbon allocation.</li>
+          </ul>
+          <p><strong>Deficiency symptoms:</strong> Because K is mobile, symptoms appear first in older leaves. Characteristic sign is <em>marginal leaf scorch</em> — brown, dry necrosis at the leaf margins and tips, progressing inward. Often mistaken for drought stress or salt damage (which makes sense — all three disrupt K-related water relations).</p>
+          <p>The clarifications for the wrong answers: Mg (not K) is the central chlorophyll atom; Ca (not K) is the primary cell wall structural element; and nitrogen fixation is a bacterial process not directly dependent on tree K levels.</p>
+          <div class="field-note">
+            <div class="field-note-label">📋 Field Note — Okanagan</div>
+            <p>K deficiency is relatively uncommon in Okanagan soils because of their high mineral content — but it shows up in heavily irrigated ornamental beds where high water flux leaches K from the root zone. It also appears in containerized trees and in sites where soil compaction has destroyed the cation exchange sites that hold K. If you see marginal leaf scorch in a tree that isn't near a road (salt) and isn't drought-stressed, K is worth testing. A Mehlich-3 soil test will give you CEC and K levels. ANSI A300 Part 2 gives guidance on interpreting soil tests relative to CEC — K saturation should typically be 2–5% of CEC.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card" style="margin-top:16px" id="qc4">
+      <div class="q-num">Question 4 of 5</div>
+      <div class="q-text">Per the ISA Arborists' Certification Study Guide classification, which of the following is correctly identified as a micronutrient (trace element) rather than a macronutrient?</div>
+      <div class="options" id="opts4">
+        <div class="option" onclick="answer(4,'A')"><span class="option-letter">A</span>Magnesium (Mg)</div>
+        <div class="option" onclick="answer(4,'B')"><span class="option-letter">B</span>Sulfur (S)</div>
+        <div class="option" onclick="answer(4,'C')"><span class="option-letter">C</span>Manganese (Mn)</div>
+        <div class="option" onclick="answer(4,'D')"><span class="option-letter">D</span>Calcium (Ca)</div>
+      </div>
+      <div class="lesson-reveal" id="rev4">
+        <div class="reveal-title">Macro vs. Micro — Knowing the Classification</div>
+        <div class="reveal-body">
+          <p><strong>Manganese (Mn)</strong> is the micronutrient. This question tests whether you know the macro/micro classification — a common exam topic.</p>
+          <p><strong>Macronutrients</strong> (required in relatively large amounts, generally &gt;0.1% of dry weight):</p>
+          <ul>
+            <li><strong>Primary macros:</strong> Nitrogen (N), Phosphorus (P), Potassium (K)</li>
+            <li><strong>Secondary macros:</strong> Calcium (Ca), Magnesium (Mg), Sulfur (S)</li>
+          </ul>
+          <p><strong>Micronutrients / Trace Elements</strong> (required in small amounts, typically &lt;100 ppm): Iron (Fe), Manganese (Mn), Zinc (Zn), Copper (Cu), Boron (B), Molybdenum (Mo), Chlorine (Cl), Nickel (Ni)</p>
+          <p>The three wrong answers — Mg, S, and Ca — are all secondary macronutrients. A common exam trick: Mg and Mn start with "M" and both show interveinal chlorosis symptoms, but Mg is a macronutrient and Mn is a micro. The distinction matters for treatment rationale and fertilizer label interpretation.</p>
+          <p><strong>Important nuance:</strong> "Micro" doesn't mean "less important" — it means required in smaller quantities. Boron deficiency destroys meristems; zinc deficiency stops auxin synthesis; manganese deficiency halts photosystem II. The quantities are tiny; the consequences of deficiency are not.</p>
+          <div class="field-note">
+            <div class="field-note-label">📋 Field Note — Okanagan</div>
+            <p>On fertilizer labels, macronutrients are shown as NPK percentages (e.g., 16-4-8). Micronutrients are listed in trace amounts, often in the fine print. When you're speccing a fertilization program under ANSI A300 Part 2, check whether the product includes the micronutrients your soil test is flagging — especially iron, zinc, and manganese for alkaline Okanagan sites. A complete micronutrient package matters more here than in most places. Also note: WorkSafeBC and product safety data sheets treat some micronutrient salts (copper sulfate, zinc sulfate) as skin/eye hazards — read and follow SDS requirements on site.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card" style="margin-top:16px" id="qc5">
+      <div class="q-num">Question 5 of 5</div>
+      <div class="q-text">A Douglas-fir at a commercial strata site shows interveinal chlorosis on current-year needles; older needles look normal. Soil pH tests at 8.0. What is the most likely diagnosis and the appropriate first corrective action?</div>
+      <div class="options" id="opts5">
+        <div class="option" onclick="answer(5,'A')"><span class="option-letter">A</span>Nitrogen deficiency — apply slow-release urea surface dressing</div>
+        <div class="option" onclick="answer(5,'B')"><span class="option-letter">B</span>Iron deficiency — apply chelated iron or initiate soil acidification</div>
+        <div class="option" onclick="answer(5,'C')"><span class="option-letter">C</span>Magnesium deficiency — apply dolomitic lime to correct pH</div>
+        <div class="option" onclick="answer(5,'D')"><span class="option-letter">D</span>Sulfur deficiency — apply elemental sulfur to lower pH</div>
+      </div>
+      <div class="lesson-reveal" id="rev5">
+        <div class="reveal-title">Putting It Together — Field Diagnosis and Corrective Protocol</div>
+        <div class="reveal-body">
+          <p><strong>Iron deficiency, corrected with chelated iron or soil acidification</strong> — this is the correct answer, and walking through the reasoning is the point of this question.</p>
+          <p><strong>Step 1 — Tissue location:</strong> Interveinal chlorosis on <em>current-year (young) needles</em> = immobile nutrient. This immediately rules out N, P, K, and Mg (all mobile). You're looking at Fe, Mn, Zn, or Ca.</p>
+          <p><strong>Step 2 — Pattern:</strong> Interveinal chlorosis with green veins is classic for Fe or Mn. Calcium deficiency shows as tip/meristem dieback, not chlorosis. Zinc shows as small, distorted leaves. So Fe or Mn.</p>
+          <p><strong>Step 3 — Soil pH:</strong> pH 8.0 strongly implicates Fe (iron precipitation peaks at alkaline pH). Mn becomes unavailable above pH 6.5 as well, but Fe chlorosis is the primary working diagnosis.</p>
+          <p><strong>Corrective options, per ANSI A300 Part 2:</strong></p>
+          <ul>
+            <li><strong>Chelated iron applications:</strong> EDTA-Fe (effective to pH 7.5), DTPA-Fe (effective to pH 7.5), or EDDHA-Fe (effective to pH 9.0 — the only chelate stable enough for severe alkalinity). Applied as soil drench, trunk injection, or foliar spray.</li>
+            <li><strong>Soil acidification:</strong> Elemental sulfur (oxidizes to sulfuric acid via Thiobacillus bacteria) — slow-acting but durable. Acidifying mulch. Soil injection of acidifying solution.</li>
+            <li><strong>Trunk injection:</strong> Bypasses soil chemistry entirely — most reliable for high-value trees in established hardscape.</li>
+          </ul>
+          <p><strong>Why Option C is wrong:</strong> Dolomitic lime contains calcium and magnesium carbonate — it would raise pH further, making iron even less available. Never add lime to an already-alkaline soil without a confirmed Ca/Mg deficiency and careful pH monitoring.</p>
+          <div class="field-note">
+            <div class="field-note-label">📋 Field Note — Okanagan</div>
+            <p>Iron chlorosis diagnosis flow: young growth yellow with green veins → check pH → if &gt;7.5, suspect Fe → confirm with foliar spray response (if the tree greens up within 2–3 weeks of chelated iron foliar, you have your diagnosis). For strata trees where you can't disturb hardscape for soil acidification, trunk injection with EDDHA-Fe chelate is the go-to. Cost per tree is real, but it works. Document the diagnosis and treatment in the client file — this is a chronic condition in the Okanagan that recurs, and a paper trail helps justify annual treatment budgets.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="isa-footer">
+    📚 <strong>ISA Exam Domains:</strong> Tree Biology (11%) · Soil Management (11%) &nbsp;|&nbsp; <strong>Sources:</strong> ISA Arborists' Certification Study Guide (4th Ed.) · ANSI A300 Part 2 (Fertilization) · ISA BMP: Fertilization
+  </div>
+</main>
+
+<script>
+const correct = {1:'B',2:'C',3:'C',4:'C',5:'B'};
+function answer(q, chosen){
+  const opts = document.querySelectorAll('#opts'+q+' .option');
+  opts.forEach(o => o.classList.add('disabled'));
+  opts.forEach(o => {
+    o.onclick = null;
+    const letter = o.querySelector('.option-letter').textContent;
+    if(letter === correct[q]) o.classList.add('correct');
+    else if(letter === chosen && chosen !== correct[q]) o.classList.add('wrong');
+  });
+  const rev = document.getElementById('rev'+q);
+  rev.classList.add('show');
+}
+</script>
+</body>
+</html>
