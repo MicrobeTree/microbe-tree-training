@@ -63,6 +63,24 @@ td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
 .isa-footer strong{color:#a3b8d9}
 .brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
 svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
 </style>
 </head>
 <body>
@@ -75,6 +93,10 @@ svg{max-width:100%;height:auto;display:block;margin:10px auto}
   <h1>Hawthorn (<em>Crataegus</em> spp.): Thorns, Fire Blight &amp; Okanagan Natives</h1>
   <p class="sub">Everywhere in Okanagan landscapes, and underestimated. Native black hawthorn along the creeks, ornamentals in the stratas, and one dominant disease to manage.</p>
   <p class="meta">⏱ About 10 minutes · Week 18 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
   <nav class="tabs"><button class="tab active" onclick="showTab('id',this)">🔍 Identity</button><button class="tab" onclick="showTab('range',this)">🌐 Range &amp; Okanagan</button><button class="tab" onclick="showTab('bio',this)">🌱 Biology &amp; Culture</button><button class="tab" onclick="showTab('pests',this)">🦠 Pests &amp; Diseases</button><button class="tab" onclick="showTab('arborist',this)">🪚 Arborist Notes</button><button class="tab" onclick="showTab('client',this)">💬 Client Talk</button></nav>
 <section class="pane active" id="tab-id"><h2>Hawthorns <em style="font-weight:400;color:#8a9bb0">(Crataegus spp.)</em></h2>
 <div class="fact-grid">
@@ -120,6 +142,13 @@ svg{max-width:100%;height:auto;display:block;margin:10px auto}
 <li>"If you're replanting, ask for a fire-blight-resistant hawthorn or a different genus."</li>
 <li>"The orange goo on your junipers in spring is linked to the spots on your hawthorn."</li></ul></div>
 <div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Fire blight pressure here is high because of the orchards and our warm, humid bloom-time spells. Many local growers follow fire blight risk forecasts in spring. Ask clients with fruit trees nearby to treat their hawthorns as part of the same problem.</p></div></section>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Read every section, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+  </div>
   <div class="isa-footer">📚 <strong>ISA Exam Domains:</strong> Tree Identification &amp; Selection (9%) · Diagnosis &amp; Treatment (9%) · Pruning (14%) · <strong>Sources:</strong> BC Ministry of Forests, <em>Tree Book</em> (black hawthorn); E-Flora BC; BC Species &amp; Ecosystems Explorer (<em>C. okanaganensis</em>); PNW Plant Disease Management Handbook (hawthorn fire blight); Clemson HGIC &amp; WSU Tree Fruit (fire blight pruning); UMass Extension (cedar-hawthorn rust)</div>
   <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 18</p>
 </main>
@@ -127,6 +156,37 @@ svg{max-width:100%;height:auto;display:block;margin:10px auto}
 function showTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
 document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
 document.getElementById('tab-'+id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-wed-hawthorn.html", "week": 18, "day": "wed", "title": "Hawthorn", "version": "2026-10-09-d1eeffca4a07", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": ["Brody Hunt", "Colton Moore", "Jordan Sabola", "Red", "Scott Tuck", "Tim", "Travis Gowing", "Anton Artuso"]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+let who=LS.get('mt_crew_name');let submitted=false;
+function payload(type,extra){return Object.assign({event_type:type,crew_name:who,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]')}catch(e){return []}}
+function send(p){return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(p)}).then(r=>r.json().then(j=>{if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j;}));}
+function sendOrQueue(p){return send(p).catch(err=>{if(/unknown crew|bad |attestation/.test(err.message))throw err;const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));throw err;});}
+function flush(){const q=queue();if(!q.length)return;LS.set('mt_queue','[]');q.forEach(p=>send(p).catch(()=>{const r=queue();r.push(p);LS.set('mt_queue',JSON.stringify(r.slice(-50)));}));}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+who;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(payload('open')).catch(()=>{});}
+function renderWho(){$('mt-signin-body').innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';$('mt-signin-body').querySelector('strong').textContent=who;$('mt-switch').onclick=()=>{LS.del('mt_crew_name');who=null;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');list.forEach(n=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=n;btn.onclick=()=>{who=n;LS.set('mt_crew_name',n);renderWho();logOpen();update();};box.appendChild(btn);});});}
+function loadCrew(){return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{if(j.crew&&j.crew.length){LS.set('mt_crew_cache',JSON.stringify(j.crew));return j.crew;}throw 0;}).catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}});}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function update(){const ok=!!who&&quizDone()&&$('mt-attest').checked&&!submitted;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted)return;s.className='mt-status';s.textContent=!who?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){const q=window.MT_QUIZ;const extra={attested:true,score:q?q.score():null,max_score:q?q.total:null,attempts:q?q.attempts:1};
+ this.disabled=true;const s=$('mt-send-status');s.className='mt-status';s.textContent='Saving…';
+ sendOrQueue(payload('submit',extra)).then(j=>{submitted=true;s.className='mt-status ok';s.textContent='✔ Recorded for '+who+(q?(' · score '+extra.score+'/'+extra.max_score):'')+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver'})+' PT';})
+ .catch(err=>{s.className='mt-status err';s.textContent=/unknown crew|bad |attestation/.test(err.message)?('Not saved: '+err.message):'No signal? Saved on this phone and will send next time you open a lesson.';if(!/unknown crew|bad |attestation/.test(err.message)){submitted=true;}else{update();}});};
+flush();
+if(who){renderWho();logOpen();}else renderPicker();
+update();
+})();
 </script>
 </body>
 </html>
