@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hawthorn — Week 18 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1a2f1a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 18</div>
+  <div class="day-tag">🌳 Wednesday — Tree Profile</div>
+</header>
+<main>
+  <h1>Hawthorn (<em>Crataegus</em> spp.): Thorns, Fire Blight &amp; Okanagan Natives</h1>
+  <p class="sub">Everywhere in Okanagan landscapes, and underestimated. Native black hawthorn along the creeks, ornamentals in the stratas, and one dominant disease to manage.</p>
+  <p class="meta">⏱ About 10 minutes · Week 18 · Microbe Tree Inc. crew training</p>
+  <nav class="tabs"><button class="tab active" onclick="showTab('id',this)">🔍 Identity</button><button class="tab" onclick="showTab('range',this)">🌐 Range &amp; Okanagan</button><button class="tab" onclick="showTab('bio',this)">🌱 Biology &amp; Culture</button><button class="tab" onclick="showTab('pests',this)">🦠 Pests &amp; Diseases</button><button class="tab" onclick="showTab('arborist',this)">🪚 Arborist Notes</button><button class="tab" onclick="showTab('client',this)">💬 Client Talk</button></nav>
+<section class="pane active" id="tab-id"><h2>Hawthorns <em style="font-weight:400;color:#8a9bb0">(Crataegus spp.)</em></h2>
+<div class="fact-grid">
+<div class="fact-cell"><label>Family</label><span>Rosaceae (rose family)</span></div>
+<div class="fact-cell"><label>Form</label><span>Small tree or large shrub, dense, rounded</span></div>
+<div class="fact-cell"><label>Key feature</label><span>Stiff thorns growing from the stems</span></div>
+<div class="fact-cell"><label>Fruit</label><span>Small pome ("haw"), red to black</span></div>
+</div>
+<div class="card"><h3>The ones you'll meet</h3>
+<ul><li><strong>Black hawthorn (<em>C. douglasii</em>)</strong>: native; the most common hawthorn in BC's southern Interior. Black fruit, short stout thorns. Found along creeks, draws and field edges.</li>
+<li><strong>Columbia hawthorn (<em>C. columbiana</em>)</strong>: native shrub with long, slender thorns and red fruit.</li>
+<li><strong>English / midland hawthorn (<em>C. laevigata</em>)</strong>, e.g. 'Paul's Scarlet' (double red flowers): a common ornamental.</li>
+<li><strong>Common / one-seed hawthorn (<em>C. monogyna</em>)</strong>: deeply lobed leaves, one seed per fruit; spreads by bird-dropped seed.</li>
+<li><strong>Washington hawthorn (<em>C. phaenopyrum</em>)</strong>: glossy leaves, long thorns, persistent red fruit.</li>
+<li><strong>Toba hawthorn (<em>C. × mordenensis</em> 'Toba')</strong>: a cold-hardy Canadian prairie selection with double pink-to-white flowers.</li></ul>
+<p>Telling hawthorn species apart is notoriously hard, and they hybridize. For client work, "hawthorn, likely ornamental <em>C. laevigata</em>-type" is often as far as you need to go.</p></div></section><section class="pane" id="tab-range"><h2>Origin &amp; Okanagan Context</h2>
+<div class="card"><p><strong>Natives:</strong> black hawthorn is widespread in moister spots of the dry Interior: riparian edges, gullies, old fields. A third native, the <strong>Okanagan hawthorn (<em>C. okanaganensis</em>)</strong>, is <strong>Blue-listed</strong> (species of special concern) in BC. If a client's "hawthorn thicket" is in a natural area along a creek, don't assume it's weedy.</p>
+<p><strong>Ornamentals:</strong> English, Washington and Toba hawthorns are common in strata, boulevard and older residential plantings across Kelowna and West Kelowna. They're small, tough and showy in bloom.</p>
+<p><strong>Weedy spread:</strong> <em>C. monogyna</em> naturalizes from bird-dropped seed and is treated as invasive in parts of BC and the Pacific Northwest. Watch for seedlings along fences and in naturalized areas.</p></div>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Before clearing hawthorn on a natural or creekside lot, confirm the species and check local riparian rules with the municipality. The cheapest mistake is the one you never make.</p></div></section><section class="pane" id="tab-bio"><h2>What It Wants</h2>
+<div class="card"><ul>
+<li><strong>Light:</strong> full sun for best flowering and fewer leaf diseases.</li>
+<li><strong>Soil:</strong> tolerant of a wide range, including the alkaline soils common in the Okanagan, as long as it drains.</li>
+<li><strong>Water:</strong> established trees tolerate dry summers. Over-watering and lush growth make fire blight worse.</li>
+<li><strong>Fertilizer:</strong> avoid excess nitrogen. Soft, fast shoots are prime fire blight infection sites.</li>
+<li><strong>Growth habit:</strong> dense, twiggy crowns with lots of crossing branches, plus suckers and water sprouts after hard cuts.</li></ul></div></section><section class="pane" id="tab-pests"><h2>Pest &amp; Disease Pressures</h2>
+<div class="card"><h3>🔥 Fire blight (<em>Erwinia amylovora</em>): the big one</h3>
+<p>A bacterial disease of the rose family; the same one that hits Okanagan apple and pear orchards. Look for blossoms and shoots turning brown-black, <strong>shepherd's-crook</strong> shoot tips, leaves that cling to dead twigs, and cankers that may ooze in spring. Susceptibility varies among hawthorns; downy hawthorn (<em>C. mollis</em>) is among the more resistant species.</p>
+<ul><li>Prune out strikes during <strong>dry weather</strong>, ideally in the dormant season. Cut <strong>at least 20–30 cm (8–12 in)</strong> below visible symptoms (Clemson HGIC). WSU recommends 30–45 cm (12–18 in) into older wood for orchard trees.</li>
+<li>Disinfect tools between cuts with 10% bleach or 70% alcohol, especially during the growing season.</li>
+<li>Bag or chip infected material off site. Don't leave it in the client's brush pile.</li></ul></div>
+<div class="card"><h3>🍂 Rusts (<em>Gymnosporangium</em> spp.)</h3><p>Hawthorn rusts alternate between <strong>juniper</strong> and hawthorn. Orange spore horns on juniper galls in spring infect hawthorn leaves, twigs and fruit, and the hawthorn then reinfects juniper. Junipers and hawthorns planted together in strata beds keep the cycle going.</p></div>
+<div class="card"><h3>Others</h3><ul><li>Leaf spot (<em>Entomosporium</em>) causing early leaf drop in wet springs</li><li>Aphids and pear sawfly ("pearslug") skeletonizing leaves</li><li>Tent caterpillars. Hawthorn is a listed host; see Thursday's lesson.</li></ul></div></section><section class="pane" id="tab-arborist"><h2>Working Hawthorn</h2>
+<div class="danger"><span class="lbl">⚠ Thorns are a real injury hazard</span>Hawthorn thorns go through thin gloves and clothing. Puncture wounds can carry soil and plant material deep into tissue and get infected. Wear heavy-duty gloves, long sleeves and eye protection. Clean any puncture, report it, and see a doctor if it gets red, hot or swollen, especially near a joint.</div>
+<div class="card"><ul>
+<li><strong>Timing:</strong> prune in the dormant season (late winter) when fire blight bacteria are inactive and the structure is easy to read.</li>
+<li><strong>Structure:</strong> thin crossing and rubbing branches; don't top or shear for size. Heading cuts fuel water sprouts, which are fire blight targets.</li>
+<li><strong>Brush handling:</strong> thorny brush tangles at the chipper infeed. Feed butt-first and never reach in.</li>
+<li><strong>Sanitation:</strong> on a fire blight job, sanitize tools before moving to the next rose-family tree (apple, crabapple, mountain-ash, pear).</li></ul></div></section><section class="pane" id="tab-client"><h2>Client Talking Points</h2>
+<div class="card"><ul>
+<li>"Those blackened, hooked tips are fire blight. We'll cut well below them in dry weather and haul the wood away."</li>
+<li>"Skip the high-nitrogen fertilizer. It feeds the disease more than the tree."</li>
+<li>"If you're replanting, ask for a fire-blight-resistant hawthorn or a different genus."</li>
+<li>"The orange goo on your junipers in spring is linked to the spots on your hawthorn."</li></ul></div>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Fire blight pressure here is high because of the orchards and our warm, humid bloom-time spells. Many local growers follow fire blight risk forecasts in spring. Ask clients with fruit trees nearby to treat their hawthorns as part of the same problem.</p></div></section>
+  <div class="isa-footer">📚 <strong>ISA Exam Domains:</strong> Tree Identification &amp; Selection (9%) · Diagnosis &amp; Treatment (9%) · Pruning (14%) · <strong>Sources:</strong> BC Ministry of Forests, <em>Tree Book</em> (black hawthorn); E-Flora BC; BC Species &amp; Ecosystems Explorer (<em>C. okanaganensis</em>); PNW Plant Disease Management Handbook (hawthorn fire blight); Clemson HGIC &amp; WSU Tree Fruit (fire blight pruning); UMass Extension (cedar-hawthorn rust)</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 18</p>
+</main>
+<script>
+function showTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+document.getElementById('tab-'+id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Western Tent Caterpillar — Week 18 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1f1a0f 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 18</div>
+  <div class="day-tag">🦠 Thursday — Pests &amp; Diseases</div>
+</header>
+<main>
+  <h1>Western Tent Caterpillar (<em>Malacosoma californicum</em>)</h1>
+  <p class="sub">Spring tents look alarming and get clients calling. Know the biology, tell it apart from look-alikes, and match the response to the tree's real risk.</p>
+  <p class="meta">⏱ About 10 minutes · Week 18 · Microbe Tree Inc. crew training</p>
+  <div class="card">
+    <h3>🐛 Fast facts</h3>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Species</label><span><em>Malacosoma californicum</em> (western tent caterpillar)</span></div>
+      <div class="fact-cell"><label>Generations</label><span>One per year</span></div>
+      <div class="fact-cell"><label>Overwinters</label><span>As eggs in a band around a twig</span></div>
+      <div class="fact-cell"><label>Hosts</label><span>Willow, cottonwood, aspen, alder, birch, wild rose, chokecherry, apple, cherry, plum, hawthorn</span></div>
+    </div>
+    <p style="margin-top:8px">Big, ugly tents in spring set off a lot of client calls. The arborist's job is telling a healthy tree that will bounce back from one that needs help.</p>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">Where and how does western tent caterpillar spend the winter?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>As pupae in the soil</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>As adult moths under bark</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>As eggs in a single band wrapped around a small twig, protected by a foamy coating</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>As young larvae inside the old tent</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Egg bands: your winter control window</div><p>Each female lays <strong>one egg band of roughly 150–250 eggs</strong> around a small twig, covered in a frothy, hardened coating called <strong>spumaline</strong> (NRCan; USDA FS FIDL 119). The larvae actually form inside the eggs within weeks but stay put until spring, when hatch is <strong>timed to budbreak</strong> on the host.</p>
+<p>Egg bands are often on the <strong>sunny (south/southwest) side</strong> of open-grown host trees and on twigs thinner than a pencil to about 2&nbsp;cm.</p>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Dormant-season pruning on fruit trees, willows and hawthorns is the perfect time to look for egg bands. Snip them off and bag them. It's the cheapest control there is, and clients love seeing what you found.</p></div></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">A client calls in May about silk tents in the <strong>crotches</strong> of their crabapple. In late August, another client calls about loose webbing enclosing leaves at the <strong>branch tips</strong> of a chokecherry. What's the most likely pair?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Both are western tent caterpillar</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>May: western tent caterpillar · August: fall webworm</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>May: fall webworm · August: western tent caterpillar</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Both are spider mites</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Timing and tent position tell them apart</div><ul><li><strong>Western tent caterpillar</strong>: <strong>spring</strong> tents (right after budbreak), built in <strong>branch crotches and forks</strong>. Larvae leave the tent to feed and come back to rest.</li>
+<li><strong>Fall webworm</strong> (<em>Hyphantria cunea</em>): <strong>late summer</strong> webs that enclose foliage at the <strong>ends of branches</strong>. Larvae feed inside the web.</li>
+<li><strong>Forest tent caterpillar</strong> (<em>M. disstria</em>) doesn't build a true tent. Larvae rest in silk mats on trunks and branches, and outbreaks hit trembling aspen stands.</li></ul>
+<p>Getting the ID right sets the timing of any treatment and the advice you give the client.</p></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">What best describes the impact of one season of heavy tent caterpillar defoliation on a <strong>healthy, established</strong> aspen or willow?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>It usually kills the tree the same year</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>Usually cosmetic: healthy trees typically re-leaf the same season using stored reserves, though repeated defoliation plus drought adds real stress</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>It has no effect at all</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>It causes immediate structural failure</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Defoliation draws down the reserves</div><p>Larvae feed for about <strong>4–6 weeks</strong> in spring (USDA FS: 30–42 days, depending on weather), then pupate. Healthy deciduous trees usually push a <strong>second flush of leaves</strong> the same season, paid for by stored carbohydrates (remember the NSC lesson).</p>
+<p>The concern is <strong>stacking stresses</strong>: several years of defoliation, drought, root damage or a young transplant. Each refoliation drains reserves the tree would otherwise use for defence and winter hardiness, which opens the door to cankers and borers.</p>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>On our dry sites, a defoliated tree that's also been short on water all summer is the one to watch. Prioritize treating newly planted and stressed ornamentals. Healthy mature cottonwoods along the creek can usually ride it out.</p></div></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">Western tent caterpillar populations in BC are known to:</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Stay constant every year</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Rise and fall in cycles of several years, with crashes linked to disease and natural enemies</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Only occur after wildfires</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Increase steadily with no decline</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Boom and bust</div><p>Long-term studies in southwestern BC recorded western tent caterpillar populations peaking every <strong>6–11 years</strong> (Myers 2000). Outbreaks typically collapse on their own, with <strong>disease (including a virus)</strong> and <strong>parasitoids and predators</strong> playing major roles.</p>
+<p>That matters for advice: in an outbreak year, the population is often close to crashing anyway. Treating every tent on every wild tree isn't sensible. Focus on high-value and stressed trees.</p>
+<p><em>Exact cycle timing in the Okanagan isn't well documented. Watch local reports rather than predicting.</em></p></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">For a stressed ornamental crabapple with several active tents in early spring, which IPM approach fits best?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Broadcast a broad-spectrum insecticide over the whole yard</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Burn the tents out with a torch</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Remove tents and larvae by hand or pruning while they're small and clustered; if a product is needed, use a selective <em>Bt</em> var. <em>kurstaki</em> product on young larvae, applied per the label by a properly certified applicator</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Wait until August and prune heavily</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Mechanical first, selective product second</div><ul><li><strong>Mechanical:</strong> prune out or pull down tents with larvae inside, early morning or evening when they're home. Bag them.</li>
+<li><strong>Biological:</strong> <em>Bacillus thuringiensis</em> var. <em>kurstaki</em> (Btk) targets caterpillars and works best on <strong>young larvae</strong> that are actively feeding. It's selective, so it spares many beneficial insects.</li>
+<li><strong>Never</strong> burn tents in trees. It damages bark and cambium and is a fire risk, especially in the dry Okanagan.</li></ul>
+<div class="std">📐 In BC, pesticide use is regulated under the <em>Integrated Pest Management Act</em>. Commercial applications need the appropriate licence and certified applicators, and always follow the product label.</div>
+<div class="field-note"><div class="fn-label">📋 Field Note — Crew</div><p>Caterpillar hairs and silk can irritate skin and eyes. Wear gloves and eye protection when pulling tents, and wash up before eating.</p></div></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Diagnosis &amp; Treatment (9%) · <strong>Sources:</strong> USDA Forest Service, <em>Forest Insect &amp; Disease Leaflet 119: Western Tent Caterpillar</em>; Natural Resources Canada, Trees, Insects &amp; Diseases of Canada's Forests (tent caterpillar factsheets); Myers (2000), population fluctuations of the western tent caterpillar in southwestern BC; WSU Tree Fruit (tent caterpillar); BC <em>Integrated Pest Management Act</em></div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 18</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'C',2:'B',3:'B',4:'B',5:'C'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  document.getElementById('score').textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+}
+</script>
+</body>
+</html>

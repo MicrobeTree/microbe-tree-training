@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Acclimation &amp; Dormancy — Week 18 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1a2f1a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 18</div>
+  <div class="day-tag">🌿 Monday — Tree Biology</div>
+</header>
+<main>
+  <h1>Cold Acclimation &amp; Dormancy: How Trees Get Ready for Winter</h1>
+  <p class="sub">Dormancy isn't just "winter sleep." It's a step-by-step program that starts with day length, gets finished by frost, and can be thrown off by what we do on site.</p>
+  <p class="meta">⏱ About 10 minutes · Week 18 · Microbe Tree Inc. crew training</p>
+  <div class="card">
+    <h3>🌿 The short version</h3>
+    <p>Trees don't wait for the first frost to get ready for winter. <strong>Shortening days</strong> stop growth and start the hardening process; <strong>frost and cold</strong> then finish it. Get between a tree and that schedule (late fertilizer, late pruning, a warm October irrigation push) and you can leave it soft when the first Arctic outflow pours down the valley.</p>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Trigger 1</label><span>Short days → growth stops, hardening begins</span></div>
+      <div class="fact-cell"><label>Trigger 2</label><span>Frost / low temps → full hardiness</span></div>
+      <div class="fact-cell"><label>Endodormancy</label><span>Won't grow even if warm — needs chilling</span></div>
+      <div class="fact-cell"><label>Ecodormancy</label><span>Ready to grow — held back by cold</span></div>
+    </div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">In the classic two-stage model of cold acclimation in woody plants, what triggers the <strong>first</strong> stage?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>The first hard frost of autumn</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>Shortening days (photoperiod), which stop shoot growth</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>Leaf drop</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>Soil temperature falling below freezing</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Day length starts it, frost finishes it</div><p>Work on apple and red-osier dogwood (Howell &amp; Weiser 1970; Weiser 1970) showed acclimation runs in <strong>two stages</strong>. Stage 1 is induced by <strong>short days</strong>: leaves sense the longer nights (through phytochrome), shoot growth stops, and a signal from the leaves starts the hardening process in the bark. Stage 2 is induced by <strong>frost or sustained low temperature</strong> and takes the tissue to maximum hardiness.</p>
+<ul><li>In Howell &amp; Weiser's apple study, stage 1 hardened bark to about −30&nbsp;°C; frost was needed to reach about −55&nbsp;°C.</li>
+<li>The key event in stage 1 is <strong>growth cessation</strong>. A tree that is still pushing shoots isn't hardening.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Our autumns can be warm and dry right up until an Arctic outflow drops temperatures fast. Trees that stopped growing on schedule handle it. Trees kept growing by late irrigation, nitrogen or heavy summer pruning are the ones that show dieback in May.</p></div></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">A strata client wants a heavy nitrogen fertilizer application and a big thinning prune in <strong>late August</strong> to "get the trees ready for winter." What's the best advice?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Go ahead — nitrogen builds winter reserves</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Do it, but water heavily into November</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>Avoid it: late N and heavy late-summer pruning can stimulate new growth that won't harden off in time</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Only the pruning is a problem; fertilizer is fine any time</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Don't wake the tree up when it's trying to shut down</div><p>Anything that pushes <strong>new, succulent growth late in the season</strong> works against hardening. Late nitrogen and heavy pruning can both trigger a late flush of shoots that are still soft when the first hard freeze arrives. The result is tip dieback, cambium injury and an easy entry point for cankers like Cytospora.</p>
+<ul><li>Fertilize (if a soil or foliar test says it's needed) in spring or early summer.</li>
+<li>Heavy structural pruning is best in the dormant season, or after the spring flush has hardened.</li>
+<li>Taper irrigation in early fall so trees can slow down, but don't send them into winter bone-dry. A deep watering before freeze-up helps evergreens.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Strata irrigation often runs on the same summer schedule into October. Flag it on fall visits. Tapering water in September is one of the cheapest winter-injury fixes we can recommend.</p></div></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">A tree in <strong>endodormancy</strong> (sometimes called "rest") is moved into a warm greenhouse in November. What happens?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>It leafs out within a week</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>It stays dormant — endodormancy is controlled inside the bud and is only released after enough chilling</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>It dies from heat shock</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>It drops into ecodormancy and blooms immediately</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Endo vs. eco: who's holding the brakes?</div><p>Dormancy researchers (Lang et al. 1987) split dormancy by <strong>where the block is</strong>:</p>
+<ul><li><strong>Endodormancy</strong>: the block is <em>inside</em> the bud. Even warm, perfect conditions won't make it grow. It's released by accumulating <strong>chilling</strong> (hours at cool, above-freezing temperatures). The amount needed varies by species and cultivar.</li>
+<li><strong>Ecodormancy</strong>: chilling is satisfied and the bud is ready, but the <em>environment</em> (cold) holds it back. Warmth now leads to budbreak.</li>
+<li><strong>Paradormancy</strong>: growth held back by another part of the plant, like apical dominance from the leader.</li></ul>
+<p>That's why a midwinter warm spell doesn't usually trigger budbreak in December, but the same warm spell in late February or March can.</p></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">In late winter, a week of +12&nbsp;°C weather is followed by a sudden drop to −15&nbsp;°C. Why is this more dangerous than a steady −15&nbsp;°C in January?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Trees lose hardiness quickly in warm spells (deacclimation) and regain it slowly, so they're caught soft</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Cold air holds more water</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Frost cracks only happen above 0&nbsp;°C</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>It isn't more dangerous</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Deacclimation is fast; re-hardening is slow</div><p>Once chilling is satisfied (ecodormancy), warm spells cause <strong>deacclimation</strong>: tissues lose cold hardiness, sometimes within days. Re-hardening after a warm spell is slower and often incomplete. A sharp freeze right after a warm spell is a classic setup for:</p>
+<ul><li><strong>Bud and twig kill</strong>, especially on early-moving species and fruit trees</li>
+<li><strong>Southwest winter injury / sunscald</strong>: sun-warmed bark on the south and southwest side, then a rapid temperature drop at sunset</li>
+<li><strong>Frost cracks</strong>: vertical splits from uneven contraction of the stem</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Thin-barked young trees on south- and west-facing strata slopes take the worst of it. When you're diagnosing a spring canker or a vertical bark split, ask what the trunk faces and check for sunscald history before blaming a pest.</p></div></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">Which plant hormone is most closely associated with promoting bud dormancy and stress responses as trees shut down for winter?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Auxin</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Abscisic acid (ABA)</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Cytokinin</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Gibberellin</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">ABA: the shut-down signal</div><p><strong>Abscisic acid (ABA)</strong> rises in many temperate trees as they move into dormancy and cold acclimation. It's linked to bud set, growth cessation and stress tolerance, and it's the same hormone that closes stomata in drought. <strong>Gibberellins</strong> generally work the other way, promoting growth and budbreak, and the balance between them shifts as chilling accumulates.</p>
+<p>For the ISA exam, remember the families: auxin (apical dominance, rooting, wound response), cytokinin (cell division, made in roots), gibberellin (shoot elongation, breaking dormancy), ABA (dormancy, stomatal closure), ethylene (ripening, abscission, stress).</p>
+<div class="field-note"><div class="fn-label">📋 Field Note — Crew</div><p>Dormant-season pruning works well partly because trees are shut down: no active leaf area to lose, structure easy to see, and for many species lower pest pressure. Just confirm species-specific timing first (fire blight hosts, oaks and elms have their own rules).</p></div></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Tree Biology (11%) · <strong>Sources:</strong> Howell &amp; Weiser (1970) <em>Plant Physiology</em>; Weiser (1970) <em>Science</em>; Lang et al. (1987) <em>HortScience</em>; ISA <em>Arborists' Certification Study Guide</em>, Tree Biology chapter</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 18</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'B',2:'C',3:'B',4:'A',5:'B'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  document.getElementById('score').textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+}
+</script>
+</body>
+</html>
