@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fire Blight &amp; Pruning Timing — Week 19 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1f1a0f 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 19</div>
+  <div class="day-tag">🦠 Thursday — Pests &amp; Diseases</div>
+</header>
+<main>
+  <h1>Fire Blight (<em>Erwinia amylovora</em>): When to Cut, and Why Timing Matters</h1>
+  <p class="sub">Fire blight is a bacterium that hides in cankers over winter and comes out with the spring warmth. Cut at the wrong time, the wrong distance or the wrong way and you spread it. Here's what the research says.</p>
+  <p class="meta">⏱ About 10 minutes · Week 19 · Microbe Tree Inc. crew training</p>
+  <div class="card">
+    <h3>🔥 The short answer</h3>
+    <p>The research says the opposite of "don't prune blighted trees while dormant." <strong>Winter is the best time to cut out fire blight cankers.</strong> The bacteria are inactive, they stay inside the canker, and every canker you remove is one less source of ooze in spring. What winter is <em>not</em> for on an infected tree is <strong>heavy pruning for size or shape</strong>. That pushes out a flush of soft shoots in spring, and soft shoots are exactly what fire blight attacks. That's probably where the "don't prune it dormant" idea comes from.</p>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Pathogen</label><span><em>Erwinia amylovora</em>, a bacterium</span></div>
+      <div class="fact-cell"><label>Hosts</label><span>Rose family: apple, crabapple, pear, hawthorn, mountain-ash, cotoneaster, serviceberry</span></div>
+      <div class="fact-cell"><label>Overwinters</label><span>At the margins of cankers</span></div>
+      <div class="fact-cell"><label>Best time to remove cankers</label><span>Dormant season, dry weather</span></div>
+    </div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">Where does the fire blight bacterium spend the winter, and what wakes it up?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>In the soil; it wakes when the snow melts</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>At the edges of cankers on infected wood; it becomes active as spring warms up, multiplies fast in warm, wet weather and oozes out</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>Inside bees' hives</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>On fallen leaves, like a fungus</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Cankers are the winter hideout</div><p>The bacteria overwinter in living tissue at the <strong>margins of cankers</strong> from earlier infections. As temperatures rise in spring they become active again, and in <strong>warm, moist weather</strong> they multiply quickly. Virginia Tech cites activity resuming above about 10&nbsp;°C, with optimum growth around 18–29&nbsp;°C. They then <strong>ooze</strong> out of the canker edges as sticky, amber droplets loaded with bacteria.</p>
+<ul><li>Blossom infection needs open flowers, warmth and a wetting event (rain or dew). The MaryBlyt risk model uses an average daily temperature above about 15.6&nbsp;°C as one of its conditions.</li>
+<li>Not every canker reactivates, but one active canker can release huge numbers of bacteria.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Okanagan orchards follow fire blight risk models every spring because warm, humid spells at bloom set off infections. The same weather hits the crabapples, pears and hawthorns in strata beds next door.</p></div></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">Which of these is <strong>not</strong> a main way fire blight spreads in spring and summer?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Rain splash and wind-driven rain carrying ooze</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Flies, ants, bees and other insects visiting ooze and blossoms</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>Pruning tools moving between infected and healthy wood</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Spores blowing in from infected conifers</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Rain, insects, flowers, wounds and tools</div><p>Fire blight is a <strong>bacterium</strong>. It doesn't make spores and doesn't infect conifers; it's limited to the <strong>rose family</strong>. The bacteria move through:</p>
+<ul><li><strong>Rain splash and wind</strong>, carrying ooze from cankers onto blossoms and shoots</li>
+<li><strong>Insects</strong> drawn to the ooze, then <strong>pollinators</strong> spreading it from flower to flower</li>
+<li><strong>Wounds</strong> from hail, storms and pruning cuts, plus natural openings in soft shoots</li>
+<li><strong>Tools</strong> during the growing season, when the bacteria are active</li></ul>
+<p>Once inside, they move down shoots toward older wood, producing the <strong>shepherd's crook</strong> tip and leaves that stay hanging on dead twigs.</p></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">Why do extension services (Clemson, WSU, the BC Tree Fruit Production Guide) recommend removing cankers during the <strong>dormant</strong> season?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>Bacteria are active in winter, so cutting kills them faster</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>The bacteria are inactive and stay inside the canker, so cuts can be closer, tool spread is minimal, and spring inoculum is removed before it can ooze</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>Dormant wood heals instantly</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>Winter pruning is required by law</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Winter: take the inoculum out</div><ul><li><strong>Bacteria are inactive and stay inside the canker.</strong> WSU notes that winter cuts can be made closer to the visible canker edge than summer cuts.</li>
+<li><strong>Removing inoculum.</strong> Every canker cut out in winter is one less ooze source at bloom. UMass calls dormant removal of infected wood "critical."</li>
+<li><strong>Little tool spread.</strong> WSU, Penn State and Utah State say tools don't need sterilizing between cuts on fully dormant trees. Sanitizing anyway is cheap insurance.</li>
+<li><strong>Easy to spot.</strong> Blighted branches often hold dead leaves into winter.</li></ul>
+<div class="std">📐 BC Tree Fruit Production Guide: cut overwintering cankers out during the dormant season, <strong>15–30&nbsp;cm below the canker margin</strong>. Remove both smooth- and cracked-margin cankers, and go over susceptible trees more than once because cankers are easy to miss.</div>
+<div class="field-note"><div class="fn-label">📋 Field Note — Microbe Tree Crew</div><p>On a dormant job, do the blight cuts <strong>first</strong>, bag or chip that material off site, then do any structural work. Same order WSU recommends for orchards.</p></div></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">It's July, dry and hot, and a client's crabapple has fresh strikes with shepherd's-crook tips. What's the evidence-based move?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Leave it until winter no matter what</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Remove the strikes now in dry weather, cutting well below the visible symptoms into older wood, often leaving a short marked "ugly stub" to clean up during dormant pruning</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Cut flush to the trunk right at the edge of the dead tissue</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Prune heavily to open up the whole crown</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Summer strikes: deep cuts, dry weather, ugly stub</div><p>Active strikes can race down into scaffolds and the trunk, so most guides say <strong>remove them promptly, but only in dry weather</strong>. The bacteria run ahead of what you can see:</p>
+<ul><li><strong>Cut-back distance:</strong> the BC guide says at least <strong>30&nbsp;cm</strong> below visible disease. WSU's best practice is 30–45&nbsp;cm (12–18&nbsp;in) into two-year-old or older wood.</li>
+<li><strong>"Ugly stub":</strong> a method credited to Paul Steiner. Instead of cutting back to the collar, leave a bare stub of about <strong>10–15&nbsp;cm (4–6&nbsp;in)</strong> in older wood and mark it. Any new canker forms in the stub, which you remove properly in winter. WSU trials found stubs reduced canker re-formation on structural wood in some experiments but not others.</li>
+<li><strong>Weather:</strong> the BC guide says avoid wet weather or storms expected within 24 hours.</li>
+<li><strong>Too many strikes?</strong> Wisconsin Extension advises waiting until dormancy rather than heavy summer cutting.</li></ul>
+<p><strong>Tool sanitation:</strong> 10% bleach or 70% alcohol between cuts is the standard advice, and the BC guide stresses it when cuts are under 30&nbsp;cm from disease. WSU trials found sanitizing made little difference <em>when cuts were deep enough</em>. Distance matters most; sanitize anyway.</p></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">Where does the "don't prune infected trees while dormant" idea have a real point?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Nowhere; you should prune heavily in winter</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Heavy dormant pruning for size or shape stimulates vigorous, succulent spring shoots that are highly susceptible to shoot blight, especially if any cankers are left behind</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Dormant pruning spreads spores</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Dormant cuts never close</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Remove the blight, not half the tree</div><p>Several sources warn about <strong>vigour</strong>:</p>
+<ul><li>Cornell: vigorous shoot growth is highly susceptible; manage vigour with balanced nutrition and <strong>avoid excessive winter pruning</strong>.</li>
+<li>Penn State: after heavy pruning, trees push hard in spring. If any cankers are left, bacteria move into that new growth.</li>
+<li>Ohio State and UMN: heavy pruning and excess nitrogen promote susceptible succulent growth. Ohio State says never combine routine shaping pruning with blight removal.</li></ul>
+<p>So the fair version of that rule is: <strong>dormant season = remove cankers, yes; heavy structural or size-reduction pruning on a blight-prone tree = spread it over several years.</strong> We found no credible source that advises against removing cankers while trees are dormant.</p>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Strata crabapples, ornamental pears and hawthorns that get topped or hard-sheared every winter often come back as a mass of water sprouts, which are prime shoot blight targets. Recommend light annual thinning, suckers removed, and no late-season nitrogen.</p></div></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domains:</strong> Diagnosis &amp; Treatment (9%) · Pruning (14%) · <strong>Sources:</strong> BC Ministry of Agriculture / BC Tree Fruit Production Guide, Fire Blight; Agriculture and Agri-Food Canada (2005), <em>Fire Blight: A Review of the Pathogen, Disease Occurrence, Biology and Management</em>; WSU Tree Fruit, Fire Blight of Apple and Pear &amp; Pruning out Fire Blight Infections; PNW Plant Disease Management Handbook; Virginia Tech Extension SPES-778; MaryBlyt 7 manual (Steiner); Clemson HGIC; UMass Extension; Utah State Extension; Penn State Extension (dormant canker removal); Cornell fire blight factsheet; Ohio State Ohioline PLPATH-FRU-22; UMN Extension; Wisconsin Extension</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 19</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'B',2:'D',3:'B',4:'B',5:'B'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  document.getElementById('score').textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+}
+</script>
+</body>
+</html>
