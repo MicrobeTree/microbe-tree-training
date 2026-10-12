@@ -80,6 +80,8 @@ svg{max-width:100%;height:auto;display:block;margin:10px auto}
 .mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
 .mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
 .mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
 .mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
 </style>
 </head>
@@ -159,32 +161,72 @@ document.getElementById('tab-'+id).classList.add('active');el.classList.add('act
 </script>
 <script>
 (function(){
-const CFG={"file": "lesson-wed-hawthorn.html", "week": 18, "day": "wed", "title": "Hawthorn", "version": "2026-10-09-d1eeffca4a07", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": ["Brody Hunt", "Colton Moore", "Jordan Sabola", "Red", "Scott Tuck", "Tim", "Travis Gowing", "Anton Artuso"]};
+const CFG={"file": "lesson-wed-hawthorn.html", "week": 18, "day": "wed", "title": "Hawthorn", "version": "2026-10-12-d1eeffca4a07", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
 const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
-let dev=LS.get('mt_device');if(!dev){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
 const $=id=>document.getElementById(id);
-let who=LS.get('mt_crew_name');let submitted=false;
-function payload(type,extra){return Object.assign({event_type:type,crew_name:who,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
-function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]')}catch(e){return []}}
-function send(p){return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(p)}).then(r=>r.json().then(j=>{if(!r.ok||!j.ok)throw new Error(j.error||('HTTP '+r.status));return j;}));}
-function sendOrQueue(p){return send(p).catch(err=>{if(/unknown crew|bad |attestation/.test(err.message))throw err;const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));throw err;});}
-function flush(){const q=queue();if(!q.length)return;LS.set('mt_queue','[]');q.forEach(p=>send(p).catch(()=>{const r=queue();r.push(p);LS.set('mt_queue',JSON.stringify(r.slice(-50)));}));}
-function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+who;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(payload('open')).catch(()=>{});}
-function renderWho(){$('mt-signin-body').innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';$('mt-signin-body').querySelector('strong').textContent=who;$('mt-switch').onclick=()=>{LS.del('mt_crew_name');who=null;renderPicker();update();};}
+// state: crew id + first name + optional PIN, all on this device only
+let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
+let submitted=false, pinMsg='', crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;if(pin)q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(withAuth(p))})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;throw e;}));}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){LS.del('mt_crew_pin');pin='';pinMsg='Sign-in failed, re-enter your PIN';renderPin();}
+function permanent(e){return e.status===400||e.status===413;}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(permanent(e))throw e;enqueue(p);if(e.status===401)authFail();throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(permanent(e))return;enqueue(p);stop=true;if(e.status===401)authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
 function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
- loadCrew().then(list=>{const box=$('mt-names');list.forEach(n=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=n;btn.onclick=()=>{who=n;LS.set('mt_crew_name',n);renderWho();logOpen();update();};box.appendChild(btn);});});}
-function loadCrew(){return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{if(j.crew&&j.crew.length){LS.set('mt_crew_cache',JSON.stringify(j.crew));return j.crew;}throw 0;}).catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}});}
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4–6 digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="6"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4,6}$/.test(v)){pinMsg='PIN must be 4–6 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
 function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
-function update(){const ok=!!who&&quizDone()&&$('mt-attest').checked&&!submitted;$('mt-send').disabled=!ok;
- const s=$('mt-send-status');if(submitted)return;s.className='mt-status';s.textContent=!who?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function showSaved(j,p){submitted=true;const s=$('mt-send-status');s.className='mt-status ok';
+ s.textContent='✔ Recorded for '+who+(p.max_score?(' · score '+p.score+'/'+p.max_score):'')+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver'})+' PT';$('mt-send').disabled=true;}
 window.MT_SIGNIN={update:update};
 $('mt-attest').onchange=update;
-$('mt-send').onclick=function(){const q=window.MT_QUIZ;const extra={attested:true,score:q?q.score():null,max_score:q?q.total:null,attempts:q?q.attempts:1};
+$('mt-send').onclick=function(){const q=window.MT_QUIZ;const p=body('submit',{attested:true,score:q?q.score():null,max_score:q?q.total:null,attempts:q?q.attempts:1});
+ if(!q){delete p.score;delete p.max_score;}
  this.disabled=true;const s=$('mt-send-status');s.className='mt-status';s.textContent='Saving…';
- sendOrQueue(payload('submit',extra)).then(j=>{submitted=true;s.className='mt-status ok';s.textContent='✔ Recorded for '+who+(q?(' · score '+extra.score+'/'+extra.max_score):'')+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver'})+' PT';})
- .catch(err=>{s.className='mt-status err';s.textContent=/unknown crew|bad |attestation/.test(err.message)?('Not saved: '+err.message):'No signal? Saved on this phone and will send next time you open a lesson.';if(!/unknown crew|bad |attestation/.test(err.message)){submitted=true;}else{update();}});};
-flush();
-if(who){renderWho();logOpen();}else renderPicker();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(e.status===401){s.className='mt-status err';s.textContent='Sign-in failed, re-enter your PIN. Your submission is saved and will send once you sign in.';submitted=true;}
+  else if(permanent(e)){s.className='mt-status err';s.textContent='Not saved (invalid data). Tell Anton.';update();}
+  else{s.className='mt-status err';s.textContent='No signal? Saved on this phone and will send automatically.';submitted=true;}});};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
 update();
 })();
 </script>
