@@ -206,25 +206,28 @@ const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:
 let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
 const $=id=>document.getElementById(id);
 // state: crew id + first name + optional PIN, all on this device only
-let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
-let submitted=false, sending=false, pinMsg='', crewList=null;
+let pinMsg0='';let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
 function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
 function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
-function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4,6}$/.test(pin))q.pin=pin;return q;}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
 function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
 function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
-function post(p){return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(withAuth(p))})
- .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
 // 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
 function authFail(){LS.del('mt_crew_pin');pin='';pinMsg='Sign-in failed, re-enter your PIN';renderPin();}
 function permanent(e){return e.status===400||e.status===413;}
 function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
 function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
- return post(p).catch(e=>{if(offline(e)||e.status===401){enqueue(p);if(e.status===401)authFail();}throw e;});}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
 let flushing=false;
 function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
  let chain=Promise.resolve(),stop=false;
- q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(e.status===401)authFail();});});});
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
  return chain.finally(()=>{flushing=false;});}
 function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
 function loadCrew(){if(crewList)return Promise.resolve(crewList);
@@ -237,12 +240,12 @@ function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='
   btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
 function renderPin(){const b=$('mt-signin-body');b.className='';
  b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
- '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4–6 digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="6"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
  '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
  b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
  $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
  const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
- $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4,6}$/.test(v)){pinMsg='PIN must be 4–6 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
  $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
  $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
  update();}
@@ -261,7 +264,7 @@ function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send
 function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
  p.client_ts=new Date().toISOString();
  sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
-  if(e.status===401){sending=false;submitted=true;label('Waiting for PIN');card('queued','Sign-in failed, re-enter your PIN at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for PIN');card('queued','Sign-in failed, re-enter your PIN at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
   else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
   else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
   else showErr(p);});}
