@@ -82,6 +82,12 @@ svg{max-width:100%;height:auto;display:block;margin:10px auto}
 .mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
 .mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
 .mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
 .mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
 </style>
 </head>
@@ -157,6 +163,7 @@ svg{max-width:100%;height:auto;display:block;margin:10px auto}
     <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
     <button class="mt-btn" id="mt-send" disabled>Submit</button>
     <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
   </div>
   <div class="isa-footer">📚 <strong>ISA Exam Domains:</strong> Pruning (14%) · Safe Work Practices (15%) · <strong>Sources:</strong> ANSI A300 (Part 1) Pruning standard; ANSI Z133-2017 §6.3.6 &amp; §8.1.6 (as quoted in TCI Magazine); ISA <em>Arborists' Certification Study Guide</em>, Climbing &amp; Working in Trees (drop, snap and hinge cuts); ISA <em>Best Management Practices: Pruning</em></div>
   <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 18</p>
@@ -168,29 +175,30 @@ document.getElementById('tab-'+id).classList.add('active');el.classList.add('act
 </script>
 <script>
 (function(){
-const CFG={"file": "lesson-fri-limb-sequencing.html", "week": 18, "day": "fri", "title": "Limb Removal Sequencing", "version": "2026-10-12-aedd27a87de5", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const CFG={"file": "lesson-fri-limb-sequencing.html", "week": 18, "day": "fri", "title": "Limb Removal Sequencing", "version": "2026-10-13-aedd27a87de5", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
 const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
 let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
 const $=id=>document.getElementById(id);
 // state: crew id + first name + optional PIN, all on this device only
 let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
-let submitted=false, pinMsg='', crewList=null;
+let submitted=false, sending=false, pinMsg='', crewList=null;
 function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
 function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
-function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;if(pin)q.pin=pin;return q;}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4,6}$/.test(pin))q.pin=pin;return q;}
 function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
 function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
 function post(p){return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(withAuth(p))})
- .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;throw e;}));}
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
 // 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
 function authFail(){LS.del('mt_crew_pin');pin='';pinMsg='Sign-in failed, re-enter your PIN';renderPin();}
 function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
 function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
- return post(p).catch(e=>{if(permanent(e))throw e;enqueue(p);if(e.status===401)authFail();throw e;});}
+ return post(p).catch(e=>{if(offline(e)||e.status===401){enqueue(p);if(e.status===401)authFail();}throw e;});}
 let flushing=false;
 function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
  let chain=Promise.resolve(),stop=false;
- q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(permanent(e))return;enqueue(p);stop=true;if(e.status===401)authFail();});});});
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(e.status===401)authFail();});});});
  return chain.finally(()=>{flushing=false;});}
 function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
 function loadCrew(){if(crewList)return Promise.resolve(crewList);
@@ -214,19 +222,30 @@ function renderPin(){const b=$('mt-signin-body');b.className='';
  update();}
 function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
 function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
-function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted;$('mt-send').disabled=!ok;
- const s=$('mt-send-status');if(submitted)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
-function showSaved(j,p){submitted=true;const s=$('mt-send-status');s.className='mt-status ok';
- s.textContent='✔ Recorded for '+who+(p.max_score?(' · score '+p.score+'/'+p.max_score):'')+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver'})+' PT';$('mt-send').disabled=true;}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(e.status===401){sending=false;submitted=true;label('Waiting for PIN');card('queued','Sign-in failed, re-enter your PIN at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
 window.MT_SIGNIN={update:update};
 $('mt-attest').onchange=update;
-$('mt-send').onclick=function(){const q=window.MT_QUIZ;const p=body('submit',{attested:true,score:q?q.score():null,max_score:q?q.total:null,attempts:q?q.attempts:1});
- if(!q){delete p.score;delete p.max_score;}
- this.disabled=true;const s=$('mt-send-status');s.className='mt-status';s.textContent='Saving…';
- sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
-  if(e.status===401){s.className='mt-status err';s.textContent='Sign-in failed, re-enter your PIN. Your submission is saved and will send once you sign in.';submitted=true;}
-  else if(permanent(e)){s.className='mt-status err';s.textContent='Not saved (invalid data). Tell Anton.';update();}
-  else{s.className='mt-status err';s.textContent='No signal? Saved on this phone and will send automatically.';submitted=true;}});};
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
 window.addEventListener('online',()=>flush());
 // start-up: migrate legacy name-only sign-in by first word
 const legacy=LS.get('mt_crew_name');
