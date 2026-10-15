@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orchard Ladder Footing &amp; Mats — Week 19 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1a1a2f 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 19</div>
+  <div class="day-tag">🧗 Friday — Worksite Techniques</div>
+</header>
+<main>
+  <h1>Orchard (Tripod) Ladder Footing &amp; Rubber Mats</h1>
+  <p class="sub">A tripod ladder is only as safe as its three feet. What WorkSafeBC Part 13 requires, how Microbe sets up on slick or soft ground, and the inspection that keeps it that way.</p>
+  <p class="meta">⏱ About 10 minutes · Week 19 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <nav class="tabs"><button class="tab active" onclick="showTab('why',this)">⚠️ Why Now</button><button class="tab" onclick="showTab('law',this)">📜 Part 13</button><button class="tab" onclick="showTab('footing',this)">🧱 Footing &amp; Mats</button><button class="tab" onclick="showTab('setup',this)">✅ Setup</button><button class="tab" onclick="showTab('inspect',this)">🔍 Inspection</button><button class="tab" onclick="showTab('check',this)">💬 Tailgate</button></nav>
+<section class="pane active" id="tab-why"><h2>Learning From Our Own Near-Miss</h2>
+<div class="card"><p>We recently had a <strong>ladder incident on our crew</strong>. We're not sharing who was involved or any personal details. Nobody needs those to learn from it, and they stay private. What we can all use is the lesson: <strong>a tripod ladder is only as good as its footing</strong>, and footing is the step most likely to get rushed at the end of a long day.</p>
+<p>This lesson covers what WorkSafeBC requires, how Microbe sets up on slippery or unstable ground, and how to inspect the ladder and the mats.</p></div>
+<div class="field-note"><div class="fn-label">📋 Field Note — Microbe Tree Crew</div><p>If you saw something on that job, or you have an idea that would have prevented it, tell Anton directly. Near-miss reports aren't about blame. They're how the next one doesn't happen.</p></div>
+<div class="std">📐 OSHA's tripod ladder fact sheet: <strong>falls are the most common ladder hazard</strong>, more falls happen on the <strong>upper part</strong> of the ladder, and most are due to <strong>slippery steps, unstable ladders and not keeping proper contact</strong> with the ladder.</div></section><section class="pane" id="tab-law"><h2>WorkSafeBC OHS Regulation, Part 13: What Applies to Us</h2>
+<div class="card"><ul>
+<li><strong>§13.2 Standards:</strong> a ladder must meet, and be used according to, the applicable <strong>CSA or ANSI standard</strong> in effect when it was made (or another standard the Board accepts).</li>
+<li><strong>§13.3 Inspections:</strong> ladders must be <strong>inspected before use on each shift</strong> and after any modification. Anything that could endanger a worker must be <strong>fixed before the ladder is used</strong>.</li>
+<li><strong>§13.4 Manufactured ladders:</strong> a manufactured portable ladder must be <strong>marked</strong> with its grade of material and its intended use. No legible label means no proof it's the right ladder.</li>
+<li><strong>§13.5(1) Position and stability:</strong> a portable ladder must be <strong>placed on a firm and level surface</strong> and be <strong>long enough</strong> to do the work safely.</li>
+<li><strong>§13.5(2)</strong> (the ~75° angle, 1 m above the landing, tie-off rules) is written for <strong>non-self-supporting</strong> ladders. A tripod orchard ladder is <strong>self-supporting</strong>, so §13.5(1) is our footing rule.</li>
+<li><strong>§13.6 Use restrictions:</strong> if the work <strong>can't be done from a ladder without hazard</strong>, a <strong>work platform</strong> must be provided. Don't carry <strong>heavy, bulky or awkward objects</strong> up or down a ladder.</li></ul></div>
+<div class="card"><h3>What about Part 28 (Agriculture)?</h3>
+<p>Part 28 defines an <strong>orchard ladder</strong> (§28.1: a self-supporting tripod ladder, wide at the bottom, non-adjustable, with a hinged single-leg back) and sets orchard-ladder design rules (§28.26). These include <strong>steel points or other non-slip bases designed for the ground</strong>, when needed for safety. It also exempts orchard ladders from some Part 13 rules (§28.25). <strong>But</strong> §28.2 says Part 28 applies to <strong>agricultural operations on farm land</strong>. Our residential, strata and municipal jobs aren't that, so <strong>Part 13 applies in full</strong>. If a job is on a working farm or orchard, check with Anton first.</p></div></section><section class="pane" id="tab-footing"><h2>Footing on Slippery or Unstable Ground</h2><svg viewBox="0 0 340 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tripod orchard ladder on a slope with the tripod pole uphill and rubber mats under the rail feet">
+<polygon points="10,150 330,110 330,170 10,170" fill="#3a2f22"/>
+<line x1="120" y1="137" x2="175" y2="25" stroke="#c5d0dc" stroke-width="4"/>
+<line x1="150" y1="134" x2="182" y2="25" stroke="#c5d0dc" stroke-width="4"/>
+<line x1="178" y1="25" x2="245" y2="122" stroke="#e8a838" stroke-width="4"/>
+<g stroke="#c5d0dc" stroke-width="2"><line x1="131" y1="114" x2="157" y2="111"/><line x1="141" y1="93" x2="163" y2="90"/><line x1="151" y1="72" x2="169" y2="69"/><line x1="161" y1="51" x2="175" y2="49"/></g>
+<rect x="105" y="136" width="58" height="6" rx="2" fill="#5cb85c" transform="rotate(-7 134 139)"/>
+<text x="60" y="165" fill="#5cb85c" font-size="11">rubber mat: flat, not sliding</text>
+<text x="215" y="102" fill="#e8a838" font-size="11">tripod pole</text>
+<text x="215" y="140" fill="#e8a838" font-size="11">UPHILL</text>
+<text x="190" y="22" fill="#e05a5a" font-size="11">top 3 steps: no</text>
+</svg>
+<div class="card"><h3>How a tripod ladder is meant to stand</h3>
+<ul><li>OSHA: tripod orchard ladders have a <strong>flared base and a tripod pole</strong> for soft, uneven ground and <strong>no spreader bar or locks</strong>. To stay stable, the side rails and tripod pole must <strong>slightly penetrate the ground</strong>.</li>
+<li>Set it <strong>firmly in the ground</strong>, and <strong>not over a soft spot or hole</strong>.</li>
+<li>On a slope, the <strong>tripod pole goes uphill</strong>.</li>
+<li>OSHA also says: <strong>never use these ladders on hard surfaces</strong>.</li></ul></div>
+<div class="std">🟩 <strong>Microbe standard:</strong> on <strong>slippery or unstable ground</strong> (wet leaves, frost or dew on turf, loose bark mulch, muddy or soft soil), we put <strong>rubber mats under the ladder footings</strong>.</div>
+<div class="card"><h3>What the mat is for, and what it isn't</h3>
+<ul><li><strong>For:</strong> giving a foot something to grip instead of skating on a slick surface, and spreading the load so one leg doesn't punch into a soft spot.</li>
+<li><strong>Not for:</strong> making a hard surface OK. Pavement, decks, patio stone and ice stay no-go areas for a tripod ladder, mat or no mat (OSHA: never on hard surfaces).</li>
+<li><strong>The mat must sit flat and stay put.</strong> A mat that slides on wet grass or a slope just moves the slip one layer down.</li>
+<li><strong>The test:</strong> after setup, stand on the bottom step and shift your weight side to side and front to back. Any rocking, sliding or sinking means reset. If it still won't sit <strong>firm and level</strong> (§13.5(1)(a)), it isn't a ladder spot. Use another access method or a work platform (§13.6(1)).</li></ul></div></section><section class="pane" id="tab-setup"><h2>Setup Checklist (Every Move)</h2>
+<div class="card"><ol>
+<li><strong>Inspect first:</strong> pre-shift check done and label legible (§13.3, §13.4).</li>
+<li><strong>Right ladder:</strong> long enough to reach without the top three steps (§13.5(1)(b); OSHA).</li>
+<li><strong>Read the ground:</strong> soft, slick, sloped, hollow or hard? Hard surface → not a tripod ladder spot.</li>
+<li><strong>Clear and mat:</strong> rake off wet leaves and debris. On slippery or unstable ground, lay the rubber mats flat under the footings (Microbe standard).</li>
+<li><strong>Seat it:</strong> rails and pole seated firmly, <strong>pole uphill</strong> on a slope, not over a hole or soft spot (OSHA).</li>
+<li><strong>Weight test</strong> on the bottom step. Reset until there's no rock, slide or sink (§13.5(1)(a)).</li>
+<li><strong>Overhead check:</strong> mark and avoid electrical lines (OSHA).</li>
+<li><strong>Climb right:</strong> one worker per ladder, centred between the rails, both hands on the way up and down, no overreaching (move the ladder instead), and never step off onto a branch or use one for balance (OSHA).</li>
+<li><strong>Tools:</strong> nothing heavy or bulky carried up or down (§13.6(2)). Hand it up or use a tool line.</li>
+<li><strong>Weather:</strong> limit or reschedule ladder work in high wind, heavy rain or thunderstorms (OSHA).</li>
+<li><strong>End of day:</strong> never leave a ladder standing open (OSHA).</li></ol></div>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>October in the valley means wet leaf mats, heavy morning dew and the first frost on shaded turf. The lawn that was fine at 2 pm can be slick at 8 am. Reassess the footing every time you move the ladder, not just at the first setup.</p></div></section><section class="pane" id="tab-inspect"><h2>Inspect the Ladder, and the Mats</h2>
+<div class="card"><h3>Ladder (before each shift, after any change: §13.3)</h3>
+<ul><li>Rivets: <strong>missing, loose or sheared</strong> (OSHA).</li>
+<li>Steps: <strong>broken</strong>, cracked or loose (OSHA).</li>
+<li>Rails and tripod pole: <strong>bent</strong> (OSHA). Check the pole hinge and the feet.</li>
+<li>Label present and legible (§13.4).</li>
+<li><strong>After any tip-over</strong>, inspect it <strong>top to bottom</strong> before it goes back in service (OSHA).</li></ul>
+<div class="danger"><span class="lbl">⚠ Damaged = out of service</span>Tag it "out of service" and keep it apart from good ladders. <strong>Workers don't repair ladders</strong> (OSHA). §13.3 requires any hazard to be fixed before the ladder is used again.</div></div>
+<div class="card"><h3>Rubber mats (Microbe standard)</h3>
+<ul><li>Torn, split, curled or worn smooth → replace.</li>
+<li>Oily, muddy or icy → clean and dry before use. A slick mat is worse than no mat.</li>
+<li>Store them flat and dry with the ladders so they're on the truck when you need them.</li></ul></div>
+<div class="card"><h3>Storage</h3><p>Store ladders per the manufacturer's instructions, away from excessive heat and cold (OSHA).</p></div></section><section class="pane" id="tab-check"><h2>Tailgate Quick Check</h2>
+<div class="card"><ol>
+<li>Which Part 13 section requires a firm and level surface? (§13.5(1)(a))</li>
+<li>When must the ladder be inspected? (Before use on each shift, and after any modification: §13.3)</li>
+<li>Where does the tripod pole go on a slope? (Uphill)</li>
+<li>What's the mat for, and where is a tripod ladder a no-go even with a mat? (Grip and load spread on slick or soft ground. Never on hard surfaces.)</li>
+<li>The ladder still rocks after two resets. What now? (Not a ladder spot. Use another access method or a work platform: §13.6(1).)</li></ol></div>
+<p style="font-size:0.88rem;color:#8a9bb0">Read every tab, then tick the box below to record it.</p></section>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Oct 15, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation/part-13-ladders-scaffolds-and-temporary-work-platforms" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">WorkSafeBC OHS Regulation, Part 13: Ladders, Scaffolds and Temporary Work Platforms (§13.2–13.6)</a> <span style="color:#8a9bb0">(standards, inspection, marking, firm and level, use restrictions)</span></li><li><a href="https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation/part-28-agriculture" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">WorkSafeBC OHS Regulation, Part 28: Agriculture (§28.1, 28.2, 28.25–28.27)</a> <span style="color:#8a9bb0">(orchard ladder definition, farm-only application, design rules)</span></li><li><a href="https://www.worksafebc.com/en/health-safety/tools-machinery-equipment/ladders/types/orchard" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">WorkSafeBC, Orchard ladders</a> <span style="color:#8a9bb0">(WorkSafeBC orchard ladder resources)</span></li><li><a href="https://www.osha.gov/sites/default/files/publications/OSHA3728.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">OSHA, Safe Use of Tripod Orchard Ladders (OSHA 3728, PDF)</a> <span style="color:#8a9bb0">(how tripods stand, slope, hard surfaces, climbing, inspection, storage)</span></li><li><a href="https://agsafebc.ca/download/ladder-safety-tips/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">AgSafe BC, Ladder Safety Tips Poster</a> <span style="color:#8a9bb0">(BC orchard ladder poster for tailgate use)</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline</a> <span style="color:#8a9bb0">(Safe Work Practices = 15%)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Read every section, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (15%) · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 19</p>
+</main>
+<script>
+function showTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+document.getElementById('tab-'+id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-fri-orchard-ladder-footing.html", "week": 19, "day": "fri", "title": "Orchard Ladder Footing & Mats", "version": "2026-10-15-d76c9651792a", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){LS.del('mt_crew_pin');pin='';pinMsg='Sign-in failed, re-enter your PIN';renderPin();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for PIN');card('queued','Sign-in failed, re-enter your PIN at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>

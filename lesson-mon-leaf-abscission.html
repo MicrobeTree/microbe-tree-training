@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaf Abscission &amp; Fall Colour — Week 19 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1a2f1a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 19</div>
+  <div class="day-tag">🌿 Monday — Tree Biology</div>
+</header>
+<main>
+  <h1>Leaf Abscission &amp; Fall Colour: How Trees Let Go</h1>
+  <p class="sub">Every October the phone rings: "Why is my tree turning early?" "Should I prune now?" "Why won't the leaves fall?" Here's the biology behind the answers.</p>
+  <p class="meta">⏱ About 10 minutes · Week 19 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🍂 The short version</h3>
+    <p>A leaf doesn't just fall off. The tree <strong>cuts it loose on purpose</strong>. Shorter days and cooler nights start the shutdown. The tree pulls nutrients back out of the leaf, builds a weak "tear here" line at the base of the leaf stalk, and seals the wound as the leaf comes away. The colours are a side effect of that shutdown.</p>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Where</label><span>Abscission zone at the base of the petiole</span></div>
+      <div class="fact-cell"><label>Starts it</label><span>Shorter days + cooler temps start senescence</span></div>
+      <div class="fact-cell"><label>Holds the leaf on</label><span>Auxin coming from the leaf</span></div>
+      <div class="fact-cell"><label>Lets it go</label><span>Ethylene → enzymes dissolve cell glue</span></div>
+      <div class="fact-cell"><label>Yellow / orange</label><span>Carotenoids, there all summer</span></div>
+      <div class="fact-cell"><label>Red / purple</label><span>Anthocyanins, made new in fall</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>✂️ What it means for pruning</h3>
+    <ul>
+      <li><strong>Iowa State Extension:</strong> late dormant season is generally the best time to prune most deciduous trees. Where you can, <strong>avoid pruning while trees are leafing out in spring or dropping leaves in fall</strong>.</li>
+      <li><strong>Dead, broken or hazardous wood</strong> (storm damage, for example) can come out at any time of year.</li>
+      <li>With the leaves off, you get a clear view of the structure, which is one reason Iowa State favours the late dormant season.</li>
+    </ul>
+    <div class="field-note"><div class="fn-label">📋 Field Note — Microbe Tree Crew</div><p>October calls for "a quick trim before the leaves are gone" are common. Hazard and clearance work, yes. Routine structural pruning on deciduous trees: book it for the dormant season, once the leaves are down.</p></div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">What actually happens in the <strong>abscission zone</strong> before a leaf drops?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>The leaf stalk dries out and snaps like a dead twig</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>Bark grows over the leaf stalk and pushes it off</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>Cells at the base of the petiole release enzymes that dissolve the 'glue' between cell walls. The leaf hangs on by its veins until wind or rain breaks them, and the scar is sealed with a corky, suberized layer</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>Frost freezes the petiole and the leaf falls when it thaws</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">A planned cut, sealed before it's finished</div><p>The abscission zone is a narrow band of cells at the <strong>base of the leaf stalk (petiole)</strong>. When it activates:</p>
+<ul><li>Cells release <strong>pectinases and cellulases</strong> that dissolve the middle lamella, the pectin-rich layer cementing neighbouring cells together.</li>
+<li>Once those cells separate, the leaf is held on only by its <strong>vascular strands</strong>. Wind finishes the job.</li>
+<li>On the tree side, a <strong>protective layer</strong> forms at the same time or just after. On the leaf scar it's one or more <strong>suberized (corky) cell layers</strong> that cut water loss and keep pathogens out.</li></ul>
+<p>The same process also lets trees drop leaves early under stress (drought, pathogens, wounding), sometimes without the usual senescence.</p>
+<div class="field-note"><div class="fn-label">📋 Field Note — ISA exam</div><p>Know the words: <strong>senescence</strong> (the planned shutdown), <strong>abscission</strong> (the separation), <strong>leaf scar</strong> (the sealed wound left on the twig). Leaf scars are also a winter ID feature.</p></div></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">Which hormone change sets abscission off?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Auxin flowing out of the leaf drops; that makes the abscission zone respond to ethylene, which switches on the cell-wall-dissolving enzymes</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Calcium from the roots hardens the petiole until it snaps</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>Gibberellin rises and stretches the petiole until it tears</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Abscisic acid closes the stomata, so the leaf suffocates and falls</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Less auxin, more ethylene</div><p>Classic experiments (Addicott and others, reviewed by Jin, SLU 2015) showed that a healthy leaf sends <strong>auxin</strong> down the petiole, and that keeps the abscission zone switched off. Put auxin on a cut petiole and abscission is <strong>delayed</strong>.</p>
+<ul><li>As the leaf senesces, auxin from the leaf side <strong>falls</strong>. Ethylene production and/or sensitivity in the zone <strong>rises</strong>, and that triggers the hydrolytic enzymes.</li>
+<li>Wisconsin Extension's version: ethylene builds up at the base of the leaf stalk and breaks down the cells that hold the leaf on.</li>
+<li>Auxin, gibberellins and brassinosteroids generally <em>hold off</em> abscission. Ethylene, ABA, jasmonic acid and cytokinins have been shown to <em>speed it up</em>.</li></ul>
+<p>Last week's dormancy lesson had ABA as the "shut-down" hormone in buds. This week, <strong>ethylene</strong> is the one that actually drops the leaf.</p></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">Why do some trees turn yellow and others turn red?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>Yellow and red pigments are both made fresh every October</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>Red leaves are diseased; yellow leaves are healthy</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>Colour depends only on soil pH</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>Yellow and orange carotenoids are in the leaf all summer, hidden by chlorophyll. Reds come from anthocyanins the leaf makes new in fall, partly as a sunscreen while nutrients are pulled back</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Unmasked vs. newly made</div><ul><li><strong>Carotenoids</strong> (yellow, orange) work alongside chlorophyll all season. As chlorophyll is broken down in fall, they show through.</li>
+<li><strong>Anthocyanins</strong> (reds, purples) are <strong>made in autumn</strong>, from sugars trapped in the leaf. Wisconsin Extension's research summary says they shade the leaf's machinery from bright light while the tree is still recovering nutrients. Red leaves on the sunny side of a crown are often the brightest.</li>
+<li><strong>Tannins</strong> give the browns and coppers (oaks, for example) once the other pigments fade.</li></ul>
+<p><strong>Weather:</strong> cool, sunny days give the brightest colour. Very warm autumns shorten the show and reduce reds. A hard freeze can kill leaves before the best colour develops.</p>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Our sunny fall days and cool nights fit that "cool and sunny" pattern, but a warm October or an early hard freeze can change a season's colour. Up in the hills, the gold in the conifer stands is <strong>western larch</strong>, a native <em>deciduous conifer</em> whose needles turn yellow in autumn and drop for winter. Good exam trivia, and clients ask about it.</p></div></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">Mid-August, a strata client says one boulevard maple is "already turning" while the rest of the row is green. What's the best response?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Nothing to worry about, it's just an early variety</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Treat it as a possible stress signal: check for a buried root flare, girdling roots, trunk wounds, compaction, recent construction and drought, and book a proper look</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Fertilize it heavily right away</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Prune out a third of the crown to reduce water demand</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Early colour = possible cry for help</div><p>Purdue Extension says individual trees that colour well ahead of others of the same species may be <strong>"shouting out a proverbial cry for help."</strong> Their check list:</p>
+<ul><li>Is there a visible <strong>root flare</strong>, or was it planted deep or buried by a grade change?</li>
+<li>Any <strong>trunk, root flare or surface-root damage</strong> (possible hidden decay)?</li>
+<li><strong>Girdling roots</strong>?</li>
+<li>Mulched, or competing with turf? Signs of earlier <strong>drought</strong>?</li>
+<li><strong>Compaction</strong>, or <strong>construction within the last 5 years</strong>?</li></ul>
+<p>Wisconsin Extension adds that trees next to streets, driveways and buildings often colour early from heat off pavement, compacted soil and de-icing salts. Above-ground symptoms can lag root injury by <strong>years</strong>.</p>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Hot, dry summers and narrow boulevard strips are a perfect setup for this. When a client asks "is it dying?", don't guess. Explain that early colour is a symptom, not a diagnosis, and offer an assessment.</p></div></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">After an early hard freeze, a client's tree is still holding a full set of brown, dead leaves in November. What's going on, and what's the risk?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>It's definitely dead; schedule a removal</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>It's fire blight on every tree in the neighbourhood</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>The freeze killed the leaves before the abscission zone finished, so they're stuck on (marcescence). The tree isn't necessarily harmed, but a heavy wet snow or ice before they drop can mean extra limb breakage</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Leaves held into winter protect the tree from snow load</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Marcescence: the cut never finished</div><ul><li>K-State Extension: <strong>early freezes</strong> can kill still-green leaves and interrupt the normal shutdown, so the abscission layer never completes. That's <strong>marcescence</strong> ("withering without falling off"). Trees showing it are <strong>not necessarily harmed</strong>. Watch the next spring for real damage.</li>
+<li>Some trees (oaks, beeches) hold dead leaves normally. UNH Extension notes that a <strong>long, mild fall</strong> can also leave late-colouring trees like Japanese maple with incomplete abscission layers.</li>
+<li><strong>Risk:</strong> a tree without leaves is much less likely to break under ice or heavy wet snow. If that snow arrives while leaves are still hanging, expect more limb failures.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>An early wet snow on trees still in leaf is a busy day for storm calls. Separately: on apples, crabapples, pears, hawthorns and mountain-ash, our <a href="lesson-thu-fireblight-pruning-timing.html" style="color:#7ec8e3">fire blight timing lesson</a> notes that blighted branches often hold dead leaves into winter. Dead leaves on <strong>one or two branches</strong> of a bare tree are worth a closer look.</p></div></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Oct 15, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://research.slu.se/ws/portalfiles/portal/19070311/fulltext.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Jin (2015), <em>The Role of Auxin in Abscission of Organs and Tissues</em>, SLU doctoral thesis</a> <span style="color:#8a9bb0">(abscission zone, enzymes, auxin/ethylene, protective layer)</span></li><li><a href="https://hort.extension.wisc.edu/plant-hormones-change-with-seasons/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Wisconsin Extension, Plant Hormones Change with Seasons</a> <span style="color:#8a9bb0">(ethylene at the leaf-stalk base)</span></li><li><a href="https://hort.extension.wisc.edu/articles/leaf-color-change-autumn/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Wisconsin Extension (Hoch), Leaf Color Change in Autumn</a> <span style="color:#8a9bb0">(carotenoids, anthocyanins, weather)</span></li><li><a href="https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Clemson HGIC 1029, Color Changes in Autumn Leaves</a> <span style="color:#8a9bb0">(abscission layer, tannins, pigments)</span></li><li><a href="https://extension.illinois.edu/blogs/good-growing/2019-10-08-why-do-tree-leaves-change-color-autumn" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Illinois Extension, Why do tree leaves change color in autumn?</a> <span style="color:#8a9bb0">(senescence, resorption, abscission layer)</span></li><li><a href="https://www.purdue.edu/fnr/extension/early-fall-color-a-symptom-of-stress-purdue-landscape-report/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Purdue Landscape Report, Early Fall Color – A Symptom of Stress</a> <span style="color:#8a9bb0">(early-colour checklist)</span></li><li><a href="https://hort.extension.wisc.edu/reasons-for-early-fall-color-on-trees/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Wisconsin Extension, Early fall colors can be a sign of tree distress</a> <span style="color:#8a9bb0">(pavement, compaction, lagging symptoms)</span></li><li><a href="https://yardandgarden.extension.iastate.edu/how-to/proper-time-prune-trees-and-shrubs" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Iowa State Extension, Proper Time to Prune Trees and Shrubs</a> <span style="color:#8a9bb0">(pruning timing, leaf-out and leaf-drop)</span></li><li><a href="https://hnr.k-state.edu/extension/horticulture-resource-center/common-pest-problems/documents/Leaves%20That%20Do%20not%20Drop%20in%20the%20Fall.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">K-State Extension, Leaves on Trees Don't Drop in Fall (Marcescent Trees)</a> <span style="color:#8a9bb0">(early freeze, marcescence, snow/ice breakage)</span></li><li><a href="https://extension.unh.edu/blog/2018/01/why-are-japanese-maples-not-dropping-their-leaves-year" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">UNH Extension, Why are Japanese maples not dropping their leaves?</a> <span style="color:#8a9bb0">(incomplete abscission after a mild fall)</span></li><li><a href="https://linnet.geog.ubc.ca/Atlas/Atlas.aspx?sciname=Larix+occidentalis" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">E-Flora BC, <em>Larix occidentalis</em> (western larch)</a> <span style="color:#8a9bb0">(deciduous conifer, yellow autumn needles, native to southern BC)</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline</a> <span style="color:#8a9bb0">(domain weights)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domains:</strong> Tree Biology (11%) · Pruning (14%) · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 19</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'C',2:'A',3:'D',4:'B',5:'C'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-mon-leaf-abscission.html", "week": 19, "day": "mon", "title": "Leaf Abscission & Fall Colour", "version": "2026-10-15-9b64fab9845a", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){LS.del('mt_crew_pin');pin='';pinMsg='Sign-in failed, re-enter your PIN';renderPin();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for PIN');card('queued','Sign-in failed, re-enter your PIN at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>

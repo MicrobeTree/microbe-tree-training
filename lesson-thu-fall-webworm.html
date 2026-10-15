@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fall Webworm vs Tent Caterpillar — Week 19 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1f1a0f 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 19</div>
+  <div class="day-tag">🦠 Thursday — Pests &amp; Diseases</div>
+</header>
+<main>
+  <h1>Fall Webworm (<em>Hyphantria cunea</em>) vs Western Tent Caterpillar</h1>
+  <p class="sub">Late-summer webs on the branch tips aren't the spring tents from May. Tell them apart in five seconds, know the real risk, and give clients advice that holds up.</p>
+  <p class="meta">⏱ About 10 minutes · Week 19 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🕸️ Two "tent" bugs, two seasons</h3>
+    <p>Same question from clients, different insect. Spring tents in the <strong>crotches</strong> are western tent caterpillar (see the Week 18 <a href="lesson-thu-tent-caterpillar.html" style="color:#7ec8e3">Western Tent Caterpillar</a> lesson). Late-summer webs wrapped around the <strong>branch tips</strong> are fall webworm. Getting it right changes what you tell the client and when to act.</p>
+    <div class="tblwrap"><table>
+      <tr><th></th><th>Fall webworm<br><em>Hyphantria cunea</em></th><th>Western tent caterpillar<br><em>Malacosoma californicum</em></th></tr>
+      <tr><td><strong>Nest spot</strong></td><td>Outer <strong>branch tips</strong>; web encloses the leaves</td><td>Inner <strong>crotches / forks</strong></td></tr>
+      <tr><td><strong>When seen</strong></td><td>Mid-summer into fall (webs from late July, biggest Aug–Sept)</td><td>Spring, shortly after budburst</td></tr>
+      <tr><td><strong>Feeding</strong></td><td>Inside the web, which fills with droppings</td><td>Leave the tent to feed, return to rest (Week 18 lesson)</td></tr>
+      <tr><td><strong>Overwinters</strong></td><td>Pupa in a cocoon in bark, litter or soil</td><td>Egg mass (150–250 eggs) in foamy spumaline around a twig</td></tr>
+      <tr><td><strong>Generations</strong></td><td>One per year in Canada</td><td>One per year</td></tr>
+      <tr><td><strong>Typical impact</strong></td><td>Late-season damage; usually minor on healthy trees</td><td>Considered mostly aesthetic</td></tr>
+    </table></div>
+  </div>
+  <div class="card">
+    <h3>📍 Is fall webworm really here? Yes.</h3>
+    <ul>
+      <li><strong>Native</strong> to North America, and one of the few native species accidentally introduced to Europe and Asia (NRCan).</li>
+      <li><strong>In BC:</strong> records are mostly from the <strong>southern third of the province</strong>, with one northern record from Atlin (Pacific Northwest Moths).</li>
+      <li><strong>In the Okanagan:</strong> listed on the <strong>Okanagan Biodiversity Checklist</strong>. The BC Ministry of Agriculture and Food's provincial insect reports said populations were <strong>"very high in the North Okanagan"</strong> in <strong>2023</strong>, and <strong>again in 2024</strong>. In August 2023, local news (iNFOnews) reported a big webworm year in Kamloops and the Okanagan, with a photo of a web on <strong>Knox Mountain in Kelowna</strong>.</li>
+    </ul>
+    <p style="font-size:0.85rem;color:#8a9bb0">Bottom line: an established native insect with boom years, not a new invasive. The most recent provincial report we found is for 2024, so don't promise clients a bad (or quiet) year. Watch what's happening locally.</p>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">Which statement about fall webworm in BC is accurate?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>It's a new invasive from Asia, first found in BC in 2023</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>It's a native North American moth, recorded mostly in the southern third of BC, and populations were reported very high in the North Okanagan in 2023</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>It doesn't occur west of the Rockies</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>It only feeds on conifers</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Native, established, sometimes abundant</div><ul><li>NRCan: fall webworm is <strong>native</strong> to North America and was introduced <em>from</em> here to Europe and Asia, not the other way around.</li>
+<li>Pacific Northwest Moths: BC records are mostly from the <strong>southern third</strong> of the province. In the PNW it's usually uncommon, but outbreaks are <strong>more likely in disturbed urban areas and orchards</strong>.</li>
+<li>BC Ministry of Agriculture and Food reports to the Western Committee on Crop Pests: populations <strong>very high in the North Okanagan</strong> in 2023 and again in 2024.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Urban yards, orchards, riparian willows and cottonwoods are the places to watch. When you report a web, note the host and the location. That kind of local record helps.</p></div></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">Late August, West Kelowna. Loose grey webbing wraps the leaves at the <strong>ends</strong> of several chokecherry branches, and the caterpillars are inside it. What is it?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Western tent caterpillar</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Forest tent caterpillar</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>Spider mites</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Fall webworm</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Tips + late summer + feeding inside = fall webworm</div><ul><li><strong>Fall webworm:</strong> webs on the <strong>terminal (outer tip)</strong> of branches. Wisconsin Extension says it "always places the tent on the end of the branch." Larvae <strong>feed inside</strong> the web, so it fills with droppings and leaf bits. Most noticeable <strong>mid-summer into fall</strong>.</li>
+<li><strong>Tent caterpillars</strong> usually web the <strong>inner foliage at the crotch</strong> of branches (UC IPM) and show up in <strong>spring</strong>, right after budburst (USDA FS FIDL 119).</li>
+<li><strong>Timeline (AAFC):</strong> moths emerge late June to early July, eggs go on <strong>leaf undersides</strong>, larvae feed <strong>6–8 weeks</strong>, then drop to the litter and soil in <strong>September</strong> to pupate.</li></ul>
+<p><strong>Hosts:</strong> more than 100 tree species (NRCan), including apple, chokecherry, pin cherry, aspen, balsam poplar, alder, birch, elm, ash and willow. Cottonwood, maple, mulberry, fruit and nut trees are also listed (UC IPM).</p></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">Why is pruning out egg bands in winter a good control for western tent caterpillar but <strong>not</strong> for fall webworm?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>Western tent caterpillar spends winter as egg masses on twigs. Fall webworm spends winter as pupae in cocoons in bark crevices, leaf litter or soil, so there's nothing on the twigs to prune</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>Fall webworm eggs are too small to see</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>Fall webworm has three generations a year</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>Both overwinter as adults under bark</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Know where they spend the winter</div><ul><li><strong>Western tent caterpillar:</strong> eggs laid in oval masses of <strong>150–250</strong> that partly circle twigs, covered with frothy <strong>spumaline</strong> (FIDL 119). Snip and bag them during dormant pruning.</li>
+<li><strong>Fall webworm:</strong> overwinters as <strong>pupae</strong> in thin cocoons in bark, under leaf litter or in the soil (Wisconsin; NRCan). In spring, females lay eggs in hairy masses on the <strong>undersides of leaves</strong>.</li>
+<li>So the fall webworm window is <strong>summer</strong>: find the webs while they're <strong>small</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">A strata board wants every fall webworm web on their mature willows "sprayed today." The webs are big, it's mid-September, and the trees look healthy. Best IPM advice?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Broadcast a broad-spectrum insecticide over every tree</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Burn the webs out with a torch</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Explain that late-season feeding rarely harms healthy established trees. Remove reachable webs mechanically. If treatment is ever justified, use a selective product such as Btk on young larvae while webs are small, applied with enough pressure to get through the silk, per the label, by a licensed applicator</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Cut off every infested branch, however large</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Tolerate, remove, or treat early and selectively</div><ul><li><strong>Tolerance is a valid choice:</strong> Wisconsin Extension says damage is generally <strong>not significant on healthy, well-established trees</strong>. By the time leaves are being eaten, the trees have already stored enough energy, and in many cases simply tolerating the webs is acceptable.</li>
+<li><strong>Mechanical:</strong> cut out small webs if the pruning won't harm the tree's shape or health. Snag larger webs with a pole or forked stick and destroy them. UC IPM suggests twirling webs into a ball with a brush on a pole.</li>
+<li><strong>Don't burn webs.</strong> Wisconsin: burning is not needed or recommended, does more harm than the insects, and is a fire hazard. In the dry Okanagan, that's a hard no.</li>
+<li><strong>Selective products:</strong> <em>Bacillus thuringiensis</em> (Bt) kills only butterfly and moth larvae that eat treated foliage, and spares the parasitic flies and wasps that attack webworms. UC IPM suggests a second Bt application 7–10 days later because it breaks down quickly. Sprays must be applied with enough pressure to penetrate the web (AAFC; UC IPM). <strong>Spinosad</strong> is toxic to bees, so don't use it on flowering plants (UC IPM).</li>
+<li><strong>Timing:</strong> apply while webs and caterpillars are <strong>small</strong>. Mid-September with big webs means larvae are close to dropping to pupate (AAFC), so spraying now achieves little.</li></ul>
+<div class="std">📐 In BC, pesticide use is regulated under the <em>Integrated Pest Management Act</em>. Commercial applications need the right licence and certified applicators, and you always follow the product label.</div></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">What's the right message to a homeowner worried their birch "is being eaten alive" by fall webworm in August?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>"It will die this year unless we spray."</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>"These webs look bad, but late-summer feeding usually doesn't seriously harm a healthy, established tree. We can pull reachable webs. The tree to worry about is one that's repeatedly defoliated or already stressed by drought, recent planting or construction, so keep it watered, especially next spring."</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>"Cut the tree down to stop the spread."</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>"It's the same pest as in May, so it'll come back next week."</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Calm, accurate, and focused on stress</div><ul><li>NRCan: even severe infestations have <strong>little impact</strong> because the damage comes near the end of the growing season, although trees may be weakened and more open to other insects and diseases.</li>
+<li>Wisconsin: <strong>repeated defoliation over several years</strong>, plus other stress (drought, recent planting, construction), can weaken trees. After defoliation, make sure the tree gets <strong>enough water the next spring</strong>.</li>
+<li><strong>Natural enemies</strong> (parasitoids and predators) build up as webworms increase and usually bring populations down after a few years (Wisconsin). Spot treatments protect them.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Microbe Tree Crew</div><p>Crew standard: gloves and eye protection when pulling webs, and bag them so live larvae don't go back into the yard.</p></div></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Oct 15, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://tidcf.nrcan.gc.ca/en/insects/factsheet/8125" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">NRCan TIMDCF, Fall webworm</a> <span style="color:#8a9bb0">(native status, hosts, one generation in Canada, overwintering, impact)</span></li><li><a href="https://agriculture.canada.ca/en/agricultural-production/crop-protection/diseases-and-pests-agroforestry/fall-webworm" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Agriculture and Agri-Food Canada, Fall Webworm</a> <span style="color:#8a9bb0">(life cycle timing, nests, spray penetration)</span></li><li><a href="https://moths.pnwinsects.org/species/hyphantria-cunea/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Pacific Northwest Moths, <em>Hyphantria cunea</em></a> <span style="color:#8a9bb0">(BC distribution, urban and orchard outbreaks, webs at branch tips)</span></li><li><a href="https://westernforum.org/wp-content/uploads/2025/09/BC-Insect-pest-Report-2023.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">BC Ministry of Agriculture and Food, 2023 Insect Pest Report (PDF)</a> <span style="color:#8a9bb0">(very high populations in the North Okanagan, 2023)</span></li><li><a href="https://westernforum.org/wp-content/uploads/2025/09/BC-WCCP-report-2024.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">BC Ministry of Agriculture and Food, 2024 WCCP report (PDF)</a> <span style="color:#8a9bb0">(very high again in the North Okanagan, 2024)</span></li><li><a href="https://infonews.ca/news/2451905/in-video-big-year-for-webworm-caterpillars-in-kamloops-okanagan/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">iNFOnews (Aug 27, 2023), Big year for webworm caterpillars in Kamloops, Okanagan</a> <span style="color:#8a9bb0">(web photographed on Knox Mountain, Kelowna)</span></li><li><a href="https://www.rdcochecklist.info/query_result?group=Lepidoptera" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Okanagan Biodiversity Checklist (RDCO), Lepidoptera</a> <span style="color:#8a9bb0">(listed in the Okanagan)</span></li><li><a href="https://hort.extension.wisc.edu/articles/fall-webworm-hyphantrea-cunea/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Wisconsin Extension, Fall Webworm</a> <span style="color:#8a9bb0">(tips vs crotches, feeding, overwintering, impact, management, no burning)</span></li><li><a href="https://ipm.ucanr.edu/home-and-landscape/fall-webworm/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">UC IPM, Fall Webworm</a> <span style="color:#8a9bb0">(terminal webs vs crotch tents, Bt/spinosad, mechanical removal)</span></li><li><a href="https://www.fs.usda.gov/foresthealth/docs/fidls/FIDL-119-WesternTentCaterpillar.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">USDA Forest Service FIDL 119, Western Tent Caterpillar (PDF)</a> <span style="color:#8a9bb0">(spring tents, egg masses, spumaline)</span></li><li><a href="https://agsci.oregonstate.edu/nurspest/insects/western-tent-caterpillar" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Oregon State Nursery IPM, Western Tent Caterpillar</a> <span style="color:#8a9bb0">(one generation, egg stage, aesthetic damage)</span></li><li><a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/03058_01" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">BC <em>Integrated Pest Management Act</em></a> <span style="color:#8a9bb0">(pesticide regulation in BC)</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline</a> <span style="color:#8a9bb0">(domain weights)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Diagnosis &amp; Treatment (9%) · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 19</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'B',2:'D',3:'A',4:'C',5:'B'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-thu-fall-webworm.html", "week": 19, "day": "thu", "title": "Fall Webworm vs Tent Caterpillar", "version": "2026-10-15-d7a43709b4dc", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){LS.del('mt_crew_pin');pin='';pinMsg='Sign-in failed, re-enter your PIN';renderPin();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for PIN');card('queued','Sign-in failed, re-enter your PIN at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>

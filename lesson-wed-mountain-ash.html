@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mountain-Ash (Sorbus) — Week 19 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1a2f1a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 19</div>
+  <div class="day-tag">🌳 Wednesday — Tree Profile</div>
+</header>
+<main>
+  <h1>Mountain-Ash (<em>Sorbus</em>): ID, Kelowna Use, Problems &amp; Care</h1>
+  <p class="sub">It's not an ash, it's a rose. Learn to tell European from native, know why Okanagan mountain-ash fail early, and know what to tell the client.</p>
+  <p class="meta">⏱ About 10 minutes · Week 19 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🍒 Fast facts</h3>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Genus</label><span><em>Sorbus</em>, rose family (Rosaceae)</span></div>
+      <div class="fact-cell"><label>Leaves</label><span>Alternate, pinnately compound, toothed leaflets</span></div>
+      <div class="fact-cell"><label>Flowers / fruit</label><span>Flat-topped white clusters → orange-red pomes</span></div>
+      <div class="fact-cell"><label>Not a true ash</label><span>True ash (<em>Fraxinus</em>) has <strong>opposite</strong> leaves</span></div>
+      <div class="fact-cell"><label>Big three problems</label><span>Fire blight · sunscald-canker · borers</span></div>
+      <div class="fact-cell"><label>Kelowna inventory</label><span>~120 city trees, mostly showy mountain-ash</span></div>
+    </div>
+    <p style="margin-top:8px">Compact, pretty, loaded with berries, and short-lived on hot, dry sites. Mountain-ash is a strata and boulevard favourite that keeps us busy. This lesson covers ID, local use, its problems and how we care for it. For <strong>when and how to cut fire blight out</strong>, see Thursday's <a href="lesson-thu-fireblight-pruning-timing.html" style="color:#7ec8e3">Fire Blight &amp; Pruning Timing</a> lesson. It isn't repeated here.</p>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">Mid-winter, no leaves. Which bud tells you you're looking at <strong>European</strong> mountain-ash (<em>Sorbus aucuparia</em>)?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>Shiny, sticky buds with hairless outer scales</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>Buds covered in long, soft, grey hairs (densely grey-woolly)</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>Rusty-hairy buds on a shrub under 5 m</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>Opposite buds with a big terminal bud like an ash</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Fuzzy grey buds = European</div><p>Using E-Flora BC's key and NRCan's showy mountain-ash factsheet:</p>
+<div class="tblwrap"><table><tr><th>Species</th><th>Status in BC</th><th>Key ID</th></tr>
+<tr><td><strong>European</strong> (<em>S. aucuparia</em>)</td><td>Exotic, introduced from Eurasia</td><td>Tree 5–15 m; leaflets usually <strong>more than 13</strong>; winter buds <strong>densely grey, soft-hairy</strong>; scarlet fruit</td></tr>
+<tr><td><strong>Western / Greene's</strong> (<em>S. scopulina</em>)</td><td>Native; frequent east of the Coast-Cascades</td><td>Shrub 1–5 m; buds <strong>sticky, sparsely white-hairy</strong>; leaflets sharp-pointed; orange fruit</td></tr>
+<tr><td><strong>Sitka</strong> (<em>S. sitchensis</em>)</td><td>Native, common, montane to alpine</td><td>Shrubby; buds <strong>rusty-hairy</strong>; leaflets blunt, toothed only part-way; red, glaucous fruit</td></tr>
+<tr><td><strong>Showy</strong> (<em>S. decora</em>)</td><td>Native to eastern Canada (Sask. eastward), <strong>not BC</strong></td><td>Terminal bud <strong>shiny, sticky, outer scales hairless</strong>; 13–17 leaflets; red fruit in Aug–Sept</td></tr></table></div>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>The natives are mostly mountain shrubs you'll see on hikes and at higher-elevation properties. The single-stem "mountain-ash" trees in town are planted, either European or showy. E-Flora notes European mountain-ash is an <strong>emerging invasive</strong> in the Vancouver region.</p></div></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">A client calls their tree an "ash" and is worried about emerald ash borer talk. You see alternate, compound leaves and orange berries. What do you tell them?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>It's a true ash; start treatment now</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Mountain-ash and green ash are the same species</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>It's a mountain-ash, a <em>Sorbus</em> in the rose family, not a true ash. True ashes like green ash (<em>Fraxinus</em>) have opposite leaves. The issue to watch on a mountain-ash is fire blight, a rose-family disease</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Berries mean it's a hawthorn</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Name ≠ family</div><ul><li>E-Flora: <em>Sorbus</em> leaves are <strong>alternate</strong> and pinnately compound. USU: green ash (<em>Fraxinus pennsylvanica</em>, olive family) has <strong>opposite</strong>, pinnately compound leaves. Leaf arrangement settles it in seconds, and it's an ISA ID staple.</li>
+<li>Being in the <strong>rose family</strong> puts mountain-ash in the same disease club as apple, pear, crabapple and hawthorn. The PNW Plant Disease Handbook rates <strong>European and American mountain-ash as very susceptible to fire blight</strong>, and calls it a problem <strong>mostly east of the Cascades when bloom is warm</strong>. That's us.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Microbe Tree Crew</div><p>For blight timing, cut distances and tool sanitation, use the <a href="lesson-thu-fireblight-pruning-timing.html" style="color:#7ec8e3">Fire Blight &amp; Pruning Timing</a> lesson. Here, just recognize the symptoms: blackened, "scorched" shoot tips, shepherd's crooks and purplish cankers.</p></div></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">According to the City of Kelowna's open tree inventory, which <em>Sorbus</em> makes up most of the city-maintained mountain-ash?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>Showy mountain-ash (<em>S. decora</em>)</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>European mountain-ash (<em>S. aucuparia</em>)</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>Sitka mountain-ash (<em>S. sitchensis</em>)</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>There are no mountain-ash in the inventory</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Kelowna's numbers</div><p>We queried the City of Kelowna's open <strong>Tree Inventory</strong> on Oct 15, 2026: about <strong>24,600</strong> city-maintained trees, of which <strong>120 are <em>Sorbus</em></strong>: <strong>112 showy mountain-ash (<em>S. decora</em>)</strong> and <strong>8 European (<em>S. aucuparia</em>)</strong>. Median trunk diameter (DBH) is about <strong>15&nbsp;cm</strong>, so they're mostly small trees.</p>
+<ul><li>Showy mountain-ash is native to eastern Canada, not BC (VASCAN). The PNW Handbook names <em>S. americana</em> 'Decorah' as a resistant choice, so ask about the cultivar as well as the species.</li>
+<li>That's the City of Kelowna's own trees. West Kelowna, strata and private yards aren't in that dataset, so expect more European mountain-ash out there.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>When a client wants a replacement, don't plant a blight-susceptible tree on a hot, south-facing strata slope out of habit. Talk through species and cultivar choice.</p></div></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">A 10-year-old mountain-ash on a west-facing boulevard has browning on the <strong>southwest side only</strong>, and there's an old vertical bark crack on that side of the trunk. Most likely culprit?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Fall webworm</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Too much shade</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Normal fall colour</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Sunscald-fungal canker complex: winter sun injury on thin bark opens the way for canker fungi (and borers), slowly killing cambium</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Thin bark + southwest sun</div><ul><li><strong>Sunscald (Wisconsin Extension A2517):</strong> mountain-ash is thin-barked. In late winter or very early spring, sun heats the <strong>south- and west-facing bark</strong> well above air temperature. At sunset it drops suddenly, often leaving a sharp <strong>vertical crack</strong>. Fungi move into the wound and slowly kill the cambium around the trunk. Leaves on the affected side yellow or brown, often on the <strong>southwest</strong> side. Wisconsin calls it probably the most common cause of early death in mountain-ash there, and notes it's <strong>often confused with fire blight</strong>.</li>
+<li><strong>Borers follow damage:</strong> UMass lists mountain-ash among hosts of flatheaded appletree borer. CSU says flatheaded borers favour <strong>damaged and drought-stressed</strong> trees and lay eggs in bark cracks on <strong>sun-exposed</strong> trunks. Trees are most susceptible <strong>2–3 years after transplanting</strong>, and adults leave <strong>D-shaped exit holes</strong>. The closely related <strong>Pacific flatheaded borer</strong> (<em>Chrysobothris mali</em>) is the more common one west of the Rockies.</li></ul>
+<p><strong>Check:</strong> peel back a little bark at the edge of the crack. Brown inner bark where it should be green means dead cambium. Look for D-shaped holes, frass and bark splitting over galleries.</p></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">Which care plan best fits a young European mountain-ash on a hot Okanagan strata slope?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Heavy annual thinning to open the crown, high-nitrogen fertilizer, and skip winter trunk protection</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Keep some branches shading the trunk (don't over-prune), protect thin young bark over winter, avoid mower and trimmer wounds, water through drought, keep nitrogen moderate, and do structural pruning in the dormant season with blight cuts handled per the fire blight lesson</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Remove all lower branches to show off the trunk</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Prune in full bloom so you can see the flowers</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Protect the bark, don't push soft growth</div><ul><li><strong>Don't over-prune.</strong> Even bare branches shade the trunk. Where appropriate, leave low branches to reduce stem exposure (Wisconsin).</li>
+<li><strong>Winter protection for young trees:</strong> wrap the bark before winter with a suitable material to shade it (Wisconsin). Microbe practice: take wraps off in spring so they don't hide cracks or borer signs.</li>
+<li><strong>Avoid wounds.</strong> Mower and trimmer damage starts the same canker cycle as sunscald (Wisconsin). The PNW Handbook also says avoid wounding plants.</li>
+<li><strong>Moderate nitrogen</strong> to limit the vigorous shoots that fire blight targets, and <strong>don't combine routine pruning with blight removal</strong> (PNW Handbook).</li>
+<li><strong>Water through drought.</strong> Drought-stressed trees are more prone to flatheaded borers (CSU).</li>
+<li><strong>Timing:</strong> see the <a href="lesson-thu-fireblight-pruning-timing.html" style="color:#7ec8e3">Fire Blight &amp; Pruning Timing</a> lesson for why the dormant season is when cankers come out.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>Strata slopes facing south or west, reflected heat off siding and rock, and irrigation that stops in September: that's the high-risk mountain-ash site. Mention it in the client report, along with what to watch for.</p></div></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Oct 15, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://linnet.geog.ubc.ca/Atlas/Atlas.aspx?sciname=Sorbus+aucuparia" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">E-Flora BC, <em>Sorbus aucuparia</em> (European mountain-ash)</a> <span style="color:#8a9bb0">(exotic status, ID key, emerging invasive note, alternate leaves)</span></li><li><a href="https://linnet.geog.ubc.ca/Atlas/Atlas.aspx?sciname=Sorbus+scopulina" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">E-Flora BC, <em>Sorbus scopulina</em> (western mountain-ash)</a> <span style="color:#8a9bb0">(native, shrub form, sticky buds, range)</span></li><li><a href="https://linnet.geog.ubc.ca/Atlas/Atlas.aspx?sciname=Sorbus+sitchensis" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">E-Flora BC, <em>Sorbus sitchensis</em> (Sitka mountain-ash)</a> <span style="color:#8a9bb0">(native, rusty-hairy buds, range)</span></li><li><a href="https://tidcf.nrcan.gc.ca/en/trees/factsheet/72" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">NRCan TIMDCF, showy mountain-ash</a> <span style="color:#8a9bb0">(showy mountain-ash buds, leaflets, fruit timing)</span></li><li><a href="https://data.canadensys.net/vascan/taxon/8965" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">VASCAN, <em>Sorbus decora</em> distribution</a> <span style="color:#8a9bb0">(native range Sask. eastward; not BC)</span></li><li><a href="https://extension.usu.edu/forestry/tree-identification/ashes/green-ash" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">USU Extension, Green Ash</a> <span style="color:#8a9bb0">(true ash has opposite leaves)</span></li><li><a href="https://opendata.kelowna.ca/datasets/39d13a47b8f94cce82a9b4c86efc8ee7_17" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">City of Kelowna Open Data, Tree Inventory (queried Oct 15, 2026)</a> <span style="color:#8a9bb0">(Sorbus counts and sizes)</span></li><li><a href="https://pnwhandbooks.org/plantdisease/host-disease/mountain-ash-sorbus-spp-fire-blight" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">PNW Plant Disease Management Handbook, Mountain Ash – Fire Blight (rev. 2026)</a> <span style="color:#8a9bb0">(susceptibility, east of Cascades, cultural control)</span></li><li><a href="https://barron.extension.wisc.edu/files/2023/02/Mountain-Ash-Disorder-Sunscald-Fungal-Canker-Complex.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Wisconsin Extension A2517, Mountain Ash Disorder: Sunscald-Fungal Canker Complex (PDF)</a> <span style="color:#8a9bb0">(sunscald, cankers, confusion with blight, prevention)</span></li><li><a href="https://agsci.colostate.edu/agbio/ipm-pests/flatheaded-appletree-borer/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Colorado State University, Flatheaded appletree borer</a> <span style="color:#8a9bb0">(stressed hosts, egg sites, D-shaped holes, Pacific flatheaded borer)</span></li><li><a href="https://www.umass.edu/agriculture-food-environment/landscape/publications-resources/insect-mite-guide/chrysobothris-femorata" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">UMass Extension, <em>Chrysobothris femorata</em></a> <span style="color:#8a9bb0">(mountain-ash listed as host)</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline</a> <span style="color:#8a9bb0">(domain weights)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domains:</strong> Tree Identification &amp; Selection (9%) · Diagnosis &amp; Treatment (9%) · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 19</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'B',2:'C',3:'A',4:'D',5:'B'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-wed-mountain-ash.html", "week": 19, "day": "wed", "title": "Mountain-Ash (Sorbus)", "version": "2026-10-15-a0b50960d943", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin=LS.get('mt_crew_pin')||'';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){LS.del('mt_crew_pin');pin='';pinMsg='Sign-in failed, re-enter your PIN';renderPin();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for PIN');card('queued','Sign-in failed, re-enter your PIN at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>
