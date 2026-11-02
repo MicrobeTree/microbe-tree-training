@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Hardiness & Winter Injury: Frost Cracks and Sunscald — Week 21 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1a2a3f 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 21</div>
+  <div class="day-tag">🌿 Monday — Tree Biology</div>
+</header>
+<main>
+  <h1>Cold Hardiness & Winter Injury: How Trees Harden Off</h1>
+  <p class="sub">Frost cracks and sunscald aren't random. Know how trees harden off, and where the Okanagan's sun-then-freeze swings break that, and you'll spot the risk before the crack.</p>
+  <p class="meta">⏱ About 10 minutes · Week 21 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🥶 The short answer</h3>
+    <p>Trees don't survive winter by staying warm. They <strong>harden off</strong>: short autumn days start the change, then colder temperatures finish it. The injuries we see on the job (<strong>frost cracks, sunscald</strong>) come when that hardiness is <strong>lost or never finished</strong>: a late growth flush, a drought going into winter, or a sunny warm-up followed by a hard freeze. The Okanagan's dry-interior winter, with sun by day and a hard freeze by night, is exactly that recipe.</p>
+<svg viewBox="0 0 340 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cold hardiness cycle: shorter days give partial hardiness, freezing temperatures give maximum mid-winter hardiness, a warm spell or spring causes deacclimation">
+<rect x="8" y="30" width="96" height="70" rx="8" fill="#0f1923" stroke="#5cb85c"/>
+<text x="56" y="50" fill="#5cb85c" font-size="11" text-anchor="middle" font-weight="700">1 ACCLIMATE</text>
+<text x="56" y="66" fill="#c5d0dc" font-size="10" text-anchor="middle">Short days =</text>
+<text x="56" y="80" fill="#c5d0dc" font-size="10" text-anchor="middle">partial hardiness</text>
+<rect x="122" y="30" width="96" height="70" rx="8" fill="#0f1923" stroke="#7ec8e3"/>
+<text x="170" y="50" fill="#7ec8e3" font-size="11" text-anchor="middle" font-weight="700">2 MAX HARDINESS</text>
+<text x="170" y="66" fill="#c5d0dc" font-size="10" text-anchor="middle">Subfreezing temps =</text>
+<text x="170" y="80" fill="#c5d0dc" font-size="10" text-anchor="middle">mid-winter peak</text>
+<rect x="236" y="30" width="96" height="70" rx="8" fill="#0f1923" stroke="#e8a838"/>
+<text x="284" y="50" fill="#e8a838" font-size="11" text-anchor="middle" font-weight="700">3 DEACCLIMATE</text>
+<text x="284" y="66" fill="#c5d0dc" font-size="10" text-anchor="middle">Warmth = hardiness</text>
+<text x="284" y="80" fill="#c5d0dc" font-size="10" text-anchor="middle">lost (even in winter)</text>
+<text x="170" y="130" fill="#e05a5a" font-size="11" text-anchor="middle">Sunny afternoon, then a hard freeze at night = injury</text>
+<text x="170" y="148" fill="#8a9bb0" font-size="10" text-anchor="middle">Photoperiod triggers step 1. Temperature drives steps 2 and 3.</text>
+</svg>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Hardening, stage 1</label><span>Shorter days: partial hardiness</span></div>
+      <div class="fact-cell"><label>Hardening, stage 2</label><span>Subfreezing temps: maximum mid-winter hardiness</span></div>
+      <div class="fact-cell"><label>Frost crack</label><span>Vertical split in bark and wood, S/SW side of young trees</span></div>
+      <div class="fact-cell"><label>Sunscald</label><span>Dead bark and cambium on the S/SW side after a warm day then a freeze</span></div>
+    </div>
+    <h3>What happens inside the cells</h3>
+    <ul>
+      <li>In a hardy tree, ice forms <strong>between</strong> the cells, not inside them. Water leaves the cells and they shrink. Hardy cells tolerate that dehydration (WSU FS196E).</li>
+      <li>Hardening brings <strong>more sugar</strong> in the cells, protein changes and a more tolerant <strong>plasma membrane</strong> (WSU FS196E).</li>
+      <li>If the cold hits <strong>suddenly</strong>, water may not get out in time and ice forms <strong>inside</strong> the cells, which can burst them (WSU FS196E).</li>
+      <li>Not all tissues harden equally: <strong>stems</strong> are hardier than <strong>vegetative buds</strong>, which are hardier than <strong>flower buds</strong>. Roots are among the least hardy, but soil insulates them (WSU FS196E).</li>
+    </ul>
+    <h3>Sunscald vs frost crack</h3>
+    <ul>
+      <li><strong>Sunscald (southwest injury):</strong> winter sun warms the S/SW bark, dormant cells wake up and <strong>lose hardiness</strong>, then a freeze kills the <strong>phloem and cambium</strong> just under the bark. Look for discoloured, cracked, sunken or sloughing bark (USU).</li>
+      <li><strong>Frost crack:</strong> a <strong>vertical split</strong> in bark and wood, usually on the S or SW side of young, thin-barked trees after severe cold. Experts don't all agree on the exact cause, but all link it to <strong>temperature swings in the trunk</strong>. One explanation is uneven shrinking and swelling of the wood as water leaves the cell walls to freeze. Old wounds and branch stubs are often the starting point (WSU FS199E).</li>
+    </ul>
+    <div class="danger"><span class="lbl">⚠ Don't</span>Don't paint or seal a frost crack or sunscald wound. The wood never truly seals: the crack stays and invites decay fungi. Wound dressings don't prevent decay (WSU FS199E, USU).</div>
+    <div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>USU says Utah is prone to sunscald because of cold winters and little cloud on sunny winter days. Our dry interior has the same setup: clear, sunny days that warm south-facing bark, then freezing nights. Newly planted maples, lindens, cherries and other thin-barked trees on a south or west exposure are the ones to check on any winter walk-around. If it's cracked, flag it as a defect and look for decay.</p></div>
+    <div class="std">🧠 Memory hook: <strong>"Short days start it, cold finishes it, a warm spell undoes it."</strong></div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">A fall visit: the customer fertilized and heavily pruned their young maple in late summer, and it flushed new growth. Why does this raise winter-injury risk?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>It doesn't, growth always makes a tree tougher</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>Late-season growth delays dormancy and cold acclimation, so tissues aren't hardened when the freeze arrives</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>It makes the bark thicker</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>It only affects the roots</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Late growth delays hardening</div><p>WSU Extension lists late-summer to early-fall fertilizing and pruning as causes of cold injury: they stimulate growth, and <strong>actively growing plants cannot acclimate</strong>. Delayed dormancy means delayed hardening (WSU FS196E).</p>
+<ul><li>Stage 1 of hardening is triggered by <strong>shortening days</strong>. Stage 2 needs <strong>subfreezing temperatures</strong>.</li>
+<li>Drought stress going into winter also raises risk, so water well before the ground freezes.</li></ul></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">Which sequence describes <strong>sunscald (southwest injury)</strong> on a young, thin-barked tree?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Summer heat dries the leaves, which fall early</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>A fungus enters through the roots and moves up the trunk</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>Deep snow crushes the trunk</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Winter sun warms the S/SW bark, dormant cells lose hardiness, and a night freeze kills the cells under the bark</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Warm day, hard freeze</div><p>Sunscald injures the living cells just inside the bark (<strong>phloem and cambium</strong>) through <strong>day-to-night temperature swings</strong>. Warmed cells become active and lose some cold hardiness, then freeze when the temperature drops (USU).</p>
+<ul><li>USU reports the south side of a tree can be <strong>as much as 77°F warmer</strong> than the north side on a cold winter day.</li>
+<li>Signs: discoloured or cracked bark, sunken areas, sloughing bark that exposes dead tissue.</li>
+<li>Drought-stressed trees are more susceptible.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Okanagan</div><p>On a clear winter day, look at which side of the trunk the damage sits on. S/SW bark, young tree, thin bark: think sunscald before you think disease.</p></div></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">You find a long vertical split down the southwest side of a young linden in February. What is the best advice for the customer?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>It's a frost crack: don't seal it. Keep the tree vigorous, and have the trunk watched for decay</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>Fill the crack with wound paint or tar to keep water out</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>The tree will be fine, a crack means it is hardening off</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>Wrap it in black plastic</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Don't seal frost cracks</div><p>WSU Extension: callus may close over the edge, but <strong>the wood never seals</strong>. Once fibres are split the crack remains and is an entry point for decay fungi and insects. Wound dressings are ineffective at preventing decay, so don't use them.</p>
+<ul><li>Best treatment: maintain tree vigour with appropriate <strong>irrigation, fertilization, mulching and pest management</strong>.</li>
+<li>A cracked tree may live many useful years, but watch for extensive rot. WSU suggests consulting a TRAQ arborist if it may be hazardous.</li>
+<li>Prevention: protect the S/SW trunk from warming on cold sunny days (white or light-coloured guards applied in late fall and removed in spring), and avoid trunk wounds.</li></ul></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">Which statement about <strong>cold hardiness</strong> is correct (ISA exam favourite)?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Roots are the hardiest tissue, flower buds the least</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>All tissues of a tree have the same hardiness</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Stems are hardier than vegetative buds, which are hardier than flower buds; roots are among the least hardy but soil insulates them</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Hardiness is set by temperature alone, never by day length</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Tissues differ, and so do triggers</div><ul><li><strong>Order of hardiness:</strong> stems &gt; vegetative buds &gt; flower buds &gt; roots (young roots are less hardy than older roots) (WSU FS196E).</li>
+<li><strong>Triggers:</strong> shortening day length (photoperiod) starts acclimation, then low temperatures bring maximum hardiness. <strong>Deacclimation</strong> depends mainly on temperature, so a winter warm spell can strip hardiness and cold returning can injure the plant.</li>
+<li>Hardiness is genetically determined, but environment and cultural practices influence it. Plants from different origins respond to day length differently.</li></ul>
+<div class="field-note"><div class="fn-label">📋 ISA exam</div><p>Tree Biology is 11% of the exam. Know the 3 parts of hardiness: <strong>acclimation, maximum mid-winter hardiness, deacclimation</strong>.</p></div></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">You're doing fall planting and wrap-up on a job with a thin-barked young tree on the south side of a house. Which plan best prevents sunscald and frost cracks?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Keep it well watered going into winter, and shade or wrap the S/SW trunk with white or light-coloured guard in late fall, then take it off in spring</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Prune and fertilize heavily now to push growth</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Paint the whole trunk black to absorb heat</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Leave a wrap on year-round</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Hydrate, reflect, remove</div><ul><li><strong>Hydrate:</strong> trees that go into winter well watered are less prone to sunscald (USU).</li>
+<li><strong>Reflect or shade:</strong> white tree wrap or a light-coloured board/fence on the S and W keeps dormant cells cool and inactive (USU, WSU).</li>
+<li><strong>Timing:</strong> apply in late fall, remove in spring once freezing nights are past. Wrap left on may harbour pests and can constrict trunk growth.</li>
+<li><strong>Site:</strong> plant susceptible trees where evergreens or buildings shade the lower trunk in winter.</li></ul>
+<div class="field-note"><div class="fn-label">📋 Field Note — Microbe Tree Crew</div><p>Put a wrap-removal reminder on the job ticket. Tree guards that get forgotten in spring become the next problem.</p></div></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Nov 2, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://wpcdn.web.wsu.edu/wp-ecommerce/uploads/sites/2/product-3564-sku-FS196E.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Washington State University Extension, Environmental Injury: Cold Temperature Injury of Landscape Woody Ornamentals (FS196E)</a> <span style="color:#8a9bb0">(acclimation, deacclimation, ice between cells, tissue hardiness order, late-growth and drought risk, wraps)</span></li><li><a href="https://rex.libraries.wsu.edu/esploro/fulltext/report/Environmental-injury--frost-cracks/99900501651101842?institution=01ALLIANCE_WSU&mId=13333035380001842&repId=12332559310001842" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Washington State University Extension, Environmental Injury: Frost Cracks (FS199E)</a> <span style="color:#8a9bb0">(vertical splits on S/SW of young trees, wounds, never seals, no wound dressings, guards)</span></li><li><a href="https://extension.usu.edu/forestry/publications/utah-forest-facts/021-sunscald-injury-or-southwest-winter-injury-on-deciduous-trees" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Utah State University Extension, Sunscald Injury or Southwest Winter Injury on Deciduous Trees (Utah Forest Facts 021)</a> <span style="color:#8a9bb0">(mechanism, phloem and cambium, 77°F south-side difference, protection)</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline</a> <span style="color:#8a9bb0">(Tree Biology domain weight (11%))</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Tree Biology (11%) · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 21</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'B',2:'D',3:'A',4:'C',5:'A'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-mon-cold-hardiness.html", "week": 21, "day": "mon", "title": "Cold Hardiness & Winter Injury: Frost Cracks and Sunscald", "version": "2026-11-02-f62496a778e6", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';LS.del('mt_crew_pin');let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin='';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){clearAll();submitted=false;renderPicker();const b=$('mt-signin-body');if(b){const m=document.createElement('div');m.className='mt-pinerr';m.textContent='Sign-in failed. Tap your name again.';b.prepend(m);}update();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){if(true){pin='';LS.del('mt_crew_pin');LS.set('mt_pin_step','1');pinMsg='';renderWho();logOpen();flush().then(update);update();return;}const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for sign-in');card('queued','Sign-in failed. Tap your name again at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>
