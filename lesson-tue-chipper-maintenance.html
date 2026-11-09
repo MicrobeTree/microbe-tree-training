@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chipper Maintenance — Week 22 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#2f2a1a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 22</div>
+  <div class="day-tag">🔧 Tuesday — Equipment</div>
+</header>
+<main>
+  <h1>Chipper Maintenance: Sharp, Set, Tight, Greased, Locked Out</h1>
+  <p class="sub">Knives, anvil gap, belts, grease and the daily walk-around on our Bandits, and zero energy before anyone opens the hood.</p>
+  <p class="meta">⏱ About 10 minutes · Week 22 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🔧 The short answer</h3>
+    <p>A chipper with <strong>sharp knives, the right anvil gap, tight belts and greased bearings</strong> feeds itself. A neglected one plugs, vibrates and tempts people to push wood in with their hands and feet. Bandit's own manual says dull knives make an operator <em>"push, kick, or wrestle with the wood"</em>, which is unsafe. <strong>Maintenance is a safety job.</strong></p>
+    <p>Figures below are from Bandit's <strong>Intimidator 12XPC</strong> operating manual (1/18 edition) unless noted. <strong>Specs change by model and year</strong>, so check the manual for the unit you're on.</p>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Knife angle</label><span>30°–30½° (bolt-in)</span></div>
+      <div class="fact-cell"><label>Anvil gap (12XPC)</label><span>0.120 in / 3.0 mm, weekly</span></div>
+      <div class="fact-cell"><label>Grease</label><span>Chipper bearings daily, EP-2 lithium</span></div>
+      <div class="fact-cell"><label>Belts</label><span>Quick daily check; full check monthly</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="danger"><span class="lbl">⚠️ Before you open the hood, touch a knife, or clear a jam</span>Bandit's <strong>pre-maintenance shutdown</strong>, in order: <strong>disengage the clutch → wait for the drum to come to a complete stop → engine off → remove the ignition key and keep it in your possession → install the drum lock pin → disconnect the battery.</strong> Bandit also says to have <strong>at least two people on site</strong> during maintenance and service.</div>
+    <h3>🔒 WorkSafeBC Part 10: lockout</h3>
+    <ul>
+      <li><strong>10.1:</strong> "maintenance" includes <strong>cleaning, lubricating and clearing obstructions</strong>. So greasing and clearing a plug both count.</li>
+      <li><strong>10.3(1):</strong> when equipment is shut down for maintenance, no work until parts are <strong>secured against inadvertent movement</strong> (that's the drum lock pin), energy hazards are controlled, and isolating devices are <strong>locked out</strong> as Part 10 requires.</li>
+      <li><strong>10.4 &amp; 10.6:</strong> personal locks, <strong>no combination locks</strong>, each lock marked to identify who applied it, and you <strong>verify</strong> the lockout before starting work.</li>
+      <li><strong>10.7:</strong> you keep <strong>immediate control of your key(s)</strong> for the whole job.</li>
+    </ul>
+    <p>Follow Microbe's lockout procedure for the chipper. If you're not sure what it says, <strong>ask Anton before you open anything.</strong></p>
+  </div>
+  <div class="card">
+    <h3>🔪 Knives: sharpen, rotate, replace</h3>
+    <ul>
+      <li><strong>Angle:</strong> bolt-in knives ground at <strong>30° to 30½°</strong>. Machine-ground flat and straight, with coolant. <strong>No hand-held power grinder</strong>: Bandit says the angle can't be held and heat will distort the metal. No hollow grind.</li>
+      <li><strong>Daily touch-up:</strong> Bandit's Knife Saver Kit or a <strong>#10 flat bastard mill file</strong> can bring an edge back without pulling the knife. This doesn't fix badly nicked knives.</li>
+      <li><strong>Minimum width:</strong> never sharpen past the minimum in the manual (the 12XPC drum-knife diagram shows <strong>2 9/16 in / 65.1 mm</strong>). Under minimum = discard.</li>
+      <li><strong>Sets:</strong> replace knives in <strong>sets of the same width</strong> to keep the drum balanced and cut vibration.</li>
+      <li><strong>Hardware:</strong> factory-approved only, torqued to the chart, <strong>no anti-seize</strong> on knife bolts. Replace knife hardware after <strong>4–5 knife rotations/changes</strong> at most.</li>
+    </ul>
+    <h3>📏 Anvil gap</h3>
+    <ul>
+      <li>Check <strong>weekly or whenever knives are changed</strong>. Use a feeler gauge on <strong>both sides of each knife</strong>, then set the anvil to the <strong>closest</strong> knife.</li>
+      <li>12XPC: <strong>0.120 in (3.0 mm)</strong>. <em>Other Bandits are very different:</em> the 1290/1690 manual says 0.028–0.032 in, and the 490XP says 0.045–0.065 in. <strong>Use the manual for your machine.</strong></li>
+      <li>The anvil wears. When it's worn, <strong>rotate it to a new working edge</strong>. Bandit lists a wrong anvil gap as a cause of dull knives.</li>
+    </ul>
+    <h3>⚙️ Belts &amp; grease</h3>
+    <ul>
+      <li><strong>Belts:</strong> use the beltshield slot for a quick daily check. Every month, pull the shield and check with a tension tester. 12XPC main drive: <strong>3/8 in (9.5 mm) deflection at 60–64 lb (27.2–29.0 kg)</strong>.</li>
+      <li><strong>New belts stretch.</strong> Adjust after 1 hour of running, then every 4 hours until they stop stretching. Loose belts slip, glaze and are ruined. <strong>Never use belt dressing.</strong></li>
+      <li><strong>Grease:</strong> purge the chipper bearings daily with <strong>EP-2 lithium</strong> grease, and give the feedwheel bearings 1 shot. Wipe off the excess, because it attracts dirt.</li>
+    </ul>
+    <h3>👀 Daily walk-around (Bandit's list, short version)</h3>
+    <ul>
+      <li>Decals and gauges · safety equipment, including the <strong>last-chance stop</strong> and engine disable plug · loose bolts · guards · hood hinge.</li>
+      <li>With everything shut down: open the hood and look for foreign objects. <strong>Turn the drum a full revolution with a pry bar or wood bar</strong>, never your hands. If it's jammed or frozen, <strong>don't start it</strong>.</li>
+      <li>Close up: hood pin and padlock, engine disable plug in · hydraulic oil 3/4–7/8 full · leaks (<strong>never check for hydraulic leaks with fingers or skin</strong>) · tires, lug nuts, hitch.</li>
+    </ul>
+    <div class="field-note"><div class="fn-label">📋 Field Note: why it plugs</div><p>Bandit: plugging is usually from letting the <strong>engine drop below full RPM</strong> (shut the feedwheels off when it lugs) or from <strong>dull knives</strong> making chunks and slivers. Rotten material with little substance can plug the chute too. When it does plug: full shutdown, gloved hands and a raking tool, and a <strong>bar, never a hand</strong>, to turn a jammed drum. It can break free suddenly at the pinch point.</p></div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">The chipper just plugged. What has to happen before anyone opens the hood?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>Idle the engine down and open the hood carefully</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>Disengage clutch, wait for the drum to stop completely, engine off, key out and in your pocket, drum lock pin in, battery disconnected, and follow Microbe's lockout</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>Turn the engine off and open the hood straight away; the drum stops on its own</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>Reverse the feedwheels until the plug clears, then open the hood</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Zero energy first</div><ul><li>Bandit 12XPC manual: <strong>disengage clutch, wait for the disc/drum to come to a complete stop, turn off engine, remove the ignition key, make sure the ignition key is in your possession, install the disc/drum lock pin, and disconnect the battery.</strong></li>
+<li>WorkSafeBC 10.1: <strong>clearing obstructions</strong> counts as maintenance, so the Part 10 lockout rules apply.</li></ul></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">You're setting the anvil on a Bandit you haven't used before. What clearance do you use?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>0.120 in on every Bandit</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Whatever feels about right with a business card</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>The figure in that model's own manual. It varies a lot (e.g. 0.120 in on the 12XPC vs 0.028–0.032 in on the 1290/1690)</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>As tight as possible so the knives touch the anvil</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Model-specific, every time</div><ul><li>12XPC: <strong>0.120 in (3.0 mm)</strong> from the highest knife. 1290/1690: <strong>0.028–0.032 in</strong>. 490XP: <strong>0.045–0.065 in</strong>.</li>
+<li>Check <strong>both sides of each knife</strong> with a feeler gauge and set to the <strong>closest knife</strong>. Do it <strong>weekly or whenever knives are changed</strong>.</li></ul>
+<div class="field-note"><div class="fn-label">📋 ISA exam</div><p>Safe Work Practices (15%) lists <em>chippers and stump grinders</em> and <em>using tools in accordance with manufacturer specifications</em>.</p></div></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">Which knife practice does Bandit say NOT to do?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>Touching up the edge with a #10 flat bastard mill file</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>Replacing knives in sets of the same width</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>Keeping a spare sharpened set to avoid downtime</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>Grinding the knife with a hand-held power grinder</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">No angle grinder on chipper knives</div><ul><li>Bandit: don't use a hand-held power grinder. <strong>The knife angle can't be held and heat will distort the metal.</strong></li>
+<li>Bolt-in knives are ground at <strong>30°–30½°</strong>, machine-ground flat, with coolant. Never go past the minimum width.</li>
+<li>Replace knife hardware after <strong>4–5</strong> rotations/changes at most.</li></ul></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">The chipper got new drive belts yesterday. What's the plan?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Re-tension after the first hour of running, then every 4 hours until they stop stretching</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Leave them alone for a month</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Spray belt dressing on them so they grip</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Tighten them as hard as you can once</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">New belts stretch</div><ul><li>Bandit: new belts <strong>stretch very soon</strong>. Adjust after <strong>one hour</strong>, then <strong>every four hours</strong> until they quit stretching, or they can burn and fly off.</li>
+<li><strong>Never use belt dressing.</strong> Over- or under-tensioning shortens belt and bearing life.</li>
+<li>12XPC main drive spec: <strong>3/8 in deflection at 60–64 lb</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">On the daily walk-around, how do you check the drum turns freely?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Bump the starter and watch it</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>With everything shut down and locked, turn it a full revolution with a pry bar or wood bar. If it's jammed or frozen, don't start the engine</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Spin it by hand from inside the hopper</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Engage the clutch at idle and listen</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Bar, not hands</div><ul><li>Bandit daily start-up #8: <strong>very carefully, manually with a pry bar or wood bar, turn the chipper drum a full revolution</strong> to confirm anvil and knife clearance. If it's jammed or frozen, <strong>do not start the engine and engage the clutch</strong>.</li>
+<li>Pinch points sit between the drum and its housing. A jammed drum can <strong>break free suddenly</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Nov 9, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://www.stephensonequipment.com/wp-content/uploads/2023/08/bandit-handfed-chipper-12XPC-manual-1-18.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Bandit Intimidator 12XPC Operating &amp; Parts Manual (1/18, PDF via dealer)</a> <span style="color:#8a9bb0">(shutdown steps, daily/weekly/monthly lists, 30–30½° knives, 0.120 in anvil, belt spec, EP-2 grease, unplugging)</span></li><li><a href="https://www.stephensonequipment.com/wp-content/uploads/2023/08/bandit-handfed-chipper-1290-and-1690.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Bandit 1290/1690 Hand-Fed Chipper Manual (PDF via dealer)</a> <span style="color:#8a9bb0">(anvil clearance 0.028–0.032 in; grease bearings daily, can't over-grease)</span></li><li><a href="https://www.stephensonequipment.com/wp-content/uploads/2023/08/bandit-handfed-chipper-490XP.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Bandit 490XP Hand-Fed Chipper Manual (PDF via dealer)</a> <span style="color:#8a9bb0">(anvil clearance 0.045–0.065 in)</span></li><li><a href="https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation/part-10-de-energization-and-lockout" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">WorkSafeBC OHS Regulation Part 10: De-energization and Lockout</a> <span style="color:#8a9bb0">(10.1 maintenance definition, 10.3, 10.4, 10.6, 10.7 (online version is unofficial; the official text is the BC Regulation))</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline (PDF)</a> <span style="color:#8a9bb0">(Safe Work Practices = 15%; chippers and stump grinders; manufacturer specifications)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (15%): chippers, equipment inspection, manufacturer specs · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 22</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'B',2:'C',3:'D',4:'A',5:'B'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-tue-chipper-maintenance.html", "week": 22, "day": "tue", "title": "Chipper Maintenance", "version": "2026-11-09-b9f24e13bdea", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';LS.del('mt_crew_pin');let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin='';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){clearAll();submitted=false;renderPicker();const b=$('mt-signin-body');if(b){const m=document.createElement('div');m.className='mt-pinerr';m.textContent='Sign-in failed. Tap your name again.';b.prepend(m);}update();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){if(true){pin='';LS.del('mt_crew_pin');LS.set('mt_pin_step','1');pinMsg='';renderWho();logOpen();flush().then(update);update();return;}const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for sign-in');card('queued','Sign-in failed. Tap your name again at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>
