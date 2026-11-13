@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Western Gall Rust — Week 23 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#2f1a2a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 23</div>
+  <div class="day-tag">🐛 Thursday — Pests &amp; Diseases</div>
+</header>
+<main>
+  <h1>Western Gall Rust: Pine-to-Pine Galls and Hip Cankers</h1>
+  <p class="sub">Round galls on lodgepole and ponderosa. Which ones are cosmetic, which ones break trees, and why now is the time to prune them.</p>
+  <p class="meta">⏱ About 10 minutes · Week 23 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🍄 The short answer</h3>
+    <p><strong>Western gall rust</strong> (<em>Endocronartium harknessii</em>, now often called <em>Cronartium harknessii</em>) is a fungus that makes <strong>round woody galls</strong> on the branches and stems of <strong>hard (2- and 3-needle) pines</strong>. Here that means <strong>lodgepole and ponderosa</strong>. Unlike most pine rusts, it goes <strong>pine to pine with no alternate host</strong> (NRCan). Branch galls are mostly cosmetic. <strong>Stem galls and hip cankers are a breakage risk.</strong></p>
+    <div class="fact-grid">
+      <div class="fact-cell"><label>Hosts here</label><span>Lodgepole, ponderosa; also Scots, Austrian, mugo</span></div>
+      <div class="fact-cell"><label>Alternate host</label><span>None: pine to pine</span></div>
+      <div class="fact-cell"><label>Spores</label><span>Orange, late May–early July</span></div>
+      <div class="fact-cell"><label>Gall size</label><span>Usually 5–10 cm (NRCan)</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🔎 What it looks like</h3>
+    <ul>
+      <li><strong>Galls:</strong> NRCan says they're usually <strong>5–10 cm across</strong>, and larger on the trunks of big trees if they persist. On ponderosa and lodgepole the gall is <strong>smooth and elongated</strong>, with "collars" where it pushes the bark back. <strong>Witches' brooms</strong> often follow.</li>
+      <li><strong>In spring:</strong> galls break open into <strong>orange, powdery spore masses</strong>. Outside that window they're covered in bark (NRCan).</li>
+      <li><strong>Old galls</strong> on dead branches are often stripped and grooved by <strong>rodent teeth</strong> (NRCan).</li>
+      <li><strong>Hip canker:</strong> UC IPM says that when infection is at the <strong>base of the main stem</strong>, trees that live to an old age can develop a <strong>large depression on one side of the lower trunk</strong>.</li>
+      <li><strong>Hosts:</strong> NRCan lists native hosts including <strong>lodgepole and ponderosa</strong>, plus planted exotics such as <strong>Scots, Austrian and mugo</strong> pine. That includes the Austrian pine from Week 21.</li>
+    </ul>
+    <h3>🔄 Life cycle</h3>
+    <ul>
+      <li>Spores infect the <strong>current year's shoots</strong>. The BC Southern Interior decision aid says galls start on <strong>1-year-old growth</strong> and appear <strong>1.5–2 years</strong> after infection. NRCan says spores appear <strong>1–4 years</strong> after the gall starts.</li>
+      <li>Once a gall starts producing spores, it does so <strong>every year</strong>. Spores are released from <strong>late May to early July</strong> (NRCan). The decision aid says May–July, in warm, windy weather.</li>
+      <li>Infection varies hugely by year. Big infection years are called <strong>"wave years"</strong> (BC decision aid).</li>
+    </ul>
+    <div class="std">⚖️ <strong>Sources differ on spore travel.</strong> NRCan says spores generally spread <strong>within 100 m</strong>, and only rarely several kilometres in turbulent wind. The BC decision aid says they can travel <strong>hundreds of kilometres</strong>. The practical takeaway is the same: sanitation helps locally, but you can't fence it out.</div>
+  </div>
+  <div class="card">
+    <div class="danger"><span class="lbl">⚠️ Breakage risk</span>NRCan: <strong>hip and stem galls increase the chance of trunk breakage</strong>, and stem galls often kill the top or the whole tree. UC IPM: <strong>large galls on major limbs or the trunk can lead to structural failure</strong>. WSU: large galls can weaken the trunk or major limbs, making them <strong>highly susceptible to breakage</strong>. Don't tie in or rig above a stem gall or hip canker without assessing it, and treat it as a defect in any risk call.</div>
+    <h3>🛠️ Management (no sprays)</h3>
+    <ul>
+      <li><strong>Prune out branch galls.</strong> WSU says to prune out and destroy galls. UC IPM says to prune and dispose of infected branches <strong>October–January</strong> (California timing). Either way, it's before spring spore release, so <strong>now is the window</strong>.</li>
+      <li><strong>Distance from the trunk matters.</strong> NRCan: branch galls are considered <strong>non-lethal if more than 15 cm from the trunk and pruned</strong>, or <strong>more than 60 cm away</strong> if not pruned. Galls closer than that can grow into the stem, so prioritize them.</li>
+      <li><strong>Trunk galls:</strong> WSU says you may be able to cut back and <strong>train a new leader</strong>, but it may be necessary to <strong>remove the tree for safety</strong>. UC IPM says to consider removing and replacing hazardous trees.</li>
+      <li><strong>Chemical:</strong> WSU lists <strong>none recommended</strong>.</li>
+      <li><strong>In forests and plantations,</strong> BC's approach is stand-level: survey young stands, use spacing and density management, plant alternative species, and use resistant stock.</li>
+    </ul>
+    <div class="field-note"><div class="fn-label">📋 Field Note: Okanagan</div><p>Ponderosa and lodgepole are both hosts here. On every pine you climb this winter, scan for round swellings: <strong>branch galls</strong> (prune them if close to the trunk), <strong>stem galls or a sunken hip on one side of the lower trunk</strong> (flag it for Anton, and plan your tie-in and rigging around it). Make sure the gall comes off with the branch, and get the prunings off site.</p></div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">What makes western gall rust different from most other pine stem rusts?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>It only infects spruce</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>It spreads pine to pine with no alternate host</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>It needs currant bushes to complete its cycle</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>It's caused by an insect</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">No alternate host</div><ul><li>NRCan: it completes its <strong>highly reduced life cycle on pine without infecting an alternate host</strong>.</li>
+<li>BC decision aid: <strong>infection occurs directly from pine to pine</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">Which trees are hosts in our area?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Douglas-fir and larch</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Only white pines</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>Hard (2- and 3-needle) pines: lodgepole and ponderosa, plus planted Scots, Austrian and mugo</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Spruce and fir</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Hard pines</div><ul><li>NRCan: found exclusively on <strong>hard (two- and three-needled) pines</strong>. Native hosts include <strong>lodgepole</strong> and <strong>ponderosa</strong>, and exotics include <strong>mugo, Austrian and Scots</strong> pine.</li></ul></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">What is a hip canker?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>A large depression on one side of the lower trunk from a basal stem infection on a tree that lives a long time</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>A gall at a branch tip</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>A needle disease</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>A type of pruning cut</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Basal stem infection</div><ul><li>UC IPM: some pines develop infection at the base of the main stem. If they live to an old age, they can develop <strong>a large depression on one side of the lower trunk, called a hip canker</strong>.</li>
+<li>NRCan: <strong>hip and stem galls increase the chance of trunk breakage</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">You find a branch gall on a ponderosa 10 cm from the trunk. What's the right move?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>Leave it; branch galls never matter</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>Spray it</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>Wait until it releases spores in June</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Prune the branch (gall and all) in the dormant season before spring spore release. NRCan considers branch galls non-lethal only if they're more than 15 cm from the trunk and pruned, or more than 60 cm if not pruned</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Close to the trunk = prune it now</div><ul><li>NRCan: branch galls are <strong>non-lethal if located farther than 15 cm from the trunk and pruned, or 60 cm away and not pruned</strong>.</li>
+<li>UC IPM: prune and dispose of infected branches <strong>October–January</strong>. WSU: <strong>prune out and destroy galls</strong>.</li></ul>
+<div class="field-note"><div class="fn-label">📋 ISA exam</div><p>Diagnosis &amp; Treatment (9%) covers <em>diseases (e.g., disease cycle, fungi infections)</em>. Know "no alternate host" and "wave years."</p></div></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">A large gall sits on the main stem of a client's lodgepole pine over their driveway. What do the sources say?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>It's cosmetic; ignore it</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Large trunk galls can lead to structural failure. Options include training a new leader if practical, or removing and replacing the tree for safety</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Spray fungicide every spring</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Wrap it in tape</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Stem gall = structural defect</div><ul><li>UC IPM: <strong>large galls on major limbs or the trunk can lead to structural failure</strong>, so consider removing and replacing hazardous trees.</li>
+<li>WSU: on a trunk gall, you may be able to train a new leader, but <strong>it may be necessary to remove the tree for safety's sake</strong>. Chemical management: <strong>none recommended</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Nov 13, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://tidcf.nrcan.gc.ca/en/diseases-caused-by-pathogens/factsheet/25" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Natural Resources Canada, Western gall rust</a> <span style="color:#8a9bb0">(name, hosts, no alternate host, gall size and form, spore timing and travel, breakage, 15 cm / 60 cm branch-gall rule)</span></li><li><a href="https://jem-online.org/index.php/jem/article/download/308/227/0" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Stock et al. (2005), Southern Interior Forest Region: Forest Health Stand Establishment Decision Aids, BC Journal of Ecosystems and Management (PDF)</a> <span style="color:#8a9bb0">(hosts lodgepole and ponderosa; pine to pine; May–July spores; wave years; galls on 1-year-old growth appear 1.5–2 years later; spores travel hundreds of km; stand management)</span></li><li><a href="https://ipm.ucanr.edu/home-and-landscape/western-gall-rust/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">UC IPM, Western Gall Rust (Home &amp; Landscape)</a> <span style="color:#8a9bb0">(hip canker; prune October–January; large galls can cause structural failure)</span></li><li><a href="https://hortsense.cahnrs.wsu.edu/fact-sheet/pine-western-gall-rust/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">WSU Hortsense, Pine: Western gall rust</a> <span style="color:#8a9bb0">(hosts incl. ponderosa and lodgepole; large galls weaken stems; prune and destroy galls; trunk galls; no chemicals recommended)</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline (PDF)</a> <span style="color:#8a9bb0">(Diagnosis &amp; Treatment 9%; disease cycles, fungi)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domains:</strong> Diagnosis &amp; Treatment (9%) · Tree Risk (11%) · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 23</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'B',2:'C',3:'A',4:'D',5:'B'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-thu-western-gall-rust.html", "week": 23, "day": "thu", "title": "Western Gall Rust", "version": "2026-11-13-156a9fcb9c93", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';LS.del('mt_crew_pin');let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin='';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){clearAll();submitted=false;renderPicker();const b=$('mt-signin-body');if(b){const m=document.createElement('div');m.className='mt-pinerr';m.textContent='Sign-in failed. Tap your name again.';b.prepend(m);}update();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){if(true){pin='';LS.del('mt_crew_pin');LS.set('mt_pin_step','1');pinMsg='';renderWho();logOpen();flush().then(update);update();return;}const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for sign-in');card('queued','Sign-in failed. Tap your name again at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>
