@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring Poles &amp; Storm-Damaged Wood — Week 24 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#1a2a3a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 24</div>
+  <div class="day-tag">🌪️ Friday — Worksite Techniques</div>
+</header>
+<main>
+  <h1>Spring Poles &amp; Storm-Damaged Wood</h1>
+  <p class="sub">Compression vs tension, how to find the release spot, the relief cuts that bleed off the energy, and the other hazards in storm debris.</p>
+  <p class="meta">⏱ About 10 minutes · Week 24 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🌪️ After the storm: everything is loaded</h3>
+    <ul>
+      <li><strong>Spring poles</strong> are saplings or limbs <strong>bent and held down</strong> by a fallen tree or debris. USFS: they can <strong>store a tremendous amount of energy</strong>. Alabama Extension: the bend works like a spring and can <strong>lash out or snap with extreme force</strong> when it's cut.</li>
+      <li>UGA Extension: a spring pole strike can hit you with the <strong>trunk, the limb or the saw</strong>. It happens mostly during limbing and bucking, but it can happen <strong>up in the canopy with storm damage</strong> too.</li>
+      <li><strong>The first rule:</strong> USFS and the PCTA sawyer guide both say to <strong>cut a spring pole only when necessary</strong>. The safest spring pole is one you avoid.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>⚖️ Compression vs tension</h3>
+    <ul>
+      <li>On any bent stem, the <strong>inside of the bend is in compression</strong> (fibres squeezed) and the <strong>outside is in tension</strong> (fibres stretched). USFS: the side under compression <strong>is always the inside of the bend</strong>.</li>
+      <li>UGA: <strong>never cut on the tension side</strong>. Alabama Extension: cutting into the outside edge gives a <strong>quick, uncontrolled, explosive release</strong>.</li>
+      <li><strong>Logs on the ground (Husqvarna):</strong> work out whether the compression is on the top or the bottom. Start with a cut about <strong>one-third</strong> of the way through from the <strong>compression side</strong> (where you expect the bar to pinch), then finish from the opposite side. A log supported at <strong>both ends</strong> has compression on <strong>top</strong>. Watch how the log reacts, because you may have misjudged it.</li>
+      <li>Husqvarna: stand <strong>off to the side</strong> of the cut, because the trunk can jump up or throw back. On a slope, never stand <strong>downhill</strong> of the log.</li>
+    </ul>
+<svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sapling bent under a fallen log. A vertical line from its base and a horizontal line from the top of the bend meet; a 45-degree line from that point marks where to make small relief cuts on the inside of the bend">
+<rect x="150" y="20" width="180" height="22" rx="8" fill="#5a4630" stroke="#c5d0dc" stroke-width="1.5"/>
+<text x="200" y="35" fill="#c5d0dc" font-size="10">fallen log</text>
+<path d="M40 175 Q40 40 175 32" stroke="#7ec8e3" stroke-width="7" fill="none"/>
+<path d="M40 175 L40 30" stroke="#8a9bb0" stroke-dasharray="4 4"/>
+<path d="M40 30 L180 30" stroke="#8a9bb0" stroke-dasharray="4 4"/>
+<path d="M40 30 L88 78" stroke="#e8a838" stroke-width="2"/>
+<path d="M80 72 l10 -2 M83 79 l10 -2 M86 86 l10 -2" stroke="#e05a5a" stroke-width="2"/>
+<text x="100" y="92" fill="#e05a5a" font-size="11">small relief cuts on the</text>
+<text x="100" y="106" fill="#e05a5a" font-size="11">INSIDE of the bend</text>
+<text x="100" y="120" fill="#e05a5a" font-size="11">(compression side)</text>
+<text x="20" y="60" fill="#e8a838" font-size="10">45°</text>
+<text x="190" y="150" fill="#7ec8e3" font-size="10">outside of the bend =</text>
+<text x="190" y="163" fill="#7ec8e3" font-size="10">tension: never cut here first</text>
+<text x="50" y="186" fill="#c5d0dc" font-size="10">rooted base</text>
+</svg>
+  </div>
+  <div class="card">
+    <h3>🪚 Relief cuts on a spring pole</h3>
+    <ul>
+      <li><strong>Find the spot (USFS, UGA, PCTA):</strong> draw a vertical line up from the base and a horizontal line out from the top of the bend. From where they meet, a <strong>45° line</strong> back to the pole marks where to cut.</li>
+      <li><strong>Make the cuts on the inside of the bend.</strong> USFS (<em>Saws That Sing</em>): a <strong>series of small cuts on the compression side</strong>. Cut until the pole moves or the saw starts to bind, pull out, and place the next cut a little way along. The energy bleeds off and the final break is <strong>less violent</strong>.</li>
+      <li><strong>Shave instead of plunging.</strong> UGA and Alabama Extension describe <strong>shave cuts</strong>: thin layers taken off the compression side until the pole relaxes. Alabama notes a straight plunge into compression wood will <strong>pinch the saw</strong>.</li>
+      <li><strong>Finish last.</strong> PCTA: don't cut all the way through. The fibres on the tension side still hold the pieces until you cut them once the tension is gone. USFS 2006 guide: make the release cut on the piece that will <strong>fall to the ground</strong>, and stand <strong>clear of its path</strong>.</li>
+      <li><strong>One sawyer only.</strong> USFS: <strong>never use two sawyers</strong> on a spring pole. Plan your escape route before the first cut.</li>
+    </ul>
+    <div class="danger"><span class="lbl">⚠️ Storm-damaged wood: the other hazards</span><strong>Look up first.</strong> USFS: don't cut under widow-makers or loose debris; remove the hazard or move. Alabama Extension: small limbs keep falling for <strong>days and weeks after a storm</strong>, so wear a hard hat and don't work under snags or hung limbs. <strong>Uprooted trees (Husqvarna):</strong> never cut a large windfall at the <strong>butt end first</strong>, because the tree can <strong>kick over toward you</strong>. Bent trunks under high tension: Husqvarna says to stand <strong>on the inside of the arc</strong> and cut a little at a time from the pressure side, watching the bar nose for kickback.</div>
+    <ul>
+      <li><strong>WorkSafeBC 26.2.1:</strong> for work outside forestry operations and tree-climbing activities, work that involves <strong>bucking or manually falling trees</strong> (and pruning or taking trees down in pieces) must be <strong>planned</strong>. The plan identifies the hazards and how they'll be eliminated or minimized, is <strong>communicated to each worker before work starts</strong>, and is <strong>documented</strong>. If conditions change, the plan is amended and communicated before the change is carried out.</li>
+    </ul>
+    <div class="field-note"><div class="fn-label">🗣️ Tailgate discussion (5 min)</div><p>1) Point to a bent limb or sapling on today's site. Where's the compression side, and where's your 45° spot? 2) Who's the one sawyer, and where's their escape route? 3) What's hung up overhead that has to come down first? 4) Does our job plan cover this storm cleanup, or does it need amending and re-briefing before we start (WorkSafeBC 26.2.1(4))?</p></div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">Which side of a spring pole do you cut first?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>The inside of the bend (compression side), with small relief or shave cuts</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>The outside of the bend (tension side)</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>Straight through from either side</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>The top, in one fast cut</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Inside of the bend</div><ul><li>USFS: make a series of small cuts <strong>on the side under compression</strong>, which is <strong>always the inside of the bend</strong>.</li>
+<li>UGA: <strong>never cut on the tension side</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">How do USFS, UGA and PCTA find the best place to release a spring pole?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>Cut right at the base</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>Cut where the pole touches the log</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>Draw a vertical line from the base and a horizontal line from the top of the bend; a 45° line back from where they meet marks the spot</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>Anywhere convenient</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">The 45° method</div><ul><li>USFS (<em>Saws That Sing</em>) and PCTA: <strong>vertical line from the base, horizontal line from the top of the bend, 45° back</strong> from the intersection.</li>
+<li>USFS: avoid severing bent limbs at the bole. Cut at the calculated spot.</li></ul></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">A storm-felled trunk is supported at both ends with its middle off the ground. Where is the compression, and which cut goes first?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>Compression on the bottom; cut from the bottom first</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>No compression; cut anywhere</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>Compression on top; cut from the bottom all the way through</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>Compression on top; cut about 1/3 from the top first, then finish from the bottom</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Supported both ends = pressure on top</div><ul><li>Husqvarna: if a trunk has ground contact at <strong>both ends</strong>, its <strong>upper surface is in compression</strong>.</li>
+<li>Basic technique: start about <strong>1/3 through from the compression side</strong>, then meet it from the opposite side.</li></ul></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">You're cleaning up a large uprooted windfall. Why does Husqvarna say not to cut it at the butt end first?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>It dulls the chain</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>The tree could kick over toward you when the root plate is freed</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>It's illegal</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Butt wood is too hard</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Root plates move</div><ul><li>Husqvarna: windfalls with large uprooted trees <strong>must never be cut at the butt end first</strong>, because these trees <strong>could kick over in your direction</strong>.</li></ul>
+<div class="field-note"><div class="fn-label">📋 ISA exam</div><p>Safe Work Practices (15%) covers chainsaw work and storm hazards.</p></div></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">Overnight wind changed the site before a planned bucking job. What does WorkSafeBC 26.2.1 expect?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Nothing, the morning plan still stands</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Just tell the sawyer</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Only update it after the job</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Amend the plan to cover the new hazard and how it'll be controlled, communicate it to affected workers before carrying it out, and document it</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Change = amend and re-brief</div><ul><li>WorkSafeBC 26.2.1(3): planning must identify hazards and controls, be <strong>communicated before work starts</strong>, and be <strong>documented</strong>.</li>
+<li>26.2.1(4): if circumstances change and create a new hazard, the plan is <strong>amended, communicated before the amendment is implemented, and documented</strong>.</li></ul></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Nov 19, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://www.fs.usda.gov/t-d/pubs/htmlpubs/htm04232822/page14.htm" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">USDA Forest Service MTDC, Saws That Sing: Spring Poles</a> <span style="color:#8a9bb0">(stored energy; cut only when necessary; 45° method; small cuts on the compression (inside) side; never two sawyers)</span></li><li><a href="https://www.fs.usda.gov/t-d/pubs/htmlpubs/htm06672805/page04.htm" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">USDA Forest Service MTDC, Chain Saw and Crosscut Saw Training Course (2006)</a> <span style="color:#8a9bb0">(release cut on the piece that falls; stand clear; look up for widow-makers)</span></li><li><a href="https://fieldreport.caes.uga.edu/publications/C1243/chainsaw-safety-preventing-common-tree-felling-accidents/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">UGA Extension, Chainsaw Safety: Preventing Common Tree Felling Accidents</a> <span style="color:#8a9bb0">(never cut the tension side; point of maximum tension; accordion and shave cuts; canopy storm damage)</span></li><li><a href="https://www.aces.edu/blog/topics/disaster-home-family/restoring-storm-ravaged-trees-post-storm-landscape-safety/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Alabama Cooperative Extension, Post-Storm Landscape Safety</a> <span style="color:#8a9bb0">(spring pole lashes out; don't cut the outside edge; shave along the grain; limbs fall for days and weeks after storms)</span></li><li><a href="https://www.pcta.org/wp-content/uploads/2024/04/MOD03.2-Crosscut-Saw-Limbing-and-Bucking-SG-Final-PRINT-4.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">PCTA / USFS Developing Thinking Sawyers, Module 3.2 (PDF)</a> <span style="color:#8a9bb0">(avoid spring poles; parallel relief cuts at the apex; don't cut all the way through)</span></li><li><a href="https://www.husqvarna.com/us/discover/chainsaw-academy/basic-tree-felling/how-to-crosscut-a-tree/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Husqvarna Chainsaw Academy, How to Crosscut a Tree</a> <span style="color:#8a9bb0">(find the compression side; 1/3 cut first; stand to the side; never downhill)</span></li><li><a href="https://www.husqvarna.com/us/discover/chainsaw-academy/advanced-tree-felling/recommended-cutting-methods-for-trees-under-tension/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Husqvarna Chainsaw Academy, Cutting Methods for Trees Under Tension</a> <span style="color:#8a9bb0">(stand inside the arc; cut a little at a time; watch for kickback)</span></li><li><a href="https://www.husqvarna.com/us/discover/chainsaw-academy/advanced-tree-felling/storm-felled-tree-laying-down/" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Husqvarna Chainsaw Academy, Storm-Felled Tree Laying Down</a> <span style="color:#8a9bb0">(never cut a large uprooted windfall at the butt first)</span></li><li><a href="https://www.worksafebc.com/en/law-policy/occupational-health-safety/searchable-ohs-regulation/ohs-regulation/part-26-forestry-operations" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">WorkSafeBC OHS Regulation Part 26 (26.2.1)</a> <span style="color:#8a9bb0">(plan bucking and falling work; communicate; document; amend on change (online version is unofficial))</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline (PDF)</a> <span style="color:#8a9bb0">(Safe Work Practices 15%)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Safe Work Practices (15%): chainsaws, storm damage · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 24</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'A',2:'C',3:'D',4:'B',5:'D'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-fri-spring-poles-storm-damage.html", "week": 24, "day": "fri", "title": "Spring Poles & Storm-Damaged Wood", "version": "2026-11-19-a229ef94a647", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';LS.del('mt_crew_pin');let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin='';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){clearAll();submitted=false;renderPicker();const b=$('mt-signin-body');if(b){const m=document.createElement('div');m.className='mt-pinerr';m.textContent='Sign-in failed. Tap your name again.';b.prepend(m);}update();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){if(true){pin='';LS.del('mt_crew_pin');LS.set('mt_pin_step','1');pinMsg='';renderWho();logOpen();flush().then(update);update();return;}const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for sign-in');card('queued','Sign-in failed. Tap your name again at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>

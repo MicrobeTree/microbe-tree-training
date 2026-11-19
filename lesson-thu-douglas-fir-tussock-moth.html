@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Douglas-fir Tussock Moth — Week 24 · Microbe Tree Inc.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1923;color:#e8edf2;min-height:100vh;line-height:1.6}
+header{background:linear-gradient(135deg,#2f1a2a 0%,#0f1923 100%);border-bottom:2px solid #5a3a1a;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.35rem;font-weight:800;color:#5cb85c;letter-spacing:-0.5px}
+.logo span{color:#fff}
+.week-tag{background:#2d3a5a;color:#a3b8d9;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+.day-tag{background:#2f1f1a;color:#d9b8a3;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600}
+main{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:1.45rem;font-weight:700;color:#fff;margin:14px 0 6px;line-height:1.3}
+.sub{color:#8a9bb0;font-size:0.95rem;margin-bottom:20px}
+.meta{font-size:0.8rem;color:#7a8ba0;margin-bottom:18px}
+h2{font-size:1.15rem;font-weight:700;color:#fff;margin:4px 0 6px}
+h3{font-size:0.98rem;font-weight:700;color:#fff;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:6px 0 12px 20px}
+li{margin-bottom:6px}
+strong{color:#fff}
+.card{background:#131f2e;border:1px solid #2a3f55;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.94rem;color:#c5d0dc}
+.card h3:first-child{margin-top:0}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:8px 0}
+.fact-cell{background:#0f1923;border-radius:8px;padding:10px;border-left:3px solid #5a3a1a}
+.fact-cell label{font-size:0.68rem;color:#8a7060;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:2px}
+.fact-cell span{font-size:0.86rem;color:#e8c5a3;font-weight:600}
+.danger{background:#1f0f0f;border:1.5px solid #8a2a2a;border-radius:8px;padding:12px;margin:12px 0;color:#e8c5c5;font-size:0.9rem}
+.danger .lbl{font-size:0.72rem;color:#e05a5a;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.std{background:#131f2e;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.84rem;color:#e8c97a;margin:12px 0}
+.field-note{background:#1a2f1a;border:1px solid #2d5a2d;border-radius:8px;padding:12px;margin-top:12px}
+.fn-label{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.field-note p{font-size:0.9rem;color:#a3d9a3;margin:0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.85rem}
+th{background:#0f1923;color:#7ec8e3;text-align:left;padding:8px;border-bottom:2px solid #2a3f55}
+td{padding:8px;border-bottom:1px solid #1a2a3a;color:#c5d0dc;vertical-align:top}
+.tblwrap{overflow-x:auto}
+/* quiz */
+.q-num{font-size:0.75rem;color:#e8a838;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.02rem;color:#e8edf2;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px;cursor:pointer;font-size:0.94rem;color:#c5d0dc;display:flex;gap:10px;text-align:left;width:100%;font-family:inherit}
+.option:hover:not(.disabled){border-color:#e8a838;color:#fff}
+.option.correct{background:#1a3a1a;border-color:#5cb85c;color:#a3d9a3}
+.option.wrong{background:#3a1a1a;border-color:#e05a5a;color:#e09090}
+.option.disabled{cursor:default}
+.option-letter{font-weight:700;color:#5a6b7e;min-width:18px}
+.reveal{display:none;margin-top:14px;background:#0a1520;border-left:3px solid #e8a838;border-radius:0 8px 8px 0;padding:14px}
+.reveal.show{display:block}
+.reveal-title{font-size:1.02rem;font-weight:700;color:#fff;margin-bottom:8px}
+.score{position:sticky;bottom:0;background:#0a1520ee;border-top:1px solid #2a3f55;padding:10px 16px;text-align:center;font-size:0.9rem;color:#e8c97a}
+/* tabs / sections */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;position:sticky;top:0;background:#0f1923;z-index:5;padding-top:8px}
+.tab{flex:0 0 auto;background:#131f2e;border:1.5px solid #2a3f55;border-radius:20px;padding:7px 13px;cursor:pointer;font-size:0.84rem;color:#8a9bb0;font-family:inherit}
+.tab.active{background:#2a1f3a;border-color:#c87ce8;color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+.isa-footer{margin-top:26px;padding:12px;background:#131f2e;border-radius:8px;border:1px solid #1e3250;font-size:0.8rem;color:#8a9bb0}
+.isa-footer strong{color:#a3b8d9}
+.brand{margin-top:10px;font-size:0.75rem;color:#5a6b7e;text-align:center}
+svg{max-width:100%;height:auto;display:block;margin:10px auto}
+
+.mt-signin{background:#131f2e;border:1.5px solid #2d5a2d;border-radius:12px;padding:14px;margin:0 0 18px}
+.mt-signin .lbl{font-size:0.72rem;color:#5cb85c;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mt-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mt-name{background:#0f1923;border:1.5px solid #2a3f55;border-radius:8px;padding:12px 10px;color:#e8edf2;font-size:0.95rem;cursor:pointer;font-family:inherit}
+.mt-name:hover{border-color:#5cb85c}
+.mt-who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#c5d0dc;font-size:0.95rem}
+.mt-who strong{color:#fff}
+.mt-link{background:none;border:none;color:#7ec8e3;text-decoration:underline;cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0}
+.mt-submit{background:#131f2e;border:1.5px solid #e8a838;border-radius:12px;padding:16px;margin:22px 0 10px}
+.mt-submit h3{margin-top:0}
+.mt-attest{display:flex;gap:10px;align-items:flex-start;font-size:0.95rem;color:#e8edf2;margin:10px 0;cursor:pointer}
+.mt-attest input{width:22px;height:22px;flex:0 0 22px;margin-top:2px}
+.mt-btn{background:#2d5a2d;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px;cursor:pointer;width:100%;font-family:inherit}
+.mt-btn:disabled{background:#2a3f55;color:#8a9bb0;cursor:not-allowed}
+.mt-status{font-size:0.85rem;color:#8a9bb0;margin-top:8px}
+.mt-status.ok{color:#a3d9a3}.mt-status.err{color:#e09090}
+.mt-pin{width:100%;font-size:1.4rem;letter-spacing:6px;text-align:center;padding:12px;border-radius:8px;border:1.5px solid #2a3f55;background:#0f1923;color:#fff;margin:6px 0 10px;font-family:inherit}
+.mt-pinerr{color:#e09090;font-size:0.9rem;margin-bottom:6px}
+.mt-result{display:none;border-radius:10px;padding:14px;margin-top:12px;font-size:1rem;font-weight:700;line-height:1.4}
+.mt-result.show{display:block}
+.mt-result.ok{background:#1e4d1e;border:2px solid #5cb85c;color:#e6ffe6}
+.mt-result.queued{background:#4d3b12;border:2px solid #e8a838;color:#fff1d6}
+.mt-result.err{background:#4d1616;border:2px solid #e05555;color:#ffe3e3}
+.mt-result .mt-btn{margin-top:10px;background:#a33}
+.mt-retake{background:none;border:1px solid #e8a838;color:#e8c97a;border-radius:6px;padding:3px 10px;margin-left:8px;cursor:pointer;font-family:inherit;font-size:0.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Microbe<span>Tree</span></div>
+  <div class="week-tag">Week 24</div>
+  <div class="day-tag">🐛 Thursday — Pests &amp; Diseases</div>
+</header>
+<main>
+  <h1>Douglas-fir Tussock Moth: Winter Egg Masses &amp; Tussockosis</h1>
+  <p class="sub">How to spot the egg masses on a winter job, why the hairs matter for the crew, and what BC says about populations right now.</p>
+  <p class="meta">⏱ About 10 minutes · Week 24 · Microbe Tree Inc. crew training</p>
+  <div class="mt-signin" id="mt-signin">
+    <div class="lbl">👷 Crew sign-in</div>
+    <div id="mt-signin-body" class="mt-status">Loading crew list…</div>
+  </div>
+  <div class="card">
+    <h3>🐛 Douglas-fir tussock moth (<em>Orgyia pseudotsugata</em>)</h3>
+    <ul>
+      <li><strong>A native defoliator</strong> of the <strong>low-lying, dry-belt Douglas-fir</strong> regions of southern BC (BC info sheet). It occurs only in <strong>low-elevation stands</strong> (BC Ministry of Forests).</li>
+      <li><strong>Hosts:</strong> mainly <strong>Douglas-fir</strong>, occasionally <strong>ponderosa pine and western larch</strong>. In urban areas, <strong>ornamental spruce and pine</strong> can also be hit.</li>
+      <li><strong>Damage:</strong> new needles go first and the tops of crowns and branch tips turn reddish-brown. Severe outbreaks can defoliate and kill trees. NRCan notes it can be confused with <strong>western spruce budworm</strong>, but budworm feeds mainly on new growth while tussock moth eats new <em>and</em> old needles.</li>
+      <li><strong>Outbreak cycle:</strong> the BC Forest Health Bulletin (Jan 2026) says outbreaks come about every <strong>7–12 years</strong> and last up to <strong>four years</strong> before natural controls (mainly a virus) collapse them.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>❄️ Winter ID: the egg mass</h3>
+    <ul>
+      <li><strong>It overwinters as eggs.</strong> There's one generation a year, and eggs hatch in spring (BC bulletin; NRCan).</li>
+      <li>The female is <strong>wingless</strong> and stays on her cocoon. She lays all her eggs (about <strong>200</strong> in BC) in <strong>one mass on her empty cocoon</strong> (NRCan).</li>
+      <li><strong>What it looks like:</strong> NRCan says egg masses are about <strong>13 mm across</strong>, made of round <strong>white eggs</strong> in one to three layers, covered with a <strong>frothy secretion mixed with body hairs that hardens</strong>. The cocoon underneath is <strong>grey-brown, about 20 mm</strong>, made of silk and hairs.</li>
+      <li><strong>Where:</strong> cocoons are spun on foliage and trunks and on <strong>picnic tables and other objects</strong> (BC bulletin). In 2025, egg masses were found on <strong>trees, lawn furniture and other yard objects</strong> in Kamloops subdivisions.</li>
+      <li>Females don't fly, so infestations are <strong>patchy</strong>. Young larvae spread by ballooning on silk, sometimes for several hundred metres (NRCan).</li>
+    </ul>
+<svg viewBox="0 0 340 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sketch of a tussock moth egg mass: a frothy, hairy lump about 13 mm across sitting on a grey-brown cocoon on a twig or post">
+<rect x="20" y="95" width="300" height="14" rx="6" fill="#5a4630"/>
+<ellipse cx="120" cy="82" rx="60" ry="16" fill="#8a7a66" stroke="#c5d0dc" stroke-width="1.5"/>
+<ellipse cx="120" cy="70" rx="26" ry="14" fill="#e8e0d0" stroke="#c5d0dc" stroke-width="1.5"/>
+<path d="M100 66 l-6 -6 M108 60 l-3 -8 M120 57 l0 -8 M132 60 l3 -8 M140 66 l6 -6" stroke="#c5d0dc" stroke-width="1"/>
+<text x="190" y="52" fill="#e8c97a" font-size="11">egg mass ≈ 13 mm,</text>
+<text x="190" y="66" fill="#e8c97a" font-size="11">frothy + hairy</text>
+<text x="190" y="88" fill="#c5d0dc" font-size="11">on the female's grey-</text>
+<text x="190" y="102" fill="#c5d0dc" font-size="11">brown cocoon (~20 mm)</text>
+<text x="20" y="135" fill="#e05a5a" font-size="11">Hairs on the egg mass and cocoon can cause tussockosis. Gloves on.</text>
+</svg>
+  </div>
+  <div class="card">
+    <div class="danger"><span class="lbl">⚠️ Crew safety: tussockosis</span>BC's info sheet says the caterpillars carry thousands of tiny hairs, and hairs are also on the <strong>female moth, egg masses and cocoons</strong>. They can cause an allergic reaction called <strong>tussockosis</strong>: mostly <strong>itching</strong>, but also <strong>rashes, watery eyes and sneezing</strong>. Nearly <strong>1 in 5 people</strong> get symptoms. In very sensitive people, reactions can <strong>build with repeated exposure</strong>. The Jan 2026 bulletin adds that urticating hairs can be <strong>released into the air</strong>, and severe cases can include anaphylaxis.</div>
+    <h3>🧤 What we do (from the BC info sheet)</h3>
+    <ul>
+      <li><strong>Don't handle any life stage barehanded.</strong> Wear gloves. Keep your safety glasses on when you're working through infested foliage.</li>
+      <li>Wash your hands and exposed skin often with soap and water. Change clothes after heavy-infestation work, and <strong>don't shake your clothes out</strong> before washing them.</li>
+      <li>Wash equipment before you use it again (rope bags and tarps too).</li>
+      <li><strong>Severe symptoms: get medical attention immediately.</strong> Tell your lead if anyone on the crew has a known allergy history, because BC says those people may be more susceptible.</li>
+    </ul>
+    <h3>📊 Current status (BC government, latest published)</h3>
+    <ul>
+      <li>BC's <strong>2025 Forest Health Conditions report</strong> for the Southern Interior (Dec 17, 2025) says <strong>no Douglas-fir tussock moth defoliation was mapped in 2025</strong>. There were numerous <strong>single-tree outbreaks</strong> in the Kamloops and Okanagan areas.</li>
+      <li>Of <strong>37 trap sites</strong> in the Thompson Okanagan Region, <strong>10 averaged over 25 moths per trap</strong>, the first year since 2020 that so many did. The Okanagan outbreak region had <strong>40%</strong> of its sites over 25.</li>
+      <li>BC's outlook: there <strong>may be localized defoliation in urban-interface areas in 2026</strong>, and an outbreak in surrounding forests <strong>may occur within the next few years</strong>. BC's rule of thumb is that sites over <strong>25 moths per trap for 2–3 consecutive years</strong> mean an outbreak is likely imminent.</li>
+    </ul>
+    <div class="field-note"><div class="fn-label">📋 Field Note: winter pruning on Douglas-fir</div><p>You're limbing up a yard Douglas-fir and find frothy, hairy, greyish-white lumps on old cocoons under a branch and on the client's deck railing. Stop handling them barehanded, glove up, and take a photo. Tell Anton. Any control or treatment decision is his call, and BC asks people to <strong>report new infestations</strong> to the Ministry of Forests regional office in Kamloops.</p></div>
+  </div>
+  <div class="card" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">How does Douglas-fir tussock moth spend the winter?</div>
+    <div class="options" id="opts1"><button class="option" data-l="A" onclick="answer(1,'A',this)"><span class="option-letter">A</span><span>As adults in bark cracks</span></button><button class="option" data-l="B" onclick="answer(1,'B',this)"><span class="option-letter">B</span><span>As pupae in the soil</span></button><button class="option" data-l="C" onclick="answer(1,'C',this)"><span class="option-letter">C</span><span>It doesn't overwinter here</span></button><button class="option" data-l="D" onclick="answer(1,'D',this)"><span class="option-letter">D</span><span>As eggs, in a mass on the female's cocoon</span></button></div>
+    <div class="reveal" id="rev1"><div class="reveal-title">Overwinters as eggs</div><ul><li>BC Forest Health Bulletin: one generation per year, <strong>overwinters in the egg stage</strong>.</li>
+<li>NRCan: the wingless female lays all her eggs <strong>in a single mass</strong> on her cocoon.</li></ul></div>
+  </div>
+  <div class="card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">Which description matches a tussock moth egg mass?</div>
+    <div class="options" id="opts2"><button class="option" data-l="A" onclick="answer(2,'A',this)"><span class="option-letter">A</span><span>About 13 mm across: white eggs covered in a hardened frothy secretion mixed with hairs, on a grey-brown cocoon</span></button><button class="option" data-l="B" onclick="answer(2,'B',this)"><span class="option-letter">B</span><span>A shiny brown band of eggs around a twig</span></button><button class="option" data-l="C" onclick="answer(2,'C',this)"><span class="option-letter">C</span><span>A white waxy scale shaped like an oyster shell</span></button><button class="option" data-l="D" onclick="answer(2,'D',this)"><span class="option-letter">D</span><span>A cotton-candy web at branch tips</span></button></div>
+    <div class="reveal" id="rev2"><div class="reveal-title">Frothy, hairy, on a cocoon</div><ul><li>NRCan: egg masses about <strong>13 mm</strong> across, ~200 white round eggs, covered with a <strong>frothy secretion intermixed with body hairs that hardens</strong>.</li>
+<li>The cocoon is <strong>grey-brown, about 20 mm</strong>, made of silk and hairs.</li></ul></div>
+  </div>
+  <div class="card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">Which life stages carry the hairs that cause tussockosis?</div>
+    <div class="options" id="opts3"><button class="option" data-l="A" onclick="answer(3,'A',this)"><span class="option-letter">A</span><span>Only the adult male</span></button><button class="option" data-l="B" onclick="answer(3,'B',this)"><span class="option-letter">B</span><span>Only the caterpillars</span></button><button class="option" data-l="C" onclick="answer(3,'C',this)"><span class="option-letter">C</span><span>Caterpillars, the female moth, egg masses and cocoons</span></button><button class="option" data-l="D" onclick="answer(3,'D',this)"><span class="option-letter">D</span><span>None; it's only a pollen allergy</span></button></div>
+    <div class="reveal" id="rev3"><div class="reveal-title">Hairs on every stage you'd touch in winter</div><ul><li>BC info sheet: caterpillars are covered in thousands of hairs, and <strong>hairs are also present on the female moth, egg masses and cocoons</strong>.</li>
+<li>Symptoms: itching, rashes, <strong>watery eyes</strong>, sneezing. Nearly <strong>1 in 5</strong> people react.</li></ul>
+<div class="field-note"><div class="fn-label">📋 ISA exam</div><p>Diagnosis &amp; Treatment (9%) covers insect ID. Safe Work Practices (15%) covers crew hazards.</p></div></div>
+  </div>
+  <div class="card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">What did BC's latest published forest health report (2025) say about tussock moth around here?</div>
+    <div class="options" id="opts4"><button class="option" data-l="A" onclick="answer(4,'A',this)"><span class="option-letter">A</span><span>A huge forest outbreak was mapped in 2025</span></button><button class="option" data-l="B" onclick="answer(4,'B',this)"><span class="option-letter">B</span><span>No defoliation mapped in 2025, but 10 of 37 Thompson Okanagan trap sites averaged over 25 moths, so localized urban-interface defoliation may occur in 2026</span></button><button class="option" data-l="C" onclick="answer(4,'C',this)"><span class="option-letter">C</span><span>The moth has been eradicated from BC</span></button><button class="option" data-l="D" onclick="answer(4,'D',this)"><span class="option-letter">D</span><span>Only the coast is affected</span></button></div>
+    <div class="reveal" id="rev4"><div class="reveal-title">Building, not yet mapped</div><ul><li>BC 2025 South Area report: <strong>no defoliation mapped in 2025</strong>. <strong>10 of 37</strong> sites averaged over 25 moths per trap, and the Okanagan region had 40% of its sites over 25.</li>
+<li>Outlook: <strong>possible localized defoliation in urban-interface areas in 2026</strong> and a forest outbreak within the next few years.</li></ul></div>
+  </div>
+  <div class="card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">Which trees are the main and occasional hosts?</div>
+    <div class="options" id="opts5"><button class="option" data-l="A" onclick="answer(5,'A',this)"><span class="option-letter">A</span><span>Mainly Douglas-fir; occasionally ponderosa pine and western larch; ornamental spruce and pine in towns</span></button><button class="option" data-l="B" onclick="answer(5,'B',this)"><span class="option-letter">B</span><span>Mainly birch and aspen</span></button><button class="option" data-l="C" onclick="answer(5,'C',this)"><span class="option-letter">C</span><span>Only cedar</span></button><button class="option" data-l="D" onclick="answer(5,'D',this)"><span class="option-letter">D</span><span>Only fruit trees</span></button></div>
+    <div class="reveal" id="rev5"><div class="reveal-title">Douglas-fir first</div><ul><li>BC info sheet: <strong>primarily Douglas-fir</strong>, occasionally <strong>ponderosa pine and western larch</strong>. <strong>Ornamental spruce and pine</strong> may be affected in urban areas.</li></ul></div>
+  </div>
+  <div class="card" id="sources">
+    <h3>📚 Sources (fact-checked Nov 19, 2026)</h3>
+    <ol style="font-size:0.84rem"><li><a href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/forestry/forest-health/aerial-overview-survey/2025_aos_southarea_report_dec_17_2025.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">BC Ministry of Forests, Forest Health Conditions 2025: B.C. Southern Interior (PDF, Dec 17, 2025)</a> <span style="color:#8a9bb0">(no 2025 defoliation mapped; 10 of 37 sites over 25 moths/trap; Okanagan 40%; 2026 outlook; 25-moth rule)</span></li><li><a href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/forestry/forest-health/fh-bulletin/6_forest_health_bulletin_january2026.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">BC Ministry of Forests, Forest Health Bulletin (Jan 2026, PDF)</a> <span style="color:#8a9bb0">(7–12 yr outbreak cycle; overwinters as eggs; cocoons on objects; airborne urticating hairs; anaphylaxis)</span></li><li><a href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/forestry/forest-health/douglas-fir-tussock-moth/douglas-fir_tussock_moth_tussockosis_pamphlet.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">BC Public Information Sheet #3: The Douglas-fir Tussock Moth and Tussockosis (PDF)</a> <span style="color:#8a9bb0">(hosts; dry-belt range; hairs on all stages; symptoms; 1 in 5; precautions; reporting)</span></li><li><a href="https://www2.gov.bc.ca/gov/content/industry/forestry/managing-our-forest-resources/forest-health/forest-pests/defoliators/douglas-fir-tussock-moth" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">BC Government, Douglas-fir tussock moth</a> <span style="color:#8a9bb0">(low-elevation stands only; hairs break off and cause allergic reaction)</span></li><li><a href="https://tidcf.nrcan.gc.ca/en/insects/factsheet/1000009" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">Natural Resources Canada, Douglas-fir tussock moth factsheet</a> <span style="color:#8a9bb0">(egg mass ~13 mm, frothy with hairs; ~200 eggs; cocoon ~20 mm; ballooning; budworm look-alike)</span></li><li><a href="https://www.isa-arbor.com/Portals/0/Assets/PDF/Certification-Applications/Cert-Exam-Outline-CA.pdf" target="_blank" rel="noopener" style="color:#7ec8e3;overflow-wrap:anywhere">ISA Certified Arborist Exam Content Outline (PDF)</a> <span style="color:#8a9bb0">(Diagnosis &amp; Treatment 9%; Safe Work Practices 15%)</span></li></ol>
+  </div>
+  <div class="mt-submit" id="mt-submit">
+    <h3>✅ Finish this lesson</h3>
+    <p style="font-size:0.88rem;color:#8a9bb0;margin-bottom:6px">Answer all quiz questions, then tick the box. Your name, score and the time are recorded for Microbe Tree Inc. training records.</p>
+    <label class="mt-attest"><input type="checkbox" id="mt-attest"> <span>I read and understood this lesson.</span></label>
+    <button class="mt-btn" id="mt-send" disabled>Submit</button>
+    <div class="mt-status" id="mt-send-status"></div>
+    <div class="mt-result" id="mt-result" role="status" aria-live="polite"></div>
+  </div>
+  <div class="isa-footer">📚 <strong>ISA Exam Domain:</strong> Diagnosis &amp; Treatment (9%) · Safe Work Practices (15%) · Full source list above.</div>
+  <p class="brand">Microbe Tree Inc. · West Kelowna, BC · Week 24</p>
+</main>
+<div class="score" id="score">Answer all 5 questions · Score: 0 / 5</div>
+<script>
+const correct={1:'D',2:'A',3:'C',4:'B',5:'A'};let answered=0,right=0;
+function answer(q,chosen,el){
+  const opts=document.querySelectorAll('#opts'+q+' .option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>{o.classList.add('disabled');const l=o.dataset.l;
+    if(l===correct[q])o.classList.add('correct');else if(l===chosen)o.classList.add('wrong');});
+  document.getElementById('rev'+q).classList.add('show');
+  answered++;if(chosen===correct[q])right++;
+  mtScore();
+}
+function mtScore(){const el=document.getElementById('score');el.textContent=(answered<5?'Answered '+answered+' of 5':'Done!')+' · Score: '+right+' / 5';
+  if(answered>=5){const b=document.createElement('button');b.className='mt-retake';b.textContent='Retake';b.onclick=mtRetake;el.appendChild(b);}
+  if(window.MT_SIGNIN)MT_SIGNIN.update();}
+function mtRetake(){answered=0;right=0;window.MT_QUIZ.attempts++;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('disabled','correct','wrong'));
+  document.querySelectorAll('.reveal').forEach(r=>r.classList.remove('show'));mtScore();window.scrollTo({top:document.getElementById('q1').offsetTop-20,behavior:'smooth'});}
+window.MT_QUIZ={total:5,attempts:1,score:()=>right,answered:()=>answered,retake:mtRetake};
+</script>
+<script>
+(function(){
+const CFG={"file": "lesson-thu-douglas-fir-tussock-moth.html", "week": 24, "day": "thu", "title": "Douglas-fir Tussock Moth", "version": "2026-11-19-589dea505f37", "endpoint": "https://ubftcyxujqihgtzogkww.supabase.co/functions/v1/lesson-signin", "fallbackCrew": [{"id": 7, "first_name": "Brody"}, {"id": 8, "first_name": "Colton"}, {"id": 6, "first_name": "Jordan"}, {"id": 3, "first_name": "Red"}, {"id": 5, "first_name": "Scott"}, {"id": 2, "first_name": "Tim"}, {"id": 4, "first_name": "Travis"}, {"id": 1, "first_name": "Anton"}]};
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let dev=LS.get('mt_device');if(!dev||!/^[A-Za-z0-9._:-]{1,64}$/.test(dev)){dev=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));LS.set('mt_device',dev);}
+const $=id=>document.getElementById(id);
+// state: crew id + first name + optional PIN, all on this device only
+let pinMsg0='';LS.del('mt_crew_pin');let cid=parseInt(LS.get('mt_crew_id'))||null, who=LS.get('mt_crew_first')||null, pin='';
+if(pin&&!/^[0-9]{4}$/.test(pin)){LS.del('mt_crew_pin');LS.del('mt_pin_step');pin='';pinMsg0='Your PIN has changed. Enter your new 4-digit PIN';}
+let submitted=false, sending=false, pinMsg=pinMsg0, crewList=null;
+function clearAll(){['mt_crew_id','mt_crew_first','mt_crew_pin','mt_crew_name','mt_pin_step'].forEach(LS.del);cid=null;who=null;pin='';}
+function body(type,extra){return Object.assign({event_type:type,lesson_file:CFG.file,lesson_version:CFG.version,lesson_title:CFG.title,week:CFG.week,day:CFG.day,client_ts:new Date().toISOString(),device_id:dev},extra||{});}
+function withAuth(p){const q=Object.assign({},p,{crew_id:cid});delete q.crew_name;delete q.pin;delete q.lesson_kind;if(pin&&/^[0-9]{4}$/.test(pin))q.pin=pin;return q;}
+function queue(){try{return JSON.parse(LS.get('mt_queue')||'[]').filter(p=>p&&p.event_type)}catch(e){return []}}
+function enqueue(p){const q=queue();q.push(p);LS.set('mt_queue',JSON.stringify(q.slice(-50)));}
+function post(p){const a=withAuth(p),ps=!!a.pin;return fetch(CFG.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(a)})
+ .then(r=>r.json().catch(()=>({})).then(j=>{if(r.ok&&j.ok)return j;const e=new Error(j.code||('http_'+r.status));e.status=r.status;e.pinSent=ps;throw e;}),()=>{throw Object.assign(new Error('network'),{status:0});});}
+// 401: wrong/missing PIN -> wipe PIN, ask again; event stays queued
+function authFail(){clearAll();submitted=false;renderPicker();const b=$('mt-signin-body');if(b){const m=document.createElement('div');m.className='mt-pinerr';m.textContent='Sign-in failed. Tap your name again.';b.prepend(m);}update();}
+function permanent(e){return e.status===400||e.status===413;}
+function offline(e){return !e.status;}
+// 400 with a PIN attached = PIN in an old format -> treat as failed sign-in
+function authErr(e){return e.status===401||(e.status===400&&!!e.pinSent);}
+function sendOrQueue(p){if(!cid){enqueue(p);return Promise.reject(Object.assign(new Error('signed_out'),{status:0}));}
+ return post(p).catch(e=>{if(offline(e)||authErr(e)){enqueue(p);if(authErr(e))authFail();}throw e;});}
+let flushing=false;
+function flush(){if(flushing||!cid)return Promise.resolve();const q=queue();if(!q.length)return Promise.resolve();flushing=true;LS.set('mt_queue','[]');
+ let chain=Promise.resolve(),stop=false;
+ q.forEach(p=>{chain=chain.then(()=>{if(stop){enqueue(p);return;}return post(p).then(j=>{if(p.event_type==='submit')showSaved(j,p);}).catch(e=>{if(!authErr(e)&&permanent(e)){if(p.event_type==='submit')showErr(p);return;}enqueue(p);stop=true;if(authErr(e))authFail();});});});
+ return chain.finally(()=>{flushing=false;});}
+function logOpen(){const key='mt_open_'+CFG.file+'_'+CFG.version+'_'+cid;const last=+(sessionStorage.getItem(key)||0);if(Date.now()-last<30*60*1000)return;sessionStorage.setItem(key,Date.now());sendOrQueue(body('open')).catch(()=>{});}
+function loadCrew(){if(crewList)return Promise.resolve(crewList);
+ return fetch(CFG.endpoint).then(r=>r.json()).then(j=>{const c=(j.crew||[]).filter(x=>x&&Number.isInteger(x.id)&&typeof x.first_name==='string');if(!c.length)throw 0;LS.set('mt_crew_cache2',JSON.stringify(c));return c;})
+ .catch(()=>{try{return JSON.parse(LS.get('mt_crew_cache2'))||CFG.fallbackCrew}catch(e){return CFG.fallbackCrew}}).then(c=>crewList=c);}
+function renderWho(){const b=$('mt-signin-body');b.className='';b.innerHTML='<div class="mt-who">Signed in as <strong></strong><button class="mt-link" id="mt-switch">Not you?</button></div>';b.querySelector('strong').textContent=who;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};}
+function renderPicker(){const b=$('mt-signin-body');b.className='';b.innerHTML='<p style="margin-bottom:8px;color:#c5d0dc">Who\'s reading? Tap your name (this phone will remember you).</p><div class="mt-names" id="mt-names"></div>';
+ loadCrew().then(list=>{const box=$('mt-names');if(!box)return;list.forEach(c=>{const btn=document.createElement('button');btn.className='mt-name';btn.textContent=c.first_name;
+  btn.onclick=()=>{cid=c.id;who=c.first_name;LS.set('mt_crew_id',String(c.id));LS.set('mt_crew_first',c.first_name);LS.del('mt_crew_name');pin='';LS.del('mt_crew_pin');pinMsg='';renderPin();};box.appendChild(btn);});});}
+function renderPin(){if(true){pin='';LS.del('mt_crew_pin');LS.set('mt_pin_step','1');pinMsg='';renderWho();logOpen();flush().then(update);update();return;}const b=$('mt-signin-body');b.className='';
+ b.innerHTML='<div class="mt-who">Hi <strong></strong> <button class="mt-link" id="mt-switch">Not you?</button></div>'+(pinMsg?'<div class="mt-pinerr"></div>':'')+
+ '<label for="mt-pin" style="font-size:0.9rem;color:#c5d0dc">Enter your 4-digit PIN (this phone will remember it)</label><input class="mt-pin" id="mt-pin" type="password" inputmode="numeric" pattern="[0-9]{4}" autocomplete="off" maxlength="4"><button class="mt-btn" id="mt-pin-ok">Sign in</button>'+
+ '<div style="margin-top:8px"><button class="mt-link" id="mt-nopin">No PIN yet? Continue without one</button></div>';
+ b.querySelector('strong').textContent=who;if(pinMsg)b.querySelector('.mt-pinerr').textContent=pinMsg;
+ $('mt-switch').onclick=()=>{clearAll();submitted=false;renderPicker();update();};
+ const done=()=>{pinMsg='';renderWho();logOpen();flush().then(update);update();};
+ $('mt-pin-ok').onclick=()=>{const v=$('mt-pin').value.trim();if(!/^[0-9]{4}$/.test(v)){pinMsg='PIN must be exactly 4 digits';renderPin();return;}pin=v;LS.set('mt_crew_pin',v);LS.set('mt_pin_step','1');done();};
+ $('mt-pin').onkeydown=e=>{if(e.key==='Enter')$('mt-pin-ok').click();};
+ $('mt-nopin').onclick=()=>{LS.set('mt_pin_step','1');done();};
+ update();}
+function quizDone(){const q=window.MT_QUIZ;return !q||q.answered()>=q.total;}
+function signedIn(){return !!cid&&!!$('mt-switch')&&!$('mt-pin');}
+function update(){const ok=signedIn()&&quizDone()&&$('mt-attest').checked&&!submitted&&!sending;$('mt-send').disabled=!ok;
+ const s=$('mt-send-status');if(submitted||sending)return;s.className='mt-status';s.textContent=!signedIn()?'Sign in at the top first.':!quizDone()?('Quiz: '+window.MT_QUIZ.answered()+' of '+window.MT_QUIZ.total+' answered.'):'';}
+function card(kind,msg,retry){const c=$('mt-result');c.className='mt-result show '+kind;c.textContent=msg;
+ if(retry){const b=document.createElement('button');b.className='mt-btn';b.textContent='Retry';b.onclick=()=>{c.className='mt-result';doSubmit(retry);};c.appendChild(b);}
+ c.scrollIntoView({behavior:'smooth',block:'center'});}
+function label(t){const b=$('mt-send');b.textContent=t;}
+function scoreTxt(p){return p.lesson_kind==='read'?' · read ✔':(' · score '+p.score+'/'+p.max_score);}
+function showSaved(j,p){submitted=true;sending=false;$('mt-send-status').textContent='';label('Submitted');$('mt-send').disabled=true;
+ card('ok','Submitted ✔ Recorded for '+who+scoreTxt(p)+' · '+new Date(j.recorded_at).toLocaleString('en-CA',{timeZone:'America/Vancouver',dateStyle:'medium',timeStyle:'short'})+' PT');}
+function showErr(p,msg){submitted=false;sending=false;label('Submit');$('mt-send-status').textContent='';card('err',msg||'Not saved — something went wrong. Tap Retry. If it keeps failing, tell Anton.',p);update();}
+function doSubmit(p){sending=true;label('Sending…');$('mt-send').disabled=true;$('mt-send-status').textContent='';
+ p.client_ts=new Date().toISOString();
+ sendOrQueue(p).then(j=>showSaved(j,p)).catch(e=>{
+  if(authErr(e)){sending=false;submitted=true;label('Waiting for sign-in');card('queued','Sign-in failed. Tap your name again at the top. Your submission is saved on this phone and will send as soon as you sign in.');}
+  else if(offline(e)){sending=false;submitted=true;label('Saved on phone');card('queued','Saved on phone, will send when online.');}
+  else if(e.status===429){showErr(p,'Too many tries right now — wait a minute, then tap Retry.');}
+  else showErr(p);});}
+window.MT_SIGNIN={update:update};
+$('mt-attest').onchange=update;
+$('mt-send').onclick=function(){if(submitted||sending)return;const q=window.MT_QUIZ;
+ // Server requires score/max_score on every submit; reading-only lessons record 1/1 = "read and attested".
+ const p0=q?body('submit',{attested:true,score:q.score(),max_score:q.total,attempts:q.attempts})
+          :body('submit',{attested:true,score:1,max_score:1,attempts:1});
+ const p=Object.assign(p0,{lesson_kind:q?'quiz':'read'});doSubmit(p);};
+window.addEventListener('online',()=>flush());
+// start-up: migrate legacy name-only sign-in by first word
+const legacy=LS.get('mt_crew_name');
+if(!cid&&legacy){loadCrew().then(list=>{const fw=legacy.trim().split(/\s+/)[0].toLowerCase();const m=list.filter(c=>c.first_name.toLowerCase()===fw);LS.del('mt_crew_name');
+  if(m.length===1){cid=m[0].id;who=m[0].first_name;LS.set('mt_crew_id',String(cid));LS.set('mt_crew_first',who);renderPin();}else{renderPicker();}update();});}
+else if(cid&&who){if(pin||LS.get('mt_pin_step')){renderWho();logOpen();flush().then(update);}else renderPin();}
+else renderPicker();
+update();
+})();
+</script>
+</body>
+</html>
